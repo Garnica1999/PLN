@@ -1,0 +1,45 @@
+{
+  "fase": "V53-02",
+  "fecha": "2026-10-18",
+  "duracion_seg": 0.41,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v53_dense_poe_blend.csv",
+  "sha256": "254346ef709d6756101ce36303e759a81b3c27cd006a2a508feb0610a1d1e172",
+  "filas": 112892,
+  "distribucion": {
+    "18-24": 22042,
+    "50-64": 20405,
+    "25-34": 20072,
+    "35-49": 17601,
+    "65-xx": 17230,
+    "13-17": 15542
+  },
+  "pesos_geometricos": [
+    0.54873,
+    0.08112000000000001,
+    0.16809000000000002,
+    0.07351500000000001,
+    0.050017500000000006,
+    0.053527500000000006,
+    0.025
+  ],
+  "pesos_plug_in": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "cambios_vs_v48": 190,
+  "pct_cambios_vs_v48": 0.16830244835772243
+}

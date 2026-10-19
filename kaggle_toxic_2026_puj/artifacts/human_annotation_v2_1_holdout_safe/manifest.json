@@ -1,0 +1,59 @@
+{
+  "package": "human_annotation_v2_1_holdout_safe",
+  "policy_id": "PROJECT_OPERATIONAL_ANNOTATION_POLICY_V2",
+  "date": "2026-10-13",
+  "guideline_sha256": "ff699f54a48da7797f7305cf71a2718cfc12b3d99eab6f0eb80e0560cd3ed38a",
+  "counts": {
+    "annotator_rows": 250,
+    "principal_tweets": 250,
+    "cells_per_annotator": 750,
+    "calibration_tweets": 15
+  },
+  "population": "dev2 = dev (1483) menos holdout2 (247); ver reports/p92w_sampling_manifest.json",
+  "blinding": {
+    "hidden": [
+      "original_example_id",
+      "original_labels",
+      "oof_probabilities",
+      "v03_predictions",
+      "threshold_distances",
+      "fold",
+      "sample_component",
+      "selection_reasons",
+      "dup_groups",
+      "internal_key",
+      "other_annotator_responses",
+      "partition_membership"
+    ],
+    "visible": [
+      "review_id",
+      "text",
+      "empty annotation columns",
+      "uncertainty_notes",
+      "tweet_note",
+      "guideline_version"
+    ]
+  },
+  "files": {
+    "artifacts/human_annotation_v2_1_holdout_safe/annotator_A/annotator_A.csv": "6525a308dc0926ea622822b125c32412d85caa8afb98a413d368984c9cb5464c",
+    "artifacts/human_annotation_v2_1_holdout_safe/annotator_A/README_annotator.md": "8b0043180ff7857eb65f9148dc067e9a71f88064b4b64103188ef0aa0a30a334",
+    "artifacts/human_annotation_v2_1_holdout_safe/annotator_A/annotation_guidelines_v2_1_holdout_safe.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "artifacts/human_annotation_v2_1_holdout_safe/annotator_B/annotator_B.csv": "5c699b372d632ab3d71bc8586b3967b94f323b9abec433e392b6d9dc30731577",
+    "artifacts/human_annotation_v2_1_holdout_safe/annotator_B/README_annotator.md": "daec8552197603f4d9c49b0226886aaaf7408413a72a97f9b68baf38aa1b285c",
+    "artifacts/human_annotation_v2_1_holdout_safe/annotator_B/annotation_guidelines_v2_1_holdout_safe.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "artifacts/human_annotation_v2_1_holdout_safe/calibration/calibration_sample.csv": "eed1ffffdd4f6a9f5ad6a1888595cebae3aba8e4eceaf1953c1dc0e3b5fe6d1e",
+    "artifacts/human_annotation_v2_1_holdout_safe/calibration/README_calibration.md": "c60d9e9054da233a75fdff7c07d0511747271949316c31881d078c6fe5325d6d"
+  },
+  "distribution": "NOT_DISTRIBUTED",
+  "supersedes": "human_annotation_v2 (QUARANTINED_NOT_FOR_DISTRIBUTION_PENDING_HOLDOUT2_AUDIT)",
+  "limitations": [
+    "politica operativa interna; no definicion oficial",
+    "componente B no representativa (sin ponderacion no estima prevalencia)",
+    "guia v2 con influencia indirecta documentada de 2 casos de calibracion expuestos",
+    "sin adjudicacion aun; ningun gold standard"
+  ],
+  "guideline_file": "annotation_guidelines_v2_1_holdout_safe.md (en cada carpeta de anotador)",
+  "guideline_revision": "v2.1 (revision documental de procedencia; politica sin cambios)",
+  "guideline_provenance_report": "reports/p92x_guideline_provenance_audit.md",
+  "notes": "revision v2.1 aplicada 2026-10-13 (P92-X): se actualizaron los archivos de instrucciones; la muestra y las respuestas no cambiaron"
+}

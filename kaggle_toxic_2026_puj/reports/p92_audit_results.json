@@ -1,0 +1,140 @@
+{
+ "audit_id": "P92-01",
+ "guia_version": "v1",
+ "hashes": {
+  "oof": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+  "train": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+  "particion": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd",
+  "candidatos_p91": "074675225df0bae453fc759fe51aa6c8024e7c01da8875e58795f258395759dc"
+ },
+ "provenance": [
+  {
+   "source_path": "data/raw/toxic_train.csv",
+   "partition": "train (dev + holdout)",
+   "row_count": 1731,
+   "unique_ids": 1731,
+   "label_availability": "HS/TR/AG",
+   "oof_available": "solo dev (1483)",
+   "holdout_status": "248 filas NO elegibles (no usadas)",
+   "test_status": "n/a",
+   "eligible_for_review": 1483,
+   "reason": "elegibilidad demostrada por id contra la particion congelada"
+  },
+  {
+   "source_path": "data/processed/holdout_v2_ids.csv",
+   "partition": "dev=1483 / holdout=248",
+   "row_count": 1731,
+   "unique_ids": 1731,
+   "label_availability": "n/a (metadatos)",
+   "oof_available": "n/a",
+   "holdout_status": "holdout excluido por particion",
+   "test_status": "n/a",
+   "eligible_for_review": 1483,
+   "reason": "manifiesto de particion congelado (hash verificado)"
+  },
+  {
+   "source_path": "features/oof_v03_final.npz",
+   "partition": "dev",
+   "row_count": 1483,
+   "unique_ids": 1483,
+   "label_availability": "HS/TR/AG",
+   "oof_available": "si (proba/pred)",
+   "holdout_status": "no contiene holdout",
+   "test_status": "n/a",
+   "eligible_for_review": 1483,
+   "reason": "interseccion exacta con la particion dev"
+  },
+  {
+   "source_path": "data/raw/toxic_test.csv",
+   "partition": "test",
+   "row_count": "no inspeccionado",
+   "unique_ids": "no inspeccionado",
+   "label_availability": "ocultas",
+   "oof_available": "no",
+   "holdout_status": "n/a",
+   "test_status": "PROHIBIDO: no accedido",
+   "eligible_for_review": 0,
+   "reason": "excluido por reglas"
+  }
+ ],
+ "componente_A": {
+  "tweets": 100,
+  "celdas": 300,
+  "recuperado_verificado_rng": true,
+  "semilla": 20261010
+ },
+ "componente_B": {
+  "tweets": 150,
+  "cap": 150,
+  "disponibles_enriquecidos": 329,
+  "t1_pili": 40,
+  "t2_drc": 22,
+  "t3_hcd_disponibles": 223,
+  "t4_lsm_disponibles": 44,
+  "cap_grupo": 2,
+  "seleccionados_por_tier": {
+   "pili": 26,
+   "drc": 22,
+   "hcd": 118,
+   "lsm": 11
+  },
+  "distribucion_etiquetas": {
+   "AG_0": 63,
+   "AG_1": 87,
+   "HS_0": 65,
+   "HS_1": 85,
+   "TR_0": 103,
+   "TR_1": 47
+  }
+ },
+ "calibracion": {
+  "tweets": 15,
+  "semilla": 20261012,
+  "distribucion_etiquetas": {
+   "AG_0": 7,
+   "AG_1": 8,
+   "HS_0": 6,
+   "HS_1": 9,
+   "TR_0": 8,
+   "TR_1": 7
+  }
+ },
+ "principal": {
+  "tweets": 250,
+  "celdas": 750,
+  "distribucion_etiquetas": {
+   "AG_0": 126,
+   "AG_1": 124,
+   "HS_0": 120,
+   "HS_1": 130,
+   "TR_0": 175,
+   "TR_1": 75
+  },
+  "componente_A": 100,
+  "componente_B": 150
+ },
+ "semillas": {
+  "A": 20261010,
+  "B": 20261011,
+  "calibracion": 20261012,
+  "review_id": 20261013,
+  "orden_A": 20261015,
+  "orden_B": 20261016
+ },
+ "checks": {
+  "mismo_conjunto_A_B": true,
+  "orden_diferente": true,
+  "sin_repetidos_en_paquete": true,
+  "anotaciones_vacias": true,
+  "columnas_visibles_exactas": true,
+  "sin_columnas_sensibles": true,
+  "textos_identicos_a_la_fuente": true,
+  "review_ids_opacos": true,
+  "todos_en_dev": true,
+  "sin_holdout_en_clave": true,
+  "calibracion_disjunta": true,
+  "tamano_principal": true,
+  "plantilla_adjudicacion_750": true,
+  "plantilla_sin_decisiones": true
+ }
+}

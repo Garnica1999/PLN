@@ -1,0 +1,35 @@
+metric_name,historical_value,recomputed_value,aggregation_level,difference,tolerance,status,source_artifact
+confusion_pooled_HS,,TP=505 FP=173 FN=143 TN=662,pooled (1483 filas),,,REPRODUCED,features/oof_v03_final.npz
+F1_pooled_HS,0.7616892911010558,0.7616892911010559,pooled,+1.11e-16,1e-12,REPRODUCED,features/oof_v03_final.npz
+precision_pooled_HS,,0.7448377581120944,pooled,,,REPRODUCED,features/oof_v03_final.npz
+recall_pooled_HS,,0.7793209876543210,pooled,,,REPRODUCED,features/oof_v03_final.npz
+F1_media_folds_HS,,0.761536,media entre folds,,,"REPRODUCED (nivel distinto, no es la metrica canonica)",features/oof_v03_final.npz
+F1_fold1_HS,,0.778626,fold 1,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold2_HS,,0.783582,fold 2,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold3_HS,,0.768116,fold 3,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold4_HS,,0.729323,fold 4,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold5_HS,,0.748031,fold 5,,,REPRODUCED,features/oof_v03_final.npz
+confusion_pooled_TR,,TP=363 FP=82 FN=82 TN=956,pooled (1483 filas),,,REPRODUCED,features/oof_v03_final.npz
+F1_pooled_TR,0.8157303370786517,0.8157303370786517,pooled,+0.00e+00,1e-12,REPRODUCED,features/oof_v03_final.npz
+precision_pooled_TR,,0.8157303370786517,pooled,,,REPRODUCED,features/oof_v03_final.npz
+recall_pooled_TR,,0.8157303370786517,pooled,,,REPRODUCED,features/oof_v03_final.npz
+F1_media_folds_TR,,0.815846,media entre folds,,,"REPRODUCED (nivel distinto, no es la metrica canonica)",features/oof_v03_final.npz
+F1_fold1_TR,,0.827586,fold 1,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold2_TR,,0.827957,fold 2,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold3_TR,,0.815217,fold 3,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold4_TR,,0.782123,fold 4,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold5_TR,,0.826347,fold 5,,,REPRODUCED,features/oof_v03_final.npz
+confusion_pooled_AG,,TP=425 FP=135 FN=142 TN=781,pooled (1483 filas),,,REPRODUCED,features/oof_v03_final.npz
+F1_pooled_AG,0.7542147293700089,0.7542147293700089,pooled,+0.00e+00,1e-12,REPRODUCED,features/oof_v03_final.npz
+precision_pooled_AG,,0.7589285714285714,pooled,,,REPRODUCED,features/oof_v03_final.npz
+recall_pooled_AG,,0.7495590828924162,pooled,,,REPRODUCED,features/oof_v03_final.npz
+F1_media_folds_AG,,0.754553,media entre folds,,,"REPRODUCED (nivel distinto, no es la metrica canonica)",features/oof_v03_final.npz
+F1_fold1_AG,,0.781818,fold 1,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold2_AG,,0.770563,fold 2,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold3_AG,,0.753247,fold 3,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold4_AG,,0.704348,fold 4,,,REPRODUCED,features/oof_v03_final.npz
+F1_fold5_AG,,0.762791,fold 5,,,REPRODUCED,features/oof_v03_final.npz
+corrected_cv,0.7772114525165721,0.7772114525165722,macro pooled (media de F1 pooled por etiqueta),+1.11e-16,1e-12,REPRODUCED,features/oof_v03_final.npz
+macro_media_folds,,0.777312,media entre folds de F1 por etiqueta,,,NIVEL DISTINTO (no es corrected_cv),features/oof_v03_final.npz
+media_macro_pliegues,,0.777312,media de f1_pliegues (macro por fold),,,NIVEL DISTINTO (no es corrected_cv),features/oof_v03_final.npz
+matriz_historica_train_1731_MOD03b,HS 614/185/142/790; TR 431/89/88/1123; AG 517/151/145/918,"no recalculado (poblacion distinta: train 1731 con MOD-03b, reportado en error_analysis.md)",train completo 1731 (umbral_optimo),,,DOCUMENTADO EN INFORME HISTORICO (no comparable con el dev),reports/error_analysis.md

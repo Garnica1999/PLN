@@ -1,0 +1,43 @@
+{
+  "package": "p93_adjudication_v2_annotator_C2",
+  "date": "2026-10-13",
+  "policy_id": "PROJECT_OPERATIONAL_ANNOTATION_POLICY_V2",
+  "guide_sha256": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+  "counts": {
+    "cells": 176
+  },
+  "seeds": {
+    "ids": 20261030,
+    "orden": 20261031
+  },
+  "blinding": {
+    "hidden": [
+      "gold_labels",
+      "v03_predictions",
+      "oof_probabilities",
+      "threshold_distances",
+      "fold",
+      "selection_reasons",
+      "sampling_component",
+      "dup_groups",
+      "other_reviewer_initial_response",
+      "other_reviewer_notes",
+      "agreement_statistics",
+      "gold_mismatch_status"
+    ],
+    "visible": [
+      "adjudication_review_id",
+      "text",
+      "target_label",
+      "annotator_A_response",
+      "annotator_B_response",
+      "reviewer_initial_response",
+      "reviewer_initial_note",
+      "final_response",
+      "final_rationale",
+      "remaining_uncertainty",
+      "guideline_version"
+    ]
+  },
+  "distribution": "NOT_DISTRIBUTED"
+}

@@ -1,0 +1,116 @@
+{
+  "experiment_id": "P97-02",
+  "hipotesis": "H97-B",
+  "fecha": "2026-10-13",
+  "pre_registro": {
+    "T_rondas": 15,
+    "eta": 0.5,
+    "grupos": "near-duplicate UNION pseudo-autor",
+    "umbrales": "V03 congelados",
+    "metric": "corrected_cv"
+  },
+  "control_A0": {
+    "corrected_cv": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "f1_pliegues": [
+      0.7960101143044023,
+      0.7940339497874405,
+      0.7788600288600289,
+      0.738598013128522,
+      0.7790564997088775
+    ],
+    "std_pliegues": 0.023094672193582515,
+    "reproduce_v03_exacto": true
+  },
+  "dro": {
+    "corrected_cv": 0.7720416249232459,
+    "f1_por_etiqueta": {
+      "HS": 0.7549090909090909,
+      "TR": 0.8137931034482758,
+      "AG": 0.7474226804123711
+    },
+    "f1_pliegues": [
+      0.7700881834215166,
+      0.8093124016518644,
+      0.78106670012485,
+      0.7397705414187902,
+      0.7584423388258198
+    ],
+    "std_pliegues": 0.025982086112906273
+  },
+  "comparacion": {
+    "delta_pooled": -0.005169827593326182,
+    "pliegues_mejorados": 3,
+    "bootstrap_clusters": {
+      "ic95": [
+        -0.015025,
+        0.005359
+      ],
+      "pct_mejora": 0.1545
+    },
+    "error_por_grupo_control": {
+      "p50": 0.2222222222222222,
+      "p90": 0.37777777777777777,
+      "p99": 0.4444444444444444,
+      "n_grupos": 17
+    },
+    "error_por_grupo_dro": {
+      "p50": 0.2857142857142857,
+      "p90": 0.37777777777777777,
+      "p99": 0.4444444444444444,
+      "n_grupos": 17
+    }
+  },
+  "pesos_finales_diagnostico": [
+    {
+      "etiqueta": 2,
+      "ronda": 9,
+      "peso_max": 0.005206759466658555,
+      "peso_min": 0.0002866311139260031
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 10,
+      "peso_max": 0.005342041341919897,
+      "peso_min": 0.00025654000624529473
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 11,
+      "peso_max": 0.005451947728078181,
+      "peso_min": 0.00022915575393328314
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 12,
+      "peso_max": 0.005540278977317944,
+      "peso_min": 0.00020408259683551595
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 13,
+      "peso_max": 0.005610326394187951,
+      "peso_min": 0.00018173972190098448
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 14,
+      "peso_max": 0.0056649288601423094,
+      "peso_min": 0.0001618380059813798
+    }
+  ],
+  "correccion_implementacion": "pesos normalizados a media 1 (suma n_train) para preservar la escala de C de liblinear; la corrida previa sin normalizar quedo en p97_02_group_dro_escala_invalida.*",
+  "tiempos_por_pliegue_s": [
+    2.37,
+    2.63,
+    2.53,
+    2.65,
+    2.47
+  ],
+  "veredicto_pre_registrado": "FALSIFICADA",
+  "tiempo_total_s": 13.8
+}

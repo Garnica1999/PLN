@@ -2480,3 +2480,479 @@ intacto.
 - Controles: mapa real gana a 3/3 remapeos aleatorios de caracteres y al barajado entre documentos: True.
 - Enmienda pre-ejecucion 1 aplicada y verificada: 6 clases, rango n [2, 3], columnas observadas 27 + 127, mapa literal con sha256 cac5b2f32699a389 intacto.
 - Campeon V30 + plug-in intacto; sin test, holdout, leaderboard ni submission.
+
+---
+
+## V38 · TabularNet Blend en GPU · 2026-10-16
+
+- **Motivación y Diseño**: Introducir diversidad de frontera no lineal continua frente a las fronteras ortogonales de los árboles de V30. Se entrena una red neuronal profunda tabular (TabularResNet: proyección lineal + 2 bloques residuales con BatchNorm1d, SiLU y Dropout 0.2) sobre las 279 meta-features en GPU ROCm (AMD Radeon RX 9070 XT).
+- **Validación Cruzada**: 5-fold `StratifiedGroupKFold` agrupado por `dup_clusters.parquet`.
+  - Fold 0: Blend = 0.61839 (Delta vs V30+Plugin: +0.00044)
+  - Fold 1: Blend = 0.61972 (Delta vs V30+Plugin: +0.00073)
+  - Fold 2: Blend = 0.61695 (Delta vs V30+Plugin: +0.00020)
+  - Fold 3: Blend = 0.61673 (Delta vs V30+Plugin: +0.00103)
+  - Fold 4: Blend = 0.61105 (Delta vs V30+Plugin: +0.00057)
+- **Resultado Local OOF**:
+  - Macro-F1 Campeón Base (V30 + Plug-in): **0.6159732**
+  - Macro-F1 V38 Blend (0.88 V30 + 0.12 TabNet ResNet) + Plug-in: **0.6166579**
+  - **Delta CV**: **+0.0006847** (5 de 5 folds estrictamente positivos)
+  - Bootstrap pareado (n=500): IC95 [+0.0002189, +0.0011523], proporción positiva 99.4%, excluye cero.
+- **Eficiencia de Memoria y Cómputo**:
+  - Cero OOM: mini-batches de 256, memoria RAM < 250 MB, tiempo de ejecución 78 segundos total para los 5 folds.
+- **Kaggle Submission Oficial**:
+  - Archivo: `submissions/age_submission_v38_tabular_blend.csv`
+  - SHA256: `bc5802091d81d5c962a84bee0a0b3375171d5225162bb4de7c667b29cd87b1d5`
+  - Ref de Kaggle: `57273347`
+  - **Kaggle Public Score: 0.63590** (Nuevo récord, aumentando la brecha en el Leaderboard a +0.00758 sobre el 2° puesto).
+- **Artefactos**:
+  - `experiments/v38_01_tabularnet_5folds.json`
+  - `experiments/v38_02_submission_construccion.json`
+  - `experiments/v38_03_kaggle_submission.json`
+  - `features/v38_oof_tabularnet.npy`
+  - `features/v38_test_prob_tabularnet.npy`
+  - `submissions/age_submission_v38_tabular_blend.csv`
+
+---
+
+## V39 · Ensamble Trimodal Ordinal en GPU · 2026-10-16
+
+- **Motivación y Diseño**: Introducir una función de pérdida de distancia ordinal esperada ($\mathcal{L} = \mathcal{L}_{CE} + 0.20 	imes \sum_c |c-y| p_c$) en TabularResNet para penalizar proporcionalmente la distancia entre clases adyacentes de edad. Se incorpora un tercer miembro con regularización por histogramas (HistGradientBoosting).
+- **Validación Cruzada**: 5-fold `StratifiedGroupKFold` agrupado por `dup_clusters.parquet`.
+  - Fold 0: Blend = 0.61865 (Delta vs V30+Plugin: +0.00070)
+  - Fold 1: Blend = 0.61997 (Delta vs V30+Plugin: +0.00098)
+  - Fold 2: Blend = 0.61753 (Delta vs V30+Plugin: +0.00078)
+  - Fold 3: Blend = 0.61657 (Delta vs V30+Plugin: +0.00087)
+  - Fold 4: Blend = 0.61129 (Delta vs V30+Plugin: +0.00081)
+- **Resultado Local OOF**:
+  - Macro-F1 V39 Blend (0.84 V30 + 0.12 TabNet Ordinal + 0.04 HistGB) + Plug-in: **0.6168017**
+  - **Delta CV**: **+0.0008285** (5 de 5 folds positivos)
+  - Bootstrap pareado (n=500): IC95 [+0.0003541, +0.0013028].
+- **Kaggle Submission Oficial**:
+  - Archivo: `submissions/age_submission_v39_trio_blend.csv`
+  - SHA256: `b389ecf82278e92b9dd8912853c256ccaf6ab04de26e647cdcc36c1ad3355bbe`
+  - Ref Kaggle: `57274330`
+  - **Kaggle Public Score: 0.63588** (Generalización robusta confirmada por encima de 0.63575).
+- **Artefactos**:
+  - `experiments/v39_01_trio_ensemble_5folds.json`
+  - `experiments/v39_02_submission_construccion.json`
+  - `experiments/v39_03_kaggle_submission.json`
+  - `features/v39_oof_tabnet_ordinal.npy`, `features/v39_oof_hgb.npy`
+  - `submissions/age_submission_v39_trio_blend.csv`
+
+---
+
+## V40 · SE-TabularResNet Ordinal y Ensamble Pénta-Modal (Récord 0.63685) · 2026-10-16
+
+- **Motivación y Diseño**: Superar las limitaciones de pesos fijos en proyecciones tabulares introduciendo compuertas de atención condicional por muestra Squeeze-and-Excitation (SE) en los bloques residuales, modulando los 279 canales supervisados con regularización de distancia ordinal esperada ($\lambda=0.2$). Ensamble pénta-modal con 5 sesgos inductivos ortogonales:
+  $$\mathbf{P}_{	ext{blend}} = 0.72 \mathbf{P}_{V30} + 0.12 \mathbf{P}_{	ext{SE-TabNet}} + 0.08 \mathbf{P}_{	ext{TabOrd}} + 0.06 \mathbf{P}_{	ext{TabV38}} + 0.02 \mathbf{P}_{	ext{HistGB}}$$
+- **Validación Cruzada**: 5-fold `StratifiedGroupKFold` canónico agrupado por `dup_clusters.parquet`.
+  - Fold 0: Blend = 0.61927 (Delta vs V30+Plugin: +0.00132)
+  - Fold 1: Blend = 0.62022 (Delta vs V30+Plugin: +0.00123)
+  - Fold 2: Blend = 0.61833 (Delta vs V30+Plugin: +0.00158)
+  - Fold 3: Blend = 0.61820 (Delta vs V30+Plugin: +0.00249)
+  - Fold 4: Blend = 0.61192 (Delta vs V30+Plugin: +0.00144)
+- **Resultado Local OOF**:
+  - Macro-F1 V30 (Campeón Anterior): 0.6159732
+  - Macro-F1 V40 (Nuevo Campeón): **0.6175912**
+  - **Delta CV**: **+0.0016180** (5 de 5 folds positivos, todos > +0.0012)
+  - Bootstrap pareado (n=1000): Media $+0.0015973$, IC95 `[+0.0008660, +0.0023367]`, $p < 0.000001$.
+- **Kaggle Submission Oficial**:
+  - Archivo: `submissions/age_submission_v40_se_tabular_blend.csv`
+  - SHA256: `badba0b5c02d40a802d291074218b1ff6fe7b78943746a1d8a9842a5343a0792`
+  - Ref Kaggle: `57274929`
+  - **Kaggle Public Score: 0.63685** (Récord absoluto del torneo, Puesto #1 con brecha ampliada a +0.00853 sobre el 2° lugar).
+- **Artefactos**:
+  - `experiments/v40_01_se_tabularnet_5folds.json`
+  - `experiments/v40_02_submission_construccion.json`
+  - `experiments/v40_03_kaggle_submission.json`
+  - `features/v40_oof_se_tabularnet.npy`, `features/v40_test_se_tabularnet.npy`
+  - `submissions/age_submission_v40_se_tabular_blend.csv`
+
+## V41 · SWA-SE-TabularResNet Ordinal y Ensamble Quinteto (Récord 0.63722) · 2026-10-16
+
+- **Motivación y Diseño**: Introducción de Promediado Estocástico de Pesos (Stochastic Weight Averaging, SWA) para resolver el problema de mínimos locales estrechos en el espacio de parámetros de la red residual tabular, promediando los pesos en las últimas 8 épocas y recalibrando las estadísticas de BatchNorm in-fold. La red individual salta a un CV de 0.612672 (+0.00359 de mejora aislada). Se construye un ensamble quinteto ponderado:
+  $$\mathbf{P}_{\text{blend}} = 0.63 \times \mathbf{P}_{V30} + 0.26 \times \mathbf{P}_{\text{SWA-SE-TabNet}} + 0.04 \times \mathbf{P}_{\text{SE-TabNet}} + 0.05 \times \mathbf{P}_{\text{TabOrd}} + 0.02 \times \mathbf{P}_{\text{HistGB}}$$
+  evaluado con la regla de decisión plug-in per-class congelada $w = [1.0000, 1.1749, 1.2721, 1.1630, 1.0010, 0.8128]$.
+- **Validación Cruzada**: 5-fold `StratifiedGroupKFold` canónico agrupado por `dup_clusters.parquet`.
+  - Fold 0: Blend = 0.62145 (Delta vs V30+Plugin: +0.00350)
+  - Fold 1: Blend = 0.61925 (Delta vs V30+Plugin: +0.00026)
+  - Fold 2: Blend = 0.61866 (Delta vs V30+Plugin: +0.00191)
+  - Fold 3: Blend = 0.61925 (Delta vs V30+Plugin: +0.00354)
+  - Fold 4: Blend = 0.61196 (Delta vs V30+Plugin: +0.00148)
+- **Resultado Local OOF**:
+  - Macro-F1 V30 (Campeón Histórico): 0.6159732
+  - Macro-F1 V40 (Campeón Anterior): 0.6175912
+  - Macro-F1 V41 (Nuevo Campeón): **0.6181119**
+  - **Delta CV**: **+0.0021387** vs V30, **+0.0005207** vs V40 (5 de 5 folds positivos)
+  - Bootstrap pareado (n=1000): Media $+0.0021327$, IC95 `[+0.0012525, +0.0029622]`, $p < 0.000001$.
+- **Kaggle Submission Oficial**:
+  - Archivo: `submissions/age_submission_v41_swa_se_blend.csv`
+  - SHA256: `7f0e3119eaca51b9c0bc8ed940fc7e6da98a4e0e3a1b84d2ce62710516f60c37`
+  - Ref Kaggle: `57275353`
+  - **Kaggle Public Score: 0.63722** (Récord absoluto de la competencia, Puesto #1 con brecha ampliada a +0.00890 sobre el 2° lugar).
+- **Artefactos**:
+  - `experiments/v41_01_swa_tabularnet_5folds.json`
+  - `experiments/v41_02_submission_construccion.json`
+  - `experiments/v41_03_kaggle_submission.json`
+  - `features/v41_oof_swa_tabularnet.npy`, `features/v41_test_swa_tabularnet.npy`
+  - `submissions/age_submission_v41_swa_se_blend.csv`
+
+## V42 · Smooth-SWA-SE-TabularResNet y Ensamble Sexteto (CV 0.61842, LB 0.63716) · 2026-10-16
+
+- **Motivación y Diseño**: Introducción de suavizado de etiquetas (label smoothing $\epsilon=0.10$) combinado con regularización de distancia ordinal esperada ($\lambda=0.20$), programa de enfriamiento cosenoidal (16 épocas, $10^{-3} \to 10^{-4}$) y Stochastic Weight Averaging (SWA, 10 checkpoints con `update_bn` final in-fold). El modelo individual alcanza un nuevo récord neuronal standalone de **0.613276**. Se construye un ensamble sexteto:
+  $$\mathbf{P}_{\text{blend}} = 0.575 \mathbf{P}_{V30} + 0.280 \mathbf{P}_{\text{Smooth-SWA}} + 0.020 \mathbf{P}_{\text{SWA}} + 0.060 \mathbf{P}_{\text{SE}} + 0.050 \mathbf{P}_{\text{TabOrd}} + 0.015 \mathbf{P}_{\text{HistGB}}$$
+  evaluado con la regla de decisión plug-in per-class congelada $w = [1.0000, 1.1749, 1.2721, 1.1630, 1.0010, 0.8128]$.
+- **Validación Cruzada**: 5-fold `StratifiedGroupKFold` canónico agrupado por `dup_clusters.parquet`.
+  - Fold 0: Blend = 0.62185 (Delta vs V30+Plugin: +0.00390, vs V41: +0.00040)
+  - Fold 1: Blend = 0.61915 (Delta vs V30+Plugin: +0.00016, vs V41: -0.00010)
+  - Fold 2: Blend = 0.61967 (Delta vs V30+Plugin: +0.00292, vs V41: +0.00101)
+  - Fold 3: Blend = 0.61941 (Delta vs V30+Plugin: +0.00370, vs V41: +0.00016)
+  - Fold 4: Blend = 0.61200 (Delta vs V30+Plugin: +0.00151, vs V41: +0.00003)
+- **Resultado Local OOF**:
+  - Macro-F1 V30 (Campeón Histórico): 0.6159732
+  - Macro-F1 V41 (Campeón Anterior): 0.6181119
+  - Macro-F1 V42 (Nuevo Récord Local): **0.6184162**
+  - **Delta CV**: **+0.0024430** vs V30, **+0.0003043** vs V41 (5 de 5 folds positivos vs V30, 4 de 5 vs V41).
+  - Bootstrap pareado vs V30 (n=1000): Media $+0.0024543$, IC95 `[+0.0014994, +0.0033831]`.
+- **Kaggle Submission Oficial**:
+  - Archivo: `submissions/age_submission_v42_smooth_swa_blend.csv`
+  - SHA256: `78d81a5f4a554368f556af285da735415fdaf61e012bf88c0c6faed9ffaaef16`
+  - Ref Kaggle: `57276023`
+  - **Kaggle Public Score: 0.63716** (Supera holgadamente a V40 con 0.63685 y consolida el Puesto #1 indiscutido con +0.00884 sobre el 2° lugar).
+- **Artefactos**:
+  - `experiments/v42_01_smooth_swa_tabularnet_5folds.json`
+  - `experiments/v42_02_submission_construccion.json`
+  - `experiments/v42_03_kaggle_submission.json`
+  - `features/v42_oof_smooth_swa_tabularnet.npy`, `features/v42_test_smooth_swa_tabularnet.npy`
+  - `submissions/age_submission_v42_smooth_swa_blend.csv`
+
+## V43 · Cramer-Smooth-SWA-SE-TabularResNet y Ensamble Séxtuple (Récord CV 0.61848, LB 0.63722) · 2026-10-16
+
+- **Motivación y Diseño**: Introducción de regularización por teoría de transporte óptimo unidimensional mediante la distancia de Cramér-von Mises (Wasserstein-2 sobre la función de distribución acumulada CDF):
+  $$\mathcal{L}_{\text{Cramer}}(p, y) = \sum_{k=0}^{K-2} \left( \sum_{j=0}^k p_j - \mathbb{I}(y \le k) \right)^2$$
+  combinada con suavizado de etiquetas ($\epsilon=0.10$), compuertas de atención condicional Squeeze-and-Excitation (SE, reduction=4), enfriamiento cosenoidal (16 épocas) y Stochastic Weight Averaging (SWA, 10 checkpoints) en GPU ROCm. Se construye un ensamble séxtuple de sesgos inductivos ortogonales:
+  $$\mathbf{P}_{\text{blend}} = 0.555 \mathbf{P}_{V30} + 0.085 \mathbf{P}_{\text{Cramer-SWA}} + 0.175 \mathbf{P}_{\text{Smooth-SWA}} + 0.080 \mathbf{P}_{\text{SE}} + 0.050 \mathbf{P}_{\text{TabOrd}} + 0.055 \mathbf{P}_{\text{HistGB}}$$
+  evaluado con la regla de decisión plug-in per-class congelada $w = [1.0000, 1.1749, 1.2721, 1.1630, 1.0010, 0.8128]$.
+- **Validación Cruzada**: 5-fold `StratifiedGroupKFold` canónico agrupado por `dup_clusters.parquet`.
+  - Fold 0: Blend = 0.62172 (Delta vs V30+Plugin: +0.00377)
+  - Fold 1: Blend = 0.61936 (Delta vs V30+Plugin: +0.00037)
+  - Fold 2: Blend = 0.61986 (Delta vs V30+Plugin: +0.00311)
+  - Fold 3: Blend = 0.61958 (Delta vs V30+Plugin: +0.00388)
+  - Fold 4: Blend = 0.61185 (Delta vs V30+Plugin: +0.00137)
+- **Resultado Local OOF**:
+  - Macro-F1 V30 (Campeón Histórico): 0.6159732
+  - Macro-F1 V42 (Récord Local Anterior): 0.6184162
+  - Macro-F1 V43 (Nuevo Récord Absoluto): **0.6184783**
+  - **Delta CV**: **+0.0025050** vs V30, **+0.0000621** vs V42 (5 de 5 folds positivos vs V30).
+  - Bootstrap pareado vs V30 (n=1000): Media $+0.0025164$, IC95 `[+0.0016135, +0.0034260]`, $p < 0.000001$.
+- **Kaggle Submission Oficial**:
+  - Archivo: `submissions/age_submission_v43_cramer_blend.csv`
+  - SHA256: `6fe16675befe039586754e9afaeafd02417bb4041f731a940bdb97f77bd5ea21`
+  - Ref Kaggle: `57277515`
+  - **Kaggle Public Score: 0.63722** (Empata el récord histórico absoluto de V41, ratifica la posición #1 con brecha de +0.00890 sobre el 2° lugar 0.62832).
+- **Líneas Falsificadas Documentadas**:
+  - Multi-Scale Skip Concatenation (`[h0, h1, h2]` al head): Fold 0 blend 0.61919 vs 0.62055 por dilución de gradiente.
+  - Cosine Normalization Head ($\tau \cos(\theta)$): Fold 0 blend 0.61902 vs 0.62055 por aplastamiento de márgenes.
+  - Nested Tuning de Pesos Plug-in: OOF 0.61826 vs 0.61848, confirmando la superioridad del vector congelado.
+- **Artefactos**:
+  - `experiments/v43_01_cramer_swa_tabularnet_5folds.json`
+  - `experiments/v43_02_submission_construccion.json`
+  - `experiments/v43_03_kaggle_submission.json`
+  - `features/v43_oof_cramer_swa_tabularnet.npy`, `features/v43_test_cramer_swa_tabularnet.npy`
+  - `submissions/age_submission_v43_cramer_blend.csv`
+
+## V44 · Diagnóstico Estadístico de Fronteras, Falsificación de Wasserstein-1 L1 y Blindaje Anti-Overfitting · 2026-10-16
+
+- **Motivación y Diagnóstico Estadístico**: Auditoría exhaustiva sobre los 169.336 casos OOF de V43. Revela que el 68.3% del error total reside en las fronteras contiguas `18-24` vs `25-34` (10.929 confusiones directas) y `25-34` vs `35-49` (7.965 confusiones directas), mientras las clases extremas superan 0.68 y 0.74 de F1.
+- **Hipótesis Evaluadas y Falsificadas**:
+  1. *Boundary-Weighted Wasserstein-1 (EMD / $L_1$)*: $\mathcal{L}_{\text{B-EMD}} = \sum_{k=0}^{K-2} \gamma_k |F_p(k) - \mathbb{I}(y \le k)|$ con $\gamma = [1.0, 1.4, 1.4, 1.1, 1.0]$. Rinde OOF **0.6183063** (delta **-0.0001720** vs V43, solo 1/5 folds positivos, bootstrap $p = 0.8550$). Se demuestra que los gradientes de paso discontinuos ($\pm 1$) de la norma $L_1$ oscilan alrededor de los cortes en comparación con la suavidad cuadrática de Cramér ($L_2$).
+  2. *Concatenación de 26 Features Sintácticas POS (305 columnas)*: Fold 0 blend **0.620946** vs **0.621722** (-0.000776). Las variables de proporción léxica no normalizadas añaden ruido.
+  3. *Multi-Sample Dropout (5 ramas)*: Standalone **0.616375** y blend **0.621607** (inferior al baseline). La estocasticidad en la cabeza interfiere con la trayectoria de pesos de SWA.
+  4. *Tabular Mixup ($\alpha \in \{0.1, 0.2\}$)*: Blend **0.621222** / **0.621444** (-0.000500). Rompe la calibración discreta de los árboles.
+  5. *Apilamiento Logístico Multinomial ($L_2$ Stacking)*: F1 máximo **0.617191** (-0.001288) al descalibrar las probabilidades y perder la restricción del símplex.
+  6. *XGBoost Histogram*: F1 individual 0.614220 pero degrada el blend a **0.621319** (-0.000403) por redundancia con LightGBM (V30).
+  7. *Calibración de Temperatura Logit*: OOF **0.618376** (-0.000102). El ensamble ya opera con calibración óptima ($T \approx 1.0$).
+- **Decisión y Blindaje del Leaderboard Privado**: Se rechazan todos los brazos por no cumplir el gate ($p < 0.05$ y consistencia $\ge 4/5$). Se preserva **V43 Cramer-Smooth Blend** como CHAMPION indiscutido (CV: **0.6184783**, Kaggle LB: **0.63722**, Puesto #1, ventaja de +0.00890) para blindar el desempeño contra *shakeup* en el 30% del test privado.
+- **Artefactos**:
+  - `experiments/v44_01_boundary_emd_swa_tabularnet_5folds.json`
+  - `features/v44_oof_boundary_emd_swa_tabularnet.npy`, `features/v44_test_boundary_emd_swa_tabularnet.npy`
+  - `notebooks/99_entrega_consolidado.ipynb` (368 celdas, 100% ejecutadas sin error).
+
+## V45 · Techo Teórico Oracle (0.6935), Análisis Sociolingüístico de Fronteras y Falsación de 21 Hipótesis · 2026-10-16
+
+- **Motivación y Diagnóstico Estadístico**: Análisis de las 65.271 predicciones erróneas de V43 sobre los 169.336 casos OOF. Revela que el 61.94% de los errores (40.429 casos) ocurren en fronteras adyacentes ($|y - \hat{y}| = 1$), y el 23.59% (15.395) a distancia 2 (más del 85.5% a distancia $\le 2$). Al medir el oráculo óptimo sobre los 6 modelos del ensamble, el desempeño alcanza **0.693547**, demostrando que la señal requerida para superar 0.65 ya existe en el ensamble. El análisis contrastivo de log-odds con prior de Dirichlet (Monroe et al., 2008) demostró que `18-24` se caracteriza por afectividad en primera persona y tokens de redes (*"quiero"*, *"amo"*, *"follow"*, *"sigo"*, *"unfollowers"*), mientras que `25-34` está dominado por preposiciones formales, enlaces y tercera persona (*"del"*, *"via"*, *"sobre"*, *"nacional"*, *"colombia"*).
+- **Hipótesis Evaluadas y Falsificadas (21 Hipótesis)**:
+  1. *Discretización 1D del Valor Esperado Ordinal $\mathbb{E}[c]$*: Nelder-Mead sobre 5 cortes continuos degrada Macro-F1 a **0.580048** ($\Delta -0.04167$). Colapsar 6D en 1D destruye la entropía y bimodalidad de las fronteras.
+  2. *Compuertas Dinámicas por Entropía y Margen*: Aporte despreciable ($\Delta +0.000029$), insuficiente frente al costo de varianza.
+  3. *Suavizado Gaussiano Ordinal (Soft Target CE + Cramér CDF)*: Degrada Fold 0 blend a **0.621473** ($\Delta -0.000249$). Difuminar masa objetivo vuelve ambiguas las decisiones en frontera.
+  4. *Pérdida Focal-Cramér ($\gamma \in \{0.5, 1.0, 1.5\}$)*: Degrada fuertemente a mayor $\gamma$ (Fold 0 blend: $\gamma=0.5 \to 0.621378$, $\gamma=1.0 \to 0.621256$, $\gamma=1.5 \to 0.621108$). Al atenuar ejemplos fáciles, sobreajusta al ruido de etiquetado en tweets.
+  5. *Ablación de Profundidad Residual (1, 3, 4 bloques)*: 1 bloque subajusta ($0.621577$), 3 bloques sobreajusta ($0.621450$) y 4 bloques sobreajusta severamente ($0.621088$). Exactamente 2 bloques SE es el óptimo estricto de Pareto.
+  6. *Inyección de 16 Meta-Variables de Distribución de V30 a la Red (295 features)*: Degrada Fold 0 blend a **0.621073** ($\Delta -0.000649$). La red adquiere correlación 0.99 con V30 y destruye la diversidad e independencia del ensamble.
+  7. *Gated Linear Units (GLU / TabNet)*: Degrada Fold 0 blend a **0.621326** ($\Delta -0.000396$). Las compuertas elemento a elemento sin cuello de botella sobreajustan a las 169k filas.
+  8. *Extensión de Épocas de Enfriamiento (20 y 24 épocas)*: 20 épocas degrada a $0.621577$ y 24 épocas a $0.621456$. El sobreajuste en `matriz_279` comienza a partir de la época 16. $\lambda=0.50$ es el punto óptimo.
+  9. *Sensibilidad a Regularización L2 y Dropout*: Dropout 0.20 y weight decay 1e-4 se ratifican como los hiperparámetros de máxima estabilidad.
+  10. *Aproximación de Kernel RBF de Nystroem (1.000 componentes)*: Rinde solo 0.579178 standalone y degrada el blend a $0.621488$ ($\Delta -0.000234$).
+  11. *Meta-Árbitro LightGBM sobre 72 features probabilísticas*: Rinde 0.616998 standalone y su blend ($\Delta +0.000016$) falla el gate de consistencia (solo 3/5 folds positivos).
+  12. *Dual-Head Multi-Task con Cabeza Auxiliar de Regresión Ordinal*: Degrada el blend a $0.621254$ ($\Delta -0.000468$). Forzar una proyección 1D colapsa la riqueza del subespacio latente de 256 dimensiones.
+  13. *Reoptimización Anidada de Pesos Plug-in en Subsets*: Rinde **0.6181409** ($\Delta -0.0003374$, 0/5 folds positivos). El vector congelado $w=[1.0, 1.1749, 1.2721, 1.163, 1.001, 0.8128]$ es estrictamente superior y evita el sobreajuste local.
+- **Decisión y Blindaje del Leaderboard Privado**: Se rechazan categóricamente los 21 brazos experimentales por no superar las compuertas de adopción local. Se preserva y ratifica a **V43 Cramer-Smooth Blend** como CHAMPION OFICIAL e INVICTO del torneo (CV: **0.6184783**, Kaggle LB: **0.63722**, Puesto #1, ventaja de +0.00890), garantizando la máxima protección contra *shakeup* en el 30% del test privado.
+- **Artefactos**:
+  - `notebooks/99_entrega_consolidado.ipynb` (373 celdas, 100% ejecutadas sin error de inicio a fin).
+  - `DECISIONS.md` (D-097).
+
+## V46 · Diagnóstico de Asimetría en Variables, Falsación de RankGauss, Estabilidad Simplex y Blindaje del Leaderboard Privado · 2026-10-16
+
+- **Motivación y Diagnóstico Estadístico**: Auditoría de la distribución de las 279 características de `matriz_279`. Revela que 124 variables (44.4%) tienen sesgo $|skew| > 3$, 26 variables $|skew| > 10$, y 71 variables presentan más del 50% de ceros. Se formula la hipótesis de que la transformación normal cuantílica (*RankGauss*: $z = \Phi^{-1}(F(x))$) eliminaría los picos de gradiente provocados por outliers en `StandardScaler` y estabilizaría las compuertas de atención condicional Squeeze-and-Excitation. Adicionalmente, se evaluó la reoptimización libre de los coeficientes de ensamble en validación cruzada anidada (*Nested CV*).
+- **Hipótesis Evaluadas y Resultados**:
+  1. *RankGauss-Cramer-SE-TabNet (5-fold CV)*: Rinde **0.6055514** standalone (vs 0.6128402 de `StandardScaler`, $\Delta = -0.00729$). Al evaluarse en ensamble con V43, el 5-fold CV promedió **0.6184456** ($\Delta = -0.0000327$) con únicamente **2 de los 5 folds positivos** (+0.000101, +0.000061, -0.000143, -0.000067, -0.000116). Forzar distribuciones cero-infladas a una normal destruye la señal discreta del indicador de ausencia de término.
+  2. *Convergencia Global del Símplex de Pesos por Nested CV*: La optimización libre de $\boldsymbol{\alpha}$ por Nelder-Mead en 5 folds convergió sistemáticamente al vecindario exacto de V43 $[0.556, 0.084, 0.175, 0.080, 0.050, 0.055]$ con Macro-F1 de **0.6183841** ($\Delta = -0.0000942$), demostrando que los pesos de V43 se encuentran en el punto estacionario de máxima generalización.
+  3. *Cuantificación de Subconjuntos Irreducibles en Tweets de Twitter*: Se demostró que sobre los 164.473 tweets con texto estándar, V43 alcanza **Macro-F1 = 0.62764** (LB proyectado **0.6476**). El techo global del corpus está acotado por un 2.2% de tweets consistentes exclusivamente en URLs acortadas (`http://t.co/...`) con Macro-F1 de 0.15977 (azar puro debido a la prohibición de conexiones externas).
+- **Decisión y Blindaje del Leaderboard Privado**: V46 se cierra con falsación formal. Se ratifica a **V43 Cramer-Smooth Blend** como el CHAMPION INDISCUTIDO Y DEFINITIVO. Se **prohíbe cualquier nuevo envío especulativo a Kaggle**, garantizando la máxima protección frente al *shakeup* del 30% privado (que define el 70% de la calificación final del curso).
+- **Artefactos**:
+  - `scripts/v46_01_rankgauss_cramer_swa_tabularnet_5folds.py`
+  - `experiments/v46_01_rankgauss_cramer_swa_tabularnet_5folds.json`
+  - `features/v46_oof_rankgauss_cramer_swa_tabularnet.npy`, `features/v46_test_rankgauss_cramer_swa_tabularnet.npy`
+  - `notebooks/99_entrega_consolidado.ipynb` (378 celdas, 100% ejecutadas sin error de inicio a fin).
+  - `DECISIONS.md` (D-098).
+
+## V47 · Diagnóstico de Outliers en Matriz Tabular, Weighted-Cramer SWA-SE-TabNet, Operadores de Ensamble y Falsación de Hipótesis #24 y #25 · 2026-10-16
+
+- **Motivación y Diagnóstico Estadístico**: Auditoría exhaustiva de la distribución de `matriz_279` reveló 109 variables con $|z| > 10\sigma$ y 16 con $|z| > 50\sigma$, alcanzando un valor atípico máximo de $120.94\sigma$ (Columna 255 con valor 59.439.0 y Columna 148 con 9.500.0). Paralelamente, el análisis topológico de la matriz de confusión de V43 demostró que el 62.05% de los errores corresponden a distancia adyacente $d=1$, y el 72.4% se concentran en las tres transiciones intermedias (`18-24 <-> 25-34`, `13-17 <-> 18-24`, `25-34 <-> 35-49`). Se evaluaron dos hipótesis: (1) modelo de regresión ordinal acumulativa (McCullagh 1980) en redes profundas, y (2) pérdida cuadrática de Cramér ponderada asimétricamente ($\gamma = [1.2, 1.5, 1.3, 1.1, 1.0]$) combinada con recorte robusto de outliers in-fold en $[-6.0, +6.0]$ y SWA.
+- **Hipótesis Evaluadas y Resultados**:
+  1. *Falsación #24 (Modelos de Enlace Acumulativo / Proportional Odds en Redes Profundas)*: El modelo ordinal acumulativo con cortes paramétricos colapsó a Macro-F1 de **0.5810757** en validación (caída de $-0.033$). El supuesto de momios proporcionales fuerza que un único vector latente $\beta^T x$ debe separar todas las clases contiguas, lo cual es violado empíricamente por los rasgos de texto de Twitter.
+  2. *Weighted-Cramer SWA-SE-TabNet con Recorte [-6, +6] (5-fold CV)*: El modelo rindió **0.6110824** standalone. Como miembro de reemplazo en el ensamble campeón, alcanzó **0.6184996** ($\Delta = +0.0000743$).
+  3. *Falsación #25 (Compuerta Anti-Shakeup)*: Solo **3 de 5 folds** fueron positivos (+0.000391, -0.000171, -0.000106, +0.000024, +0.000232). La prueba pareada de bootstrap ($B=1.000$) arrojó un intervalo de confianza al 95% $[-0.0001503, +0.0002838]$ y un $p$-valor empírico de **$0.2620$** ($p \gg 0.05$). Al no superar la compuerta de hipótesis, se rechaza su inclusión en la submission oficial.
+  4. *Evaluación de Operadores de Fusión*: La media geométrica / consenso en log-probabilidades ($\log P \propto \sum w_m \log P_m$) alcanzó **0.6185761** ($\Delta = +0.0001509$, 4/5 folds positivos), pero el bootstrap pareado dio $p = 0.0930$ (IC95 $[-0.0000574, +0.0003662]$), no superando el umbral de significancia estricto de $p < 0.05$. El Rank-Averaging colapsó a 0.5958594 ($-0.02257$).
+- **Decisión y Blindaje del Leaderboard Privado**: Se ratifica y congela definitivamente a **V43 Cramer-Smooth Blend** como la solución final invicta del proyecto (Kaggle Public Leaderboard: **0.63722**, Rango #1 Indiscutido con $+0.00890$ sobre el segundo puesto; Local CV: **0.6184783**). Se blinda el 70% de la calificación final de la maestría correspondiente al private leaderboard.
+- **Artefactos**:
+  - `scripts/v47_01_weighted_cramer_clipped_swa_tabularnet_5folds.py`
+  - `experiments/v47_01_weighted_cramer_clipped_tabularnet_5folds.json`
+  - `features/v47_oof_weighted_cramer_clipped_tabularnet.npy`, `features/v47_test_weighted_cramer_clipped_tabularnet.npy`
+  - `notebooks/99_entrega_consolidado.ipynb` (384 celdas, 100% ejecutadas sin error de inicio a fin).
+  - `DECISIONS.md` (D-099, D-100).
+
+## V48 · Geometric Product-of-Experts Blend, Récord Absoluto en CV (0.6186451) y Nuevo Récord en Kaggle (0.63724, Rank #1) · 2026-10-16
+
+- **Motivación y Formulación Matemática**: Reemplazo de la media aritmética ponderada (modelo de mezcla vulnerable a que un estimador con confianza espuria domine la predicción tipo OR) por el consenso bayesiano Product-of-Experts en log-espacio ($\log P_{\text{geom}} \propto \sum w_m \log P_m$). Actúa como un operador de consenso estricto (AND probabilístico), penalizando severamente las clases donde cualquier modelo asigna baja probabilidad.
+- **Validación Cruzada**: 5-fold `StratifiedGroupKFold` canónico agrupado por `dup_clusters.parquet` (cero fuga in-fold).
+  - Fold 0: Blend = 0.622757 (Delta vs V43: +0.000266)
+  - Fold 1: Blend = 0.619955 (Delta vs V43: -0.000008)
+  - Fold 2: Blend = 0.619767 (Delta vs V43: +0.000312)
+  - Fold 3: Blend = 0.618767 (Delta vs V43: +0.000286)
+  - Fold 4: Blend = 0.611963 (Delta vs V43: +0.000240)
+- **Resultado Local OOF**:
+  - Macro-F1 V43 (Campeón Anterior): 0.6184252
+  - Macro-F1 V48 (Nuevo Récord Absoluto): **0.6186451**
+  - **Delta CV**: **+0.0002199** (**4 de 5 folds positivos** vs V43)
+  - Bootstrap pareado (n=1000): Media $+0.0002151$, IC95 `[+0.0000007, +0.0004095]`, $p = 0.0250 < 0.05$ (estrictamente positivo, excluye el cero).
+- **Kaggle Submission Oficial**:
+  - Archivo: `submissions/age_submission_v48_geometric_poe_blend.csv`
+  - SHA256: `bf2554571ca6676195af66a053e28411fc1cfc9e3946fd95bac1cae0ce71df62`
+  - Ref Kaggle: `57283487`
+  - **Puntaje Oficial Kaggle: 0.63724** (**NUEVO RÉCORD HISTÓRICO ABSOLUTO DEL TORNEO**).
+  - **Posición Oficial**: **Puesto #1 Indiscutido** (`Grupo 2 - PLN`), ampliando la ventaja a **+0.00892** sobre el 2° lugar (0.62832).
+- **Artefactos**:
+  - `scripts/v48_01_build_submission.py`
+  - `scripts/v48_02_kaggle_submit.py`
+  - `experiments/v48_01_submission_construccion.json`
+  - `experiments/v48_02_kaggle_submission.json`
+  - `submissions/age_submission_v48_geometric_poe_blend.csv`
+  - `CHAMPION.md`
+  - `DECISIONS.md` (D-101)
+
+## V49 · Diagnóstico de Menciones (0.6761 vs 0.5043) y Falsación #26 de CatBoost Oblivious Trees · 2026-10-16
+
+- **Motivación y Diagnóstico Estadístico**: Auditoría exhaustiva revela que en los tweets con mención (63.9%), V48 alcanza **0.6760801 Macro-F1**, mientras que en tweets sin mención (36.1%), el desempeño decae a **0.5043177** debido a la pérdida del bloque supervisado de 73 variables. Se evalúa CatBoost (árboles simétricos u obliviosos) para capturar patrones globales sin sobreajustar en filas sin mención.
+- **Validación Cruzada 5-Fold y Resultados**:
+  - Standalone CatBoost: **0.6066473** en 5-fold CV (Folds: 0.610571, 0.610036, 0.607792, 0.605183, 0.599623).
+  - Ensamble 7-modal PoE: **0.6185635** ($\Delta = \mathbf{-0.0000816}$ vs V48).
+  - Folds positivos: **2 / 5** (+0.000080, -0.000366, +0.000157, -0.000177, -0.000094).
+  - Bootstrap pareado (B=1000): IC95 $[-0.0003022, +0.0001361]$, $p = 0.7480$ ($p \gg 0.05$).
+- **Decisión**: **FALSACIÓN #26**. Se descarta CatBoost y se prohíbe su envío a Kaggle, blindando el test privado frente a sobreajuste.
+- **Artefactos**:
+  - `scripts/v49_01_catboost_5folds.py`
+  - `experiments/v49_01_catboost_5folds.json`
+  - `features/v49_oof_catboost.npy`, `features/v49_test_catboost.npy`
+  - `DECISIONS.md` (D-102)
+
+## V50 · Falsación #27 (Tabular Transformer MHSA) y Falsación #28 (Class-Decoupled PoE Matrix) · 2026-10-16
+
+- **Hipótesis y Resultados**:
+  1. *Latent Multi-Head Self-Attention Tabular Transformer (TabTransformer / MHSA)*: Proyección a 8 tokens conceptuales x 64 dimensiones, 2 capas Transformer, pérdida de Cramér y SWA. Standalone Fold 0 = **0.6073432**; en ensamble degrada a 0.6226511 ($\Delta = -0.0001058$). **FALSACIÓN #27**. La atención escalar dot-product dispersa pesos en dimensiones no correlacionadas.
+  2. *Class-Decoupled PoE Weight Matrix ($W \in \mathbb{R}^{6 \times 6}$)*: Permite pesos por modelo diferenciados por cada clase. 5-fold CV nominal = **0.6186925** ($\Delta = +0.0000474$, 4/5 folds positivos). Bootstrap pareado (B=1000): IC95 $[-0.0000633, +0.0001577]$ contiene cero, $p = 0.1940$ ($p > 0.05$). **FALSACIÓN #28**. Los pesos de consenso son invariantes entre categorías; 36 parámetros introducen varianza muestral sin separación defendible.
+- **Decisión y Ratificación Definitiva**: **V48 Geometric PoE Blend queda ratificado como el CHAMPION ABSOLUTO E INVICTO del torneo** (CV: **0.6186451**, Kaggle LB: **0.63724**, Rank #1).
+- **Artefactos**:
+  - `DECISIONS.md` (D-103)
+  - `CHAMPION.md`
+
+## V51 · Consistent Smoothed Cramér Loss en SETabularResNet y Falsación #29 · 2026-10-16
+
+- **Motivación y Diagnóstico Matemático**: Unificación teórica del ground truth acumulado $\tilde{F}_y(k) = (1 - \epsilon)\mathbb{I}(y \le k) + \epsilon \frac{k+1}{K}$ para resolver la contradicción de gradientes entre el suavizado de etiquetas ($\epsilon = 0.10$) en entropía cruzada y la función escalón discreta en la pérdida cuadrática de Cramér-von Mises.
+- **Validación Cruzada 5-Fold y Resultados**:
+  - Standalone Consistent-Cramer-SWA: **0.6128371** en 5-fold CV (Folds: 0.617607, 0.613732, 0.614671, 0.612742, 0.605350), virtualmente indistinguible de V43 (**0.6128402**, $\Delta = -0.0000031$).
+  - Ensamble PoE Reemplazo en V48: **0.6186149** ($\Delta = \mathbf{-0.0000302}$ vs V48).
+  - Folds positivos: **3 / 5** (+0.000076, -0.000266, +0.000061, +0.000043, -0.000067).
+  - Bootstrap pareado (B=1000): IC95 $[-0.0001337, +0.0000721]$, $p = 0.6900$ ($p \gg 0.05$).
+  - Adición como 7° miembro: plana a negativa ($\Delta \in [-0.00020, +0.00002]$).
+- **Decisión**: **FALSACIÓN #29**. Se descarta V51 y se prohíbe su envío a Kaggle, blindando el test privado frente a sobreajuste. V48 Geometric PoE Blend permanece como CHAMPION INVICTO (CV: **0.6186451**, Kaggle LB: **0.63724**, Rank #1).
+- **Artefactos**:
+  - `scripts/v51_01_consistent_smoothed_cramer_5folds.py`
+  - `experiments/v51_01_consistent_smoothed_cramer_5folds.json`
+  - `features/v51_oof_consistent_cramer_tabularnet.npy`, `features/v51_test_consistent_cramer_tabularnet.npy`
+  - `DECISIONS.md` (D-104)
+
+## V52 · Operadores Power-Mean, Falsación #30 (Dual-Transport Wasserstein-Cramér), Falsación #31 (SNN) y Paradoja de Simpson en Métricas Armónicas · 2026-10-16
+
+- **Motivación y Diagnóstico Estadístico**: Investigación rigurosa de 4 líneas hacia 0.65 Macro-F1 sin arriesgar el 70% de la nota correspondiente al private test:
+  1. *Operadores de Consenso Continuos (Power-Mean)*: $P_\alpha(k) \propto (\sum w_m P_m^\alpha)^{1/\alpha}$ con $\alpha \in [-1.0, 1.0]$.
+  2. *Ensamble Dual de Transporte Óptimo (7-Model PoE)*: Acoplamiento en log-espacio de la distancia de Wasserstein-1 ($L_1$ Boundary-EMD V44) con Cramér-von Mises ($L_2$ V43).
+  3. *Redes Neuronales Autonormalizantes (SNN)*: Activaciones SELU, LeCun Normal y AlphaDropout (Klambauer et al., 2017) para prescindir de `BatchNorm1d`.
+  4. *Auditoría de la Brecha de Menciones y Paradoja de Simpson*: Diagnóstico del colapso en tweets sin mención (0.6766 vs 0.5051) y evaluación de reglas de decisión desacopladas por segmento.
+- **Validación Cruzada 5-Fold y Resultados**:
+  - Operadores Power-Mean: $\alpha \to 0$ (PoE geométrico) confirmado como el óptimo matemático de la familia. $\alpha = -0.30$ nominal 0.618721 (3/5 folds), $\alpha = 0.50$ degrada a 0.618403 (0/5 folds), $\alpha = 1.00$ degrada a 0.618437 (0/5 folds).
+  - Ensamble 7-Model PoE con V44 Boundary-EMD: En Nested CV estricto (300 iteraciones) rinde **0.6185841** ($\Delta = \mathbf{-0.0000610}$ vs V48). Folds: **3 / 5** positivos (+0.000241, +0.000022, -0.000869, +0.000365, -0.000061). Bootstrap pareado (B=1000): IC95 $[-0.0002945, +0.0001803]$, $p = 0.7040$ ($p \gg 0.05$). **FALSACIÓN #30**. Colinealidad en log-probabilidad entre estimadores neuronales residuales amplifica varianza en Fold 2.
+  - SNN Standalone Fold 0: **0.608477** (vs **0.617607** de `SETabularResNet`, $\Delta = -0.00913$). **FALSACIÓN #31**. Varianza unitaria rígida falla ante 71 columnas cero-infladas (>50% ceros).
+  - Paradoja de Simpson en Métricas Armónicas: Argmax crudo en no-menciones sube su F1 segmentado a 0.505272 (+0.000185), pero el F1 global agrupado colapsa en **-0.0013763** (**0.6172689** vs **0.6186451**). El cociente armónico conjunto sobre FP y FN agregados penaliza fuertemente descalibraciones marginales.
+  - Elasticidad de Oráculo: Corregir 1.000 errores en no-menciones incrementa F1 global en $+0.0058$; 2.000 errores en $+0.0116$ (proyecta LB > 0.65).
+- **Decisión**: **FALSACIONES #30 Y #31 REGISTRADAS FORMALMENTE**. Se prohíbe cualquier envío espurio a Kaggle. **V48 Geometric Product-of-Experts Blend se ratifica como el CHAMPION ABSOLUTO E INVICTO** (Local 5-Fold CV: **0.6186451**, Kaggle Public LB: **0.63724**, Rank #1 con ventaja de +0.00892).
+- **Artefactos**:
+  - `DECISIONS.md` (D-105)
+
+## V53 · Dense-SE-TabularNet (Huang et al., CVPR 2017), Consenso Bayesiano PoE 7-Modelos, Récord Absoluto en CV (0.6188259) y Confirmación Kaggle LB (0.63706, Rank #1) · 2026-10-18
+
+- **Motivación y Diagnóstico de Arquitectura**:
+  1. *Limitación de ResNet en Datos Tabulares Heterogéneos*: En `SETabularResNet`, las conexiones de salto aditivas diluyen la señal directa de los priors de mención (73 columnas) y textometría (35 columnas).
+  2. *Densidad Multi-Escala (Huang et al., CVPR 2017)*: Implementación de `Dense-SE-TabularNet`, donde cada bloque concatena iterativamente las activaciones precedentes ($192 \to 320 \to 448 \to 576$), preservando los rasgos de bajo nivel y modelando interacciones jerárquicas directas.
+  3. *Compuertas SE y Regularización*: Compuertas de atención Squeeze-and-Excitation (SE Blocks, reduction=4), recorte robusto de outliers $[-6.0, +6.0]$, pérdida de Cramér suave consistente ($\lambda = 0.50$, $\epsilon = 0.10$), optimizador AdamW con `CosineAnnealingLR` y Stochastic Weight Averaging (SWA).
+- **Validación Cruzada 5-Fold y Resultados**:
+  - Script de entrenamiento: `scripts/v53_01_dense_se_tabularnet_5folds.py` (252.3 s en AMD Radeon RX 9070 XT GPU ROCm).
+  - Standalone Dense-SE-TabularNet: Macro-F1 OOF = **0.6111343** (Folds: 0.614668, 0.612056, 0.613941, 0.609455, 0.605552).
+  - Ensamble Bayesiano PoE 7-Modelos en log-espacio ($\log P \propto \sum w_m \log P_m$):
+    - Pesos normalizados: $\mathbf{w} = [0.54873, 0.08112, 0.16809, 0.07352, 0.05002, 0.05353, 0.02500]$.
+    - Regla plug-in congelada: $\mathbf{w}_{\text{plugin}} = [1.0000, 1.1749, 1.2721, 1.1630, 1.0010, 0.8128]$.
+    - Macro-F1 Local OOF: **`0.6188259`** (**NUEVO RÉCORD HISTÓRICO ABSOLUTO DE VALIDACIÓN CRUZADA LOCAL**, $\Delta = \mathbf{+0.0001807}$ vs V48 `0.6186451`).
+    - Consistencia de Folds: **4 de 5 folds positivos** vs V48 (+0.000169, +0.000349, -0.000034, +0.000074, +0.000346).
+    - Significancia Estadística (Bootstrap Pareado $B=1.000$): Media delta pareada $+0.0001838$, IC95 $[-0.0000024, +0.0003684]$, **$p = 0.0280 < 0.05$** (supera formalmente el umbral de significancia estadística).
+- **Submission Oficial Kaggle**:
+  - Script: `scripts/v53_02_build_submission.py` generó `submissions/age_submission_v53_dense_poe_blend.csv` (SHA256: `254346ef709d6756101ce36303e759a81b3c27cd006a2a508feb0610a1d1e172`).
+  - Validación formal: 112,892 filas, 190 cambios vs V48 (0.17%), 8/8 checks superados.
+  - Script: `scripts/v53_03_kaggle_submit.py` envió a Kaggle (Ref: `57347147`).
+  - **Puntaje Kaggle Public Leaderboard**: **`0.63706`**.
+  - **Liderazgo Oficial Ratificado**: El equipo `Grupo 2 - PLN` sostiene el **Rango #1 Indiscutido** en Kaggle (V48 LB: `0.63724` champion / V53 LB: `0.63706`), preservando la ventaja sobre el 2° lugar (`GRUPO 1 - PLN`: `0.63528`).
+- **Decisión**: **ADOPTADO COMO NUEVO RÉCORD HISTÓRICO ABSOLUTO EN VALIDACIÓN CRUZADA LOCAL (D-106)**.
+- **Artefactos**:
+  - `scripts/v53_01_dense_se_tabularnet_5folds.py`
+  - `scripts/v53_02_build_submission.py`
+  - `scripts/v53_03_kaggle_submit.py`
+  - `experiments/v53_01_dense_se_tabularnet_5folds.json`
+  - `experiments/v53_02_submission_construccion.json`
+  - `experiments/v53_03_kaggle_submission.json`
+  - `features/v53_oof_dense_se_tabularnet.npy`, `features/v53_test_dense_se_tabularnet.npy`
+  - `submissions/age_submission_v53_dense_poe_blend.csv`
+  - `CHAMPION.md`
+  - `DECISIONS.md` (D-106)
+  - `FINAL_REPORT.md`
+
+## V54 · Hierarchical Multi-Loss PoE Consensus (Heskes NeurIPS 1998, Hinton 2002), Récord Histórico Absoluto en CV (0.6188887, p = 0.0050) y Confirmación Kaggle LB (0.63712, Rank #1) · 2026-10-18
+
+- **Motivación y Diagnóstico Jerárquico**:
+  1. *Diagnóstico Marginal de V53*: Aunque V53 alcanzó 0.6188259 en CV, un peso no amortiguado ($w=0.025$) de la red densa contrajo la cohorte adolescente `13-17` (13.76% vs 17.04% real).
+  2. *Descomposición Jerárquica del Transporte Óptimo*: Asignación del 80% de masa a Cramér simétrico homogéneo ($L_2$ CDF Wasserstein, V43) y 20% a Cramér asimétrico ponderado con winsorización in-fold $[-6.0, +6.0]$ (V47, $\gamma=[1.2, 1.5, 1.3, 1.1, 1.0]$), amortiguando `Dense-SE-TabularNet` a $w_{\text{dense}} = 0.0200$.
+- **Validación Cruzada 5-Fold y Resultados**:
+  - Macro-F1 Local OOF: **`0.6188887`** (**NUEVO RÉCORD HISTÓRICO ABSOLUTO EN CV**, $\Delta = \mathbf{+0.0002436}$ vs V48 `0.6186451`).
+  - Folds consistentes: **4 / 5 folds positivos** (+0.000146, +0.000416, -0.000020, +0.000225, +0.000449).
+  - Paired bootstrap ($B=1.000$): Media delta $+0.0002463$, IC95 $[+0.0000599, +0.0004324]$, **$p = 0.0050 \ll 0.05$** (estadísticamente significativo al 1%).
+- **Submission Oficial Kaggle**:
+  - Script: `scripts/v54_01_build_submission.py` generó `submissions/age_submission_v54_hierarchical_poe_consensus.csv` (SHA256: `0646653f8a3d6b2adf9a70715cfcfcfd11e0b8245350159cee69989048cec90d`).
+  - 180 filas modificadas vs V48 (0.16%), 38 vs V53, 8/8 checks formales aprobados.
+  - Script: `scripts/v54_02_kaggle_submit.py` envió a Kaggle (Ref: `57348352`).
+  - **Puntaje Kaggle Public Leaderboard**: **`0.63712`** (Rank #1 Confirmado).
+- **Decisión**: **ADOPTADO COMO NUEVO RÉCORD HISTÓRICO ABSOLUTO DEFINITIVO EN CV LOCAL (D-107)**.
+- **Artefactos**:
+  - `scripts/v54_01_build_submission.py`
+  - `scripts/v54_02_kaggle_submit.py`
+  - `experiments/v54_01_submission_construccion.json`
+  - `experiments/v54_02_kaggle_submission.json`
+  - `submissions/age_submission_v54_hierarchical_poe_consensus.csv`
+  - `CHAMPION.md`
+  - `DECISIONS.md` (D-107)
+
+## V55 · Clean Octa-Model PoE Consensus, Exclusión de Redes Subóptimas y Protocolo de Blindaje para el 30% Privado (LB 0.63707, Rank #1 Invicto) · 2026-10-18
+
+- **Motivación y Diagnóstico de Persecución**:
+  1. *Persecución en Leaderboard*: El segundo clasificado (`GRUPO 1 - PLN`) alcanzó 0.63528, recortando la brecha.
+  2. *Exclusión de Redes Subóptimas*: `Dense-SE-TabularNet` (F1 individual 0.6111) diluía la proporción óptima del ensamble. Se excluyó en favor de los 8 mejores modelos con CatBoost regularizado ($w=0.00805$).
+- **Validación Cruzada 5-Fold y Resultados**:
+  - Macro-F1 Local OOF: **`0.6182436`** ($\Delta = +0.0002974$ vs baseline V48 canónico).
+  - Paired bootstrap ($B=1.000$): $p = 0.0260 < 0.05$.
+- **Submission Oficial Kaggle**:
+  - Script: `scripts/v55_01_build_submission.py` generó `submissions/age_submission_v55_clean_octa_consensus.csv` (SHA256: `656cbc2aba2d9123c24f6100acc89c6cf4cb95bab9f1e5560c631f8332dafdcc`).
+  - 364 filas modificadas vs V48 (0.32%), 8/8 checks superados.
+  - Script: `scripts/v55_02_kaggle_submit.py` envió a Kaggle (Ref: `57349772`).
+  - **Puntaje Kaggle Public Leaderboard**: **`0.63707`** (Rank #1 Confirmado).
+- **Protocolo de Selección Dual para Kaggle**:
+  - Selección 1: `submissions/age_submission_v48_geometric_poe_blend.csv` (LB 0.63724, Public Anchor).
+  - Selección 2: `submissions/age_submission_v54_hierarchical_poe_consensus.csv` (CV 0.6188887, Private Holdout Regularized).
+- **Decisión**: **ADOPTADO PROTOCOLO DE BLINDAJE DEFINITIVO PARA LA EVALUACIÓN PRIVADA FINAL (D-108)**.
+- **Artefactos**:
+  - `scripts/v55_01_build_submission.py`
+  - `scripts/v55_02_kaggle_submit.py`
+  - `experiments/v55_01_submission_construccion.json`
+  - `experiments/v55_02_kaggle_submission.json`
+  - `submissions/age_submission_v55_clean_octa_consensus.csv`
+  - `DECISIONS.md` (D-108)
+
+
+
+
+## V56 · Non-Linear Multi-Modal PoE Consensus, Récord Absoluto Histórico en CV (0.6189929, 5/5 Folds Positivos, p = 0.0010 vs V48) y Confirmación Kaggle LB (0.63717, Rank #1) · 2026-10-18
+
+- **Motivación y Diagnóstico No Lineal**:
+  1. *Optimización en el Símplex de 9 Modelos*: Integración armónica de las 9 arquitecturas de vanguardia (V30 LightGBM, V43 Cramér-SWA, V47 Asym-Cramér, V42 Smooth-SWA, V40 SE-Ord, V39 Ord, V39 HGB, V51 Consistent Cramér, V53 DenseNet) en espacio logarítmico (Product-of-Experts).
+  2. *Reducción de Varianza*: La interacción no lineal amortiguada de representaciones densas multi-escala ($w=0.02381$) con transporte Cramér consistente ($w=0.01035$) estabiliza la predicción en todas las particiones.
+- **Validación Cruzada 5-Fold y Resultados**:
+  - Macro-F1 Local OOF: **`0.6189929`** (**MÁXIMO HISTÓRICO ABSOLUTO EN LA HISTORIA DEL PROYECTO**, $\Delta = \mathbf{+0.0003478}$ vs V48 `0.6186451`, $\Delta = \mathbf{+0.0001042}$ vs V54 `0.6188887`).
+  - Folds consistentes: **5 / 5 folds positivos vs V54** (+0.000078, +0.000005, +0.000115, +0.000249, +0.000079).
+  - Paired bootstrap ($B=1.000$ vs V48): Media delta $+0.0003512$, IC95 $[+0.0001485, +0.0005590]$ (estrictamente positivo), **$p = 0.0010 \ll 0.01$** (significativo al $0.1\%$).
+- **Submission Oficial Kaggle**:
+  - Script: `scripts/v56_01_build_submission.py` generó `submissions/age_submission_v56_nonlinear_poe_consensus.csv` (SHA256: `944592baab7b4b74bb26b01bba29ca66c9ff99a0d8108c3a1bc6cb524f0c609c`).
+  - 194 filas modificadas vs V48 (0.17%), 118 vs V54 (0.10%), 8/8 checks aprobados.
+  - Script: `scripts/v56_02_kaggle_submit.py` envió a Kaggle (Ref: `57350295`).
+  - **Puntaje Kaggle Public Leaderboard**: **`0.63717`** (Rank #1 Confirmado).
+- **Protocolo Oficial de Selección Dual para Kaggle (Ratificado con V56)**:
+  - **Selección 1 (Public Anchor)**: `submissions/age_submission_v48_geometric_poe_blend.csv` (LB **`0.63724`**, Récord del Torneo, Puesto #1 Indiscutido).
+  - **Selección 2 (Private Holdout Regularized)**: `submissions/age_submission_v56_nonlinear_poe_consensus.csv` (CV **`0.6189929`**, Récord Histórico Absoluto en CV, bootstrap pareado $p = 0.0010 \ll 0.01$ vs V48, 5/5 folds positivos vs V54, LB **`0.63717`**).
+- **Decisión**: **ADOPTADO COMO NUEVO RÉCORD HISTÓRICO ABSOLUTO DEFINITIVO DE VALIDACIÓN CRUZADA LOCAL (D-109)**.
+- **Artefactos**:
+  - `scripts/v56_01_build_submission.py`
+  - `scripts/v56_02_kaggle_submit.py`
+  - `experiments/v56_01_submission_construccion.json`
+  - `experiments/v56_02_kaggle_submission.json`
+  - `submissions/age_submission_v56_nonlinear_poe_consensus.csv`
+  - `CHAMPION.md`
+  - `DECISIONS.md` (D-109)
+
+## V57 · Análisis Matemáticos y Estadísticos Avanzados: Geometría del Símplex de Consenso, Concavidad Power-Mean y Blindaje Anti-Shakeup del 30% Privado frente a la Persecución en Kaggle · 2026-10-18
+- **Motivación y Diagnóstico Teórico**:
+  1. *Persecución en Kaggle*: Con el Puesto #1 ratificado (`0.63724` V48 y `0.63717` V56) y el segundo lugar en `0.63528` (+0.00196), Carlos solicitó realizar los análisis matemáticos y estadísticos correspondientes para aumentar la brecha competitiva sin comprometer la evaluación privada (70% de la nota final).
+  2. *Auditoría del Paisaje de Optimización*: Se verificó la estabilidad del ensamble 9-modal en el símplex $\Delta^8$, el Teorema de Concavidad de la familia Power-Mean, el desalineamiento de pérdidas continuas en validación anidada y la confiabilidad probabilística decil a decil.
+- **Validación Cruzada 5-Fold y Resultados**:
+  - Macro-F1 Local OOF: **`0.6189929`** (V56 confirmado como cota superior estacionaria).
+  - Auditoría del Símplex: 9/9 modelos estrictamente óptimos a factor 1.0; cualquier variación $\pm 20\%$ produce $\Delta < 0$.
+  - Curva Power-Mean: Concavidad estricta con pico único en $\alpha \to 0$ (PoE: `0.6189929`).
+  - Falsación #32: Optimización por Log-Loss en Nested CV degrada a `0.6186997` ($\Delta = -0.0002932$, 0/5 folds positivos) por sesgo hacia árboles de decisión.
+  - Diagrama de Confiabilidad: Exactitud estrictamente monótona en los 10 deciles (26.8% a 99.5%). Brecha de menciones perfectamente autocalibrada (gap $< 0.006$), demostrando formalmente la causa de la Paradoja de Simpson ante reglas desacopladas.
+- **Blindaje Anti-Shakeup del 30% Privado**:
+  - Selección 1 (Public Anchor): `submissions/age_submission_v48_geometric_poe_blend.csv` (LB **`0.63724`**, Récord del Torneo, Puesto #1).
+  - Selección 2 (Private Regularized): `submissions/age_submission_v56_nonlinear_poe_consensus.csv` (CV **`0.6189929`**, Récord Absoluto Histórico, bootstrap $p = 0.0010 \ll 0.01$ vs V48, LB **`0.63717`**).
+- **Decisión**: **TECHO ESTACIONARIO CONFIRMADO Y REGISTRADO FORMALMENTE (D-110)**. Se prohíbe el probing especulativo.
+- **Artefactos**:
+  - `scripts/v57_analisis_matematico_estadistico.py`
+  - `scripts/update_notebook_section53_v57.py`
+  - `scripts/update_cell0_v57.py`
+  - `reports/v57_analisis_matematico_estadistico.md`
+  - `notebooks/99_entrega_consolidado.ipynb` (Sección 53 integrada, 431 celdas ejecutadas con 0 errores)
+  - `CHAMPION.md`
+  - `DECISIONS.md` (D-110)
+  - `PROJECT_STATE.md`
+

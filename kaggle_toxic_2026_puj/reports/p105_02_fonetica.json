@@ -1,0 +1,95 @@
+{
+  "experiment_id": "P105-02",
+  "fase": "P105 RONDA 4 (S4/S7b): folding fonetico",
+  "fecha": "2026-10-14",
+  "control": {
+    "diff_max_proba": 0.0,
+    "ccv": 0.7772114525165721,
+    "reproduce_v03": true,
+    "particion_47": {
+      "celdas_distintas": 0,
+      "diff_max_proba": 0.0
+    }
+  },
+  "v03_referencia": {
+    "corrected_cv": 0.7772114525165721,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    }
+  },
+  "ejemplos_folding": {
+    "vacaciones": "bakasiones",
+    "quiero": "kiero",
+    "caballo": "kabayo",
+    "huevo": "uebo",
+    "mucha": "mucha"
+  },
+  "variantes": {
+    "F_fonetica_canal": {
+      "canonica": {
+        "corrected_cv": 0.776848,
+        "delta_vs_v03": -0.000363,
+        "folds": [
+          0.794703,
+          0.786818,
+          0.788577,
+          0.735733,
+          0.778685
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 96,
+        "bootstrap": {
+          "ic95": [
+            -0.006092,
+            0.005504
+          ],
+          "pct_mejora": 0.4615
+        },
+        "deteccion": {
+          "se_bootstrap": 0.002958,
+          "delta_min_detectable_95": 0.005798
+        }
+      },
+      "particion_47": {
+        "corrected_cv": 0.776046,
+        "delta_vs_v03": 0.000414,
+        "folds": [
+          0.771513,
+          0.765207,
+          0.766994,
+          0.79385,
+          0.782548
+        ],
+        "pliegues_mejorados": 3,
+        "celdas_cambiadas": 111,
+        "bootstrap": {
+          "ic95": [
+            -0.006041,
+            0.007563
+          ],
+          "pct_mejora": 0.5645
+        },
+        "deteccion": {
+          "se_bootstrap": 0.00347,
+          "delta_min_detectable_95": 0.006802
+        }
+      },
+      "gate": {
+        "condiciones": {
+          "delta_can_ge_0003": false,
+          "pliegues_ge_4": false,
+          "ic95_excluye_cero": false,
+          "delta_47_positivo": true,
+          "celdas_ge_200": false
+        },
+        "veredicto": "GATE_FAILED"
+      }
+    }
+  },
+  "mejor_variante": "F_fonetica_canal",
+  "conclusion": "F_fonetica_canal: sin senal detectable (IC95 [-0.006092,+0.005504] incluye cero; piso de deteccion +0.005798).",
+  "sha_oof_final": "559265816ce4f631",
+  "tiempo_s": 81.6
+}

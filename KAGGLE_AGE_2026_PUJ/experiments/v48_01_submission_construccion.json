@@ -1,0 +1,42 @@
+{
+  "fase": "V48-01",
+  "fecha": "2026-10-16",
+  "duracion_seg": 0.3,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v48_geometric_poe_blend.csv",
+  "sha256": "bf2554571ca6676195af66a053e28411fc1cfc9e3946fd95bac1cae0ce71df62",
+  "filas": 112892,
+  "distribucion": {
+    "18-24": 22042,
+    "50-64": 20408,
+    "25-34": 20073,
+    "35-49": 17600,
+    "65-xx": 17223,
+    "13-17": 15546
+  },
+  "pesos_geometricos": [
+    0.5628000000000001,
+    0.08320000000000001,
+    0.17240000000000003,
+    0.07540000000000001,
+    0.051300000000000005,
+    0.054900000000000004
+  ],
+  "pesos_plug_in": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  }
+}

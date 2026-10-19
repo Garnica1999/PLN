@@ -1,0 +1,98 @@
+{
+  "experimento": "P120-01",
+  "descripcion": "Challenger Tri-Optimizer Conditional Joint Blend (Stage 2 Joint Staging)",
+  "duracion_segundos": 503.26,
+  "features_total": 86275,
+  "canonica": {
+    "ccv_p120": 0.7875816993756768,
+    "ccv_p114": 0.7872182792620254,
+    "ccv_v03": 0.7772114525165721,
+    "delta_vs_p114": 0.0003634201136514248,
+    "delta_vs_v03": 0.010370246859104704,
+    "f1_por_etiqueta_p120": {
+      "HS": 0.7707244212098581,
+      "TR": 0.8207440811724915,
+      "AG": 0.7712765957446809
+    },
+    "f1_por_etiqueta_p114": {
+      "HS": 0.7707244212098581,
+      "TR": 0.8207440811724915,
+      "AG": 0.7701863354037267
+    },
+    "pliegues_ganados": "1/5",
+    "pliegues_empatados": "4/5",
+    "deltas_por_pliegue": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0019340360823220104
+    ],
+    "bootstrap_ci95": [
+      0.0,
+      0.001135376732500176
+    ],
+    "bootstrap_win_rate": 0.634,
+    "celdas_distintas_vs_p114": 1,
+    "n_violaciones_ascendentes_corregidas": 25
+  },
+  "particion_47": {
+    "ccv_p120": 0.7856733330466952,
+    "ccv_p114": 0.7856733330466952,
+    "ccv_v03": 0.7756319868803105,
+    "delta_vs_p114": 0.0,
+    "delta_vs_v03": 0.010041346166384635,
+    "f1_por_etiqueta_p120": {
+      "HS": 0.7615499254843517,
+      "TR": 0.8292134831460675,
+      "AG": 0.7662565905096661
+    },
+    "f1_por_etiqueta_p114": {
+      "HS": 0.7615499254843517,
+      "TR": 0.8292134831460675,
+      "AG": 0.7662565905096661
+    },
+    "pliegues_ganados": "0/5",
+    "pliegues_empatados": "5/5",
+    "deltas_por_pliegue": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bootstrap_ci95": [
+      0.0,
+      0.0
+    ],
+    "bootstrap_win_rate": 0.0,
+    "celdas_distintas_vs_p114": 0,
+    "n_violaciones_ascendentes_corregidas": 22
+  },
+  "media_ccv": {
+    "p120": 0.786627516211186,
+    "p114": 0.7864457009619534,
+    "delta_vs_p114": 0.0001818152492325531
+  },
+  "test_eval": {
+    "celdas_distintas_vs_p114": 2,
+    "pct_distintas_vs_p114": 0.05777007510109763,
+    "cambios_0_a_1": 1,
+    "cambios_1_a_0": 1,
+    "balance_neto": 0,
+    "positivos_p120": {
+      "HS": 514,
+      "TR": 331,
+      "AG": 420
+    },
+    "positivos_p114": {
+      "HS": 515,
+      "TR": 330,
+      "AG": 420
+    },
+    "total_positivos": 1265,
+    "tasa_positiva_pct": 36.54,
+    "violaciones_ascendentes_corregidas": 10,
+    "sha256": "411884574a76fd3f40912a36e6a0e89f94147db91962c72e2564778bc3075f25"
+  }
+}

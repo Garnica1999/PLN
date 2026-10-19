@@ -1,0 +1,56 @@
+{
+  "experiment_id": "P98-11",
+  "etapa": "C98-1 (construccion de corpus)",
+  "fecha": "2026-10-13",
+  "seed": 20260925,
+  "componentes": {
+    "wikipedia": {
+      "documentos_disponibles": 21529,
+      "documentos_seleccionados": 5191,
+      "tokens_seleccionados": 18009963,
+      "modo": "prefijo"
+    },
+    "mc4": {
+      "documentos_disponibles": 16738,
+      "documentos_seleccionados": 12422,
+      "tokens_seleccionados": 7500009,
+      "modo": "prefijo"
+    },
+    "twitter": {
+      "documentos_disponibles": 361994,
+      "documentos_seleccionados": 158069,
+      "tokens_seleccionados": 4500010,
+      "modo": "muestreo"
+    }
+  },
+  "deduplicacion": {
+    "wikipedia": {
+      "antes": 5191,
+      "despues": 5191,
+      "duplicados_removidos": 0
+    },
+    "mc4": {
+      "antes": 12422,
+      "despues": 12418,
+      "duplicados_removidos": 4
+    },
+    "twitter": {
+      "antes": 158069,
+      "despues": 148413,
+      "duplicados_removidos": 9656
+    }
+  },
+  "documentos_finales": 166022,
+  "tokens_finales": 29737183,
+  "proporcion_documentos": {
+    "twitter": 0.8939,
+    "wikipedia": 0.0313,
+    "mc4": 0.0748
+  },
+  "coincidencias_exactas_vs_train": 0,
+  "sha256": "9f562718ef4e7d45622040cd9ab5973182cc5405a99bfbc1636fa57abc6b9f0e",
+  "ruta": "data/external/corpora/p98_c98_1/tokens_30m.txt",
+  "serie": "P98/c98_1",
+  "criterios": "wikipedia >=18M prefijo por documentos; mc4 >=7.5M prefijo; twitter >=4.5M muestreo uniforme por documento; dedup exacta por documento entre componentes; barajado de documentos con la semilla; sin descargas nuevas",
+  "tiempo_s": 26.0
+}

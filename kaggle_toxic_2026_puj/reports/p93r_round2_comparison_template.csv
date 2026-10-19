@@ -1,0 +1,177 @@
+adjudication_review_id,label,annotator_A_response,annotator_B_response,notes_A,notes_B,initial_independent_decision,post_comparison_decision,rationale,remaining_uncertainty,guideline_version
+P93R-0113,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0089,HS,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0037,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0083,HS,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0088,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0068,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0084,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0105,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0093,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0033,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0029,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0020,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0061,HS,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0013,HS,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0074,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0051,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0010,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0113,TR,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0057,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0089,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0037,TR,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0083,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0003,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0088,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0060,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0065,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0068,TR,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0066,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0101,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0069,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0124,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0086,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0097,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0033,TR,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0109,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0072,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0056,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0040,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0094,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0061,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0014,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0111,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0006,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0076,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0049,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0055,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0102,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0009,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0017,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0053,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0034,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0035,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0028,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0030,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0103,TR,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0021,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0113,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0089,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0003,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0088,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0068,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0025,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0101,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0041,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0124,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0120,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0086,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0033,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0098,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0020,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0063,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0007,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0061,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0111,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0006,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0049,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0055,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0075,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0017,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0013,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0034,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0008,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0030,AG,POSITIVE,POSITIVE,,,,,,,v2.1
+P93R-0039,AG,NEGATIVE,NEGATIVE,,,,,,,v2.1
+P93R-0117,HS,NEGATIVE,NEGATIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",AG: es una proposición sexual explícita dirigida a un interlocutor; sin contexto no se puede decidir si es una interacción consensuada o agresiva.,,,,,v2.1
+P93R-0043,HS,NEGATIVE,NEGATIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,,,,,v2.1
+P93R-0092,HS,NEGATIVE,NEGATIVE,,El texto sexual y las risas sugieren broma o provocación; no hay contexto para decidir si está dirigido contra alguien o es agresivo.,,,,,v2.1
+P93R-0044,HS,NEGATIVE,NEGATIVE,,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0114,HS,NEGATIVE,NEGATIVE,,El texto reproduce insultos racistas para acusar a otra persona de racismo/transfobia; no hay indicios suficientes de respaldo a las expresiones citadas.,,,,,v2.1
+P93R-0118,HS,NEGATIVE,NEGATIVE,,El tweet acusa a una persona de antisemitismo y pregunta por sus opiniones; no respalda explícitamente el discurso al que alude.,,,,,v2.1
+P93R-0077,HS,NEGATIVE,NEGATIVE,,AG: crítica despectiva a páginas feministas; no está claro si el tono constituye agresividad o una opinión ofensiva.,,,,,v2.1
+P93R-0087,HS,NEGATIVE,NEGATIVE,,La secuencia combina insultos/exclamaciones con expresiones de afecto y está truncada; el destinatario y el tono global no se determinan con seguridad.,,,,,v2.1
+P93R-0091,HS,NEGATIVE,NEGATIVE,,"El tweet parece condenar que otra persona llame «zorra» a Hyuna, no respaldar el insulto citado.",,,,,v2.1
+P93R-0023,TR,NEGATIVE,NEGATIVE,,HS: «guarra» se usa junto a un cumplido («qué bien luces»); el tono posiblemente amistoso impide decidir si es un insulto sexista.,,,,,v2.1
+P93R-0019,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0095,TR,POSITIVE,POSITIVE,,"HS: expresa rechazo a la llegada de inmigrantes indocumentados, pero no contiene un insulto explícito; la política deja abierta la frontera de generalizaciones hostiles.",,,,,v2.1
+P93R-0016,TR,POSITIVE,POSITIVE,,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0046,TR,POSITIVE,POSITIVE,,AG: generalización que usa «maricas» como insulto; la política no permite equiparar automáticamente el término ofensivo con agresividad.,,,,,v2.1
+P93R-0116,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: el texto relata un delito atribuido a jóvenes afganos y generaliza sobre llenar el país con «esta gente»; la frontera odio/generalización hostil sigue abierta.,,,,,v2.1
+P93R-0080,TR,POSITIVE,POSITIVE,AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,,,,,v2.1
+P93R-0011,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)","HS: «invasores» y la crítica a personas que cruzaron la valla expresan hostilidad hacia migrantes, pero la política no resuelve si esta generalización constituye discurso de odio.",,,,,v2.1
+P93R-0015,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,,,,,v2.1
+P93R-0096,TR,POSITIVE,POSITIVE,"HS/AG: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: llama a actuar contra personas indocumentadas; la política no resuelve si esta postura política constituye discurso de odio.,,,,,v2.1
+P93R-0070,TR,POSITIVE,POSITIVE,HS: funcion de la cita o discurso reproducido no determinable (Q5),HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0042,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0107,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: generalización despectiva sobre la cultura y descendencia árabes; la política deja abierta la frontera de generalizaciones hostiles.,,,,,v2.1
+P93R-0099,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,,,,,v2.1
+P93R-0002,TR,POSITIVE,POSITIVE,HS: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0067,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)","HS: asociación estereotipada entre árabes y bombas; el texto puede estar describiendo o reproduciendo un estereotipo, sin más contexto.",,,,,v2.1
+P93R-0112,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0004,TR,POSITIVE,POSITIVE,,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0079,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0045,TR,POSITIVE,POSITIVE,,"AG: la insinuación política sobre Opel, armamento y George Soros carece de contexto suficiente para determinar si es agresiva.",,,,,v2.1
+P93R-0077,TR,POSITIVE,POSITIVE,,AG: crítica despectiva a páginas feministas; no está claro si el tono constituye agresividad o una opinión ofensiva.,,,,,v2.1
+P93R-0073,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,,,,,v2.1
+P93R-0122,TR,NEGATIVE,NEGATIVE,HS: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,,,,,v2.1
+P93R-0038,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: descalifica a una persona identificada como indocumentada; no se puede resolver con la política si es odio por estatus migratorio o un insulto individual.,,,,,v2.1
+P93R-0054,TR,POSITIVE,POSITIVE,"HS: falta contexto o referente no identificable (tweet original, enlace, apodo)",HS: el referente de «esa puta gente» no está claro y no se puede determinar si es un ataque sexista individual o una generalización.,,,,,v2.1
+P93R-0050,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0071,TR,POSITIVE,POSITIVE,AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0027,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,,,,,v2.1
+P93R-0127,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,,,,,v2.1
+P93R-0018,TR,POSITIVE,POSITIVE,HS: 'puto' ambiguo (insulto general vs. homofobo); duda odio vs. ofensa,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0058,TR,POSITIVE,POSITIVE,"HS: falta contexto o referente no identificable (tweet original, enlace, apodo)",HS: propuesta hostil sobre trasladar a personas a África; falta una regla operativa para esta generalización antiinmigración.,,,,,v2.1
+P93R-0036,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: contiene insultos sexistas dirigidos a personas concretas; la política no resuelve si constituyen discurso de odio o una ofensa individual.,,,,,v2.1
+P93R-0121,TR,POSITIVE,POSITIVE,,AG: el término despectivo aparece en un comentario jocoso sobre ser gay; la agresividad no es inequívoca por el tono.,,,,,v2.1
+P93R-0048,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,,,,,v2.1
+P93R-0110,TR,POSITIVE,POSITIVE,HS: deseo de muerte o ataque sin referencia a grupo; duda odio vs. ofensa,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0001,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: generalización sobre mujeres y publicidad sexual; la frontera entre crítica y discurso de odio no está operativamente definida.,,,,,v2.1
+P93R-0085,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: el mensaje pide enviar a los refugiados a casa en tono despectivo; la frontera entre crítica de política migratoria y discurso de odio no está resuelta.,,,,,v2.1
+P93R-0119,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,,,,,v2.1
+P93R-0100,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)","HS: oposición a la inmigración venezolana expresada mediante una generalización hostil, sin insulto grupal inequívoco.",,,,,v2.1
+P93R-0106,TR,POSITIVE,POSITIVE,HS/AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0125,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: generalización despectiva sobre los árabes; AG: no es inequívoco si el tono es agresivo o meramente ofensivo.,,,,,v2.1
+P93R-0052,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: el término «salvajes» se aplica a un grupo vinculado a la valla; la atribución y el alcance de la generalización no pueden verificarse sin el enlace.,,,,,v2.1
+P93R-0047,TR,POSITIVE,POSITIVE,,"AG: el hashtag «#todasputas» estigmatiza a las mujeres como grupo; no queda claro si, sin más contexto, se debe considerar agresivo además de despectivo.",,,,,v2.1
+P93R-0062,TR,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)","HS: presenta a los subsaharianos como una carga mediante una generalización hostil, sin insulto explícito.",,,,,v2.1
+P93R-0005,TR,POSITIVE,POSITIVE,AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0090,TR,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: insulto sexista individual; la frontera odio/ofensa sigue abierta.,,,,,v2.1
+P93R-0019,AG,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0095,AG,NEGATIVE,NEGATIVE,,"HS: expresa rechazo a la llegada de inmigrantes indocumentados, pero no contiene un insulto explícito; la política deja abierta la frontera de generalizaciones hostiles.",,,,,v2.1
+P93R-0016,AG,POSITIVE,POSITIVE,,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0026,AG,NEGATIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: debate sobre la palabra «puta» y una referencia histórica/política; no está claro si el texto reproduce o respalda el insulto.,,,,,v2.1
+P93R-0059,AG,NEGATIVE,NEGATIVE,,El texto informa de una denuncia de la «caza del inmigrante»; no se aprecia respaldo al trato hostil que menciona.,,,,,v2.1
+P93R-0044,AG,NEGATIVE,NEGATIVE,,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0031,AG,NEGATIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: relato sobre un individuo africano e inferencias sobre su conducta por ser inmigrante; no queda clara la generalización.,,,,,v2.1
+P93R-0114,AG,NEGATIVE,NEGATIVE,,El texto reproduce insultos racistas para acusar a otra persona de racismo/transfobia; no hay indicios suficientes de respaldo a las expresiones citadas.,,,,,v2.1
+P93R-0015,AG,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,,,,,v2.1
+P93R-0042,AG,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0022,AG,NEGATIVE,NEGATIVE,,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0032,AG,NEGATIVE,NEGATIVE,"HS/TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,,,,,v2.1
+P93R-0112,AG,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0079,AG,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0108,AG,NEGATIVE,NEGATIVE,,HS: generalización hostil sobre un grupo sin criterio operativo suficiente para resolver si constituye discurso de odio.,,,,,v2.1
+P93R-0073,AG,NEGATIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,,,,,v2.1
+P93R-0012,AG,NEGATIVE,NEGATIVE,,HS: el texto reproduce una expresión o noticia; no queda clara su función con el contexto disponible.,,,,,v2.1
+P93R-0122,AG,NEGATIVE,NEGATIVE,HS: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,,,,,v2.1
+P93R-0123,AG,POSITIVE,POSITIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,,,,,v2.1
+P93R-0054,AG,POSITIVE,POSITIVE,"HS: falta contexto o referente no identificable (tweet original, enlace, apodo)",HS: el referente de «esa puta gente» no está claro y no se puede determinar si es un ataque sexista individual o una generalización.,,,,,v2.1
+P93R-0050,AG,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0115,AG,NEGATIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0018,AG,POSITIVE,POSITIVE,HS: 'puto' ambiguo (insulto general vs. homofobo); duda odio vs. ofensa,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0036,AG,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: contiene insultos sexistas dirigidos a personas concretas; la política no resuelve si constituyen discurso de odio o una ofensa individual.,,,,,v2.1
+P93R-0110,AG,POSITIVE,POSITIVE,HS: deseo de muerte o ataque sin referencia a grupo; duda odio vs. ofensa,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0126,AG,NEGATIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: comparación despectiva con países subsaharianos; la política no resuelve esta generalización hostil.,,,,,v2.1
+P93R-0001,AG,NEGATIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: generalización sobre mujeres y publicidad sexual; la frontera entre crítica y discurso de odio no está operativamente definida.,,,,,v2.1
+P93R-0085,AG,NEGATIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: el mensaje pide enviar a los refugiados a casa en tono despectivo; la frontera entre crítica de política migratoria y discurso de odio no está resuelta.,,,,,v2.1
+P93R-0104,AG,NEGATIVE,NEGATIVE,,El texto presenta una declaración atribuida a Maduro sobre el oro y los árabes; no expresa claramente hostilidad del autor contra el grupo.,,,,,v2.1
+P93R-0064,AG,NEGATIVE,NEGATIVE,,HS: el texto critica la existencia de un campo de refugiados; no queda claro si es una crítica política o una expresión de odio contra el grupo.,,,,,v2.1
+P93R-0081,AG,NEGATIVE,NEGATIVE,,HS: el texto reproduce una expresión o noticia; no queda clara su función con el contexto disponible.,,,,,v2.1
+P93R-0100,AG,NEGATIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)","HS: oposición a la inmigración venezolana expresada mediante una generalización hostil, sin insulto grupal inequívoco.",,,,,v2.1
+P93R-0078,AG,NEGATIVE,NEGATIVE,"HS/TR: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",HS: temor retórico a cambios demográficos/religiosos; no es posible resolver con la política si constituye discurso de odio.,,,,,v2.1
+P93R-0082,AG,NEGATIVE,NEGATIVE,,HS: el texto pregunta por una explicación del desempleo que menciona a inmigrantes; la postura no se puede separar con seguridad de una generalización hostil.,,,,,v2.1
+P93R-0062,AG,NEGATIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)","HS: presenta a los subsaharianos como una carga mediante una generalización hostil, sin insulto explícito.",,,,,v2.1
+P93R-0024,AG,NEGATIVE,NEGATIVE,HS/TR: funcion de la cita o discurso reproducido no determinable (Q5),HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,,,,v2.1
+P93R-0090,AG,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",HS: insulto sexista individual; la frontera odio/ofensa sigue abierta.,,,,,v2.1

@@ -1,0 +1,89 @@
+{
+  "phase": "P93-R4 second round reception, lock and analysis",
+  "date": "2026-10-13",
+  "status": "SECOND_ROUND_RESPONSES_VALIDATED",
+  "decisions": "FINAL_HUMAN_DECISIONS_LOCKED",
+  "gold_comparison": "NOT_YET_AUTHORIZED",
+  "units": {
+    "cells": 176,
+    "unique_tweets": 127,
+    "HS": 23,
+    "TR": 87,
+    "AG": 66
+  },
+  "changes_from_round1": {
+    "C2_TR": 3,
+    "C2_AG": 8,
+    "C2_HS": 1,
+    "C1_HS": 1,
+    "C1_TR": 1
+  },
+  "classification": {
+    "FINAL_AGREEMENT_BINARY": 171,
+    "FINAL_DISAGREEMENT": 5
+  },
+  "pending_cases": 5,
+  "agreement": {
+    "HS": {
+      "raw_3cat": "23/23",
+      "bin_cond": "23/23",
+      "kappa3": 1.0,
+      "alpha_cat": 1.0
+    },
+    "TR": {
+      "raw_3cat": "85/87",
+      "bin_cond": "85/85",
+      "kappa3": 0.8466,
+      "alpha_cat": 0.8472
+    },
+    "AG": {
+      "raw_3cat": "63/66",
+      "bin_cond": "63/64",
+      "kappa3": 0.9089,
+      "alpha_cat": 0.9095
+    }
+  },
+  "hashes": {
+    "artifacts/p93_adjudication_v2/responses/response_C1_round2.csv": "91911ab70f6d70cc9036de596ceba72ee847e3c6e900e2bee505d5e9ce7debba",
+    "artifacts/p93_adjudication_v2/responses/response_C2_round2_correcciones.csv": "5da8fc1b3313548982182c8a8dfaa61d4c5c25e5c54628910d5e94fe9832fff7",
+    "artifacts/p93_adjudication_v1/responses/response_C1.csv": "f89f74cdabd9649d9894faef7064f9c73413d1d06129733cf829b7e3338c3fe1",
+    "artifacts/p93_adjudication_v1/responses/response_C2.csv": "e0449a811fa8b64b6e6e1eb2cbbfbcc00bca36685f53c00eaf2de46e67830daf",
+    "reports/p93r3_round2_id_assignment.csv": "e0ce88b1c5c3906ca71cf7d82b53bcf1139e30839767944206969e24a3426217",
+    "artifacts/p93_adjudication_v2/responses/PROVENANCE.md": "90af64f92f8a9d3606a90c2c71aa1e9523dda7092631903c2d1621444560f7c0",
+    "reports/p93r4_final_decisions.csv": "98e4264b0fb98b7a4714f5237ea541ecaa06371dbb076b203677bcc5700f66af",
+    "reports/p93r4_final_human_agreement.md": "5b20ac7af7f4d50d6d057d2d24264bf6ea0dc376e4fcb07841d295146ad6ca26",
+    "reports/p93r4_final_human_agreement.csv": "ddf662ddc4deec85ffb012a550994998055ee3e3d962e50b36228839c0e1af82",
+    "reports/p93r4_pending_cases.csv": "e1fb6bc9ccade41b329705232b3196d9ed6aa5228b55e8c407b8bf85730149e9"
+  },
+  "checks": {
+    "cadena_ids_ronda1": true,
+    "C1_176_filas": true,
+    "C1_ids_unicos_esperados": true,
+    "C1_etiquetas_y_AB_coinciden_paquete": true,
+    "C1_inicial_coincide_ronda1": true,
+    "C1_final_tokens": true,
+    "C1_version_v21": true,
+    "C1_cambios_con_justificacion": true,
+    "C1_sin_utd_final": true,
+    "C2_16_filas": true,
+    "C2_ids_esperados": true,
+    "C2_etiquetas_coinciden": true,
+    "C2_inicial_coincide_ronda1": true,
+    "C2_final_tokens": true,
+    "C2_version_v21": true,
+    "C2_filas_son_cambios_o_utd": true,
+    "C2_justificacion_en_todas": true,
+    "decisiones_finales_completas": true,
+    "verificador_ascii_oficial": true
+  },
+  "avisos": [
+    "C1: 2 cambios de decision (['P93S1-0052', 'P93S1-0108'])",
+    "C2: archivo de CORRECCIONES (16 filas: 12 cambios + 4 casos que permanecen en UTD); las 160 celdas restantes conservan su respuesta inicial (reconstruccion documentada)"
+  ],
+  "limitations": [
+    "cegamiento ronda 1 no verificable completamente (P93-R3)",
+    "ronda 2 con A/B visibles: decisiones no independientes de esas respuestas",
+    "C2 entrego solo correcciones; reconstruccion documentada",
+    "gold oculto; sin correcciones de etiquetas ni errores confirmados"
+  ]
+}

@@ -1,0 +1,49 @@
+linea,estado,motivo,experimentos,fuente
+embeddings,CLOSED,"La version preentrenada esta PROHIBIDA por D-030 y por la regla de la competicion (V8-00 mantiene la prohibicion pese a que las reglas lo permitirian). La version desde cero rindio 0.7949 contra 0.7927 de su control, es ",,reports/p57_family_status.csv
+ordinal,CLOSED,"Se probaron las tres relaciones ordinales plausibles (HS>TR, HS>AG, TR<AG) y ninguna produjo senal. El mejor brazo quedo en +0,000534, y la linea de entrenamiento partially-labelled se cerro por condicion de parada, no p",,reports/p57_family_status.csv
+joint_labels,CLOSED,"D-116: la estructura conjunta de etiquetas es REAL y pesa mas de lo que se pensaba, pero no es explotable. La coocurrencia es fuerte y ninguna reparametrizacion de la jointly labels la convierte en ganancia.",,reports/p57_family_status.csv
+PLS,INVALIDATED,"Cierre de tipo B, no de tipo A, y esto es lo que hay que retener: V42-01 y V43-01 se invalidaron por problemas de implementacion (rango invalido, API de PLS), de modo que sus numeros NO son evidencia. El resultado True l",,reports/p57_family_status.csv
+VW / optimizacion sparse online,CLOSED,"V43-01 intento FTRL y quedo INVALIDADO por la API de VW. V44-01 lo repito bien y cerro SPARSE_ONLINE_OPTIMIZATION. Se eligio deliberadamente la MISMA representacion que V03, sin hashing ni BM25, para que la comparacion a",,reports/p57_family_status.csv
+contextual_selection,CLOSED,"P50, P51, P52 y P53. El techo del oracel es +0,2098, o sea la senal EXISTE y es enorme. Pero P53 midio que en las 3896 celdas con discrepancia los 20 canales que discrepan proponen `1 - v03_pred`, sin una sola excepcion,",,reports/p57_family_status.csv
+threshold_transfer,CLOSED,"P55 encontro un defecto procedimental REAL: los umbrales de V03 se adoptaron bajo D-004, mas debil que el D-016 con el que se reporta la metrica. P56 hizo el anidamiento que P55 no hacia y corrigio el diagnostico: los um",,reports/p57_family_status.csv
+data_expansion,CLOSED,"No existe fuente legal adicional de datos etiquetados. Los corpus externos existen (42808 documentos, 95.0M tokens) pero NO estan etiquetados, y el manifiesta declara cero contaminacion con toxic_test.csv. Se usa solo pa",,reports/p57_family_status.csv
+augmentation,CLOSED,"V6-08 ejecuto exactamente las tres transformaciones canonicas, con la augmentation DENTRO del training fold y los grupos preservados, y el control reprodujo V03. V41-01 cerro las familias ortografica y de mixup. P47 cerr",,reports/p57_family_status.csv
+retrieval,CLOSED,"El techo se calculo ANTES de ejecutar: ningun vecino alcanzable contiene la etiqueta correcta, luego la propagacion no puede aportar. V03 se mantiene sin adaptaciones por grupo.",,reports/p57_family_status.csv
+kernels,CLOSED,"Este es el resultado interno MAS FUERTE del proyecto: mejor OOF honesto, 5 de 5 pliegues, 136 rescates contra 104 danos y McNemar significativo. Y aun asi el LB cae. La causa mecanica esta en los vectores de soporte: 132",,reports/p57_family_status.csv
+FM (factorization machines),CLOSED,"V25-01 se midio bajo D-004, luego su +0.005487 NO es comparable con el corrected_cv de V03, que es D-016. V38-01 cerro supervised embeddings por factorizacion invalida de rango 3. k=8 y k=16 son identicos a k=4.",,reports/p57_family_status.csv
+Tsetlin,CLOSED,"V26-02 quedo INVALIDADO por un problema de implementacion, y su 0.292547 NO es evidencia del rendimiento de Tsetlin. V26-03 es la medicion valida: 0.583397, muy por debajo. No se sube a K=500 ni K=1000.",,reports/p57_family_status.csv
+BM25,CLOSED,"Ponderacion BM25 sobre el mismo TF-IDF de V03. No se prueba BM25 sobre char: seria repetir el mismo mecanismo con otro suporte, no una hipotesis nueva.",,reports/p57_family_status.csv
+hashing,CLOSED,"Con 27.431 features y 1731 filas, eliminar el vocabulario no aporta: el cuello de botella es la dimension de la muestra, no el tamano del vocabulario.",,reports/p57_family_status.csv
+SGD,CLOSED,"Los dos losses probados sobre la misma representacion. NO se intenta rescatar con tuning, de forma explicita.",,reports/p57_family_status.csv
+label_specialization,CLOSED,"Fue la PRIMERA linea del proyecto con tasa de acierto entre las celdas modificadas por encima del azar (0,5185), y aun asi no mejora. El intervalo de confianza local ya incluia cero, que es la senal de aviso que se ignor",,reports/p57_family_status.csv
+noise (label noise y reweighting),CLOSED,"D-026: el ruido de etiqueta por duplicacion es escaso, 17 pseudo-autores con 77 tweets, 4,4 %, y no explica el error. D-072 CORRIGE que el +0,0036 no es el efecto de optimizar umbrales, sino un error de comparacion entre",,reports/p57_family_status.csv
+fuzzy_matching,CLOSED,"V29-02 fue DESCRIPTIVE_ONLY y V29-03 REJECTED. El metodo anterior NO se cambia. La conclusion es que encuentra dificultad, no senal de etiqueta.",,reports/p57_family_status.csv
+ensembles,CLOSED,"La causa mecanica esta medida: el promedio contrae las probabilidades y con umbrales fijos eso mueve celdas en la direccion equivocada. Por eso las candidatas de tasa se fijan por CUANTIL, que es invariante a la escala. ",,reports/p57_family_status.csv
+stacking y meta-modelos,CLOSED,Es la familia MEJOR MEDIDA del proyecto y la que mas veces transfirio a la baja. El meta mejoro en dev (+0.0102) y en el holdout (+0.0180) y no transfirio. D-020 y D-024 cierran la linea. D-070 anade el dato que la expli,,reports/p57_family_status.csv
+structural_features,CLOSED,V15-01 lo dice asi: es la TERCERA estimacion independiente que coincide en que los rasgos estructurales no aportan. El envio de url_length es el control mas limpio del proyecto: la interaccion se midio con +0.0045 de cor,,reports/p57_family_status.csv
+"Revisar y, si procede, corregir las etiquetas de TR de desarrollo",BLOCKED_BY_RULES,AMBIGUOUS,E03; V4-A01..A03; V28-03; P59-C,reports/toxic_remaining_legal_opportunities.csv
+Propagar etiquetas train->test por near-duplicados,BLOCKED_BY_RULES,QUARANTINED,V4-F01..F04; P7; v18,reports/toxic_remaining_legal_opportunities.csv
+Downstream secuencial (BiGRU/CNN) sobre embeddings propios (H1),CLOSED,PERMITTED,V9-04; V10-11,reports/toxic_remaining_legal_opportunities.csv
+Proyeccion supervisada de bajo rango fold-local (PLS/SDR) (H3),CLOSED,PERMITTED,v9 (SDR 0.7066 vs SVD 0.6531); V42-01; V43-01; V43-02; V44-02,reports/toxic_remaining_legal_opportunities.csv
+Correccion EM de prevalencia sobre probabilidades del test (H4),BLOCKED_BY_RULES,AMBIGUOUS,V9-02; V11-02; V11-07; V16-ch5; P84-05,reports/toxic_remaining_legal_opportunities.csv
+Revalidar la sensibilidad de las dos fugas corregidas (H5),CLOSED,PERMITTED,v9 H5,reports/toxic_remaining_legal_opportunities.csv
+Expandir los datos etiquetados (mas filas de entrenamiento),BLOCKED_BY_RULES,PROHIBITED,P47,reports/toxic_remaining_legal_opportunities.csv
+"Embeddings desde cero: mas corpus, dimensiones o hiperparametros",DUPLICATE,PERMITTED,v5; v5.1; P73-P75; P78-P80; P84-02; P84-04,reports/toxic_remaining_legal_opportunities.csv
+Reoptimizar umbrales o calibracion sobre el OOF,CLOSED,PERMITTED,P55; P56; P76; V8-09; V16,reports/toxic_remaining_legal_opportunities.csv
+"Capacidad o busqueda de hiperparametros (Optuna, LightGBM)",CLOSED,PERMITTED,v05; OPT-01; P61-01,reports/toxic_remaining_legal_opportunities.csv
+"Meta, stacking o ensambles",CLOSED,PERMITTED,v08; v09-v11; ENS-01..04; E2-18; P61-02,reports/toxic_remaining_legal_opportunities.csv
+"Term weighting, NB o features estructurales",CLOSED,PERMITTED,V4-C01..C06; E2-15; V32-05; V37-01,reports/toxic_remaining_legal_opportunities.csv
+"Ruido de etiqueta, reweighting o confident learning",CLOSED,PERMITTED,V4-A01..A03; V30-00; P59-C; P68-H2; V4-B01..B05,reports/toxic_remaining_legal_opportunities.csv
+"RNN, CNN o DL desde cero",CLOSED,PERMITTED,P75; P82; P84-01; V9-04; V10-11,reports/toxic_remaining_legal_opportunities.csv
+Bayesiano disperso,CLOSED,PERMITTED,P83,reports/toxic_remaining_legal_opportunities.csv
+"Transformers, LLM, embeddings preentrenados, etiquetas externas o pseudo-labeling",BLOCKED_BY_RULES,PROHIBITED,n/a,reports/toxic_remaining_legal_opportunities.csv
+"Word2Vec entrenado desde cero sobre corpus no etiquetado de Twitter/X en espanol (representaciones de dominio), distinto",CLOSED,PERMITTED,P71-00..P71-10; P72; P73; P74; P75; P78; P79; P80; P81; P84-04,reports/toxic_remaining_legal_opportunities.csv
+Fusion tardia con MI_arbol (P66/P67),CLOSED,PERMITTED,P66; P67,reports/toxic_remaining_legal_opportunities.csv
+Enrutado por estructura del ejemplo (P68-H1),CLOSED,PERMITTED,P68-H1,reports/toxic_remaining_legal_opportunities.csv
+Adopcion del candidato A_cost_sensitive_downweight,CLOSED,PENDING_GOVERNANCE,P69 y sus cierres,reports/toxic_remaining_legal_opportunities.csv
+"P84: exploracion dirigida (DL-01, fastText, ROS, SGNS, EM)",CLOSED,P84-01..P84-06: ninguna linea supera a V03; D-281 a D-287,,DECISIONS.md
+P85: SGNS corregido sobre Twitter/X (reapertura autorizada),CLOSED,Caso C: la fusion no mejora a V03 (D-290); familia de embeddings cerrada,,DECISIONS.md
+P86: Factorization Machine sobre la representacion de V03,DUPLICATE,V25-01/V25-02 ya la ejecutaron con la representacion exacta (D-291),,DECISIONS.md
+P87: revision humana de anotaciones en TR,BLOCKED_BY_RULES,LOW_EXPECTED_VALUE: sin autorizacion y con techo bajo la banda (D-292),,DECISIONS.md
+P88: LightGBM sobre la matriz TF-IDF de V03,DUPLICATE,P61-01 ya la ejecuto con la representacion exacta (D-293),,DECISIONS.md
+P90: casebook de errores de V03,COMPLEMENTARY,Diagnostico descriptivo; no reabre familias (D-295),,DECISIONS.md

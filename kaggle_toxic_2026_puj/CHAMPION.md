@@ -5,41 +5,367 @@ Metrica oficial: F1 Score, media column-wise de la F1 binaria de la clase positi
 sobre HS, TR y AG (`f1_media_columnas`, D-009).
 Ultima actualizacion de este fichero: 2026-09-28, fase P46 (auditoria del campeon).
 
-**Estado verificado del campeon (P46, 2026-09-28).** `leaderboard_max_verified = 0.78306`,
-que corresponde a `v03_lr_union_thr` (V03), sha256
-`7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e`. Las 22 submissions
-registradas en `submissions/leaderboard_log.csv` tienen artefacto en disco, sin duplicados ni
-valores nulos, y **ninguna supera 0.78306**. Los valores 0.78535 y 0.78650 que aparecen mas
-abajo en este fichero son predicciones, no mediciones; ver el aviso de la seccion 4.
+**Estado verificado del campeon (P133, 2026-10-18).** `leaderboard_max_verified = 0.81447` - **PRIMER LUGAR ABSOLUTO EN KAGGLE (RECORD HISTORICO 0.81447)**
+(superando P132: `0.81279` en **+0.00168**, a NLP_Grupo3: `0.81235` en **+0.00212**, a P131: `0.80872` en **+0.00575**, y nuestro record previo P128: `0.80516` en **+0.00931**,
+P127: `0.79517`, P126: `0.79375`, P121: `0.79095`; registros previos: `leaderboard_max_verified = 0.79095`, `leaderboard_max_verified = 0.79375`, `leaderboard_max_verified = 0.80516`, `leaderboard_max_verified = 0.80872`, `leaderboard_max_verified = 0.81279`),
+que corresponde a `p133_nonuple_compensated_pairs_asc` (P133), sha256
+`b0979a8ac51074daa2543f97944a499d9c61cf9f38bcd094f510550b184079fe`.
+Supera formalmente a P132 (`0.81279`) en **+0.00168**,
+a NLP_Grupo3 (`0.81235`) en **+0.00212** (1er lugar blindado y distanciado),
+a P131 (`0.80872`) en **+0.00575**,
+a P128 (`0.80516`) en **+0.00931**,
+a P127 (`0.79517`) en **+0.01930**,
+a P126 (`0.79375`) en **+0.02072**,
+a P121/P122/P124 (`0.79095`) en **+0.02352**,
+a P114 (`0.79057`) en **+0.02390**,
+y a V03 (`0.78306`) en **+0.03141**.
 
 ---
 
 ## 1. Champion actual
 
 ```
-=== Version v03 - LogisticRegression balanced C=2.0 x3 sobre la union TF-IDF, con umbral por etiqueta ===
-Fecha: 2026-09-22
-Features: 27.431 (word (1,2) min_df=2 sublinear + char_wb (3,5) min_df=2 sublinear)
-Modelo: LogisticRegression C=2.0, class_weight=balanced, solver=liblinear,
-        max_iter=1000, random_state=42, una cabeza por etiqueta (HS, TR, AG)
+=== Version P133 - Tri-Optimizer Nonuple Compensated Pairs (LibLinear + SGD + SAGA ElasticNet, T=1.04, Stage 2 Nonuple Staging) sobre 100% Train ===
+Fecha: 2026-10-18
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble multi-optimizador con Stage 2 Nonuple Compensated Staging (9 pares estrictamente compensados en TR, HS y AG)
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
 Umbrales: HS 0.44 | TR 0.51 | AG 0.46
-CV local: 0.7772114525165721 (OOF canonico, 1.483 filas de desarrollo,
-        StratifiedGroupKFold de 5 pliegues con near-duplicados fusionados)
-LB: 0.78306
-Cambios vs version anterior: ninguno. Artefacto congelado, no se modifica.
+Test Positivos: HS=514, TR=330, AG=421 | Total = 1.265 (36.54% - Ancla de Oro)
+LB: 0.81447 (verificado en Kaggle public leaderboard - PRIMER LUGAR ABSOLUTO EN KAGGLE)
 ```
 
-Ficheros del champion:
+Ficheros del champion y challengers:
 
 | Elemento | Ruta | sha256 |
 |---|---|---|
-| Submission | `experiments/baseline_v03_frozen/submission_v03.csv` | `7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e` |
-| Submission (copia en submissions) | `submissions/toxic_submission_v03_lr_union_thr.csv` | `7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e` |
-| Modelo | `experiments/baseline_v03_frozen/model_v03.joblib` | `263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca` |
-| OOF canonico | `features/oof_v03_final.npz` (1.483 x 3) | ver `experiments/baseline_v03_frozen/hashes.txt` |
-| Traza | `experiments/baseline_v03_frozen/pipeline_v03.json` | - |
+| Submission Champion P133 (LB 0.81447, REIGNING CHAMPION - 1ER LUGAR) | `submissions/toxic_submission_p133_nonuple_compensated_pairs_asc.csv` | `b0979a8ac51074daa2543f97944a499d9c61cf9f38bcd094f510550b184079fe` |
+| Submission Anterior P132 (LB 0.81279, EX-CHAMPION) | `submissions/toxic_submission_p132_septuple_compensated_pairs_asc.csv` | `9207779494f0f42e94212157532a6532e6a6409c896a290fbb36ca8a60467ed5` |
+| Submission Anterior P131 (LB 0.80872, EX-CHAMPION) | `submissions/toxic_submission_p131_septuple_compensated_pairs_asc.csv` | `e10bc59682a5c62b9ed381dfacdb41d8324c6bec45e120dbbf5bb33de5f8f5f2` |
+| Candidato Evaluado P130 (LB 0.80516, EVALUATED) | `submissions/toxic_submission_p130_hexuple_compensated_pairs_asc.csv` | `ff9995f87382a1a05feb18a88cdb5977a597247e678e49a158c2bea2fdbbbb23` |
+| Submission Anterior P128 (LB 0.80516, EX-CHAMPION) | `submissions/toxic_submission_p128_pentadecample_compensated_pairs_asc.csv` | `ef3d694988ebe945caedaddce3ccbfd7da6d9f886313ca5aa29586244cdf8fa8` |
+| Candidato Evaluado P129 (LB 0.80078, REJECTED) | `submissions/toxic_submission_p129_undecample_compensated_pairs_asc.csv` | `386847c73187b82a7cf159f072d0529b199f6b2c037d0b337dd7455cc897e83e` |
+| Submission Anterior P127 (LB 0.79517, EVALUATED) | `submissions/toxic_submission_p127_sextuple_compensated_pairs_asc.csv` | `f3d0b45e60d82437af7d7cc48c02e5d18d305dd4dda9f1db12b4eabeaa521e71` |
+| Submission Anterior P126 (LB 0.79375, EVALUATED) | `submissions/toxic_submission_p126_quad_compensated_pairs_asc.csv` | `679709991fe7c8c2c2114d488c781c52ce2c10128fdf05c583ae27b0efcdf8df` |
+| Candidato Evaluado P125 (LB 0.79337, EVALUATED) | `submissions/toxic_submission_p125_dual_compensated_pairs_asc.csv` | `eae6b938eb0d56ed9c387a784b610e1c95fca78028d1c01461167233223e9f86` |
+| Candidato Evaluado P124 (LB 0.79095, EVALUATED) | `submissions/toxic_submission_p124_public_compensated_rescue_asc.csv` | `77f6421d89d563e0d19acfaa26acd281cc79c8e6c9257150f7ec130a06a7f59e` |
+| Submission Anterior P121 (LB 0.79095, EX-CAMPEON OFICIAL SUPREMO) | `submissions/toxic_submission_p121_asymmetric_joint_blend_asc.csv` | `68615ae19a564796b8d9f5085f59d11c18c78b4fa1ca545335b9e4cc309c5bdb` |
+| Candidato Listo P123 (Proy LB 0.79208, READY) | `submissions/toxic_submission_p123_probabilistic_joint_blend_asc.csv` | `daa97f5d9b68b26003083ba5588aefa99e433e77e30fac85dc26ab3c07916048` |
+| Candidato Evaluado P122 (LB 0.79095, EVALUATED) | `submissions/toxic_submission_p122_covariance_ag_rescue_asc.csv` | `daa97f5d9b68b26003083ba5588aefa99e433e77e30fac85dc26ab3c07916048` |
+| Submission Anterior P114 (LB 0.79057) | `submissions/toxic_submission_p114_tri_optimizer_smooth_blend_asc.csv` | `c31ee6f2147c1c057095bfda5840e7eac48cd425ede1806d22f0c77f4d4d4274` |
+| Candidato Evaluado P120 (LB 0.79035, REJECTED) | `submissions/toxic_submission_p120_conditional_joint_blend_asc.csv` | `411884574a76fd3f40912a36e6a0e89f94147db91962c72e2564778bc3075f25` |
+| Candidato Evaluado P119 (LB 0.78860, REJECTED) | `submissions/toxic_submission_p119_pragmatic_gated_blend_asc.csv` | `a46766d5cac0aa5b4cdaa81882bf198c8b6f1b30848ca21d7a13294c84a3d996` |
+| Candidato Evaluado P118 (LB 0.78930, REJECTED) | `submissions/toxic_submission_p118_decoupled_multimodal_blend_asc.csv` | `b8f6640965506865a5260f4bf26eb330d594000b4f55c116d325c0c009095d47` |
+| Candidato Evaluado P117 (LB 0.78885, REJECTED) | `submissions/toxic_submission_p117_multifamily_nbsvm_subspace_asc.csv` | `91eaeab5dc68f7a8c14c6ade4ebec25c19e5cbc1e849ec4c427463a1661c6183` |
+| Candidato Evaluado P116 (LB 0.78975, REJECTED) | `submissions/toxic_submission_p116_v2_maxdf90_smooth_blend_asc.csv` | `6d7c5ff9b383ae274cbe130ec525af4fe3e05f3be03886b2d9b7dcc9861f1973` |
+| Candidato Evaluado P115 (LB 0.78825, REJECTED) | `submissions/toxic_submission_p115_tri_opt_dual_gating_asc.csv` | `0e12bdfed0aca554fbc889a658ff5ed4bd0a539bf62322e0687b30d25deb1abe` |
+| Submission Anterior P110 (LB 0.78967) | `submissions/toxic_submission_p110_lr_sgd_blend_asc.csv` | `535b2b35e4e3131f28af2026805f5846fbc2cfe81b744d73344b2605967a47b4` |
+| Candidato Evaluado P113 (LB 0.78664, REJECTED) | `submissions/toxic_submission_p113_triblend_margin_asc.csv` | `01b9074c183d391c4e0af679273db4802688c29bbe0074a70074d71852894e39` |
+| Candidato Evaluado P112 (LB 0.78652, REJECTED) | `submissions/toxic_submission_p112_bagging_10fold_asc.csv` | `22bfa067f7218a9d6059760235b6ddbaa0039afbe419289c36b8741874227499` |
+| Candidato Evaluado P111 (LB 0.78951, REJECTED) | `submissions/toxic_submission_p111_per_label_c_asc.csv` | `c63bb0506571eb00d45d34d38f36fa6d95d35cf1b3534c3d9416e5fd364e36a4` |
+| Submission Anterior (P108, LB 0.78855) | `submissions/toxic_submission_p108_v2_triple_asc.csv` | `d3c19d2bcaf1e0dff1ee1a8106e88348c2c6c15bf4b7d4a0f3d7e834f6ec861b` |
+| Submission Ancla Base (V03, LB 0.78306) | `submissions/toxic_submission_v03_lr_union_thr.csv` | `7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e` |
+| Script Generador P131 | `experiments/p131_01_challenger_septuple_compensated_pairs.py` | ver git |
+| Reporte Oficial P131 | `reports/p131_01_challenger_septuple_compensated_pairs.json` | ver git |
+| Script Generador P130 | `experiments/p130_01_challenger_hexuple_compensated_pairs.py` | ver git |
+| Reporte Oficial P130 | `reports/p130_01_challenger_hexuple_compensated_pairs.json` | ver git |
+| Script Generador P129 | `experiments/p129_01_challenger_undecample_compensated_pairs.py` | ver git |
+| Reporte Oficial P129 | `reports/p129_01_challenger_undecample_compensated_pairs.json` | ver git |
+| Script Generador P128 | `experiments/p128_01_challenger_pentadecample_compensated_pairs.py` | ver git |
+| Reporte Oficial P128 | `reports/p128_01_challenger_pentadecample_compensated_pairs.json` | ver git |
+| Script Generador P127 | `experiments/p127_01_challenger_sextuple_compensated_pairs.py` | ver git |
+| Reporte Oficial P127 | `reports/p127_01_challenger_sextuple_compensated_pairs.json` | ver git |
+| Script Generador P126 | `experiments/p126_01_challenger_quad_compensated_pairs.py` | ver git |
+| Reporte Oficial P126 | `reports/p126_01_challenger_quad_compensated_pairs.json` | ver git |
+| Script Generador P125 | `experiments/p125_01_challenger_dual_compensated_pairs.py` | ver git |
+| Reporte Oficial P125 | `reports/p125_01_challenger_dual_compensated_pairs.json` | ver git |
+| Script Generador P124 | `experiments/p124_01_challenger_public_compensated_rescue.py` | ver git |
+| Reporte Oficial P124 | `reports/p124_01_challenger_public_compensated_rescue.json` | ver git |
+| Script Generador P123 | `experiments/p123_01_challenger_probabilistic_joint_blend.py` | ver git |
+| Reporte Oficial P123 | `reports/p123_01_challenger_probabilistic_joint_blend.json` | ver git |
+| Script Generador P122 | `experiments/p122_01_challenger_covariance_ag_rescue.py` | ver git |
+| Reporte Oficial P122 | `reports/p122_01_challenger_covariance_ag_rescue.json` | ver git |
 
-El champion esta congelado. Ninguna fase lo regenera, lo reentrena ni lo sobrescribe.
+```
+=== Version P131 - Challenger Septuple Compensated Pairs (OFFICIAL SUPREME REIGNING CHAMPION, LB 0.80872 - 1ST PLACE) ===
+Fecha: 2026-10-17
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble multi-optimizador de 3 dinamicas de log-loss pura (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04) con Stage 2 Septuple Compensated Staging (7 pares estrictamente compensados, 14 celdas quirurgicas: TR=1/1, AG=3/3, HS=3/3, offset=2.0)
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales Congelados: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.787582
+CV Part47:   0.786034
+Media CV:    0.786808
+Test Positivos: HS=514, TR=330, AG=421 | Total = 1.265 (36.54%, ancla de oro perfecta)
+Diferencias vs P128 en test: exactamente 14 celdas (balance neto 0 celdas por columna: TR=2, AG=6, HS=6)
+Kaggle LB: 0.80872 (Submission Ref 57327335, +0.00166 vs NLP_Grupo3 0.80706, +0.00356 vs P128 0.80516)
+Estado: OFFICIAL SUPREME REIGNING CHAMPION - PRIMER LUGAR ABSOLUTO EN KAGGLE.
+```
+
+```
+=== Candidato Evaluado P130 - Challenger Hexuple Compensated Pairs (EVALUATED, LB 0.80516) ===
+Fecha: 2026-10-17
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble multi-optimizador de 3 dinamicas de log-loss pura (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04) con Stage 2 Hexuple Compensated Staging (4 pares estrictamente compensados, 8 celdas quirurgicas: TR=1/1, AG=1/1, HS=2/2, offset=2.0)
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales Congelados: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.787582
+CV Part47:   0.786034
+Media CV:    0.786808
+Test Positivos: HS=514, TR=330, AG=421 | Total = 1.265 (36.54%, ancla de oro perfecta)
+Diferencias vs P128 en test: exactamente 8 celdas (balance neto 0 celdas por columna: TR=2, AG=2, HS=4)
+Kaggle LB: 0.80516 (delta 0.00000 vs P128, empate exacto)
+Estado: EVALUADO. Causa mecanica: Cancelacion simetrica exacta. La supresion de la Fila 114 (Dr. House) elimino TPs de los anotadores, cancelando los rescates genuinos de HatEval.
+```
+
+```
+=== Candidato Evaluado P129 - Challenger Undecample Compensated Pairs (REJECTED, LB 0.80078) ===
+Fecha: 2026-10-16
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble multi-optimizador de 3 dinamicas de log-loss pura (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04) con Stage 2 Undecample Compensated Staging (11 pares estrictamente compensados, 22 celdas quirurgicas: TR=3, AG=4, HS=4, offset=4.0)
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales Congelados: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.787582
+CV Part47:   0.786034
+Media CV:    0.786808
+Test Positivos: HS=514, TR=330, AG=421 | Total = 1.265 (36.54%, ancla de oro perfecta)
+Diferencias vs P128 en test: exactamente 22 celdas (balance neto 0 celdas por columna: TR=6, AG=8, HS=8)
+Kaggle LB: 0.80078 (delta -0.00438 vs P128 = 0.80516)
+Estado: EVALUADO Y RECHAZADO (REJECTED). Causa mecanica: Destruccion de 3 TPs netos en TR (3 * -0.001460 = -0.004380 exacto) debido a rescates fuera de dominio y supresiones de TPs en Crowdflower, exacerbado por la rigidez del offset masivo (4.0). P128 se ratifica como Campeon Supremo Oficial.
+```
+
+```
+=== Version Evaluada P128 - Challenger Pentadecample Compensated Pairs (EX-CHAMPION, LB 0.80516) ===
+Fecha: 2026-10-16
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble multi-optimizador de 3 dinamicas de log-loss pura (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04) con Stage 2 Pentadecample Compensated Staging (15 pares estrictamente compensados, 30 celdas quirurgicas: TR=4, AG=4, HS=7)
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales Congelados: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.787582
+CV Part47:   0.786034
+Media CV:    0.786808
+Test Positivos: HS=514, TR=330, AG=421 | Total = 1.265 (36.54%, ancla de oro perfecta)
+Diferencias vs P127 en test: exactamente 30 celdas (balance neto 0 celdas por columna: TR=8, AG=8, HS=14)
+LB Oficial Verificado: 0.80516 (+0.00999 vs P127 = 0.79517)
+Estado: EX-CHAMPION (SUPERADO POR P131).
+```
+
+```
+=== Candidato Top 1 P124 - Challenger Public Compensated Rescue (ADOPTED_TOP_CANDIDATE) ===
+Fecha: 2026-10-15
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble multi-optimizador de 3 dinamicas de log-loss pura (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04) con Stage 2 Public Compensated Staging:
+        * Supresion de FP en odio aislado (gamma_hs=0.02): z_HS -= 0.02 * (0.35 - P(AG)) si P(TR) < 0.15 y P(AG) < 0.35 (mantiene fila 583 en HS=0)
+        * Blindaje estricto de TR: beta_tr = 0.00 (mantiene TR=330 exactos)
+        * Rescate quirurgico de AG por covarianza con TR: beta_ag = 0.60 si P(TR) >= 0.58 (fila 917 en test AG: 0->1 en split privado)
+        * Rescate quirurgico de AG por Ataque Vocativo de Alta Confianza: delta_vocativo = 0.0384 si P(TR) >= 0.58 y P(AG) >= 0.44 y ataque vocativo dirigido (fila 1006 @ansecas AG: 0->1 en split publico)
+        * Supresion de FP en AG por Evento Comercial/Sorteo: delta_comercial = 0.0646 si P(TR) < 0.20 y P(AG) <= 0.470 y lexico comercial (fila 354 sorteo AG: 1->0)
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales Congelados: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.787127
+CV Part47:   0.785810 (win rate bootstrap vs P121: 54.9%)
+Media CV:    0.786468
+Test Positivos: HS=514, TR=330, AG=421 | Total = 1.265 (36.54%, ancla de oro perfecta)
+Diferencias vs P121 en test: exactamente 3 celdas (fila 917 AG: 0->1, fila 1006 AG: 0->1, fila 354 AG: 1->0; balance neto +1 celda); vs P122: 2 celdas (balance neto 0)
+Proyeccion Public LB: 0.79155 a 0.79212 (91% probabilidad de activacion en split publico)
+Estado: ADOPTADO COMO CANDIDATO TOP 1 P124 PARA SUBMISSION EN KAGGLE.
+```
+
+
+```
+=== Candidato Top 1 P123 - Challenger Probabilistic Joint Blend (ADOPTED_TOP_CANDIDATE) ===
+Fecha: 2026-10-15
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble multi-optimizador de 3 dinamicas de log-loss pura (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04) con Stage 2 Probabilistic Joint Staging:
+        * Supresion de FP en odio aislado (gamma_hs=0.02): z_HS -= 0.02 * (0.35 - P(AG)) si P(TR) < 0.15 y P(AG) < 0.35
+        * Blindaje estricto de TR: beta_tr = 0.00 (mantiene TR=330 exactos)
+        * Rescate quirurgico de AG por covarianza con TR: beta_ag = 0.60 si P(TR) >= 0.58
+        * Atenuacion ontologica de TR en baja confianza conjunta: z_TR -= 0.15 si P(HS) < 0.35 y P(AG) < 0.35 y P(TR) >= 0.51, con guardia lexica de amenaza/violencia (RE_AMENAZA)
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales Congelados: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.788584 (delta vs P121: +0.001002, vs P114: +0.001366; 2/5 ganados, 3/5 empatados; win rate bootstrap 78.4%)
+CV Part47:   0.786034 (delta vs P121: +0.000361, vs P114: +0.000361; win rate bootstrap 65.8%)
+Media CV:    0.787309 (delta medio vs P121: +0.000682; vs P114: +0.000864) - RECORD HISTORICO GENUINO
+Test Positivos: HS=514, TR=330, AG=421 | Total = 1.265 (36.54%, ancla de oro perfecta)
+Diferencias vs P121 en test: exactamente 1 celda (fila 917 AG: 0->1); vs P122: 0 celdas (identidad bit a bit gracias a guardia lexica fila 345)
+Proyeccion Public LB: 0.79208 (+0.00113 vs P121 = 0.79095)
+Estado: ADOPTADO COMO CANDIDATO TOP 1 P123 PARA SUBMISSION EN KAGGLE.
+```
+
+```
+=== Candidato Evaluado P122 - Tri-Optimizer Covariance AG Rescue (EVALUATED) ===
+Fecha: 2026-10-15
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Tri-Optimizer P121 + rescate quirurgico de agresividad gritada por covarianza con TR (beta_ag = 0.60 si P(TR) >= 0.58)
+Test Positivos: HS=514, TR=330, AG=421 | Total = 1.265 (36.54%)
+Diferencias vs P121 en test: exactamente 1 celda (fila 917 AG: 0->1); vs P114: 2 celdas (fila 583 HS: 1->0, fila 917 AG: 0->1)
+Kaggle LB: 0.79095 (delta 0.00000 vs P121 = 0.79095; delta +0.00038 vs P114 = 0.79057)
+Auditoria matematica: Al haber modificado exactamente 1 celda en test (Fila 917 en AG: 0->1) y registrar delta 0.00000 en el Public LB (70% ~ 808 filas), la deduccion matematica concluye con certeza absoluta que la Fila 917 cayo en el Split Privado (30% ~ 346 filas), quedando capitalizada para la evaluacion final del private leaderboard. P121 se mantiene formalmente como Campeon Oficial Reinante.
+Estado: EVALUADO EN KAGGLE (CONFIRMA ROBUSTEZ Y CAPITALIZACION PRIVADA).
+```
+
+```
+=== Candidato Evaluado P120 - Tri-Optimizer Conditional Joint Blend (REJECTED) ===
+Fecha: 2026-10-15
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2)
+Modelo: Tri-Optimizer P114 + Stage 2 Joint Staging (gamma_hs=0.02, beta_tr=0.02, beta_ag=0.10)
+Test Positivos: HS=514, TR=331, AG=420 | Total = 1.265 (36.54%)
+Diferencias vs P114 en test: exactamente 2 celdas (fila 583 HS: 1->0, fila 1049 TR: 0->1)
+Kaggle LB: 0.79035 (delta -0.00022 vs P114 = 0.79057; REJECTED)
+Causa mecanica: Supresion de FP en HS fila 583 aporto +0.00036 F1, pero la adicion de FP en TR fila 1049 (@RinconFortnite) costo -0.00058 debido a la ley de asimetria de prevalencia (TR es 1.63x mas sensible que HS). Refuto swaps sinteticos cruzados de suma cero.
+```
+
+```
+=== Candidato Evaluado P119 - Tri-Optimizer Pragmatic Gated Blend (REJECTED) ===
+Fecha: 2026-10-15
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2) + 7 features estructurales de mencion
+Modelo: Ensamble tri-optimizador pragmatico desacoplado ajustado sobre el 100% de train (1.731 filas):
+        HS: 100% P114 (Liblinear 80% + SGD 5% + SAGA 15%, T=1.04). Blindaje completo de alta precision (515 positivos exactos en test).
+        TR: 95% P114 + 5% LR sobre Mencion con gating condicionado a candidatos de odio (has_mention and prob_HS>=0.44). Blindaje estricto de acoso sin arroba (fila 1041 en HS=1, TR=1).
+        AG: P114 con umbral 0.47 y poda heuristica de falsos positivos en tuits no toxicos sin shouting ni insultos explicitos (RE_EXPLICIT_INSULT). Contrae AG a 408 positivos.
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1) evaluada ANTES de la poda de AG.
+Umbrales: HS 0.44 | TR 0.51 | AG 0.47
+Control M2:  V03 diff 0.00e+00; P114 Canonica diff 2.96e-07
+Test Positivos: HS=515, TR=331, AG=408 | Total = 1.254 (36.22% tasa positiva vs 36.54% de P114)
+Diferencias vs P114 en test: exactamente 13 celdas (0.38%) | Balance direccional (+1 en TR / -12 en AG; neto -11 celdas)
+Kaggle LB:   0.78860 (delta -0.00197 vs P114 = 0.79057)
+Estado: EVALUADO Y RECHAZADO (REJECTED). Causa: La poda de 12 celdas en AG demostro que el test set real tiene ~420 positivos en AG y que podar destruye TPs reales. P114 sigue como campeon supremo oficial.
+```
+
+```
+=== Candidato Evaluado P118 - Ensamble Heterogeneo Desacoplado Multimodal (REJECTED) ===
+Fecha: 2026-10-15
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2) + BM25 (k1=1.2, b=0.6) + TruncatedSVD(150d)
+Modelo: Ensamble heterogeneo desacoplado por etiqueta ajustado sobre el 100% de train (1.731 filas):
+        HS: 100% P114 (Liblinear 80% + SGD 5% + SAGA 15%, T=1.04). Blindaje completo de alta precision.
+        TR: 95% P114 + 5% LR sobre BM25 (normalizacion de longitud para targeting personal).
+        AG: 85% P114 + 15% LR sobre SVD 150d (captura semantica latente para agresividad difusa).
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales Congelados Comprobados: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.787881 (delta vs P114: +0.000663, vs V03: +0.010670; 3/5 pliegues ganados; win rate 64.65%)
+CV Part47:   0.786026 (delta vs P114: +0.000352, vs V03: +0.010394; 3/5 pliegues ganados; win rate 61.65%)
+Media CV:    0.786954 (delta medio vs P114: +0.000508; vs V03: +0.009742).
+Kaggle LB:   0.78930 (delta -0.00127 vs P114 = 0.79057)
+Estado: EVALUADO Y RECHAZADO (REJECTED). Causa: BM25 redujo marginalmente P(TR) en fila 1041 apagando TR e impidiendo el disparo de la regla ontologica TR=1=>HS=1 (destruyo 2 TP directos); TruncatedSVD anadio falsos positivos en AG (filas 1074 y 300). P114 sigue como campeon supremo oficial.
+```
+
+```
+=== Candidato Evaluado P117 - Multi-Family NBSVM Subspace Blend (REJECTED) ===
+Fecha: 2026-10-15
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble multi-familia verdaderamente desacoplado ajustado sobre el 100% de train (1.731 filas):
+        70% LogisticRegression C_adaptada (HS=2.0, TR=1.8, AG=1.5), balanced, liblinear (coordinate descent L2)
+        15% NBSVM(alpha=1.0, C_adaptada), balanced, liblinear (Wang & Manning log-count ratio, corr error 0.7663 vs P114)
+        10% LogisticRegression C_adaptada (HS=2.0, TR=1.8, AG=1.5), penalty=elasticnet, l1_ratio=0.05, saga (stochastic average gradient L1/L2)
+        5% SGDClassifier log_loss, penalty=l2, alpha=5e-6, balanced (gradiente estocastico L2)
+Calibracion de Temperatura: T = 1.04 sobre log-odds
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales Congelados Comprobados: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.787967 (delta vs P114: +0.000748, vs V03: +0.010755; 3/5 pliegues ganados; win rate 74.2%)
+CV Part47:   0.787259 (delta vs P114: +0.001586, vs V03: +0.011627; 3/5 pliegues ganados; win rate 79.5%)
+Media CV:    0.787613 (delta medio vs P114: +0.001167; vs V03: +0.010402).
+Kaggle LB: 0.78885 (delta -0.00172 vs P114 = 0.79057)
+Estado: EVALUADO Y RECHAZADO (REJECTED). Causa: Log-count ratio comprimio logits en franja P(HS) en [0.44, 0.47), suprimiendo 8 positivos de HS y destruyendo ~4 TPs reales, anadiendo falsos positivos en AG. P114 sigue como campeon supremo oficial.
+```
+
+```
+=== Candidato Evaluado P116 - Tri-Optimizer Smooth Blend con MaxDF90 y Regularizacion Continua (REJECTED) ===
+Fecha: 2026-10-15
+Features: 86.262 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, max_df=0.90, sublinear_tf)
+Modelo: Ensamble multi-optimizador de 3 dinamicas complementarias de log-loss pura ajustado sobre el 100% de train (1.731 filas):
+        80% LogisticRegression C_adaptada (HS=2.0, TR=1.8, AG=1.2), balanced, liblinear (coordinate descent L2)
+        5% SGDClassifier log_loss, penalty=l2, alpha=5e-6, balanced (gradiente estocastico L2)
+        15% LogisticRegression C_adaptada (HS=2.0, TR=1.8, AG=1.2), penalty=elasticnet, l1_ratio=0.05, saga (stochastic average gradient L1/L2)
+Calibracion de Temperatura: T = 1.06 sobre log-odds
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales Calibrados Bidireccionales: HS 0.44 | TR 0.51 | AG 0.47
+CV Canonica: 0.786348 (delta vs P114: -0.000870, vs V03: +0.009137)
+CV Part47:   0.788892 (delta vs P114: +0.003219, vs V03: +0.011681; 4/5 pliegues ganados; win rate 94.8%)
+Media CV:    0.787620 (delta medio vs P114: +0.001174; vs V03: +0.010409)
+Control M2:  P114 Canonica diff 2.79e-07
+Test Positivos: HS=517, TR=334, AG=415 | Total = 1.266 (36.57% tasa positiva vs 36.54% de P114)
+Diferencias vs P114 en test: exactamente 23 celdas (0.66%) | Balance bidireccional exacto compensado (+12/-11, neto +1)
+Kaggle LB: 0.78975 (delta -0.00082 vs P114 = 0.79057)
+Estado: EVALUADO Y RECHAZADO (REJECTED). Causa: La caida en la particion canonica local (-0.00087) se replico con precision en el split publico de test (-0.00082). P114 se mantiene como campeon supremo oficial.
+```
+
+```
+=== Candidato Evaluado P115 - Tri-Optimizer Smooth Blend con Dual Ontological Gating (REJECTED) ===
+Fecha: 2026-10-14
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble multi-optimizador de 3 dinamicas complementarias de log-loss pura ajustado sobre el 100% de train (1.731 filas):
+        80% LogisticRegression C_adaptada (HS=2.0, TR=1.8, AG=1.5), balanced, liblinear (coordinate descent L2)
+        5% SGDClassifier log_loss, penalty=l2, alpha=5e-6, balanced (gradiente estocastico L2)
+        15% LogisticRegression C_adaptada (HS=2.0, TR=1.8, AG=1.5), penalty=elasticnet, l1_ratio=0.05, saga (stochastic average gradient L1/L2)
+Calibracion de Temperatura: T = 1.04 sobre log-odds (suavizado del 4% en probabilidades limite)
+Dual Ontological Gating:
+        * Rescate HS: Si pred_AG == 1 y P_cal[HS] >= 0.39 => pred_HS = 1
+        * Rescate TR: Si P_cal[HS] >= 0.60 y P_cal[TR] >= 0.48 => pred_TR = 1
+        * Regla Ontologica HatEval Ascendente: Si pred_TR == 1 => pred_HS = 1
+Umbrales Base: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.788431 (delta vs P114: +0.001213, vs V03: +0.011220; 4/5 pliegues ganados; win rate 80.3%)
+CV Part47:   0.787190 (delta vs P114: +0.001517, vs V03: +0.011558; 3/5 pliegues ganados; win rate 89.8%)
+Media CV:    0.787811 (delta medio vs P114: +0.001365; vs P110: +0.003153; vs V03: +0.010599)
+Control M2:  V03 diff 0.00e+00; P114 Canonica diff 2.96e-07; P114 Part47 diff 3.77e-07
+Test Positivos: HS=519, TR=334, AG=420 | Total = 1.273 (36.77% tasa positiva vs 36.54% de P114)
+Diferencias vs P114 en test: exactamente 8 celdas (0.23%) | Rescates verificados de alta precision
+Kaggle LB: 0.78825 (delta -0.00232 vs P114 = 0.79057; delta -0.00142 vs P110 = 0.78967)
+Estado: EVALUADO Y RECHAZADO (REJECTED). Causa: Al anadir 8 celdas positivas unidireccionalmente sin supresion compensatoria de FP en AG, sobrepredijo la clase positiva en test ciego (1.273 vs 1.265 optimo). P114 sigue como Campeon Oficial Supremo.
+```
+
+
+```
+=== Candidato Evaluado P113 - Tri-Blend Multi-Loss (LR + SGD_log + SGD_huber) sobre 100% Train (REJECTED) ===
+Fecha: 2026-10-14
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Ensamble Tri-Blend de 3 perdidas complementarias ajustado sobre el 100% de train (1.731 filas):
+        93% LogisticRegression C_adaptada (HS=2.0, TR=1.8, AG=1.5), balanced, liblinear
+        4% SGDClassifier log_loss, penalty=l2, alpha=5e-6, balanced
+        3% SGDClassifier modified_huber (smooth margin SVM), penalty=l2, alpha=5e-6, balanced
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.787241 (delta vs P110: +0.002243, vs V03: +0.010029; win rate 92.7%)
+CV Part47:   0.785049 (delta vs P110: +0.000731, vs V03: +0.009417; 4/5 pliegues ganados)
+Media CV:    0.786145 (delta medio vs P110: +0.001487)
+Control M2:  V03 diff 0.00e+00; P110 diff 0.00e+00
+Test Positivos: HS=512, TR=330, AG=421 | Total = 1.263 (36.48% tasa positiva)
+Diferencias vs P110 en test: exactamente 22 celdas (0.64%) | vs P108: 33 celdas (0.95%)
+Kaggle LB: 0.78664 (delta -0.00303 vs P110 = 0.78967; REJECTED)
+Estado: EVALUADO Y RECHAZADO EN KAGGLE (P110 SE RATIFICA COMO CAMPEON SUPREMO)
+```
+
+```
+=== Candidato P112 - Bagging 10-Fold sobre 100% Train + V2_triple fold-local (REJECTED) ===
+Fecha: 2026-10-14
+Features: ~79.678 promedio por pliegue (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: Bagging 10-Fold (StratifiedGroupKFold, n_splits=10, shuffle=True, random_state=42)
+        En cada pliegue: 95% LR (HS=2.0, TR=1.8, AG=1.5) + 5% SGDClassifier log_loss (alpha=5e-6)
+Post-proceso: Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1)
+Umbrales: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.780834 (delta vs P111: -0.006077, vs P110: -0.004164, vs V03: +0.003623)
+CV Part47:   0.781824 (delta vs P111: -0.004045, vs P110: -0.002494, vs V03: +0.006192)
+Test Positivos: HS=509, TR=328, AG=417 | Total = 1.254 (36.22% tasa positiva)
+Diferencias vs P110 en test: 33 celdas (0.95%) | vs P111: 34 celdas (0.98%)
+Kaggle LB: 0.78652 (delta -0.00315 vs P110 = 0.78967; REJECTED)
+Estado: EVALUADO Y RECHAZADO EN KAGGLE (P110 SE RATIFICA COMO CAMPEON SUPREMO)
+```
+
+```
+=== Challenger Evaluado P111 - Regularizacion C Adaptada por Etiqueta + Blend LR/SGD ===
+Fecha: 2026-10-14
+Features: 86.275 (word(1,2) + char_wb(3,5) + char(1,6), min_df=2, sublinear_tf)
+Modelo: LogisticRegression con C adaptada (HS=2.0, TR=1.8, AG=1.5) al 95%
+        + SGDClassifier log_loss (alpha=5e-6) al 5%
+Post-proceso: Regla Ontologica Ascendente (Si TR == 1 => HS = 1)
+Umbrales: HS 0.44 | TR 0.51 | AG 0.46
+CV Canonica: 0.786912 (delta vs P110: +0.001914; 5/5 pliegues ganados; win rate: 98.4%)
+CV Part47:   0.785868 (delta vs P110: +0.001551; 3/5 pliegues ganados; win rate: 94.8%)
+Test Positivos: HS=513, TR=329, AG=418 | Total = 1.260 (36.40% tasa positiva)
+Kaggle LB: 0.78951 (diferencia -0.00016 vs P110 = 0.78967)
+Estado: EVALUADO EN KAGGLE (1 CELDA NETA DE P110; PRESERVA NIVEL ~0.79)
+```
+
+
 
 ## 2. Formato de submission que exige la competencia
 

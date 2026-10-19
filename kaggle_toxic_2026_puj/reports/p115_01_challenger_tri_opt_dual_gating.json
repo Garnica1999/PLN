@@ -1,0 +1,186 @@
+{
+  "experimento": "P115-01",
+  "descripcion": "Challenger Tri-Optimizer Smooth Blend con Dual Ontological Gating (rescue_HS>=0.39 en AG=1, rescue_TR>=0.48 en HS>=0.60, TR=1=>HS=1)",
+  "duracion_segundos": 484.31,
+  "features": {
+    "tipo": "Union triple TF-IDF (word(1,2) + char_wb(3,5) + char(1,6))",
+    "min_df": 2,
+    "dimension": 86275,
+    "bloques": [
+      [
+        "word",
+        [
+          1,
+          2
+        ],
+        true
+      ],
+      [
+        "char_wb",
+        [
+          3,
+          5
+        ],
+        true
+      ],
+      [
+        "char",
+        [
+          1,
+          6
+        ],
+        true
+      ]
+    ]
+  },
+  "modelos": {
+    "lr_liblinear": {
+      "solver": "liblinear",
+      "C_per_label": {
+        "HS": 2.0,
+        "TR": 1.8,
+        "AG": 1.5
+      },
+      "class_weight": "balanced",
+      "peso": 0.8
+    },
+    "sgd_log_loss": {
+      "loss": "log_loss",
+      "penalty": "l2",
+      "alpha": 5e-06,
+      "class_weight": "balanced",
+      "peso": 0.05
+    },
+    "saga_elasticnet": {
+      "solver": "saga",
+      "penalty": "elasticnet",
+      "l1_ratio": 0.05,
+      "C_per_label": {
+        "HS": 2.0,
+        "TR": 1.8,
+        "AG": 1.5
+      },
+      "class_weight": "balanced",
+      "peso": 0.15
+    },
+    "pesos_blend": {
+      "w_lr": 0.8,
+      "w_sgd": 0.05,
+      "w_saga": 0.15
+    },
+    "calibracion_temperatura": 1.04
+  },
+  "umbrales": {
+    "HS": 0.44,
+    "TR": 0.51,
+    "AG": 0.46
+  },
+  "gating_ontologico": {
+    "hs_rescue_from_ag": 0.39,
+    "hs_conf_for_tr": 0.6,
+    "tr_rescue_from_hs": 0.48,
+    "regla_ascendente": "TR=1 => HS=1"
+  },
+  "controles": {
+    "diff_v03_m2": 0.0,
+    "diff_p114_canonica": 2.9606578710872355e-07,
+    "diff_p114_part47": 3.7676491182470073e-07
+  },
+  "validacion": {
+    "canonica": {
+      "ccv_p115": 0.7884312073191495,
+      "ccv_p114": 0.7872182792620254,
+      "ccv_v03": 0.7772114525165721,
+      "delta_vs_p114": 0.0012129280571241408,
+      "delta_vs_v03": 0.01121975480257742,
+      "f1_por_etiqueta_p115": {
+        "HS": 0.7727609178386381,
+        "TR": 0.8223463687150838,
+        "AG": 0.7701863354037267
+      },
+      "f1_por_etiqueta_p114": {
+        "HS": 0.7707244212098581,
+        "TR": 0.8207440811724915,
+        "AG": 0.7701863354037267
+      },
+      "pliegues_ganados": "4/5",
+      "deltas_por_pliegue": [
+        0.0030378977747399505,
+        -0.00043918592496972053,
+        0.00033606111043682496,
+        0.00043046332168172885,
+        0.0028754810004809617
+      ],
+      "bootstrap_ci95": [
+        -0.0014659685743175748,
+        0.0040503043666198744
+      ],
+      "bootstrap_win_rate": 0.8035,
+      "celdas_distintas_vs_p114": 20,
+      "rescates_gating": {
+        "n_rescue_hs": 20,
+        "n_rescue_tr": 8,
+        "n_asc": 17
+      }
+    },
+    "particion_47": {
+      "ccv_p115": 0.7871903288688825,
+      "ccv_p114": 0.7856733330466952,
+      "ccv_v03": 0.7756319868803105,
+      "delta_vs_p114": 0.0015169958221873392,
+      "delta_vs_v03": 0.011558341988571974,
+      "f1_por_etiqueta_p115": {
+        "HS": 0.76309963099631,
+        "TR": 0.8322147651006712,
+        "AG": 0.7662565905096661
+      },
+      "f1_por_etiqueta_p114": {
+        "HS": 0.7615499254843517,
+        "TR": 0.8292134831460675,
+        "AG": 0.7662565905096661
+      },
+      "pliegues_ganados": "3/5",
+      "deltas_por_pliegue": [
+        0.007004187831660902,
+        -0.001517819197377257,
+        -0.0018564155400545568,
+        0.002049734000428516,
+        0.0023065095745172792
+      ],
+      "bootstrap_ci95": [
+        -0.0008171857126586995,
+        0.0041164452963948295
+      ],
+      "bootstrap_win_rate": 0.8975,
+      "celdas_distintas_vs_p114": 17,
+      "rescates_gating": {
+        "n_rescue_hs": 21,
+        "n_rescue_tr": 4,
+        "n_asc": 14
+      }
+    },
+    "ccv_media_p115": 0.7878107680940161,
+    "delta_media_vs_p114": 0.001364961939655851,
+    "delta_media_vs_v03": 0.01059931557744398
+  },
+  "test": {
+    "celdas_distintas_vs_p114": 8,
+    "pct_distintas_vs_p114": 0.2310803004043905,
+    "celdas_distintas_vs_p110": 16,
+    "celdas_distintas_vs_p108": 39,
+    "rescates_gating": {
+      "n_rescue_hs": 5,
+      "n_rescue_tr": 4,
+      "n_asc": 9
+    },
+    "total_positivos_p115": 1273,
+    "tasa_positivos_pct": 36.77065280184864,
+    "positivos_por_etiqueta": {
+      "HS": 519,
+      "TR": 334,
+      "AG": 420
+    },
+    "submission_archivo": "submissions/toxic_submission_p115_tri_opt_dual_gating_asc.csv",
+    "submission_sha256": "0e12bdfed0aca554fbc889a658ff5ed4bd0a539bf62322e0687b30d25deb1abe"
+  }
+}

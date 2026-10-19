@@ -1,0 +1,32 @@
+bloque,clave,valor
+etiqueta,HS,"{""TP"": 505, ""FP"": 173, ""FN"": 143, ""TN"": 662, ""precision"": 0.744838, ""recall"": 0.779321, ""F1"": 0.761689, ""errores"": 316, ""cerca"": 40, ""medio"": 87, ""lejos"": 189}"
+etiqueta,TR,"{""TP"": 363, ""FP"": 82, ""FN"": 82, ""TN"": 956, ""precision"": 0.81573, ""recall"": 0.81573, ""F1"": 0.81573, ""errores"": 164, ""cerca"": 13, ""medio"": 40, ""lejos"": 111}"
+etiqueta,AG,"{""TP"": 425, ""FP"": 135, ""FN"": 142, ""TN"": 781, ""precision"": 0.758929, ""recall"": 0.749559, ""F1"": 0.754215, ""errores"": 277, ""cerca"": 31, ""medio"": 80, ""lejos"": 166}"
+conjunto,HS_FP,72
+conjunto,HS_FP|TR_FP|AG_FP,56
+conjunto,HS_FN,48
+conjunto,HS_FN|AG_FN,47
+conjunto,AG_FN,41
+conjunto,HS_FN|TR_FN|AG_FN,40
+conjunto,AG_FP,35
+conjunto,HS_FP|AG_FP,34
+conjunto,TR_FN,18
+conjunto,TR_FN|AG_FN,14
+conjunto,HS_FP|TR_FP,11
+conjunto,TR_FP,9
+conjunto,HS_FN|TR_FN,6
+conjunto,TR_FP|AG_FP,6
+conjunto,HS_FN|TR_FN|AG_FP,2
+conjunto,TR_FN|AG_FP,2
+conjunto_distancia,HS_cerca_<0.025_tres_etiquetas,8
+conjunto_distancia,HS_lejos_>=0.100_tres_etiquetas,67
+conjunto_distancia,TR_cerca_<0.025_tres_etiquetas,8
+conjunto_distancia,TR_lejos_>=0.100_tres_etiquetas,76
+conjunto_distancia,AG_cerca_<0.025_tres_etiquetas,5
+conjunto_distancia,AG_lejos_>=0.100_tres_etiquetas,75
+hipotesis,FP_HS_con_marcadores_broma_afiliacion,27/173 (15.6%) | SUPPORTED | contraejemplo: FP_HS sin marcadores con probabilidad >= 0.9 (p. ej. 21892)
+hipotesis,FP_AG_con_marcadores_broma_afiliacion,"26/135 (19.3%) | SUPPORTED | misma evidencia que FP_HS; subconjunto, no explicacion completa"
+hipotesis,FN_AG_con_referencia_colectiva_superficie,16/142 (11.3%) | TENTATIVE | lista ilustrativa; el slice spaCy de colectivos da el recuento sistematico
+hipotesis,FN_HS_en_textos_con_comilla,5/143 (3.5%) | TENTATIVE | QUOTED v4 tiene 16 errores en total; minoritario
+hipotesis,errores_fronterizos_menos_0.025,84/757 (11.1%) | CONFIRMED | porcentaje directo; no implica causa de decision
+hipotesis,errores_lejanos_mas_0.100,466/757 (61.6%) | CONFIRMED | limita el potencial de una solucion basada solo en thresholds

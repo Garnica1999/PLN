@@ -1,0 +1,67 @@
+{
+  "phase": "P92-Z main responses reception",
+  "date": "2026-10-13",
+  "received_via": "mensaje de Carlos (2026-10-13)",
+  "files": {
+    "response_A.csv": "599832fc398940078aa28fc074286db74a123fbee778eec4b2c6885605ff8a3a",
+    "response_B.csv": "fc213a143e72517f2cf04ded265cc457a1e413e067bda3466b789351653f8480",
+    "response_B_sin_texto.csv": "770a87353eb1db9d64a4e361173b5f52997cef2905c3e4099943407f016d763f",
+    "annotator_A_completado.csv": "27328e91e41f1f9ac8ce325b9bae773cf3b0dff0edfca28b400589b6cde782bc",
+    "annotator_B_completado.csv": "c06f846426bf34e4b362db5b330ca247f1d987e283996a56272c0a4a0a8e8067",
+    "PROVENANCE.md": "7c812cfa49bd5e37787e268ca28bfae6c4a55445974160356a066249866d480c"
+  },
+  "checks": {
+    "A_250_filas": true,
+    "B_250_filas": true,
+    "B2_250_filas": true,
+    "A_ids_esperados": true,
+    "B_ids_esperados": true,
+    "B2_ids_esperados": true,
+    "A_sin_duplicados": true,
+    "B_sin_duplicados": true,
+    "A_tokens_validos": true,
+    "B_tokens_validos": true,
+    "B2_tokens_validos": true,
+    "A_version_v2": true,
+    "B_version_v2": true,
+    "A_columnas_7_sin_text": true,
+    "B_columnas_8_con_text": true,
+    "B2_columnas_7_sin_text": true,
+    "B_textos_sin_diferencias_materiales": true,
+    "sin_reservados": true,
+    "B_vs_B2_identicos": true
+  },
+  "texts_B_vs_source": {
+    "exactos": 215,
+    "artefacto_comillas": 17,
+    "artefacto_comillas_y_espacios": 16,
+    "residuales": [
+      "P92W-0048",
+      "P92W-0038"
+    ]
+  },
+  "order_notes": {
+    "A_igual_al_paquete": false,
+    "B_igual_al_paquete": true,
+    "A_divergencias_idx": [
+      203,
+      204
+    ]
+  },
+  "avisos": [
+    "textos de B con variantes residuales (no afectan anotaciones): ['P92W-0048', 'P92W-0038']"
+  ],
+  "crude_agreement_A_B": {
+    "HS": 199,
+    "TR": 201,
+    "AG": 172,
+    "tres_etiquetas": 131
+  },
+  "status": "MAIN_RESPONSES_RECEIVED_AND_VALIDATED",
+  "calibration": "PENDING_HUMAN_RESPONSES",
+  "notes": [
+    "respuestas de la muestra principal; no de la calibracion",
+    "A sin columna text (7 columnas); B con y sin text (anotaciones identicas)",
+    "desviacion de protocolo (calibracion primero) registrada, no resuelta"
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "kaggle_toxic_2026_puj.corpus_manifest.p98.v1",
+  "creado": "2026-10-13",
+  "autorizacion": {
+    "mecanismo": "BiLSTM contextural desde cero (docs/p98_provenance_autorizacion_bilstm.md)",
+    "corpus_externos": "docs/p73_provenance_autorizacion_corpus.md",
+    "reglas": "docs/competition_rules.md (restriccion adicional)"
+  },
+  "reglas": [
+    "Ningun corpus se usa para supervision HS/TR/AG (solo objetivo de lenguaje).",
+    "Ningun texto de toxic_test.csv entra en el corpus; tampoco holdouts.",
+    "Corpus de odio en cuarentena hasta autorizacion escrita.",
+    "Expansiones de corpus exigen RATIONALE previo con evidencia downstream.",
+    "Familia Common Crawl tratada como una sola fuente."
+  ],
+  "corpus_autorizados": [
+    {
+      "source_id": "C98-SRC-01",
+      "nombre": "wikipedia_es_10M",
+      "tokens": 10002400,
+      "documentos": 2847,
+      "sha256": "00b839da6fbc377ee5375acc9a236e831e46ecf92cc544188b81aef1a826e871",
+      "ruta": "data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt"
+    },
+    {
+      "source_id": "C98-SRC-02",
+      "nombre": "wikipedia_es_50M",
+      "tokens": 50000028,
+      "documentos": 21529,
+      "sha256": "8088bce2a9283fbc835ab62efe3fb25f40af346f9a8003fe3d101619bbc32463",
+      "ruta": "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_50M.txt"
+    },
+    {
+      "source_id": "C98-SRC-03",
+      "nombre": "wikipedia_es_5M",
+      "tokens": 5011404,
+      "documentos": 1694,
+      "sha256": "62aaa19af45c31f8fe9e48340cac91ab74ba0a6d19b45a1ef6b853a80b310b59",
+      "ruta": "data/external/corpora/wikipedia_es_5M/emb_normal/tokens_5M.txt"
+    },
+    {
+      "source_id": "C98-SRC-04",
+      "nombre": "mc4_es_10M",
+      "tokens": 10000239,
+      "documentos": 16738,
+      "sha256": "361498bf3eca104d527759de68980ea358002aeeb27e57d0de8562fac79b4f97",
+      "ruta": "data/external/corpora/mc4_es/emb_normal/tokens_10M.txt"
+    },
+    {
+      "source_id": "C98-SRC-06",
+      "nombre": "twitter_domain_covid_es",
+      "tokens": 10304387,
+      "documentos": 361994,
+      "sha256": "1ef872c189d0f405bc1a3f8281cafe08e6b099958e6b8a3816db1460df91f8b9",
+      "ruta": "data/external/corpora/twitter_domain/corpus_twitter_tokens.txt"
+    }
+  ],
+  "cuarentena": [
+    "C98-SRC-40",
+    "C98-SRC-41",
+    "C98-SRC-42",
+    "C98-SRC-43",
+    "C98-SRC-44"
+  ],
+  "candidatas_sin_descarga": [
+    "C98-SRC-10",
+    "C98-SRC-11",
+    "C98-SRC-12",
+    "C98-SRC-20",
+    "C98-SRC-21",
+    "C98-SRC-30"
+  ],
+  "propuesta_composicion_C98_1": {
+    "tokens_objetivo": 30000000,
+    "proporciones": {
+      "wikipedia": 0.6,
+      "mc4": 0.25,
+      "twitter": 0.15
+    },
+    "nota": "proporciones a congelar en la construccion de C98-1; deduplicacion por documento entre componentes; el corte de wikipedia usa el prefijo del archivo de 50M (sin descarga nueva); el de twitter usa muestreo por documento con semilla fija para evitar sesgo temporal"
+  },
+  "plan_estado": {
+    "fase_A": {
+      "registro": "hecho",
+      "licencias": "hecho",
+      "auditoria_hashes": "hecho",
+      "auditoria_solapamiento": "CUMPLE (p98_02)",
+      "infra_sintetica": "hecha (p98_01; ROCm OK; determinismo exacto)"
+    },
+    "fase_B": "pendiente (C98-0, C98-1, D98-1)"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "experimento": "P110-01",
+  "descripcion": "Challenger V2_triple + Blend 95% LR / 5% SGD + Regla Ascendente",
+  "duracion_segundos": 92.09,
+  "features": {
+    "tipo": "Union triple TF-IDF (word(1,2) + char_wb(3,5) + char(1,6))",
+    "min_df": 2,
+    "dimension": 86275
+  },
+  "modelos": {
+    "M_A": "LogisticRegression(C=2.0, balanced, liblinear)",
+    "M_B": "SGDClassifier(loss='log_loss', alpha=5e-6, balanced)",
+    "ponderacion": "0.95 * M_A + 0.05 * M_B"
+  },
+  "umbrales": {
+    "HS": 0.44,
+    "TR": 0.51,
+    "AG": 0.46
+  },
+  "regla": "TR=1 => HS=1 (Ascendente)",
+  "canonica": {
+    "ccv_p110": 0.7849980685788392,
+    "ccv_p108": 0.7823719208568648,
+    "ccv_v03": 0.7772114525165721,
+    "delta_vs_p108": 0.002626147721974448,
+    "delta_vs_v03": 0.00778661606226716,
+    "f1_por_etiqueta_p110": {
+      "HS": 0.7698056801195815,
+      "TR": 0.8207440811724915,
+      "AG": 0.7644444444444445
+    },
+    "f1_por_etiqueta_p108": {
+      "HS": 0.762902019446522,
+      "TR": 0.8149829738933031,
+      "AG": 0.7692307692307693
+    },
+    "pliegues_ganados": "4/5",
+    "deltas_por_pliegue": [
+      -0.0017175822869218704,
+      0.00634764071596583,
+      0.0009243272467256425,
+      0.0005576820606115751,
+      0.007442856695042854
+    ],
+    "bootstrap_ci95": [
+      -0.0022981494428407937,
+      0.007601262961234815
+    ],
+    "bootstrap_win_rate": 0.847,
+    "celdas_distintas_vs_p108": 54,
+    "n_violaciones_ascendentes_corregidas": 26
+  },
+  "particion_47": {
+    "ccv_p110": 0.7843178254108252,
+    "ccv_p108": 0.78118541151792,
+    "ccv_v03": 0.7756319868803105,
+    "delta_vs_p108": 0.003132413892905195,
+    "delta_vs_v03": 0.008685838530514634,
+    "f1_por_etiqueta_p110": {
+      "HS": 0.7616191904047976,
+      "TR": 0.8265765765765766,
+      "AG": 0.7647577092511013
+    },
+    "f1_por_etiqueta_p108": {
+      "HS": 0.7614061331338818,
+      "TR": 0.8235294117647058,
+      "AG": 0.7586206896551724
+    },
+    "pliegues_ganados": "4/5",
+    "deltas_por_pliegue": [
+      -0.0036593826052049305,
+      0.0065768244224998496,
+      0.0022084593595468327,
+      0.0049245106867038535,
+      0.0054829673987887295
+    ],
+    "bootstrap_ci95": [
+      -0.001578232277361835,
+      0.00795322327371308
+    ],
+    "bootstrap_win_rate": 0.9165,
+    "celdas_distintas_vs_p108": 53,
+    "n_violaciones_ascendentes_corregidas": 22
+  },
+  "media_ccv": 0.7846579469948323,
+  "media_delta_p108": 0.0028792808074398213,
+  "test": {
+    "filas": 1154,
+    "celdas_distintas_vs_p108": 27,
+    "pct_distintas_vs_p108": 0.78,
+    "violaciones_corregidas": 9,
+    "positivos_p110": {
+      "HS": 513,
+      "TR": 327,
+      "AG": 419
+    },
+    "positivos_p108": {
+      "HS": 506,
+      "TR": 328,
+      "AG": 414
+    },
+    "tasa_positivos_p110": 0.3637,
+    "sha256": "535b2b35e4e3131f28af2026805f5846fbc2cfe81b744d73344b2605967a47b4"
+  }
+}

@@ -1125,3 +1125,18 @@ referencias `10.18653/*` fueron confirmadas adicionalmente contra el `.bib` ofic
 ACL Anthology. Los identificadores ACL son estables y apuntan a la pagina del trabajo.
 Ningun resultado numerico de esta revision procede de memoria: cuando se citan numeros,
 proceden del abstract o del texto del trabajo, y se marcan como "reportado".
+
+---
+
+## 15. Continuacion en Fase P108-P129 (Campeonato Supremo 0.80516)
+
+La revision bibliografica para el ciclo de experimentos de alto impacto P108 a P129
+(que alcanzo el Campeonato Supremo en Kaggle con P128, LB 0.80516, y el diagnostico
+de P129, LB 0.80078) se encuentra consolidada en:
+
+- **Informe detallado de literatura y teoria:** `reports/estado_arte_p108_p129.md`
+  (20 articulos cientificos organizados bajo los 7 pilares teorico-matematicos).
+- **Registro tabular SOTA:** `reports/estado_arte_p108_p129.csv` (20 registros con metadatos
+  de publicacion, venue, DOI, formulacion matematica y mapeo a experimentos).
+- **Base unificada BibTeX:** `references.bib` (63 entradas primarias verificadas).
+

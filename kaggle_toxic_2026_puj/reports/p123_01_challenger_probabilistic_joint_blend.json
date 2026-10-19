@@ -1,0 +1,257 @@
+{
+  "experimento": "P123-01",
+  "descripcion": "Challenger Probabilistic Joint Blend (Stage 2 con Atenuacion Ontologica de TR en baja confianza conjunta y Guardia de Amenaza)",
+  "duracion_segundos": 780.03,
+  "features_total": 86275,
+  "parametros": {
+    "gamma_hs": 0.02,
+    "beta_tr": 0.0,
+    "beta_ag": 0.6,
+    "tr_th": 0.58,
+    "theta_tr": 0.15,
+    "hs_low_th": 0.35,
+    "ag_low_th": 0.35,
+    "tr_high_th": 0.51,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "temperatura": 1.04
+  },
+  "canonica": {
+    "ccv_p123": 0.7885842677078472,
+    "ccv_p122": 0.7875816993756768,
+    "ccv_p121": 0.7875816993756768,
+    "ccv_p114": 0.7872182792620254,
+    "ccv_v03": 0.7772114525165721,
+    "delta_vs_p121": 0.0010025683321703838,
+    "delta_vs_p122": 0.0010025683321703838,
+    "delta_vs_p114": 0.0013659884458218086,
+    "delta_vs_v03": 0.011372815191275087,
+    "f1_por_etiqueta_p123": {
+      "HS": 0.7718773373223635,
+      "TR": 0.8225988700564971,
+      "AG": 0.7712765957446809
+    },
+    "f1_por_etiqueta_p122": {
+      "HS": 0.7707244212098581,
+      "TR": 0.8207440811724915,
+      "AG": 0.7712765957446809
+    },
+    "f1_por_etiqueta_p121": {
+      "HS": 0.7707244212098581,
+      "TR": 0.8207440811724915,
+      "AG": 0.7712765957446809
+    },
+    "f1_por_etiqueta_p114": {
+      "HS": 0.7707244212098581,
+      "TR": 0.8207440811724915,
+      "AG": 0.7701863354037267
+    },
+    "pliegues_ganados_vs_p121": "1/5",
+    "pliegues_empatados_vs_p121": "4/5",
+    "pliegues_ganados_vs_p122": "1/5",
+    "pliegues_empatados_vs_p122": "4/5",
+    "pliegues_ganados_vs_p114": "2/5",
+    "pliegues_empatados_vs_p114": "3/5",
+    "deltas_por_pliegue_vs_p121": [
+      0.0,
+      0.0,
+      0.0,
+      0.0048355128064070385,
+      0.0
+    ],
+    "deltas_por_pliegue_vs_p122": [
+      0.0,
+      0.0,
+      0.0,
+      0.0048355128064070385,
+      0.0
+    ],
+    "deltas_por_pliegue_vs_p114": [
+      0.0,
+      0.0,
+      0.0,
+      0.0048355128064070385,
+      0.0019340360823220104
+    ],
+    "bootstrap_ci95_vs_p121": [
+      0.0,
+      0.0025858227069833757
+    ],
+    "bootstrap_win_rate_vs_p121": 0.865,
+    "bootstrap_ci95_vs_p122": [
+      0.0,
+      0.0025858227069833757
+    ],
+    "bootstrap_win_rate_vs_p122": 0.865,
+    "bootstrap_ci95_vs_p114": [
+      0.0,
+      0.003210749062253201
+    ],
+    "bootstrap_win_rate_vs_p114": 0.9545,
+    "celdas_distintas_vs_p121": 4,
+    "celdas_distintas_vs_p122": 4,
+    "celdas_distintas_vs_p114": 5,
+    "n_violaciones_ascendentes_corregidas": 23
+  },
+  "particion_47": {
+    "ccv_p123": 0.7860343934533356,
+    "ccv_p122": 0.7860343934533356,
+    "ccv_p121": 0.7856733330466952,
+    "ccv_p114": 0.7856733330466952,
+    "ccv_v03": 0.7756319868803105,
+    "delta_vs_p121": 0.00036106040664041217,
+    "delta_vs_p122": 0.0,
+    "delta_vs_p114": 0.00036106040664041217,
+    "delta_vs_v03": 0.010402406573025047,
+    "f1_por_etiqueta_p123": {
+      "HS": 0.7615499254843517,
+      "TR": 0.8292134831460675,
+      "AG": 0.7673397717295873
+    },
+    "f1_por_etiqueta_p122": {
+      "HS": 0.7615499254843517,
+      "TR": 0.8292134831460675,
+      "AG": 0.7673397717295873
+    },
+    "f1_por_etiqueta_p121": {
+      "HS": 0.7615499254843517,
+      "TR": 0.8292134831460675,
+      "AG": 0.7662565905096661
+    },
+    "f1_por_etiqueta_p114": {
+      "HS": 0.7615499254843517,
+      "TR": 0.8292134831460675,
+      "AG": 0.7662565905096661
+    },
+    "pliegues_ganados_vs_p121": "1/5",
+    "pliegues_empatados_vs_p121": "4/5",
+    "pliegues_ganados_vs_p122": "0/5",
+    "pliegues_empatados_vs_p122": "5/5",
+    "pliegues_ganados_vs_p114": "1/5",
+    "pliegues_empatados_vs_p114": "4/5",
+    "deltas_por_pliegue_vs_p121": [
+      0.0018711686425648688,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "deltas_por_pliegue_vs_p122": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "deltas_por_pliegue_vs_p114": [
+      0.0018711686425648688,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bootstrap_ci95_vs_p121": [
+      0.0,
+      0.0011791000165279587
+    ],
+    "bootstrap_win_rate_vs_p121": 0.6575,
+    "bootstrap_ci95_vs_p122": [
+      0.0,
+      0.0
+    ],
+    "bootstrap_win_rate_vs_p122": 0.0,
+    "bootstrap_ci95_vs_p114": [
+      0.0,
+      0.0011791000165279587
+    ],
+    "bootstrap_win_rate_vs_p114": 0.6575,
+    "celdas_distintas_vs_p121": 1,
+    "celdas_distintas_vs_p122": 0,
+    "celdas_distintas_vs_p114": 1,
+    "n_violaciones_ascendentes_corregidas": 22
+  },
+  "media_ccv": {
+    "p123": 0.7873093305805914,
+    "p122": 0.7868079383891566,
+    "p121": 0.786627516211186,
+    "p114": 0.7864457009619534,
+    "delta_vs_p121": 0.000681814369405398,
+    "delta_vs_p122": 0.0005013921914347463,
+    "delta_vs_p114": 0.0008636296186379511
+  },
+  "test_eval": {
+    "celdas_distintas_vs_p121": 1,
+    "celdas_distintas_vs_p122": 0,
+    "celdas_distintas_vs_p114": 2,
+    "positivos_p123": {
+      "HS": 514,
+      "TR": 330,
+      "AG": 421
+    },
+    "positivos_p122": {
+      "HS": 514,
+      "TR": 330,
+      "AG": 421
+    },
+    "positivos_p121": {
+      "HS": 514,
+      "TR": 330,
+      "AG": 420
+    },
+    "positivos_p114": {
+      "HS": 515,
+      "TR": 330,
+      "AG": 420
+    },
+    "total_positivos": 1265,
+    "tasa_positiva_pct": 36.54,
+    "violaciones_ascendentes_corregidas": 10,
+    "sha256": "daa97f5d9b68b26003083ba5588aefa99e433e77e30fac85dc26ab3c07916048",
+    "proyeccion_public_lb": 0.79208,
+    "filas_clave_auditadas": {
+      "fila_583_supresion_hs": {
+        "id": 24341,
+        "pred": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fila_917_rescate_ag": {
+        "id": 24539,
+        "pred": [
+          1,
+          1,
+          1
+        ]
+      },
+      "fila_300_exclusion_perra": {
+        "id": 20051,
+        "pred": [
+          1,
+          1,
+          0
+        ]
+      },
+      "fila_1049_blindaje_fortnite": {
+        "id": 23726,
+        "pred": [
+          1,
+          0,
+          1
+        ]
+      },
+      "fila_345_guardia_amenaza": {
+        "id": 23782,
+        "pred": [
+          1,
+          1,
+          0
+        ]
+      }
+    }
+  }
+}

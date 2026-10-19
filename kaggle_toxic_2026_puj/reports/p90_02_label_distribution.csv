@@ -1,0 +1,14 @@
+bloque,clave,n,denominador,proporcion
+marginal,HS,648,1483,0.436952
+marginal,TR,445,1483,0.300067
+marginal,AG,567,1483,0.382333
+combinacion,HS=0 TR=0 AG=0,813,1483,0.548213
+combinacion,HS=0 TR=0 AG=1,22,1483,0.014835
+combinacion,HS=1 TR=0 AG=0,79,1483,0.053270
+combinacion,HS=1 TR=0 AG=1,124,1483,0.083614
+combinacion,HS=1 TR=1 AG=0,24,1483,0.016183
+combinacion,HS=1 TR=1 AG=1,421,1483,0.283884
+dependencia,P(TR=1|HS=1),445,648,0.686728
+dependencia,P(TR=1|HS=0),0,835,0.000000
+dependencia,P(AG=1|HS=1),545,648,0.841049
+dependencia,P(AG=1|HS=0),22,835,0.026347

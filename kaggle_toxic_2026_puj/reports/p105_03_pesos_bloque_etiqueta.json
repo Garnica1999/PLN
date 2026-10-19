@@ -1,0 +1,171 @@
+{
+  "experiment_id": "P105-03",
+  "fase": "P105 RONDA 4 (S7c): pesos de bloque por etiqueta",
+  "fecha": "2026-10-14",
+  "control": {
+    "diff_max_proba": 0.0,
+    "ccv": 0.7772114525165721,
+    "reproduce_v03": true,
+    "particion_47": {
+      "celdas_distintas": 0,
+      "diff_max_proba": 0.0
+    }
+  },
+  "v03_referencia": {
+    "corrected_cv": 0.7772114525165721,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    }
+  },
+  "malla": [
+    0.5,
+    0.75,
+    1.0,
+    1.25,
+    1.5
+  ],
+  "canonica": {
+    "corrected_cv": 0.776087,
+    "delta_vs_v03": -0.001125,
+    "folds": [
+      0.792758,
+      0.78899,
+      0.78453,
+      0.744547,
+      0.769607
+    ],
+    "pliegues_mejorados": 2,
+    "celdas_cambiadas": 67,
+    "bootstrap": {
+      "ic95": [
+        -0.005996,
+        0.003508
+      ],
+      "pct_mejora": 0.334
+    },
+    "deteccion": {
+      "se_bootstrap": 0.002425,
+      "delta_min_detectable_95": 0.004752
+    }
+  },
+  "particion_47": {
+    "corrected_cv": 0.775454,
+    "delta_vs_v03": -0.000178,
+    "folds": [
+      0.764644,
+      0.766815,
+      0.765454,
+      0.793938,
+      0.785161
+    ],
+    "pliegues_mejorados": 3,
+    "celdas_cambiadas": 91,
+    "bootstrap": {
+      "ic95": [
+        -0.005794,
+        0.005601
+      ],
+      "pct_mejora": 0.4835
+    },
+    "deteccion": {
+      "se_bootstrap": 0.002907,
+      "delta_min_detectable_95": 0.005697
+    }
+  },
+  "gate": {
+    "condiciones": {
+      "delta_can_ge_0003": false,
+      "pliegues_ge_4": false,
+      "ic95_excluye_cero": false,
+      "delta_47_positivo": false,
+      "celdas_ge_200": false
+    },
+    "veredicto": "GATE_FAILED"
+  },
+  "conclusion": "sin senal detectable: IC95 del delta [-0.005996,+0.003508] incluye cero; piso de deteccion +0.004752.",
+  "seleccion_por_pliegue_canonica": [
+    {
+      "pliegue": 1,
+      "HS": 1.5,
+      "TR": 1.0,
+      "AG": 1.25
+    },
+    {
+      "pliegue": 2,
+      "HS": 1.25,
+      "TR": 1.25,
+      "AG": 1.5
+    },
+    {
+      "pliegue": 3,
+      "HS": 1.5,
+      "TR": 0.75,
+      "AG": 1.5
+    },
+    {
+      "pliegue": 4,
+      "HS": 1.5,
+      "TR": 1.0,
+      "AG": 1.0
+    },
+    {
+      "pliegue": 5,
+      "HS": 1.25,
+      "TR": 0.5,
+      "AG": 1.0
+    }
+  ],
+  "seleccion_por_pliegue_47": [
+    {
+      "pliegue": 1,
+      "HS": 1.25,
+      "TR": 0.5,
+      "AG": 0.75
+    },
+    {
+      "pliegue": 2,
+      "HS": 1.5,
+      "TR": 0.75,
+      "AG": 1.5
+    },
+    {
+      "pliegue": 3,
+      "HS": 1.5,
+      "TR": 1.25,
+      "AG": 1.5
+    },
+    {
+      "pliegue": 4,
+      "HS": 1.5,
+      "TR": 0.5,
+      "AG": 1.25
+    },
+    {
+      "pliegue": 5,
+      "HS": 1.0,
+      "TR": 1.0,
+      "AG": 1.5
+    }
+  ],
+  "estabilidad_canonica": {
+    "HS": {
+      "1.5": 3,
+      "1.25": 2
+    },
+    "TR": {
+      "1.0": 2,
+      "1.25": 1,
+      "0.75": 1,
+      "0.5": 1
+    },
+    "AG": {
+      "1.25": 1,
+      "1.5": 2,
+      "1.0": 2
+    }
+  },
+  "sha_oof_final": "559265816ce4f631",
+  "tiempo_s": 94.7
+}

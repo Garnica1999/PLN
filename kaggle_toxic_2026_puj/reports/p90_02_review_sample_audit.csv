@@ -1,0 +1,7 @@
+chequeo,valor,nota
+controles_totales,757,1:1 por celda de error
+controles_unicos,454,un control puede repetirse
+controles_incumplen_criterios,0,etiqueta+fold+y_true+direccion
+muestra_errores,100,tope 100
+muestra_controles,185,controles de los errores seleccionados
+muestra_no_es_aleatoria,CONFIRMADO,estratificada; no estimar prevalencias poblacionales

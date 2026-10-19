@@ -1,0 +1,95 @@
+{
+  "phase": "P93-R2 reception of independent reviews C1/C2",
+  "date": "2026-10-13",
+  "status": "C_REVIEWS_RECEIVED_AND_VALIDATED",
+  "reviewers": 2,
+  "files": {
+    "artifacts/p93_adjudication_v1/responses/response_C1.csv": "f89f74cdabd9649d9894faef7064f9c73413d1d06129733cf829b7e3338c3fe1",
+    "artifacts/p93_adjudication_v1/responses/response_C2.csv": "e0449a811fa8b64b6e6e1eb2cbbfbcc00bca36685f53c00eaf2de46e67830daf",
+    "artifacts/p93_adjudication_v1/responses/response_C1_completado.csv": "7fd2e2a5a1cd8af1e9d5903628ef9489d6343f8b69bff26690e0370179529b70",
+    "artifacts/p93_adjudication_v1/responses/response_C2_completado.csv": "22e33186b8efe73d587e7490d4ec1a1afa2d7ca15c542d56bf6302e3276b981b",
+    "artifacts/p93_adjudication_v1/responses/PROVENANCE.md": "251888e411155dd8065d04df8fbea6a1293356d53cd126a23c9a000b245a60d1",
+    "reports/p93r2_round2_comparison_dual_reviewer.csv": "85402c207addec5242232ac8999bda2d906cf09eeffdae792092f0c58fe40be7",
+    "independent_review/adjudicator_C1.csv (original)": "f89f74cdabd9649d9894faef7064f9c73413d1d06129733cf829b7e3338c3fe1",
+    "independent_review/adjudicator_C2.csv (original)": "e0449a811fa8b64b6e6e1eb2cbbfbcc00bca36685f53c00eaf2de46e67830daf"
+  },
+  "checks": {
+    "C1_127_filas": true,
+    "C2_127_filas": true,
+    "C1_ids_exactos": true,
+    "C2_ids_exactos": true,
+    "C1_orden_igual_al_template": true,
+    "C2_orden_igual_al_template": true,
+    "C1_tokens": true,
+    "C2_tokens": true,
+    "C1_version_v2": true,
+    "C2_version_v2": true,
+    "C1_columnas_7_sin_text": true,
+    "C2_columnas_8_con_text": true,
+    "C2_textos_sin_diferencias_materiales": true,
+    "template_intacto": true,
+    "paquete_p93r_intacto": true,
+    "copias_byte_a_byte": true,
+    "verificador_ascii_oficial": true
+  },
+  "avisos": [
+    "C2: 21 filas con artefactos de export en el texto (comillas/espacios); residuales: ['P93R-0011'] (no afectan anotaciones)",
+    "notas humanas con caracteres no ASCII (C1=0, C2=31; excepcion documentada, no se convierten)"
+  ],
+  "marginals": {
+    "C1": {
+      "HS": {
+        "UNABLE_TO_DETERMINE": 43,
+        "NEGATIVE": 54,
+        "POSITIVE": 30
+      },
+      "TR": {
+        "POSITIVE": 89,
+        "NEGATIVE": 31,
+        "UNABLE_TO_DETERMINE": 7
+      },
+      "AG": {
+        "NEGATIVE": 80,
+        "POSITIVE": 42,
+        "UNABLE_TO_DETERMINE": 5
+      }
+    },
+    "C2": {
+      "HS": {
+        "NEGATIVE": 66,
+        "UNABLE_TO_DETERMINE": 27,
+        "POSITIVE": 34
+      },
+      "TR": {
+        "POSITIVE": 94,
+        "NEGATIVE": 29,
+        "UNABLE_TO_DETERMINE": 4
+      },
+      "AG": {
+        "NEGATIVE": 45,
+        "POSITIVE": 71,
+        "UNABLE_TO_DETERMINE": 11
+      }
+    }
+  },
+  "crude_C1_C2": {
+    "HS": 97,
+    "TR": 109,
+    "AG": 86
+  },
+  "triple_C1_C2": 65,
+  "candidate_cells_vs_AB": {
+    "C1": {
+      "coincide_con_A_B": 174,
+      "UTD": 2
+    },
+    "C2": {
+      "coincide_con_A_B": 159,
+      "difiere_de_A_B": 9,
+      "UTD": 8
+    }
+  },
+  "round2_material": "reports/p93r2_round2_comparison_dual_reviewer.csv",
+  "gold_comparison": "NOT_PERFORMED (fase posterior y separada)",
+  "calibration": "PENDING_HUMAN_RESPONSES"
+}

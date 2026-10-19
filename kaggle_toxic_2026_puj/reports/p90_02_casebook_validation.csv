@@ -1,0 +1,14 @@
+chequeo,esperado,observado,estado,evidencia
+filas_casebook,441,441,OK,conteo directo
+filas_celdas,757,757,OK,conteo directo
+ids_fuera_del_desarrollo,0,0,OK,pertenencia al OOF canonico
+probabilidades_alineadas,0 desalineadas,0,OK,comparacion con proba del OOF
+predicciones_alineadas,0 desalineadas,0,OK,comparacion con pred del OOF
+patrones_y_conteos,0 desviaciones,0,OK,error_pattern y n_wrong_labels reconstruidos
+folds,0 desviaciones,0,OK,comparacion con pliegues del OOF
+celdas_alineadas,0 desviaciones,0,OK,prob/pred/umbral/margen/distancia/fold por celda
+controles_reproducidos_1a1,757 celdas emparejadas,757 reproducidos; sin control: 0,OK,reproduccion determinista del procedimiento: misma etiqueta+fold+y_true y vecino mas cercano por |delta distancia|
+controles_cumplen_criterios,0 incumplimientos,0,OK,control_id/fold/y_true/y_pred/probabilidad/distancia y |delta_distancia| registrado coinciden con el calculo
+controles_repetidos,documentar,207,INFORMATIVO,un control puede emparejarse con varios errores
+muestra_errores_y_controles,100 + 185,100 + 185,OK,conteo directo
+muestra_motivos,0 sin motivo,0,OK,selection_reasons presente en cada error

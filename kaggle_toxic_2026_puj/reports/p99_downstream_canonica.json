@@ -1,0 +1,140 @@
+{
+  "particion": "canonica (folds de oof_v03_final)",
+  "reglas": {
+    "v03": {
+      "regla": "v03_frozen",
+      "corrected_cv": 0.7772114525165721,
+      "f1_por_etiqueta": {
+        "HS": 0.7616892911010558,
+        "TR": 0.8157303370786517,
+        "AG": 0.7542147293700089
+      },
+      "f1_pliegues": [
+        0.7960101143044023,
+        0.7940339497874405,
+        0.7788600288600289,
+        0.738598013128522,
+        0.7790564997088775
+      ],
+      "std_pliegues": 0.023094672193582515
+    },
+    "fusion_30M": {
+      "regla": "fusion_30M",
+      "corrected_cv": 0.7822662599315945,
+      "f1_por_etiqueta": {
+        "HS": 0.7647058823529411,
+        "TR": 0.8171806167400881,
+        "AG": 0.7649122807017544
+      },
+      "f1_pliegues": [
+        0.7834422600796449,
+        0.8036490701848562,
+        0.785812467533578,
+        0.7456267013453456,
+        0.7929592578156953
+      ],
+      "std_pliegues": 0.02195435933039762,
+      "correccion_vs_ref": {
+        "rescatadas": 103,
+        "rotas": 92,
+        "neto": 11
+      }
+    },
+    "fusion_60M": {
+      "regla": "fusion_60M",
+      "corrected_cv": 0.781586323627819,
+      "f1_por_etiqueta": {
+        "HS": 0.7684210526315789,
+        "TR": 0.8177777777777778,
+        "AG": 0.7585601404741001
+      },
+      "f1_pliegues": [
+        0.7915300137988573,
+        0.796441458255568,
+        0.7880398036275981,
+        0.7394515190269325,
+        0.7932133001098518
+      ],
+      "std_pliegues": 0.023830741149285527,
+      "correccion_vs_ref": {
+        "rescatadas": 91,
+        "rotas": 81,
+        "neto": 10
+      }
+    },
+    "embedding_30M": {
+      "regla": "embedding_30M",
+      "corrected_cv": 0.6522376845363221,
+      "f1_por_etiqueta": {
+        "HS": 0.6521739130434783,
+        "TR": 0.6859344894026975,
+        "AG": 0.6186046511627907
+      },
+      "f1_pliegues": [
+        0.6482848311626447,
+        0.6737876822468468,
+        0.6503406275672322,
+        0.6615946550583417,
+        0.6274810259503326
+      ],
+      "std_pliegues": 0.01720503756175959
+    },
+    "embedding_60M": {
+      "regla": "embedding_60M",
+      "corrected_cv": 0.6478164584950784,
+      "f1_por_etiqueta": {
+        "HS": 0.6422712933753943,
+        "TR": 0.6770428015564203,
+        "AG": 0.6241352805534205
+      },
+      "f1_pliegues": [
+        0.6403996460427248,
+        0.6451829701862312,
+        0.6470981615939942,
+        0.6558469985630403,
+        0.6507489380728817
+      ],
+      "std_pliegues": 0.005821120346208541
+    }
+  },
+  "control_reproduccion_30M": {
+    "valor": 0.7822662599315945,
+    "esperado": 0.7822662599,
+    "ok": true
+  },
+  "comparacion": {
+    "delta60_vs_v03": 0.004375,
+    "pliegues60_mejorados_vs_v03": 4,
+    "delta60_vs_30": -0.00068,
+    "neto60_vs_v03": 10,
+    "neto60_vs_30": -1,
+    "bootstrap_60_vs_v03": {
+      "ic95": [
+        -0.003948,
+        0.013231
+      ],
+      "pct_mejora": 0.8455
+    },
+    "bootstrap_60_vs_30": {
+      "ic95": [
+        -0.007183,
+        0.005959
+      ],
+      "pct_mejora": 0.439
+    }
+  },
+  "tiempo_total_s": 15.3,
+  "gate": {
+    "condiciones": {
+      "delta60_vs_v03_canonica_ge_0003": true,
+      "pliegues_canonica_ge_4": true,
+      "positivo_vs_30M": false,
+      "positivo_en_particion_47": false,
+      "neto_positivo_canonica": true,
+      "neto_positivo_47": false
+    },
+    "veredicto": "GATE_FAILED",
+    "nota": "cumplir el gate permite proponer el siguiente experimento; no autoriza adopcion"
+  },
+  "experiment_id": "P99-13"
+}

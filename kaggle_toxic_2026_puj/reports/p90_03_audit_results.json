@@ -1,0 +1,354 @@
+{
+ "audit_id": "P90-03",
+ "git_commit": "e43c594917fc643d0e300b73646aefb7dbd6b61d",
+ "hashes": {
+  "oof": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+  "modelo": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+  "v2base": "27dfa83736b979518a94bc93e32bb9cae07bc82eaff92234fe9e15d1f9822774",
+  "train": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+  "casebook": "b14d6ed21f011dc163c61cc5ec258889d052fd1226f3936a53918f0491b8c42b",
+  "cells": "6a582e67d6450bcfc4e634036823e581080c56a1042dbdd95e9b39843810e26d",
+  "controls": "75bc065a15e5a0b5cc5ffb5081ddcc80aa7bf24c5f7d7d20ea054e552997df40",
+  "sample": "33272bbc92a65e813bb80e4041ffe1d55c28a4d8b2c09321b0c4768878a52ab1",
+  "lexico": "abcb61f0d6f93f33c337a6705f6770498ee89d1071a1dc5ea30369d871d09da9"
+ },
+ "disponibilidad": {
+  "modelos_por_fold": "AUSENTES: 14_oof_corregido_v2.py ajusta en memoria por pliegue y guarda solo probabilidades",
+  "modelo_final": "experiments/baseline_v03_frozen/model_v03.joblib (entrenado con todo el train)",
+  "atribucion_exacta_oof": "BLOCKED_BY_MISSING_ARTIFACTS",
+  "atribucion_auxiliar": "AUXILIARY_FULL_MODEL_ATTRIBUTION"
+ },
+ "validacion": {
+  "sigmoid_vs_predict_proba_max": 0.0,
+  "reconstruccion_z_max_residuo": 9.325873406851315e-15,
+  "lineaje_m2": "exacto (0.0)",
+  "estratos_verificados": {
+   "HS": [
+    40,
+    87,
+    189
+   ],
+   "TR": [
+    13,
+    40,
+    111
+   ],
+   "AG": [
+    31,
+    80,
+    166
+   ]
+  },
+  "dif_aux_vs_oof_media": 0.1092681957660545,
+  "dif_aux_vs_oof_p90": 0.27579913487948465,
+  "n_word_features": 4024,
+  "n_char_features": 23407
+ },
+ "controles": {
+  "relaciones": 757,
+  "unicos": 454,
+  "clasificacion": {
+   "estructuralmente_parecido": 378,
+   "sin_control_comparable": 354,
+   "lexicalmente_similar": 7,
+   "parecido": 18
+  }
+ },
+ "muestra": {
+  "errores": 100,
+  "controles": 132,
+  "relaciones_de_la_muestra": 185,
+  "clasificacion": {
+   "estructuralmente_parecido": 90,
+   "sin_control_comparable": 86,
+   "parecido": 8,
+   "lexicalmente_similar": 1
+  }
+ },
+ "estructura_tr": {
+  "identidad_violaciones": 0,
+  "filas": [
+   {
+    "tipo": "TR_FN",
+    "n": 82,
+    "con_HS_error_simultaneo": 48,
+    "con_HS_correcta": 34
+   },
+   {
+    "tipo": "TR_FP",
+    "n": 82,
+    "con_HS_error_simultaneo": 67,
+    "con_HS_correcta": 15
+   }
+  ]
+ },
+ "firmas": {
+  "AG|FP|conflicto word-char": 68,
+  "HS|FP|conflicto word-char": 75,
+  "TR|FP|acumulacion de muchas features": 30,
+  "HS|FP|conflicto positivas-negativas": 27,
+  "AG|FP|acumulacion de muchas features": 45,
+  "HS|FP|acumulacion de muchas features": 70,
+  "TR|FP|conflicto positivas-negativas": 25,
+  "HS|FN|acumulacion de muchas features": 96,
+  "AG|FN|acumulacion de muchas features": 119,
+  "HS|FN|conflicto positivas-negativas": 20,
+  "TR|FP|conflicto word-char": 26,
+  "AG|FP|conflicto positivas-negativas": 22,
+  "AG|FN|conflicto positivas-negativas": 14,
+  "TR|FN|acumulacion de muchas features": 66,
+  "HS|FN|conflicto word-char": 25,
+  "TR|FN|conflicto positivas-negativas": 6,
+  "TR|FN|pocas features dominantes": 2,
+  "AG|FN|no interpretable con los artefactos disponibles": 2,
+  "AG|FN|conflicto word-char": 4,
+  "HS|FN|sin evidencia hostil activada": 2,
+  "TR|FN|sin evidencia hostil activada": 4,
+  "AG|FN|pocas features dominantes": 1,
+  "AG|FN|sin evidencia hostil activada": 2,
+  "TR|FN|no interpretable con los artefactos disponibles": 4,
+  "HS|FP|no interpretable con los artefactos disponibles": 1,
+  "TR|FP|no interpretable con los artefactos disponibles": 1
+ },
+ "agregados": {
+  "HS|FP": {
+   "n": 173,
+   "top1_pos_es_lexico": 89,
+   "lexico_en_top10_pos": 107,
+   "mencion_en_top10_pos": 2,
+   "interpersonal_en_top10_pos": 47,
+   "colectivo_en_top10_pos": 5,
+   "sin_lexico_en_top10_pos": 66,
+   "puntuacion_en_top10": 31,
+   "char_dominante": 23,
+   "word_dominante": 11,
+   "conflicto_wc": 75,
+   "ambos_positivos": 26,
+   "ambos_negativos": 72,
+   "mismo_signo": 98,
+   "pos_y_neg": 173,
+   "neg_domina_ratio_0.3": 172,
+   "pocas_dominantes": 0,
+   "acumulacion": 131,
+   "cita_texto": 5,
+   "url_texto": 50,
+   "elongacion_texto": 15,
+   "sin_mencion_texto": 90,
+   "top_features_pos": "perra:32; los:23; zorra:9; cllate:8; se:8; callate:7; al:6; guarra:6; tu eres:5; con:5; sin:4; subsaharianos:4",
+   "top_features_neg": "en:16; la:13; mi perra:9; la puta:7; de:7; coo:5; https:3; polla:3; eres un:3; acoso:3; ni puta:3; mujer es:3"
+  },
+  "HS|FN": {
+   "n": 143,
+   "top1_pos_es_lexico": 46,
+   "lexico_en_top10_pos": 73,
+   "mencion_en_top10_pos": 0,
+   "interpersonal_en_top10_pos": 23,
+   "colectivo_en_top10_pos": 12,
+   "sin_lexico_en_top10_pos": 70,
+   "puntuacion_en_top10": 22,
+   "char_dominante": 89,
+   "word_dominante": 24,
+   "conflicto_wc": 25,
+   "ambos_positivos": 116,
+   "ambos_negativos": 2,
+   "mismo_signo": 118,
+   "pos_y_neg": 143,
+   "neg_domina_ratio_0.3": 140,
+   "pocas_dominantes": 0,
+   "acumulacion": 116,
+   "cita_texto": 5,
+   "url_texto": 62,
+   "elongacion_texto": 7,
+   "sin_mencion_texto": 103,
+   "top_features_pos": "los:13; se:10; al:10; perra:7; parte:3; mi polla:3; el culo:3; hacen:3; sudaca:3; hija de:3; no para:2; novia es:2",
+   "top_features_neg": "la:27; de:21; en:19; https:9; polla:7; rabe:5; de puta:4; la puta:4; acoso:4; me:3; arabe:3; ni:3"
+  },
+  "TR|FP": {
+   "n": 82,
+   "top1_pos_es_lexico": 67,
+   "lexico_en_top10_pos": 74,
+   "mencion_en_top10_pos": 0,
+   "interpersonal_en_top10_pos": 38,
+   "colectivo_en_top10_pos": 0,
+   "sin_lexico_en_top10_pos": 8,
+   "puntuacion_en_top10": 8,
+   "char_dominante": 32,
+   "word_dominante": 27,
+   "conflicto_wc": 26,
+   "ambos_positivos": 56,
+   "ambos_negativos": 0,
+   "mismo_signo": 56,
+   "pos_y_neg": 82,
+   "neg_domina_ratio_0.3": 81,
+   "pocas_dominantes": 1,
+   "acumulacion": 43,
+   "cita_texto": 0,
+   "url_texto": 12,
+   "elongacion_texto": 7,
+   "sin_mencion_texto": 31,
+   "top_features_pos": "perra:27; zorra:9; eres:8; puta:7; callate:6; tu:4; novia es:3; cllate:3; guarra:3; callate puta:2; hija de:2; te:2",
+   "top_features_neg": "la puta:8; mi perra:8; en:5; de:5; ni:3; hijo:3; maldito:2; callate la:2; son:2; puta rata:2; la mujer:2; comemela:2"
+  },
+  "TR|FN": {
+   "n": 82,
+   "top1_pos_es_lexico": 40,
+   "lexico_en_top10_pos": 55,
+   "mencion_en_top10_pos": 0,
+   "interpersonal_en_top10_pos": 30,
+   "colectivo_en_top10_pos": 1,
+   "sin_lexico_en_top10_pos": 27,
+   "puntuacion_en_top10": 8,
+   "char_dominante": 19,
+   "word_dominante": 12,
+   "conflicto_wc": 0,
+   "ambos_positivos": 82,
+   "ambos_negativos": 0,
+   "mismo_signo": 82,
+   "pos_y_neg": 82,
+   "neg_domina_ratio_0.3": 63,
+   "pocas_dominantes": 2,
+   "acumulacion": 66,
+   "cita_texto": 1,
+   "url_texto": 27,
+   "elongacion_texto": 2,
+   "sin_mencion_texto": 50,
+   "top_features_pos": "puta:12; perra:10; sudaca:7; zorra:5; mi polla:5; callada:3; eres:2; eres una:2; eres la:2; te:2; guarra:2; ella:2",
+   "top_features_neg": "de:18; en:13; el:8; los:6; la puta:4; la:3; escoria:2; un:2; polla:2; https:2; ni:2; ros:1"
+  },
+  "AG|FP": {
+   "n": 135,
+   "top1_pos_es_lexico": 87,
+   "lexico_en_top10_pos": 106,
+   "mencion_en_top10_pos": 0,
+   "interpersonal_en_top10_pos": 49,
+   "colectivo_en_top10_pos": 3,
+   "sin_lexico_en_top10_pos": 29,
+   "puntuacion_en_top10": 14,
+   "char_dominante": 36,
+   "word_dominante": 27,
+   "conflicto_wc": 68,
+   "ambos_positivos": 51,
+   "ambos_negativos": 16,
+   "mismo_signo": 67,
+   "pos_y_neg": 135,
+   "neg_domina_ratio_0.3": 135,
+   "pocas_dominantes": 1,
+   "acumulacion": 100,
+   "cita_texto": 0,
+   "url_texto": 39,
+   "elongacion_texto": 12,
+   "sin_mencion_texto": 65,
+   "top_features_pos": "perra:30; zorra:10; te:7; callate:6; guarra:6; se:5; al:5; cllate:5; sudaca:4; puta:3; tu eres:3; eres una:3",
+   "top_features_neg": "en:12; mi perra:7; la puta:5; el:4; ni:4; eres un:3; un:3; una mujer:3; das:3; eres mi:3; callate la:2; eres el:2"
+  },
+  "AG|FN": {
+   "n": 142,
+   "top1_pos_es_lexico": 45,
+   "lexico_en_top10_pos": 85,
+   "mencion_en_top10_pos": 0,
+   "interpersonal_en_top10_pos": 25,
+   "colectivo_en_top10_pos": 5,
+   "sin_lexico_en_top10_pos": 57,
+   "puntuacion_en_top10": 17,
+   "char_dominante": 79,
+   "word_dominante": 15,
+   "conflicto_wc": 4,
+   "ambos_positivos": 138,
+   "ambos_negativos": 0,
+   "mismo_signo": 138,
+   "pos_y_neg": 142,
+   "neg_domina_ratio_0.3": 126,
+   "pocas_dominantes": 1,
+   "acumulacion": 122,
+   "cita_texto": 6,
+   "url_texto": 63,
+   "elongacion_texto": 6,
+   "sin_mencion_texto": 105,
+   "top_features_pos": "al:14; perra:6; \"\"\":6; mi polla:4; puta:4; nos:4; manteros:3; zorra:3; se:3; todas las:3; no soy:2; sudacas:2",
+   "top_features_neg": "en:24; la:14; el:10; rabe:6; polla:6; un:5; https:5; de la:5; de puta:4; acoso:4; son:4; la puta:3"
+  }
+ },
+ "far": {
+  "HS|FP": {
+   "n": 112,
+   "pocas_dominantes": 0,
+   "acumulacion": 83,
+   "conflicto_wc": 63,
+   "mismo_signo": 49,
+   "top_features_pos": "perra:27; los:12; zorra:9; se:5; guarra:5; subsaharianos:4; al:3; cllate:3",
+   "top1_pos_por_fold": "f1:perra(5); f2:zorra(3); f3:perra(8); f4:perra(7); f5:perra(4)"
+  },
+  "HS|FN": {
+   "n": 77,
+   "pocas_dominantes": 0,
+   "acumulacion": 64,
+   "conflicto_wc": 20,
+   "mismo_signo": 57,
+   "top_features_pos": "los:9; se:5; al:4; el culo:3; parte:2; perra:2; no para:2; mi polla:2",
+   "top1_pos_por_fold": "f1:se(2); f2:el culo(1); f3:los(4); f4:perra(2); f5:al(2)"
+  },
+  "TR|FP": {
+   "n": 54,
+   "pocas_dominantes": 0,
+   "acumulacion": 28,
+   "conflicto_wc": 13,
+   "mismo_signo": 41,
+   "top_features_pos": "perra:20; eres:8; zorra:7; puta:5; guarra:3; callate puta:2; te:2; novia es:2",
+   "top1_pos_por_fold": "f1:perra(3); f2:perra(4); f3:perra(4); f4:perra(6); f5:perra(3)"
+  },
+  "TR|FN": {
+   "n": 57,
+   "pocas_dominantes": 1,
+   "acumulacion": 47,
+   "conflicto_wc": 0,
+   "mismo_signo": 57,
+   "top_features_pos": "puta:7; perra:6; sudaca:5; mi polla:4; zorra:3; te:2; ella:2; callada:2",
+   "top1_pos_por_fold": "f1:falta que(2); f2:puta(2); f3:puta(2); f4:sudaca(3); f5:puta(2)"
+  },
+  "AG|FP": {
+   "n": 77,
+   "pocas_dominantes": 0,
+   "acumulacion": 51,
+   "conflicto_wc": 27,
+   "mismo_signo": 50,
+   "top_features_pos": "perra:25; zorra:9; te:5; guarra:4; cllate:3; eres una:3; callate:3; callate puta:2",
+   "top1_pos_por_fold": "f1:perra(3); f2:perra(5); f3:perra(6); f4:perra(7); f5:perra(4)"
+  },
+  "AG|FN": {
+   "n": 89,
+   "pocas_dominantes": 0,
+   "acumulacion": 75,
+   "conflicto_wc": 2,
+   "mismo_signo": 87,
+   "top_features_pos": "al:11; perra:4; mi polla:3; nos:3; todas las:3; manteros:2; zorra:2; te:2",
+   "top1_pos_por_fold": "f1:todas las(3); f2:al(2); f3:casa(2); f4:al(3); f5:al(4)"
+  }
+ },
+ "coeficientes": {
+  "HS": {
+   "intercept": -0.3573478095443266,
+   "top_pos": "perra|3.2317; zorra|2.9683; callate puta|1.9234; eres una|1.9083; cllate|1.7805; rra|1.5659; cllate puta|1.5651; sudaca|1.4816; rra |1.4598; callate|1.4030; putos|1.3700; se|1.3357; negratas|1.2854; los|1.2769; cllate perra|1.2560; guarra|1.2409; al|1.2264; sudacas|1.1665; novia es|1.1482; orra|1.0885",
+   "top_neg": "la puta|-3.7785; hijo|-3.1833; hijo de|-2.8825; mi perra|-2.0785; escoria|-1.9588; puta madre|-1.7855; gera|-1.5499; acoso|-1.5373; puta boca|-1.5218; rabe|-1.5178; la|-1.5037; en|-1.3841; de puta|-1.3561; de|-1.3146; puta vez|-1.2718; ijo|-1.2300; eres un|-1.2133; comemela|-1.2022; ijo |-1.2013; madre|-1.2004",
+   "masa_abs_word": 898.6885885342859,
+   "masa_abs_char": 2044.4463608788546,
+   "share_masa_word": 0.30535079226098144
+  },
+  "TR": {
+   "intercept": -0.9999212403767879,
+   "top_pos": "perra|4.3424; zorra|3.8131; cllate|2.4389; puta|2.3404; eres una|2.2231; rra |2.1092; rra|2.0882; callate puta|1.9820; callate|1.9232; eres|1.9195; guarra|1.8284; sudaca|1.7541; te|1.6999; cllate puta|1.5494; orr|1.3732; eres la|1.3568; orra|1.3508;  zorr|1.3500; orra |1.3474; ra |1.3334",
+   "top_neg": "la puta|-3.3520; hijo|-2.8932; hijo de|-2.6438; mi perra|-1.9821; de|-1.8071; escoria|-1.6387; en|-1.6363; los|-1.4900; puta boca|-1.4777; puta madre|-1.4731; son|-1.4028; el|-1.3185; rabe|-1.1986; ijo|-1.1379; todo|-1.1197; la|-1.0976; puta vez|-1.0907; acoso|-1.0816; ijo |-1.0797; hijo|-1.0783",
+   "masa_abs_word": 754.6755699505,
+   "masa_abs_char": 1728.5258190140135,
+   "share_masa_word": 0.3039123501236431
+  },
+  "AG": {
+   "intercept": -0.7346228576698619,
+   "top_pos": "perra|3.2467; zorra|3.2423; \"\"\"|2.8700; eres una|2.1363; \"\"\"\"|2.1170; cllate|2.0855; callate puta|2.0676;  \"\"|1.9207; \"\" |1.8393; rra|1.6973; rra |1.6447; cllate puta|1.5271; putos|1.4953; guarra|1.4469; puta|1.4197; nos|1.3842; cllate perra|1.3528; al|1.2646; gorda|1.2588; callate|1.2175",
+   "top_neg": "la puta|-3.8145; hijo|-3.0789; hijo de|-2.8042; escoria|-1.7166; mi perra|-1.7036; puta madre|-1.5971; en|-1.4834; puta boca|-1.3997; de puta|-1.2173; rabe|-1.1768; polla|-1.1629; ijo |-1.1479; gera|-1.1363; la polla|-1.1086; ijo|-1.1067; acoso|-1.0822; hijo|-1.0638; la|-1.0526; hijo |-1.0522; puta vez|-1.0480",
+   "masa_abs_word": 873.0612037165791,
+   "masa_abs_char": 2051.893164172759,
+   "share_masa_word": 0.29848711942353634
+  }
+ },
+ "celdas": 757
+}

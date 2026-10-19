@@ -1,0 +1,192 @@
+{
+  "experiment_id": "P97-04",
+  "hipotesis": "H97-C (replicacion en segunda particion agrupada)",
+  "fecha": "2026-10-13",
+  "pre_registro": {
+    "particion": "StratifiedGroupKFold(5, shuffle, seed 43) sobre las mismas 1483 filas",
+    "modo": "nnPU/PNU no negativo con P, N y U",
+    "P": "TR=1",
+    "N": "TR=0 y HS=1",
+    "U": "HS=0",
+    "pi_p": "tasa observada de TR en el train del pliegue",
+    "optimizacion": {
+      "pasos": 400,
+      "adam_lr": 0.05,
+      "l2": "wd = 1/(C*n) con C=2 (equivalencia liblinear)"
+    },
+    "nota_correcciones": "dos instanciaciones previas invalidas preservadas (*_l2_escala_invalida, *_pn_idx_invalido); esta es la ejecucion valida del mecanismo tal como se pre-registro",
+    "umbrales_propios": "split interno agrupado de 4 pliegues"
+  },
+  "reglas": {
+    "propia_control": {
+      "regla": "propios_control",
+      "corrected_cv": 0.7720980489079032,
+      "f1_por_etiqueta": {
+        "HS": 0.755939524838013,
+        "TR": 0.8215859030837004,
+        "AG": 0.7387687188019967
+      },
+      "f1_pliegues": [
+        0.7693882039313378,
+        0.7518834326537108,
+        0.7755796157487489,
+        0.7900825583746186,
+        0.774604859159833
+      ],
+      "std_pliegues": 0.013762286483649097
+    },
+    "propia_nnpu": {
+      "regla": "propios_nnpu",
+      "corrected_cv": 0.7703599750186463,
+      "f1_por_etiqueta": {
+        "HS": 0.755939524838013,
+        "TR": 0.8163716814159292,
+        "AG": 0.7387687188019967
+      },
+      "f1_pliegues": [
+        0.7693882039313378,
+        0.7553198587705493,
+        0.7740653943450249,
+        0.7835437061653754,
+        0.7704680871347538
+      ],
+      "std_pliegues": 0.010179732689115904
+    },
+    "frozen_control": {
+      "regla": "frozen_control",
+      "corrected_cv": 0.7756319868803105,
+      "f1_por_etiqueta": {
+        "HS": 0.7565938206480783,
+        "TR": 0.8247191011235955,
+        "AG": 0.7455830388692579
+      },
+      "f1_pliegues": [
+        0.7726395514161739,
+        0.7644659121331728,
+        0.7747572598950403,
+        0.7910958015412218,
+        0.7745470056346976
+      ],
+      "std_pliegues": 0.009677579008628838
+    },
+    "frozen_nnpu": {
+      "regla": "frozen_nnpu",
+      "corrected_cv": 0.7632054910146354,
+      "f1_por_etiqueta": {
+        "HS": 0.7565938206480783,
+        "TR": 0.7874396135265701,
+        "AG": 0.7455830388692579
+      },
+      "f1_pliegues": [
+        0.7551568937314231,
+        0.7421443357132357,
+        0.7728725349333923,
+        0.7746176382845608,
+        0.769970196977991
+      ],
+      "std_pliegues": 0.013941680252663869
+    }
+  },
+  "umbrales_propios_por_pliegue": {
+    "control": {
+      "1": [
+        0.4,
+        0.48,
+        0.47
+      ],
+      "2": [
+        0.42,
+        0.45,
+        0.37
+      ],
+      "3": [
+        0.45,
+        0.52,
+        0.43
+      ],
+      "4": [
+        0.34,
+        0.53,
+        0.41
+      ],
+      "5": [
+        0.45,
+        0.46,
+        0.43
+      ]
+    },
+    "nnpu": {
+      "1": [
+        0.4,
+        0.38,
+        0.47
+      ],
+      "2": [
+        0.42,
+        0.34,
+        0.37
+      ],
+      "3": [
+        0.45,
+        0.4,
+        0.43
+      ],
+      "4": [
+        0.34,
+        0.42,
+        0.41
+      ],
+      "5": [
+        0.45,
+        0.35,
+        0.43
+      ]
+    }
+  },
+  "comparacion": {
+    "delta_pooled": -0.0017380738892569525,
+    "pliegues_mejorados": 1,
+    "delta_F1_TR": -0.0052142216677711906,
+    "pliegues_TR_mejorados": 1,
+    "tr_por_pliegue_nnpu": [
+      0.8048780487804879,
+      0.8144329896907216,
+      0.8176795580110497,
+      0.8295454545454546,
+      0.8148148148148148
+    ],
+    "tr_por_pliegue_control": [
+      0.8048780487804879,
+      0.8041237113402062,
+      0.8222222222222222,
+      0.8491620111731844,
+      0.8272251308900523
+    ],
+    "correccion": {
+      "vs_control": {
+        "rescatadas": 4,
+        "rotas": 8,
+        "neto": -4
+      },
+      "vs_v03_frozen": {
+        "rescatadas": 119,
+        "rotas": 181,
+        "neto": -62
+      }
+    },
+    "bootstrap_clusters": {
+      "ic95": [
+        -0.004401,
+        0.000683
+      ],
+      "pct_mejora": 0.0885
+    }
+  },
+  "zona_no_definida_HS0": {
+    "tasa_TR1_v03": 0.09341317365269461,
+    "tasa_TR1_control": 0.1029940119760479,
+    "tasa_TR1_nnpu": 0.10179640718562874
+  },
+  "veredicto_pre_registrado": "FALSIFICADA",
+  "tiempo_total_s": 201.9
+}

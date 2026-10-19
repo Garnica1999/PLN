@@ -1,0 +1,13 @@
+{
+  "fase": "V53-03",
+  "fecha": "2026-10-18",
+  "duracion_seg": 24.9,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v53_dense_poe_blend.csv",
+  "sha256": "254346ef709d6756101ce36303e759a81b3c27cd006a2a508feb0610a1d1e172",
+  "filas": 112892,
+  "mensaje": "V53 Dense-SE-TabularNet PoE Blend (7-model Log-space Bayes consensus w=[0.5487, 0.0811, 0.1681, 0.0735, 0.0500, 0.0535, 0.0250]) + Plug-in",
+  "competencia": "tweet-age-2026-puj",
+  "kaggle_ref": "57347147",
+  "public_score": 0.63706,
+  "status": "SubmissionStatus.COMPLETE"
+}

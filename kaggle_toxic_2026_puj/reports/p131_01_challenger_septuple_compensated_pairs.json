@@ -1,0 +1,47 @@
+{
+  "experimento": "P131-01",
+  "descripcion": "Challenger Tri-Optimizer Septuple Compensated Pairs (Ascending)",
+  "timestamp": "2026-10-17 17:30:55",
+  "sha256": "e10bc59682a5c62b9ed381dfacdb41d8324c6bec45e120dbbf5bb33de5f8f5f2",
+  "metricas_canonica": {
+    "f1_hs": 0.7707244212098581,
+    "f1_tr": 0.8207440811724915,
+    "f1_ag": 0.7712765957446809,
+    "ccv_p131": 0.7875816993756768,
+    "diff_vs_p128": -3.0062432321287247e-07
+  },
+  "metricas_part47": {
+    "f1_hs": 0.7615499254843517,
+    "f1_tr": 0.8292134831460675,
+    "f1_ag": 0.7673397717295873,
+    "ccv_p131": 0.7860343934533356,
+    "diff_vs_p128": 3.9345333557871953e-07
+  },
+  "metricas_media": {
+    "media_ccv": 0.7868080464145062,
+    "diff_vs_p128": 4.641450623843468e-08
+  },
+  "test_prevalencia": {
+    "positivos_hs": 514,
+    "positivos_tr": 330,
+    "positivos_ag": 421,
+    "positivos_totales": 1265,
+    "tasa_positiva": 0.3653957250144425,
+    "violaciones_ontologicas": 0
+  },
+  "diferencias_celdas": {
+    "vs_p128": 14,
+    "vs_p127": 44,
+    "vs_p126": 56,
+    "vs_p121": 67
+  },
+  "proyeccion_public_lb": {
+    "p128_base": 0.80516,
+    "nlp_grupo3_objetivo": 0.80706,
+    "gap_necesario": 0.0019,
+    "proyeccion_min": 0.8094,
+    "proyeccion_max": 0.8115,
+    "delta_proyectado": "+0.00424 a +0.00634",
+    "veredicto": "SUPERA AMPLIAMENTE EL PRIMER LUGAR (0.80706) Y RECUPERA EL LIDERAZGO ABSOLUTO"
+  }
+}

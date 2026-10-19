@@ -1,0 +1,115 @@
+{
+  "experiment_id": "P97-02",
+  "hipotesis": "H97-B",
+  "fecha": "2026-10-13",
+  "pre_registro": {
+    "T_rondas": 15,
+    "eta": 0.5,
+    "grupos": "near-duplicate UNION pseudo-autor",
+    "umbrales": "V03 congelados",
+    "metric": "corrected_cv"
+  },
+  "control_A0": {
+    "corrected_cv": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "f1_pliegues": [
+      0.7960101143044023,
+      0.7940339497874405,
+      0.7788600288600289,
+      0.738598013128522,
+      0.7790564997088775
+    ],
+    "std_pliegues": 0.023094672193582515,
+    "reproduce_v03_exacto": true
+  },
+  "dro": {
+    "corrected_cv": 0.4457350110093559,
+    "f1_por_etiqueta": {
+      "HS": 0.6081651806663538,
+      "TR": 0.17586912065439672,
+      "AG": 0.5531707317073171
+    },
+    "f1_pliegues": [
+      0.4359155831389927,
+      0.4478812743237776,
+      0.44034229499359884,
+      0.4549720258938896,
+      0.449105764119696
+    ],
+    "std_pliegues": 0.007529134130563352
+  },
+  "comparacion": {
+    "delta_pooled": -0.33147644150721617,
+    "pliegues_mejorados": 0,
+    "bootstrap_clusters": {
+      "ic95": [
+        -0.356661,
+        -0.304868
+      ],
+      "pct_mejora": 0.0
+    },
+    "error_por_grupo_control": {
+      "p50": 0.2222222222222222,
+      "p90": 0.37777777777777777,
+      "p99": 0.4444444444444444,
+      "n_grupos": 17
+    },
+    "error_por_grupo_dro": {
+      "p50": 0.4444444444444444,
+      "p90": 0.6666666666666666,
+      "p99": 0.6666666666666666,
+      "n_grupos": 17
+    }
+  },
+  "pesos_finales_diagnostico": [
+    {
+      "etiqueta": 2,
+      "ronda": 9,
+      "peso_max": 0.0009806714628232337,
+      "peso_min": 0.0008023248918028283
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 10,
+      "peso_max": 0.000990630146369225,
+      "peso_min": 0.000794861178513772
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 11,
+      "peso_max": 0.0010006294769933277,
+      "peso_min": 0.0007875057213822427
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 12,
+      "peso_max": 0.0010106691225272744,
+      "peso_min": 0.0007802565131643064
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 13,
+      "peso_max": 0.0010207487494343524,
+      "peso_min": 0.0007731115913788152
+    },
+    {
+      "etiqueta": 2,
+      "ronda": 14,
+      "peso_max": 0.0010308680228527211,
+      "peso_min": 0.0007660690371450147
+    }
+  ],
+  "tiempos_por_pliegue_s": [
+    1.58,
+    1.72,
+    1.52,
+    1.49,
+    1.7
+  ],
+  "veredicto_pre_registrado": "FALSIFICADA",
+  "tiempo_total_s": 9.3
+}

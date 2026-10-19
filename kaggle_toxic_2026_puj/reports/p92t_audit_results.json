@@ -1,0 +1,1436 @@
+{
+  "fase": "P92-T",
+  "fecha": "2026-10-12",
+  "estado_congelado": {
+    "V03": "FROZEN",
+    "CANONICAL_OOF": "FROZEN",
+    "ORIGINAL_LABELS": "FROZEN",
+    "HOLDOUT": "FROZEN",
+    "HOLDOUT2": "FROZEN",
+    "TEST": "UNTOUCHED",
+    "LEADERBOARD": "UNUSED",
+    "CALIBRATION": "COMPLETED",
+    "MAIN_ANNOTATION": "NOT_DISTRIBUTED",
+    "MODEL_RETRAINING": "NOT_AUTHORIZED"
+  },
+  "archivos": {
+    "respuestas": {
+      "A": {
+        "path": "artifacts/human_annotation_v1/calibration_responses/calibration_response_A.csv",
+        "sha256": "a20521989aa3fea94e059f0666713b437a333d2cead31f9e4198d24dde9c9596",
+        "sha256_16": "a20521989aa3fea9",
+        "esperado_16": "a20521989aa3fea9",
+        "ok": true
+      },
+      "B": {
+        "path": "artifacts/human_annotation_v1/calibration_responses/calibration_response_B.csv",
+        "sha256": "41e50c1f1d48760eaf293a8e5f51b9dd0d036b19e8d48f92a2e1ce34c024a49f",
+        "sha256_16": "41e50c1f1d48760e",
+        "esperado_16": "41e50c1f1d48760e",
+        "ok": true
+      },
+      "C": {
+        "path": "artifacts/human_annotation_v1/calibration_responses/calibration_response_C.csv",
+        "sha256": "8de76e21046d5091bfa360cce6fb5299d2ef9951685b46ae85178ce45e477d0f",
+        "sha256_16": "8de76e21046d5091",
+        "esperado_16": "8de76e21046d5091",
+        "ok": true
+      },
+      "D": {
+        "path": "artifacts/human_annotation_v1/calibration_responses/calibration_response_D.csv",
+        "sha256": "763229f9a9caa176df7b9ee1ff247269aa6ea51259a9ce3f8ca658dc3432f8a4",
+        "sha256_16": "763229f9a9caa176",
+        "esperado_16": "763229f9a9caa176",
+        "ok": true
+      }
+    },
+    "normalizados": {
+      "A": {
+        "path": "artifacts/human_annotation_v1/calibration_responses/calibration_response_A_normalized.csv",
+        "sha256": "7e7b3c805620e6139bfa94ce695864f6a8badde495a63a08b6ad44f07206e808",
+        "sha256_16": "7e7b3c805620e613"
+      },
+      "B": {
+        "path": "artifacts/human_annotation_v1/calibration_responses/calibration_response_B_normalized.csv",
+        "sha256": "7cca95e20a1243c01dcfb23578b82f181261dd8210bd0a919465acd2a88b6dae",
+        "sha256_16": "7cca95e20a1243c0"
+      }
+    },
+    "handoff_copias": {
+      "A": {
+        "path": "artifacts/human_annotation_v1/calibration_handoff/annotator_A/calibration_sample.csv",
+        "sha256_16": "a20521989aa3fea9",
+        "coincide_con_respuesta": true
+      },
+      "B": {
+        "path": "artifacts/human_annotation_v1/calibration_handoff/annotator_B/calibration_sample.csv",
+        "sha256_16": "41e50c1f1d48760e",
+        "coincide_con_respuesta": true
+      }
+    },
+    "esquema": {
+      "columnas": [
+        "review_id",
+        "text",
+        "HS_annotation",
+        "TR_annotation",
+        "AG_annotation",
+        "uncertainty_notes",
+        "guideline_version"
+      ],
+      "esquema_identico_4_anotadores": true,
+      "filas": {
+        "A": 15,
+        "B": 15,
+        "C": 15,
+        "D": 15
+      },
+      "ids_iguales": true,
+      "orden_igual": true,
+      "guideline_version": {
+        "A": [
+          "v1"
+        ],
+        "B": [
+          "v1"
+        ],
+        "C": [
+          "v1"
+        ],
+        "D": [
+          "v1"
+        ]
+      },
+      "dominios_clases": {
+        "A": [
+          "0",
+          "1"
+        ],
+        "B": [
+          "0",
+          "1"
+        ],
+        "C": [
+          "NEGATIVE",
+          "POSITIVE",
+          "UNABLE_TO_DETERMINE"
+        ],
+        "D": [
+          "NEGATIVE",
+          "POSITIVE",
+          "UNABLE_TO_DETERMINE"
+        ]
+      },
+      "dominios_notas": {
+        "A": "2 valores distintos",
+        "B": "2 valores distintos",
+        "C": "14 valores distintos",
+        "D": "11 valores distintos"
+      },
+      "desviaciones_formato": [
+        "A: respuestas 0/1 en lugar de tokens POSITIVE/NEGATIVE/UNABLE_TO_DETERMINE",
+        "B: respuestas 0/1 en lugar de tokens POSITIVE/NEGATIVE/UNABLE_TO_DETERMINE",
+        "notas vacias presentes (permitido por la guia)"
+      ]
+    }
+  },
+  "integridad": {
+    "raw_annotation_files_unchanged": true,
+    "original_labels_unchanged": true,
+    "original_texts_unchanged": true,
+    "textos_ascii": true,
+    "textos_sha256": "21fe77e8bf21a02fd99ec4ffa3b7d7db0a7203af84101eaa7a323196f37bc0bd",
+    "calibration_sample_unchanged": true,
+    "main_sample_not_distributed": true,
+    "v03_unchanged": true,
+    "canonical_oof_unchanged": true,
+    "holdouts_untouched": true,
+    "test_not_accessed": true,
+    "leaderboard_not_used": true,
+    "no_models_trained": true,
+    "no_predictions_generated": true,
+    "no_new_submissions": true,
+    "no_pseudo_labeling": true,
+    "no_external_classifier": true,
+    "no_external_labeled_dataset": true,
+    "hashes_canonicos": {
+      "data/raw/toxic_train.csv": {
+        "sha256": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+        "sha256_16": "3d40e7345b588860",
+        "esperado_prefijo": "3d40e7345b588860",
+        "ok": true
+      },
+      "features/oof_v03_final.npz": {
+        "sha256": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+        "sha256_16": "559265816ce4f631",
+        "esperado_prefijo": "559265816ce4f631",
+        "ok": true
+      },
+      "submissions/toxic_submission_v03_lr_union_thr.csv": {
+        "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+        "sha256_16": "7d7478f271e6edfd",
+        "esperado_prefijo": "7d7478f271e6edfd",
+        "ok": true
+      },
+      "experiments/baseline_v03_frozen/model_v03.joblib": {
+        "sha256": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+        "sha256_16": "263ed5bd0fc0de7c",
+        "esperado_prefijo": "263ed5bd0fc0de7c",
+        "ok": true
+      },
+      "data/processed/holdout_v2_ids.csv": {
+        "sha256": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd",
+        "sha256_16": "e5b62e5f22c4c63a",
+        "esperado_prefijo": "e5b62e5f22c4c63a",
+        "ok": true
+      },
+      "artifacts/human_annotation_v1/annotator_A.csv": {
+        "sha256": "7dfd5b898d3905f21e431d4a076655d034b7f791730e6ccac3b9d9612ca9546b",
+        "sha256_16": "7dfd5b898d3905f2",
+        "esperado_prefijo": "7dfd5b89",
+        "ok": true
+      },
+      "artifacts/human_annotation_v1/annotator_B.csv": {
+        "sha256": "956646fa479f0c6515af7c76ec323d5d9d9ca5a9c47004249490c1a507ba8351",
+        "sha256_16": "956646fa479f0c65",
+        "esperado_prefijo": "956646fa",
+        "ok": true
+      }
+    }
+  },
+  "codificacion_AB": {
+    "clasificacion": "ENCODING_CONFIRMED",
+    "regla": "En las columnas de clase: 0 = NEGATIVE, 1 = POSITIVE. En uncertainty_notes: 1 = dificil de determinar para cualquier clase (flag de fila), no UTD por etiqueta.",
+    "fuente": "aclaracion explicita del responsable del proyecto (Carlos, 2026-10-12), solicitada tras detectar que A y B devolvieron 0/1 en lugar de los tokens exigidos por el README y la guia v1",
+    "evidencia": [
+      "El README del handoff y la guia v1 exigen exclusivamente POSITIVE/NEGATIVE/UNABLE_TO_DETERMINE; ningun documento define 0/1 (por eso la correspondencia requeria verificacion, no suposicion).",
+      "La aclaracion registrada define el significado de 0/1 en las columnas de clase y en la columna de notas, resolviendo ambas ambiguedades de esquema.",
+      "La interpretacion es consistente con el esquema binario observado en los archivos de A y B (dominios {0,1} en las cuatro columnas)."
+    ],
+    "no_uso_de_cd": "La coincidencia con C o D NO se uso como fundamento de la codificacion (seria circular). Se reporta solo como observacion de consistencia posterior.",
+    "tratamiento_en_metricas": "Las respuestas de clase de A y B se usan como binarias interpretadas; los flags de fila se mantienen como capa separada y NO se convierten en UTD (no existe base documental para equiparar 'dificil para cualquier clase' con UTD por etiqueta).",
+    "flags_fila": {
+      "A": [
+        "P92C-02",
+        "P92C-04"
+      ],
+      "B": [
+        "P92C-01",
+        "P92C-05",
+        "P92C-13"
+      ]
+    },
+    "contraste_con_normalizados": {
+      "A": true,
+      "B": true
+    }
+  },
+  "acuerdo": {
+    "por_etiqueta": {
+      "HS": {
+        "pares": {
+          "AB": {
+            "celdas": {
+              "NN": 7,
+              "NP": 4,
+              "NU": 0,
+              "PN": 1,
+              "PP": 3,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 10,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 10,
+              "den": 15
+            },
+            "acuerdo_positivo_dice": {
+              "num": 6,
+              "den": 11
+            },
+            "acuerdo_negativo_dice": {
+              "num": 14,
+              "den": 19
+            },
+            "kappa_2cat_binario": 0.3119266055045871,
+            "kappa_3cat_nominal": 0.3119266055045871,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 0,
+              "ambos_utd": 0
+            }
+          },
+          "AC": {
+            "celdas": {
+              "NN": 3,
+              "NP": 3,
+              "NU": 5,
+              "PN": 0,
+              "PP": 2,
+              "PU": 2,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 5,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 5,
+              "den": 8
+            },
+            "acuerdo_positivo_dice": {
+              "num": 4,
+              "den": 9
+            },
+            "acuerdo_negativo_dice": {
+              "num": 6,
+              "den": 14
+            },
+            "kappa_2cat_binario": 0.3333333333333333,
+            "kappa_3cat_nominal": 0.12790697674418602,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 7,
+              "ambos_utd": 0
+            }
+          },
+          "AD": {
+            "celdas": {
+              "NN": 4,
+              "NP": 1,
+              "NU": 6,
+              "PN": 0,
+              "PP": 2,
+              "PU": 2,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 6,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 6,
+              "den": 7
+            },
+            "acuerdo_positivo_dice": {
+              "num": 4,
+              "den": 7
+            },
+            "acuerdo_negativo_dice": {
+              "num": 8,
+              "den": 15
+            },
+            "kappa_2cat_binario": 0.6956521739130433,
+            "kappa_3cat_nominal": 0.20118343195266278,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 8,
+              "ambos_utd": 0
+            }
+          },
+          "BC": {
+            "celdas": {
+              "NN": 3,
+              "NP": 2,
+              "NU": 3,
+              "PN": 0,
+              "PP": 3,
+              "PU": 4,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 6,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 6,
+              "den": 8
+            },
+            "acuerdo_positivo_dice": {
+              "num": 6,
+              "den": 12
+            },
+            "acuerdo_negativo_dice": {
+              "num": 6,
+              "den": 11
+            },
+            "kappa_2cat_binario": 0.5294117647058824,
+            "kappa_3cat_nominal": 0.18674698795180725,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 7,
+              "ambos_utd": 0
+            }
+          },
+          "BD": {
+            "celdas": {
+              "NN": 4,
+              "NP": 1,
+              "NU": 3,
+              "PN": 0,
+              "PP": 2,
+              "PU": 5,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 6,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 6,
+              "den": 7
+            },
+            "acuerdo_positivo_dice": {
+              "num": 4,
+              "den": 10
+            },
+            "acuerdo_negativo_dice": {
+              "num": 8,
+              "den": 12
+            },
+            "kappa_2cat_binario": 0.6956521739130433,
+            "kappa_3cat_nominal": 0.21511627906976744,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 8,
+              "ambos_utd": 0
+            }
+          },
+          "CD": {
+            "celdas": {
+              "NN": 3,
+              "NP": 0,
+              "NU": 0,
+              "PN": 0,
+              "PP": 3,
+              "PU": 2,
+              "UN": 1,
+              "UP": 0,
+              "UU": 6
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 12,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 6,
+              "den": 6
+            },
+            "acuerdo_positivo_dice": {
+              "num": 6,
+              "den": 8
+            },
+            "acuerdo_negativo_dice": {
+              "num": 6,
+              "den": 7
+            },
+            "kappa_2cat_binario": 1.0,
+            "kappa_3cat_nominal": 0.6830985915492958,
+            "conteos_utd": {
+              "x_utd": 7,
+              "y_utd": 8,
+              "ambos_utd": 6
+            }
+          }
+        },
+        "exacto_4cat": {
+          "num": 4,
+          "den": 15
+        },
+        "alpha_utd_categoria": 0.24294268605645863,
+        "alpha_utd_faltante": 0.465587044534413,
+        "utd_por_anotador": {
+          "A": 0,
+          "B": 0,
+          "C": 7,
+          "D": 8
+        },
+        "reconciliacion_p92s2": {
+          "alpha_utd_categoria_previo": 0.243,
+          "alpha_utd_faltante_previo": 0.466,
+          "coincide_categoria": true,
+          "coincide_faltante": true
+        }
+      },
+      "TR": {
+        "pares": {
+          "AB": {
+            "celdas": {
+              "NN": 2,
+              "NP": 3,
+              "NU": 0,
+              "PN": 1,
+              "PP": 9,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 11,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 11,
+              "den": 15
+            },
+            "acuerdo_positivo_dice": {
+              "num": 18,
+              "den": 22
+            },
+            "acuerdo_negativo_dice": {
+              "num": 4,
+              "den": 8
+            },
+            "kappa_2cat_binario": 0.33333333333333326,
+            "kappa_3cat_nominal": 0.33333333333333326,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 0,
+              "ambos_utd": 0
+            }
+          },
+          "AC": {
+            "celdas": {
+              "NN": 0,
+              "NP": 4,
+              "NU": 1,
+              "PN": 1,
+              "PP": 9,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 9,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 9,
+              "den": 14
+            },
+            "acuerdo_positivo_dice": {
+              "num": 18,
+              "den": 23
+            },
+            "acuerdo_negativo_dice": {
+              "num": 0,
+              "den": 6
+            },
+            "kappa_2cat_binario": -0.12903225806451632,
+            "kappa_3cat_nominal": 0.0,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 1,
+              "ambos_utd": 0
+            }
+          },
+          "AD": {
+            "celdas": {
+              "NN": 0,
+              "NP": 5,
+              "NU": 0,
+              "PN": 1,
+              "PP": 9,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 9,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 9,
+              "den": 15
+            },
+            "acuerdo_positivo_dice": {
+              "num": 18,
+              "den": 24
+            },
+            "acuerdo_negativo_dice": {
+              "num": 0,
+              "den": 6
+            },
+            "kappa_2cat_binario": -0.1250000000000002,
+            "kappa_3cat_nominal": -0.1250000000000002,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 0,
+              "ambos_utd": 0
+            }
+          },
+          "BC": {
+            "celdas": {
+              "NN": 0,
+              "NP": 2,
+              "NU": 1,
+              "PN": 1,
+              "PP": 11,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 11,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 11,
+              "den": 14
+            },
+            "acuerdo_positivo_dice": {
+              "num": 22,
+              "den": 25
+            },
+            "acuerdo_negativo_dice": {
+              "num": 0,
+              "den": 4
+            },
+            "kappa_2cat_binario": -0.10526315789473696,
+            "kappa_3cat_nominal": 0.09090909090909073,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 1,
+              "ambos_utd": 0
+            }
+          },
+          "BD": {
+            "celdas": {
+              "NN": 0,
+              "NP": 3,
+              "NU": 0,
+              "PN": 1,
+              "PP": 11,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 11,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 11,
+              "den": 15
+            },
+            "acuerdo_positivo_dice": {
+              "num": 22,
+              "den": 26
+            },
+            "acuerdo_negativo_dice": {
+              "num": 0,
+              "den": 4
+            },
+            "kappa_2cat_binario": -0.11111111111111137,
+            "kappa_3cat_nominal": -0.11111111111111137,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 0,
+              "ambos_utd": 0
+            }
+          },
+          "CD": {
+            "celdas": {
+              "NN": 1,
+              "NP": 0,
+              "NU": 0,
+              "PN": 0,
+              "PP": 13,
+              "PU": 0,
+              "UN": 0,
+              "UP": 1,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 14,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 14,
+              "den": 14
+            },
+            "acuerdo_positivo_dice": {
+              "num": 26,
+              "den": 27
+            },
+            "acuerdo_negativo_dice": {
+              "num": 2,
+              "den": 2
+            },
+            "kappa_2cat_binario": 1.0,
+            "kappa_3cat_nominal": 0.6428571428571429,
+            "conteos_utd": {
+              "x_utd": 1,
+              "y_utd": 0,
+              "ambos_utd": 0
+            }
+          }
+        },
+        "exacto_4cat": {
+          "num": 8,
+          "den": 15
+        },
+        "alpha_utd_categoria": 0.10443230115361313,
+        "alpha_utd_faltante": 0.09251700680272157,
+        "utd_por_anotador": {
+          "A": 0,
+          "B": 0,
+          "C": 1,
+          "D": 0
+        },
+        "reconciliacion_p92s2": {
+          "alpha_utd_categoria_previo": 0.104,
+          "alpha_utd_faltante_previo": 0.093,
+          "coincide_categoria": true,
+          "coincide_faltante": true
+        }
+      },
+      "AG": {
+        "pares": {
+          "AB": {
+            "celdas": {
+              "NN": 6,
+              "NP": 2,
+              "NU": 0,
+              "PN": 1,
+              "PP": 6,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 12,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 12,
+              "den": 15
+            },
+            "acuerdo_positivo_dice": {
+              "num": 12,
+              "den": 15
+            },
+            "acuerdo_negativo_dice": {
+              "num": 12,
+              "den": 15
+            },
+            "kappa_2cat_binario": 0.6017699115044248,
+            "kappa_3cat_nominal": 0.6017699115044248,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 0,
+              "ambos_utd": 0
+            }
+          },
+          "AC": {
+            "celdas": {
+              "NN": 4,
+              "NP": 3,
+              "NU": 1,
+              "PN": 0,
+              "PP": 7,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 11,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 11,
+              "den": 14
+            },
+            "acuerdo_positivo_dice": {
+              "num": 14,
+              "den": 17
+            },
+            "acuerdo_negativo_dice": {
+              "num": 8,
+              "den": 12
+            },
+            "kappa_2cat_binario": 0.5714285714285714,
+            "kappa_3cat_nominal": 0.5121951219512194,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 1,
+              "ambos_utd": 0
+            }
+          },
+          "AD": {
+            "celdas": {
+              "NN": 1,
+              "NP": 4,
+              "NU": 3,
+              "PN": 0,
+              "PP": 7,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 8,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 8,
+              "den": 12
+            },
+            "acuerdo_positivo_dice": {
+              "num": 14,
+              "den": 18
+            },
+            "acuerdo_negativo_dice": {
+              "num": 2,
+              "den": 9
+            },
+            "kappa_2cat_binario": 0.2258064516129032,
+            "kappa_3cat_nominal": 0.25,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 3,
+              "ambos_utd": 0
+            }
+          },
+          "BC": {
+            "celdas": {
+              "NN": 3,
+              "NP": 3,
+              "NU": 1,
+              "PN": 1,
+              "PP": 7,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 10,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 10,
+              "den": 14
+            },
+            "acuerdo_positivo_dice": {
+              "num": 14,
+              "den": 18
+            },
+            "acuerdo_negativo_dice": {
+              "num": 6,
+              "den": 11
+            },
+            "kappa_2cat_binario": 0.391304347826087,
+            "kappa_3cat_nominal": 0.3589743589743589,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 1,
+              "ambos_utd": 0
+            }
+          },
+          "BD": {
+            "celdas": {
+              "NN": 0,
+              "NP": 4,
+              "NU": 3,
+              "PN": 1,
+              "PP": 7,
+              "PU": 0,
+              "UN": 0,
+              "UP": 0,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 7,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 7,
+              "den": 12
+            },
+            "acuerdo_positivo_dice": {
+              "num": 14,
+              "den": 19
+            },
+            "acuerdo_negativo_dice": {
+              "num": 0,
+              "den": 8
+            },
+            "kappa_2cat_binario": -0.15384615384615358,
+            "kappa_3cat_nominal": 0.07692307692307702,
+            "conteos_utd": {
+              "x_utd": 0,
+              "y_utd": 3,
+              "ambos_utd": 0
+            }
+          },
+          "CD": {
+            "celdas": {
+              "NN": 1,
+              "NP": 0,
+              "NU": 3,
+              "PN": 0,
+              "PP": 10,
+              "PU": 0,
+              "UN": 0,
+              "UP": 1,
+              "UU": 0
+            },
+            "total": 15,
+            "acuerdo_3cat": {
+              "num": 11,
+              "den": 15
+            },
+            "acuerdo_binario": {
+              "num": 11,
+              "den": 11
+            },
+            "acuerdo_positivo_dice": {
+              "num": 20,
+              "den": 21
+            },
+            "acuerdo_negativo_dice": {
+              "num": 2,
+              "den": 5
+            },
+            "kappa_2cat_binario": 1.0,
+            "kappa_3cat_nominal": 0.4444444444444444,
+            "conteos_utd": {
+              "x_utd": 1,
+              "y_utd": 3,
+              "ambos_utd": 0
+            }
+          }
+        },
+        "exacto_4cat": {
+          "num": 6,
+          "den": 15
+        },
+        "alpha_utd_categoria": 0.35416666666666663,
+        "alpha_utd_faltante": 0.4907407407407406,
+        "utd_por_anotador": {
+          "A": 0,
+          "B": 0,
+          "C": 1,
+          "D": 3
+        },
+        "reconciliacion_p92s2": {
+          "alpha_utd_categoria_previo": 0.354,
+          "alpha_utd_faltante_previo": 0.491,
+          "coincide_categoria": true,
+          "coincide_faltante": true
+        }
+      }
+    },
+    "pares": [
+      "AB",
+      "AC",
+      "AD",
+      "BC",
+      "BD",
+      "CD"
+    ],
+    "combinacion_exacta_global": {
+      "num": 1,
+      "den": 15
+    },
+    "flags_vs_utd": {
+      "flags_A": [
+        "P92C-02",
+        "P92C-04"
+      ],
+      "flags_B": [
+        "P92C-01",
+        "P92C-05",
+        "P92C-13"
+      ],
+      "union_flags": [
+        "P92C-01",
+        "P92C-02",
+        "P92C-04",
+        "P92C-05",
+        "P92C-13"
+      ],
+      "filas_con_utd_CD": [
+        "P92C-01",
+        "P92C-03",
+        "P92C-04",
+        "P92C-05",
+        "P92C-06",
+        "P92C-07",
+        "P92C-09",
+        "P92C-11",
+        "P92C-13",
+        "P92C-14",
+        "P92C-15"
+      ],
+      "flags_sin_utd_CD": [
+        "P92C-02"
+      ],
+      "utd_CD_sin_flag": [
+        "P92C-03",
+        "P92C-06",
+        "P92C-07",
+        "P92C-09",
+        "P92C-11",
+        "P92C-14",
+        "P92C-15"
+      ],
+      "interseccion": [
+        "P92C-01",
+        "P92C-04",
+        "P92C-05",
+        "P92C-13"
+      ]
+    }
+  },
+  "casos": {
+    "respuestas_crudas_por_fila": {
+      "P92C-01": {
+        "A": {
+          "HS": "0",
+          "TR": "0",
+          "AG": "0",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "0",
+          "TR": "0",
+          "AG": "0",
+          "notas": "1"
+        },
+        "C": {
+          "HS": "NEGATIVE",
+          "TR": "UNABLE_TO_DETERMINE",
+          "AG": "NEGATIVE",
+          "notas": "Apodo 'nio polla' sin contexto; tono burl\u00f3n ('estais tocaisimos'), no se ve a qui\u00e9n apunta ni si hay agresi\u00f3n real"
+        },
+        "D": {
+          "HS": "NEGATIVE",
+          "TR": "POSITIVE",
+          "AG": "UNABLE_TO_DETERMINE",
+          "notas": "La referencia \u00abnio polla\u00bb no es clara sin contexto; \u00abestais tocaisimos\u00bb se dirige al interlocutor, pero puede ser burla coloquial o insulto agresivo."
+        }
+      },
+      "P92C-02": {
+        "A": {
+          "HS": "0",
+          "TR": "0",
+          "AG": "0",
+          "notas": "1"
+        },
+        "B": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "0",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "NEGATIVE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Dirigido a una persona ('t los traes'); 'vete a la m...' es agresivo; 'santos ovarios' es una expresi\u00f3n coloquial, no basta para odio"
+        },
+        "D": {
+          "HS": "NEGATIVE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": ""
+        }
+      },
+      "P92C-03": {
+        "A": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "POSITIVE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista ('perra maldita') m\u00e1s deseo de que la quemen en la hoguera"
+        },
+        "D": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista dirigido a una persona; la gu\u00eda no aclara cu\u00e1ndo una ofensa sexista individual constituye discurso de odio. La alusi\u00f3n a la hoguera a\u00f1ade hostilidad violenta."
+        }
+      },
+      "P92C-04": {
+        "A": {
+          "HS": "0",
+          "TR": "0",
+          "AG": "0",
+          "notas": "1"
+        },
+        "B": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "0",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "POSITIVE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Reclama guillotina/violencia contra una persona; el odio no es por pertenencia a un grupo, duda normativa odio vs. ofensa"
+        },
+        "D": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "\u00abEl gnomo\u00bb no puede identificarse sin contexto; hay hostilidad y una referencia expl\u00edcita a la guillotina, pero no queda claro si el texto constituye discurso de odio."
+        }
+      },
+      "P92C-05": {
+        "A": {
+          "HS": "0",
+          "TR": "0",
+          "AG": "1",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "0",
+          "TR": "0",
+          "AG": "0",
+          "notas": "1"
+        },
+        "C": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista directo; duda normativa odio vs. ofensa"
+        },
+        "D": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista dirigido a una persona; la gu\u00eda no distingue operativamente entre ofensa sexista individual y discurso de odio."
+        }
+      },
+      "P92C-06": {
+        "A": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "0",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "0",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "POSITIVE",
+          "TR": "POSITIVE",
+          "AG": "NEGATIVE",
+          "notas": "Generalizaci\u00f3n xen\u00f3foba contra inmigrantes; el tono no es agresivo"
+        },
+        "D": {
+          "HS": "POSITIVE",
+          "TR": "POSITIVE",
+          "AG": "UNABLE_TO_DETERMINE",
+          "notas": "Generalizaci\u00f3n negativa contra inmigrantes que los presenta como amenaza laboral. La agresividad es discutible porque no contiene insulto ni amenaza expl\u00edcita."
+        }
+      },
+      "P92C-07": {
+        "A": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "0",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "0",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "NEGATIVE",
+          "notas": "Hostil hacia descendientes de alguien (falta contexto de qui\u00e9n es el 'genocida'); tono m\u00e1s acusatorio que agresivo"
+        },
+        "D": {
+          "HS": "NEGATIVE",
+          "TR": "POSITIVE",
+          "AG": "UNABLE_TO_DETERMINE",
+          "notas": "Cr\u00edtica o sarcasmo sobre descendientes de una persona descrita como genocida; sin el contexto enlazado, la agresividad no es inequ\u00edvoca. \u00abDe puta madre\u00bb parece funcionar como expresi\u00f3n idiom\u00e1tica."
+        }
+      },
+      "P92C-08": {
+        "A": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "0",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "NEGATIVE",
+          "TR": "NEGATIVE",
+          "AG": "NEGATIVE",
+          "notas": "'gero' (g\u00fcero) y 'negro' en tono coloquial/identitario; sin ataque claro a nadie"
+        },
+        "D": {
+          "HS": "NEGATIVE",
+          "TR": "NEGATIVE",
+          "AG": "NEGATIVE",
+          "notas": "Parece describir una pr\u00e1ctica ling\u00fc\u00edstica o cultural; no se identifica claramente un ataque contra una persona o grupo."
+        }
+      },
+      "P92C-09": {
+        "A": {
+          "HS": "0",
+          "TR": "0",
+          "AG": "1",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista a una persona; duda normativa odio vs. ofensa"
+        },
+        "D": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista dirigido a una persona; la gu\u00eda no aclara cu\u00e1ndo una ofensa sexista individual constituye discurso de odio."
+        }
+      },
+      "P92C-10": {
+        "A": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "POSITIVE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto dirigido a una persona por su identidad trans"
+        },
+        "D": {
+          "HS": "POSITIVE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": ""
+        }
+      },
+      "P92C-11": {
+        "A": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista a una persona; duda normativa odio vs. ofensa"
+        },
+        "D": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista dirigido a destinatarios identificados por menciones; la gu\u00eda no establece si este tipo de ofensa individual constituye discurso de odio."
+        }
+      },
+      "P92C-12": {
+        "A": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "POSITIVE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto racista contra un grupo"
+        },
+        "D": {
+          "HS": "POSITIVE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": ""
+        }
+      },
+      "P92C-13": {
+        "A": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "0",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "0",
+          "TR": "0",
+          "AG": "0",
+          "notas": "1"
+        },
+        "C": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "UNABLE_TO_DETERMINE",
+          "notas": "Insulto leve ('un poco zorra'), podr\u00eda ser broma entre conocidos; duda agresivo vs. vulgar"
+        },
+        "D": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista dirigido a una persona; la gu\u00eda no distingue operativamente entre ofensa sexista individual y discurso de odio."
+        }
+      },
+      "P92C-14": {
+        "A": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insultos fuertes dirigidos a una persona; duda normativa odio vs. ofensa"
+        },
+        "D": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Ataque personal con insultos sexistas y vulgares y \u00f3rdenes hostiles; la gu\u00eda no ofrece un criterio operativo para decidir si constituye discurso de odio."
+        }
+      },
+      "P92C-15": {
+        "A": {
+          "HS": "0",
+          "TR": "1",
+          "AG": "0",
+          "notas": "0"
+        },
+        "B": {
+          "HS": "1",
+          "TR": "1",
+          "AG": "1",
+          "notas": "0"
+        },
+        "C": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista y humillaci\u00f3n ('Por zorra'); duda normativa odio vs. ofensa"
+        },
+        "D": {
+          "HS": "UNABLE_TO_DETERMINE",
+          "TR": "POSITIVE",
+          "AG": "POSITIVE",
+          "notas": "Insulto sexista dirigido a una persona; la gu\u00eda no aclara cu\u00e1ndo una ofensa sexista individual constituye discurso de odio."
+        }
+      }
+    },
+    "ids": [
+      "P92C-01",
+      "P92C-02",
+      "P92C-03",
+      "P92C-04",
+      "P92C-05",
+      "P92C-06",
+      "P92C-07",
+      "P92C-08",
+      "P92C-09",
+      "P92C-10",
+      "P92C-11",
+      "P92C-12",
+      "P92C-13",
+      "P92C-14",
+      "P92C-15"
+    ]
+  }
+}

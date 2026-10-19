@@ -1,0 +1,212 @@
+{
+  "experiment_id": "P105-01",
+  "fase": "P105 RONDA 4 (S2/S7a): normalizacion por bloque",
+  "fecha": "2026-10-14",
+  "control": {
+    "diff_max_proba": 0.0,
+    "ccv": 0.7772114525165721,
+    "reproduce_v03": true,
+    "particion_47": {
+      "celdas_distintas": 0,
+      "diff_max_proba": 0.0
+    }
+  },
+  "v03_referencia": {
+    "corrected_cv": 0.7772114525165721,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    }
+  },
+  "v1_identidad_confirmada": true,
+  "variantes": {
+    "V1_l2_por_bloque": {
+      "canonica": {
+        "corrected_cv": 0.777211,
+        "delta_vs_v03": 0.0,
+        "folds": [
+          0.79601,
+          0.794034,
+          0.77886,
+          0.738598,
+          0.779056
+        ],
+        "pliegues_mejorados": 0,
+        "celdas_cambiadas": 0,
+        "bootstrap": {
+          "ic95": [
+            0.0,
+            0.0
+          ],
+          "pct_mejora": 0.0
+        },
+        "deteccion": {
+          "se_bootstrap": 0.0,
+          "delta_min_detectable_95": 0.0
+        }
+      },
+      "particion_47": {
+        "corrected_cv": 0.775632,
+        "delta_vs_v03": 0.0,
+        "folds": [
+          0.77264,
+          0.764466,
+          0.774757,
+          0.791096,
+          0.774547
+        ],
+        "pliegues_mejorados": 0,
+        "celdas_cambiadas": 0,
+        "bootstrap": {
+          "ic95": [
+            0.0,
+            0.0
+          ],
+          "pct_mejora": 0.0
+        },
+        "deteccion": {
+          "se_bootstrap": 0.0,
+          "delta_min_detectable_95": 0.0
+        }
+      },
+      "gate": {
+        "condiciones": {
+          "delta_can_ge_0003": false,
+          "pliegues_ge_4": false,
+          "ic95_excluye_cero": false,
+          "delta_47_positivo": false,
+          "celdas_ge_200": false
+        },
+        "veredicto": "GATE_FAILED"
+      },
+      "diff_proba_vs_control": 0.0
+    },
+    "V2_l2_conjunta": {
+      "canonica": {
+        "corrected_cv": 0.759694,
+        "delta_vs_v03": -0.017517,
+        "folds": [
+          0.775609,
+          0.775108,
+          0.7608,
+          0.745906,
+          0.74027
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 282,
+        "bootstrap": {
+          "ic95": [
+            -0.028724,
+            -0.006328
+          ],
+          "pct_mejora": 0.0015
+        },
+        "deteccion": {
+          "se_bootstrap": 0.005713,
+          "delta_min_detectable_95": 0.011198
+        }
+      },
+      "particion_47": {
+        "corrected_cv": 0.756727,
+        "delta_vs_v03": -0.018905,
+        "folds": [
+          0.761327,
+          0.735676,
+          0.736685,
+          0.789821,
+          0.760772
+        ],
+        "pliegues_mejorados": 0,
+        "celdas_cambiadas": 284,
+        "bootstrap": {
+          "ic95": [
+            -0.029725,
+            -0.007617
+          ],
+          "pct_mejora": 0.0
+        },
+        "deteccion": {
+          "se_bootstrap": 0.00564,
+          "delta_min_detectable_95": 0.011054
+        }
+      },
+      "gate": {
+        "condiciones": {
+          "delta_can_ge_0003": false,
+          "pliegues_ge_4": false,
+          "ic95_excluye_cero": false,
+          "delta_47_positivo": false,
+          "celdas_ge_200": true
+        },
+        "veredicto": "GATE_FAILED"
+      },
+      "diff_proba_vs_control": 0.3783524344469703
+    },
+    "V3_norma_media": {
+      "canonica": {
+        "corrected_cv": 0.742843,
+        "delta_vs_v03": -0.034369,
+        "folds": [
+          0.717699,
+          0.75642,
+          0.760678,
+          0.742971,
+          0.73478
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 373,
+        "bootstrap": {
+          "ic95": [
+            -0.048696,
+            -0.02016
+          ],
+          "pct_mejora": 0.0
+        },
+        "deteccion": {
+          "se_bootstrap": 0.00728,
+          "delta_min_detectable_95": 0.014268
+        }
+      },
+      "particion_47": {
+        "corrected_cv": 0.739594,
+        "delta_vs_v03": -0.036038,
+        "folds": [
+          0.720094,
+          0.7314,
+          0.749383,
+          0.746648,
+          0.749223
+        ],
+        "pliegues_mejorados": 0,
+        "celdas_cambiadas": 387,
+        "bootstrap": {
+          "ic95": [
+            -0.050496,
+            -0.02137
+          ],
+          "pct_mejora": 0.0
+        },
+        "deteccion": {
+          "se_bootstrap": 0.00743,
+          "delta_min_detectable_95": 0.014563
+        }
+      },
+      "gate": {
+        "condiciones": {
+          "delta_can_ge_0003": false,
+          "pliegues_ge_4": false,
+          "ic95_excluye_cero": false,
+          "delta_47_positivo": false,
+          "celdas_ge_200": true
+        },
+        "veredicto": "GATE_FAILED"
+      },
+      "diff_proba_vs_control": 0.7976819453470233
+    }
+  },
+  "mejor_variante": "V2_l2_conjunta",
+  "conclusion": "V1_l2_por_bloque: identidad con V03 confirmada (diff 0.00e+00; no compite). V2_l2_conjunta: efecto NEGATIVO detectable (IC95 [-0.028724,-0.006328] excluye cero por abajo): la variante perjudica; no es candidata.",
+  "sha_oof_final": "559265816ce4f631",
+  "tiempo_s": 231.2
+}

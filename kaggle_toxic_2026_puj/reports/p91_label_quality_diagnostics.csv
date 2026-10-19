@@ -1,0 +1,41 @@
+label,diagnostic,value,numerator,denominator,unit,source_artifact,limitations
+HS,marginal_positive,648,648,1483,tweets,v03_error_casebook,gold del desarrollo; sin juicio de calidad
+HS,oof_error_cells,316,316,1483,celdas,p90_02_error_diagnosis,"error del modelo, no de la etiqueta"
+HS,positive_with_strong_negative_oof_evidence_p_le_0.05,0,0,648,celdas,oof_v03_final,candidato a revision; la evidencia OOF no es prueba de error de anotacion
+HS,positive_with_negative_oof_evidence_p_le_0.10,5,5,648,celdas,oof_v03_final,idem
+HS,negative_with_strong_positive_oof_evidence_p_ge_0.95,1,1,835,celdas,oof_v03_final,idem
+HS,negative_with_positive_oof_evidence_p_ge_0.90,5,5,835,celdas,oof_v03_final,idem
+HS,cells_near_threshold_abs_margin_lt_0.025,81,81,1483,celdas,oof_v03_final,proximidad a la decision; no es probabilidad de error de anotacion
+HS,cells_with_unanimous_4model_disagreement,199,199,1483,celdas,v2_oof_base_corrected,M1/M3/M4 a umbral 0.5 y M2 canonico (convencion historica); desacuerdo != error
+HS,cells_with_neighbor_label_discrepancy,42,42,1483,celdas,label_consistency_v4,cluster por similitud (4 criterios); similitud textual != identidad semantica
+TR,marginal_positive,445,445,1483,tweets,v03_error_casebook,gold del desarrollo; sin juicio de calidad
+TR,oof_error_cells,164,164,1483,celdas,p90_02_error_diagnosis,"error del modelo, no de la etiqueta"
+TR,positive_with_strong_negative_oof_evidence_p_le_0.05,4,4,445,celdas,oof_v03_final,candidato a revision; la evidencia OOF no es prueba de error de anotacion
+TR,positive_with_negative_oof_evidence_p_le_0.10,8,8,445,celdas,oof_v03_final,idem
+TR,negative_with_strong_positive_oof_evidence_p_ge_0.95,1,1,1038,celdas,oof_v03_final,idem
+TR,negative_with_positive_oof_evidence_p_ge_0.90,9,9,1038,celdas,oof_v03_final,idem
+TR,cells_near_threshold_abs_margin_lt_0.025,26,26,1483,celdas,oof_v03_final,proximidad a la decision; no es probabilidad de error de anotacion
+TR,cells_with_unanimous_4model_disagreement,118,118,1483,celdas,v2_oof_base_corrected,M1/M3/M4 a umbral 0.5 y M2 canonico (convencion historica); desacuerdo != error
+TR,cells_with_neighbor_label_discrepancy,42,42,1483,celdas,label_consistency_v4,cluster por similitud (4 criterios); similitud textual != identidad semantica
+AG,marginal_positive,567,567,1483,tweets,v03_error_casebook,gold del desarrollo; sin juicio de calidad
+AG,oof_error_cells,277,277,1483,celdas,p90_02_error_diagnosis,"error del modelo, no de la etiqueta"
+AG,positive_with_strong_negative_oof_evidence_p_le_0.05,0,0,567,celdas,oof_v03_final,candidato a revision; la evidencia OOF no es prueba de error de anotacion
+AG,positive_with_negative_oof_evidence_p_le_0.10,1,1,567,celdas,oof_v03_final,idem
+AG,negative_with_strong_positive_oof_evidence_p_ge_0.95,2,2,916,celdas,oof_v03_final,idem
+AG,negative_with_positive_oof_evidence_p_ge_0.90,6,6,916,celdas,oof_v03_final,idem
+AG,cells_near_threshold_abs_margin_lt_0.025,72,72,1483,celdas,oof_v03_final,proximidad a la decision; no es probabilidad de error de anotacion
+AG,cells_with_unanimous_4model_disagreement,179,179,1483,celdas,v2_oof_base_corrected,M1/M3/M4 a umbral 0.5 y M2 canonico (convencion historica); desacuerdo != error
+AG,cells_with_neighbor_label_discrepancy,43,43,1483,celdas,label_consistency_v4,cluster por similitud (4 criterios); similitud textual != identidad semantica
+ALL,tr_positive_with_hs_0,0,0,1483,tweets,toxic_train,identidad empirica del desarrollo; la regla formal no esta documentada
+ALL,ag_positive_with_hs_0,22,22,1483,tweets,toxic_train,excepciones a la lectura condicionada de AG; estado formal sin documentar
+ALL,cells_in_consistency_clusters,68,68,1483,tweets,label_consistency_v4,4.853 por ciento del train (P87); dev aqui
+ALL,near_dup_groups_divergent,1,1,2,grupos,grupos_near_duplicados,umbral 0.85; solo texto casi duplicado
+ALL,near_dup_rows_divergent,3,3,1483,filas,grupos_near_duplicados,idem
+ALL,fused_groups_divergent,13,13,37,grupos,holdout_v2_ids,grupos fusionados (near-dup + pseudo-autor)
+ALL,fused_rows_divergent,43,43,1483,filas,holdout_v2_ids,idem
+ALL,combo_HS0_TR0_AG0,813,813,1483,tweets,toxic_train,estructura observada
+ALL,combo_HS0_TR0_AG1,22,22,1483,tweets,toxic_train,estructura observada
+ALL,combo_HS1_TR0_AG0,79,79,1483,tweets,toxic_train,estructura observada
+ALL,combo_HS1_TR0_AG1,124,124,1483,tweets,toxic_train,estructura observada
+ALL,combo_HS1_TR1_AG0,24,24,1483,tweets,toxic_train,estructura observada
+ALL,combo_HS1_TR1_AG1,421,421,1483,tweets,toxic_train,estructura observada

@@ -1,0 +1,144 @@
+{
+ "audit_id": "P90-02",
+ "git_commit": "e43c594917fc643d0e300b73646aefb7dbd6b61d",
+ "branch": "main",
+ "source_artifacts": [
+  "features/oof_v03_final.npz",
+  "data/raw/toxic_train.csv",
+  "data/processed/holdout_v2_ids.csv",
+  "data/processed/grupos_near_duplicados.csv",
+  "experiments/baseline_v03_frozen/pipeline_v03.json",
+  "experiments/baseline_v03_frozen/hashes.txt",
+  "submissions/toxic_submission_v03_lr_union_thr.csv",
+  "experiments/baseline_v03_frozen/model_v03.joblib",
+  "reports/v03_error_casebook.md",
+  "reports/v03_error_casebook.csv",
+  "reports/v03_error_cells.csv",
+  "reports/v03_error_fold_summary.csv",
+  "reports/v03_error_slice_summary.csv",
+  "reports/v03_error_confidence_summary.csv",
+  "reports/v03_error_review_sample.csv",
+  "reports/v03_error_controls.csv",
+  "reports/v03_error_provenance.json",
+  "reports/eda/fase2_lexico_inducido_agresividad.csv",
+  "reports/p57_family_status.csv",
+  "reports/toxic_remaining_legal_opportunities.csv",
+  "experiments.csv",
+  "DECISIONS.md"
+ ],
+ "source_hashes": {
+  "features/oof_v03_final.npz": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+  "data/raw/toxic_train.csv": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+  "data/processed/holdout_v2_ids.csv": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd",
+  "data/processed/grupos_near_duplicados.csv": "afabf9ae1c295ea8f203120bf28578cb4bdb4e8f16b89178d820baeaac62e622",
+  "experiments/baseline_v03_frozen/pipeline_v03.json": "89ee399ae849296f7a9a76c21d49e15e616a202b6ef8a5b1d87afbf8c528a90b",
+  "experiments/baseline_v03_frozen/hashes.txt": "3e3b9039015a592dbf248ecca0c1a8b5bbd621b19c76d446c394a5b0230684a1",
+  "submissions/toxic_submission_v03_lr_union_thr.csv": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+  "experiments/baseline_v03_frozen/model_v03.joblib": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+  "reports/v03_error_casebook.md": "3fb2d120acd7f2985a22c967db8587a694386dc61606331ef2c8d4d79103489b",
+  "reports/v03_error_casebook.csv": "b14d6ed21f011dc163c61cc5ec258889d052fd1226f3936a53918f0491b8c42b",
+  "reports/v03_error_cells.csv": "6a582e67d6450bcfc4e634036823e581080c56a1042dbdd95e9b39843810e26d",
+  "reports/v03_error_fold_summary.csv": "ad16825ae8b9931d019a119a99a96757aa1ba8ef0c2d5868c54fa351e754c9e1",
+  "reports/v03_error_slice_summary.csv": "0d19379e00e3c1f24906ecccbe6b4dd9d17fd8909d36a810c67ae9a1809a2992",
+  "reports/v03_error_confidence_summary.csv": "c729ff05b93d961bc3c586f011c77f0ace00d49e5bba2013bb5f1e1557cc1a71",
+  "reports/v03_error_review_sample.csv": "33272bbc92a65e813bb80e4041ffe1d55c28a4d8b2c09321b0c4768878a52ab1",
+  "reports/v03_error_controls.csv": "75bc065a15e5a0b5cc5ffb5081ddcc80aa7bf24c5f7d7d20ea054e552997df40",
+  "reports/v03_error_provenance.json": "76438dec77a4ac55a4b29b27c7777a0837d696cb47870295d898629e0fc56c18",
+  "reports/eda/fase2_lexico_inducido_agresividad.csv": "abcb61f0d6f93f33c337a6705f6770498ee89d1071a1dc5ea30369d871d09da9",
+  "reports/p57_family_status.csv": "e5de8a4de973ef22fd31e5696a8e4aee565ab517f1c93bdf81b4d9703feba947",
+  "reports/toxic_remaining_legal_opportunities.csv": "282a1603dd7bc21a371d2aebe1e08c5c34e681806854b7a7da79657c6fd46a8a",
+  "experiments.csv": "5b2994fee24e3174a2f24a4fcd6e89c6e5a67692d6668d52a617642d474d8e03",
+  "DECISIONS.md": "be31c9b70783f16a404133019414a6e1e987b7871db766acf09be0bfa09d7f1e"
+ },
+ "configurations": {
+  "umbrales": {
+   "HS": 0.44,
+   "TR": 0.51,
+   "AG": 0.46
+  },
+  "vectorizadores": "word(1,2) + char_wb(3,5), min_df=2, sublinear_tf, lowercase, strip_accents=None",
+  "modelo": "LogisticRegression C=2.0 class_weight=balanced solver=liblinear"
+ },
+ "dataset_scope": "desarrollo autorizado: 1483 filas con prediccion OOF (ids canonicos)",
+ "excluded_partitions": [
+  "test (untouched)",
+  "holdout (frozen)",
+  "holdout2 (frozen)"
+ ],
+ "computed_metrics": {
+  "corrected_cv": "0.7772114525165722",
+  "f1_por_etiqueta_pooled": {
+   "HS": 0.7616892911010559,
+   "TR": 0.8157303370786517,
+   "AG": 0.7542147293700089
+  },
+  "matrices_pooled": {
+   "HS": {
+    "TP": 505,
+    "FP": 173,
+    "FN": 143,
+    "TN": 662
+   },
+   "TR": {
+    "TP": 363,
+    "FP": 82,
+    "FN": 82,
+    "TN": 956
+   },
+   "AG": {
+    "TP": 425,
+    "FP": 135,
+    "FN": 142,
+    "TN": 781
+   }
+  },
+  "media_entre_folds": {
+   "HS": 0.761536,
+   "TR": 0.815846,
+   "AG": 0.754553
+  },
+  "nivel_distinto_media_macro_pliegues": "0.777312"
+ },
+ "output_artifacts": [
+  "reports/p90_02_integrity_and_corpus_audit.md",
+  "reports/p90_02_chatgpt_handoff.md",
+  "reports/p90_02_audit_manifest.json",
+  "reports/p90_02_audit_results.json",
+  "reports/p90_02_text_provenance.csv",
+  "reports/p90_02_metric_reconciliation.csv",
+  "reports/p90_02_casebook_validation.csv",
+  "reports/p90_02_review_sample_audit.csv",
+  "reports/p90_02_corpus_profile.csv",
+  "reports/p90_02_label_distribution.csv",
+  "reports/p90_02_slice_registry.csv",
+  "reports/p90_02_slice_metrics.csv",
+  "reports/p90_02_slice_overlap.csv",
+  "reports/p90_02_error_diagnosis.csv",
+  "reports/p90_02_error_intersections.csv",
+  "reports/p90_02_representative_cases.csv",
+  "reports/p90_02_historical_eda_matrix.csv",
+  "reports/p90_02_hypothesis_status.csv",
+  "reports/p90_02_artifact_inventory.csv",
+  "experiments/p90_02_auditoria_integral.py",
+  "experiments/p90_02b_informe_y_handoff.py",
+  "experiments/p90_03_integrar_notebook.py",
+  "notebooks/10_final_pipeline.ipynb"
+ ],
+ "validation_status": {
+  "text_provenance": "SOURCE_ALREADY_NORMALIZED (0 diferencias)",
+  "metric_reconciliation": "REPRODUCED (diferencias <= 1.1e-16)",
+  "casebook": "VERIFIED (441/757; 0 desviaciones)",
+  "controles": "REPRODUCIDOS 757/757 (0 incumplimientos)",
+  "muestra": "100 errores + 185 controles (estratificada, no aleatoria)",
+  "slices": "19/19 definiciones reproducidas; 3 familias documentadas",
+  "ascii": "0 bytes > 127 en artefactos generados",
+  "entrenamientos": 0,
+  "submissions": 0,
+  "commits": 0
+ },
+ "known_discrepancies": [
+  "RESUELTA: cifras 614/431/517 citadas = tabla historica train-1731 con MOD-03b (otra poblacion)",
+  "RESUELTA: corrected_cv = macro pooled, no media de folds (niveles de agregacion distintos)",
+  "RESUELTA: taxonomy de slices historica mezclaba lexico inducido y slices de texto (reclasificada)"
+ ]
+}

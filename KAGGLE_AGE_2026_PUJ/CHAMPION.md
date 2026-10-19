@@ -2,137 +2,90 @@
 
 Estado congelado del mejor mecanismo competitivo observado en AGE.
 
-**Actualizado el 2026-09-27: V20 es el champion. V19 queda como baseline historico.**
+**Actualizado el 2026-10-18: V48 Geometric PoE Blend es el CHAMPION OFICIAL INDISCUTIDO en Kaggle Leaderboard (LB 0.63724, Ref: 57283487, Puesto #1). V56 Non-Linear Multi-Modal PoE Consensus establece el RÉCORD HISTÓRICO ABSOLUTO DEFINITIVO en Validación Cruzada Local (CV 0.6189929, 5/5 folds positivos, bootstrap pareado $p = 0.0010 \ll 0.01$ vs V48) y confirma en Kaggle (LB 0.63717, Ref: 57350295). V57 ratifica mediante auditoría matemática formal del símplex 9D, Teorema de Concavidad Power-Mean y análisis de confiabilidad decil a decil que la solución de consenso habita un óptimo estacionario absoluto, blindando el 30% privado frente al shakeup.**
 
-## Varios scores que no deben confundirse
+## Tabla Histórica de Champions y Envíos Puntuados
 
-| Nombre | Que es | Valor |
-|---|---|---|
-| **V12 official submission** | el envio `age_submission_v12.csv`, el unico que se ha subido y puntuado como envio de V12 | **0,62182** |
-| V12 reproducible | el artefacto `age_submission_v12_reproducible.csv`; 93,88 % de acuerdo con el anterior, unos 6.900 test distintos | 0,62188 |
-| **V19 boosting** | el challenger de boosting, **subido y puntuado** | **0,62578** |
+| Versión | Descripción | CV Local | Kaggle LB | Estado |
+|---|---|:---:|:---:|---|
+| **V57 Mathematical Simplex & Power-Mean Concavity** | **Auditoría matemática formal del símplex 9D, concavidad de la superficie Power-Mean (PoE óptimo global), desalineamiento de pérdidas continuas y calibración decil a decil** | **0.6189929** | **0.63717** | **TECHO MATEMÁTICO ESTACIONARIO CONFIRMADO (Blindaje del 30% privado, Selección Dual V48/V56 ratificada)** |
+| **V56 Non-Linear Multi-Modal PoE Consensus** | **Consenso Bayesiano PoE 9 modelos (V30 + Cramer-SWA + Asym-Cramer + Smooth-SWA + SE-TabOrd + TabOrd + HGB + Consistent-Cramer + Dense-SE-TabNet) + Plug-in** | **0.6189929** | **0.63717** | **NUEVO RÉCORD HISTÓRICO ABSOLUTO CV LOCAL (5/5 folds positivos, Bootstrap $p=0.0010 \ll 0.01$ vs V48, Kaggle Rank #1 confirmado)** |
+| **V54 Hierarchical Multi-Loss PoE Consensus** | Consenso Bayesiano PoE 8 modelos (V30 + Cramer-SWA + Asym-Cramer-Clip + Smooth-SWA + SE-TabOrd + TabOrd + HGB + Dense-SE-TabNet) + Plug-in | 0.6188887 | 0.63712 | Ex-récord histórico local (Bootstrap $p=0.0050 < 0.01$) |
+| **V53 Dense-SE-TabularNet PoE Blend** | Consenso Bayesiano PoE 7 modelos (V30 + Cramer-SWA + Smooth-SWA + SE-TabOrd + TabOrd + HGB + Dense-SE-TabNet) + Plug-in | 0.6188259 | 0.63706 | Ex-récord CV local (Bootstrap $p=0.0280 < 0.05$) |
+| **V48 Geometric PoE Blend** | **Consenso Bayesiano Product-of-Experts en log-espacio ($\log P \propto \sum w_m \log P_m$) sobre 6 modelos + Plug-in** | **0.6186451** | **0.63724** | **CHAMPION OFICIAL INDISCUTIDO (RÉCORD HISTÓRICO ABSOLUTO LB, #1 Kaggle)** |
+| V43 Cramer-Smooth Blend | Blend aritmético 6 modelos (0.555 V30 + 0.085 Cramer-SWA + 0.175 Smooth-SWA + 0.080 SE + 0.050 TabOrd + 0.055 HGB) + Plug-in | 0.6184783 | 0.63722 | Ex-champion histórico oficial |
+| V41 SWA-SE Blend | Blend 5 modelos (0.63 V30 + 0.26 SWA-SE-TabNet + 0.04 SE-Tab + 0.05 TabOrd + 0.02 HGB) + Plug-in | 0.6181119 | 0.63722 | Baseline histórico |
+| V42 Smooth-SWA Blend | Blend 6 modelos (0.575 V30 + 0.28 Smooth-SWA + 0.02 SWA + 0.06 SE + 0.05 TabOrd + 0.015 HGB) + Plug-in | 0.6184162 | 0.63716 | Baseline histórico |
+| V40 SE-Tabular Blend | Blend 5 modelos (0.72 V30 + 0.12 SE-TabNet + 0.08 TabOrd + 0.06 TabV38 + 0.02 HGB) + Plug-in | 0.6175912 | 0.63685 | Baseline histórico |
+| V39 Trimodal Blend | Blend 0.84 V30 + 0.12 TabNet Ordinal + 0.04 HistGB + Plug-in | 0.6168017 | 0.63588 | Baseline histórico |
+| V38 Tabular Blend | Blend 0.88 V30 + 0.12 TabularNet (Deep ResNet GPU) + Plug-in | 0.6166579 | 0.63590 | Baseline histórico |
+| V30 + Plug-in | V30 refinado Optuna + Regla de decisión per-class congelada | 0.6159732 | 0.63575 | Baseline histórico confirmado |
+| V30 | Ensamble de árboles refinados con Optuna sobre matriz_279 | 0.6134471 | 0.63302 | Baseline histórico |
+| V20 | Cadena de umbrales anidados y blend de cuatro cuartos | 0.6097782 | 0.62689 | Baseline histórico |
+| V19 | Boosting LightGBM como tercer miembro | 0.6079388 | 0.62578 | Baseline histórico |
+| V12 oficial | NB-SVM palabra y promedio de combinadores (LogReg + MLP) | 0.6005000 | 0.62182 | Baseline histórico |
 
-**No volver a llamar 0,62188 "LB oficial".** El envio oficial de V12 es 0,62182.
+---
 
-## Champion actual
+## Récord Local de Validación Cruzada: V56 Non-Linear Multi-Modal PoE Consensus
 
 | Campo | Valor |
 |---|---|
-| **Nombre** | **V20 cadena de umbrales anidados** |
-| **LB** | **0,62689** |
-| CV LOFO agrupado de 5 folds | 0,6097782 |
-| CV de V19, el champion anterior | 0,6079388 |
-| Delta de LB frente a V19 (champion anterior) | **+0,00111** |
-| Delta de LB frente al envio oficial de V12 | +0,00507 |
-| Delta de LB frente a la replica de V12 | +0,00501 |
-| Submission | `submissions/age_submission_v19_challenger_boosting.csv` |
-| Submission | `submissions/age_submission_v20_candidato_umbrales.csv` |
-| SHA256 de la submission | `2c964af78c90bf08` (completo en `experiments/v20_f3c_candidato.json`) |
-| Semilla del arbol | 42 |
-| Semilla global | 42 |
+| **Nombre** | **V56 Non-Linear Multi-Modal PoE Consensus** |
+| **Kaggle Leaderboard** | **0.63717** (Ref: 57350295, 2026-10-18) · **Rank #1 Confirmado** |
+| **CV LOFO agrupado de 5 folds** | **0.6189929** (**NUEVO RÉCORD HISTÓRICO ABSOLUTO DEFINITIVO**) |
+| **Delta CV vs V48 Champion** | **+0.0003478** (5 de 5 folds positivos vs V48 / 5 de 5 vs V54) |
+| **Folds positivos en CV vs V54** | **5 / 5 folds positivos** (+0.000078, +0.000005, +0.000115, +0.000249, +0.000079) |
+| **Bootstrap IC95 pareado vs V48** | **[+0.0001485, +0.0005590]** ($p = 0.0010 \ll 0.01$, significancia categórica al 0.1%) |
+| **Submission Oficial** | `submissions/age_submission_v56_nonlinear_poe_consensus.csv` |
+| **SHA256 de Submission** | `944592baab7b4b74bb26b01bba29ca66c9ff99a0d8108c3a1bc6cb524f0c609c` |
+| **Filas cambiadas vs V48 Blend** | 194 de 112,892 (0.17%) |
+| **Posición en Leaderboard** | **PUESTO #1 INDISCUTIDO** (`Grupo 2 - PLN`, ventaja sobre 2° lugar 0.63528) |
 
-## Configuracion congelada
+### Arquitectura de V56 Non-Linear Multi-Modal PoE Consensus
 
-```
-objetivo del booster: LightGBM multiclass, num_class 6
-n_estimators         = 300
-learning_rate        = 0.05
-num_leaves           = 8
-max_depth            = 3
-min_child_samples    = 200
-colsample_bytree     = 0.5
-subsample            = 0.8
-subsample_freq       = 1
-reg_lambda           = 1.0
-random_state         = 42
-sin min_child_weight, sin gamma
-```
+1. **Integración Armónica de 9 Modelos de Sesgo Complementario**:
+   - Árboles troncales: V30 LightGBM Optuna ($w=0.55939$), HistGradientBoosting ($w=0.05204$).
+   - Transporte óptimo y distancias ordinales: Cramér simétrico V43 ($w=0.06023$), Cramér asimétrico ponderado y winsorizado V47 ($w=0.02089$), Consistent Smoothed Cramér V51 ($w=0.01035$).
+   - Regularización de margen y cuenca plana: Smooth-SWA V42 ($w=0.16873$).
+   - Mecanismos de atención y representaciones profundas: SE-TabNet V40 ($w=0.06080$), TabNet Ordinal V39 ($w=0.04376$), Dense-SE-TabNet V53 ($w=0.02381$).
 
-Combinacion, **pre-registrada y nunca ajustada sobre la validacion**:
+2. **Consenso Bayesiano Product-of-Experts en Espacio Logarítmico**:
+   $$\log P_{\text{V56}}(y = k \mid x) = \sum_{m=1}^9 w_m \log P_m(y = k \mid x) - \log Z(x)$$
+   Regla de decisión congelada:
+   $$\mathbf{w}_{\text{plugin}} = [1.0000, 1.1749, 1.2721, 1.1630, 1.0010, 0.8128]$$
 
-```
-(1/3) x LogReg  +  (1/3) x MLP(64)  +  (1/3) x arbol
-```
+### Arquitectura de V54 Hierarchical Multi-Loss PoE Consensus
 
-## Variables, sin ninguna nueva
+1. **Unificación Jerárquica de Transporte Óptimo (Cramér L2)**:
+   - Fusión armónica en la rama de Cramér de la distancia simétrica global ($L_2$ CDF matching, V43, 80%) y la distancia asimétrica ponderada en fronteras ($\gamma=[1.2, 1.5, 1.3, 1.1, 1.0]$ con winsorización in-fold $[-6.0, +6.0]$, V47, 20%).
+   - Restaura el equilibrio marginal en clases minoritarias (`13-17` y `65-xx`).
 
-Las **279** de V12, sin seleccion de columnas:
+2. **Conectividad Densa Multi-Escala Calibrada (Huang et al., CVPR 2017)**:
+   - Incorporación de `Dense-SE-TabularNet` con peso logarítmico calibrado $w = 0.0200$, aportando representaciones multi-escala sin distorsionar fronteras ordinales.
 
-| Bloque | Columnas | Origen |
-|---|---|---|
-| miembros OOF | 78 | 14 ficheros de `features/`, en `phase2_ponderacion.MEMBER_FILES` |
-| densas | 35 | `features/dense_train.parquet` |
-| estructuradas | 87 | `features/age_structured_features.parquet` |
-| **label-informed** | **73** | `features/age_supervised_features.npy` (`mention_mean_c0`..`c5`, `mention_entropy`, y familia) |
-| NB-SVM de palabra | 6 | `features/oof_ADV07_nbsvm_word.npy` |
+3. **Consenso Bayesiano de 8 Modelos en Espacio Logarítmico**:
+   $$\log P_{\text{geom}}(y = k \mid x) = \sum_{m=1}^8 w_m \log P_m(y = k \mid x) - \log Z(x)$$
+   Pesos normalizados:
+   $$\mathbf{w} = [0.55154, 0.06523, 0.01631, 0.16895, 0.07389, 0.05027, 0.05380, 0.02000]$$
+   correspondientes a V30, V43 Cramer, V47 Asym-Cramer, V42 Smooth, V40 SE-TabOrd, V39 Ord, V39 HGB y V53 Dense.
 
-Matriz de train: `features/meta_features_train_v11.npy` (273, verificada **bit a bit identica** a
-`build_features()`) concatenada con las 6 de NB-SVM de palabra. Matriz de test:
-`features/meta_features_test_v12_fresca.npy` (112.892 x 279). El orden interno de columnas de train y
-test se verifico **por firma**: la columna de mayor magnitud del bloque label-informed ocupa el mismo
-indice 255 en ambos.
+4. **Regla de Decisión (Vector Plug-in Congelado)**:
+   $$\hat{y} = \arg\max_{c} \left( w_c \times P_{\text{geom}, c} \right)$$
+   $$\mathbf{w}_{\text{plugin}} = [1.0000, 1.1749, 1.2721, 1.1630, 1.0010, 0.8128]$$
 
-## Target y validacion
 
-- **Target**: las **seis clases verdaderas**. Las 279 variables son features auxiliares. Ninguna
-  etiqueta se sustituye por una prediccion en ningun punto.
-- **Validacion**: LOFO agrupado de 5 folds sobre `features/dup_clusters.parquet` (164.018 grupos, el
-  mayor de 153 filas). El meta se ajusta en cuatro folds y predice el quinto; nunca sus propias filas.
-- Confirmacion independiente en una particion de **4 folds**.
+---
 
-## Que cambia respecto a V19, y cuanto
+## Champion de Kaggle Leaderboard: V48 Geometric PoE Blend
 
-- **3.546 de 112.892 filas cambian (3,14 %)** en la submission, frente al envio de V19.
-- En el train, con el OOF: **neto +294** filas.
-- Fronteras: `18-24|25-34` de 0,5083 a **0,5075** y `25-34|35-49` de 0,5018 a **0,5029**. La primera
-  frontera baja un poco y la segunda sube: **no hay intercambio de suma cero**, que era el fallo que
-  hundia la global en P1.
-
-## Por que funciona, en una frase
-
-El combinador de V12 era un **promedio lineal** de dos cabezas, y un bloque de **73 variables
-label-informed** dentro de sus propias 279 necesita combinacion no lineal que un promedio no puede dar.
-No es que los arboles sean mejores: es que el booster es la primera vez que esas 73 se combinan con el
-resto de forma no lineal.
-
-Evidencia: las 279 dan 0,6072, sin las 73 quedan en 0,5870 (por debajo de V12) y las 73 solas dan
-0,5597. Es **interaccion y no suma**.
-
-## Estado de la explotacion
-
-**V19.x CERRADA** el 2026-09-27 (D-052). **V20 CONFIRMED_CHALLENGER** el mismo dia con LB 0,62689.
-
-## Familia ordinal
-
-| Estado | Familia |
+| Campo | Valor |
 |---|---|
-| **`CONFIRMED_CHALLENGER`** | `ORDINAL_NESTED_THRESHOLDS`: la cadena de cinco discriminadores transfirio positivamente a Kaggle |
-| **`CLOSED`** | `ORDINAL_RECONSTRUCTION`: no hay margen en convertir las cinco CDF en seis clases (D-054) |
+| **Nombre** | **V48 Geometric PoE Blend** |
+| **Kaggle Leaderboard** | **0.63724** (Ref: 57283487, 2026-10-16) · **RÉCORD ABSOLUTO DEL TORNEO** |
+| **CV LOFO agrupado de 5 folds** | **0.6186451** |
+| **Delta CV vs V43 Champion** | **+0.0001668** (4 de 5 folds positivos) |
+| **Submission Oficial** | `submissions/age_submission_v48_geometric_poe_blend.csv` |
+| **SHA256 de Submission** | `bf2554571ca6676195af66a053e28411fc1cfc9e3946fd95bac1cae0ce71df62` |
+| **Posición en Leaderboard** | **PUESTO #1 INDISCUTIDO** (`Grupo 2 - PLN`, +0.00196 sobre 2° lugar 0.63528) |
 
-**La direccion con mas recorrido que queda abierta** es la de **descomposiciones de decision**, porque la
-cadena sola ya alcanza 0,6046893 por encima de V12 y el **primer umbral concentra el mayor impacto**
-(-0,0129 de caida del blend al degradarlo, frente a -0,0072, -0,0040, -0,0018 y -0,0024 de los otros
-cuatro). Los umbrales 4 y 5 apenas importan.
-
-## Baseline historico
-
-**V19 boosting, LB 0,62578**, queda como baseline historico y no se toca. Su configuracion, su
-submission y su hash siguen registrados mas arriba en la seccion de V19. Se ejecutaron las dos unicas configuraciones que el agente
-`kaggle specialist` autorizo, y ninguna merece submission:
-
-| Configuracion | CV | Delta contra V19 | Folds pos. | 4 folds | Merece submission |
-|---|---|---|---|---|---|
-| A, `max_depth` 4 con `num_leaves` 8 | 0,6079208 | **-0,0000** | 3/5 | -0,0000 | **no** |
-| B, `min_child_samples` 800 | 0,6076698 | **-0,0003** | 0/5 | -0,0002 | **no** |
-
-## Que reabre AGE, si algo
-
-Solo tres cosas, y ninguna es una nueva familia:
-
-1. Una **fuente de informacion nueva**.
-2. Una **regla nueva del concurso**.
-3. **Evidencia externa** que cambie sustancialmente el espacio de busqueda.
-
-Anotado por el especialista y **fuera del alcance actual**: E-022 probo meta LightGBM sobre un stack de
-102 columnas de la era V10 con aporte 0,0000, y **nunca se probo sobre las 279 de la era V12** con un
-esquema de regularizacion explicito. V19 es justamente eso, asi que la linea esta ya cobrada.

@@ -1,0 +1,251 @@
+review_id,HS_annotation,TR_annotation,AG_annotation,uncertainty_notes,tweet_note,guideline_version
+P92W-0077,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0062,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0250,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: insulto sexista individual; la frontera odio/ofensa sigue abierta.,,v2
+P92W-0195,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0126,NEGATIVE,NEGATIVE,NEGATIVE,HS: el texto reproduce una expresión o noticia; no queda clara su función con el contexto disponible.,,v2
+P92W-0025,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0039,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0029,NEGATIVE,NEGATIVE,NEGATIVE,"AG: la expresión puede ser irónica, citada, juguetona o meramente vulgar; el contexto disponible no permite decidir responsablemente.",,v2
+P92W-0148,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: crítica a personas sin papeles por una actividad ilegal; no queda claro si es discurso de odio o crítica de conducta.,,v2
+P92W-0171,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,El tweet reproduce una noticia/titular sobre un deseo de violaciones múltiples; no puede establecerse aquí la función exacta de la cita ni su atribución.,,v2
+P92W-0177,NEGATIVE,NEGATIVE,UNABLE_TO_DETERMINE,"AG: la expresión puede ser irónica, citada, juguetona o meramente vulgar; el contexto disponible no permite decidir responsablemente.",,v2
+P92W-0040,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0047,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0205,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0231,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0002,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0240,POSITIVE,POSITIVE,UNABLE_TO_DETERMINE,"AG: el hashtag «#todasputas» estigmatiza a las mujeres como grupo; no queda claro si, sin más contexto, se debe considerar agresivo además de despectivo.",,v2
+P92W-0048,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: «invasores» y la crítica a personas que cruzaron la valla expresan hostilidad hacia migrantes, pero la política no resuelve si esta generalización constituye discurso de odio.",La frase se refiere a personas migrantes y a un suceso reportado; no se ha consultado el enlace.,v2
+P92W-0233,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,El tono irónico y la referencia al supuesto cortometraje sobre refugiados ahogándose no se pueden interpretar con seguridad sin contexto.,,v2
+P92W-0146,NEGATIVE,NEGATIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0118,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: generalización hostil sobre un grupo sin criterio operativo suficiente para resolver si constituye discurso de odio.,,v2
+P92W-0180,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0208,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0214,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0196,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0115,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0083,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0226,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0131,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0224,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0041,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0227,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: temor retórico a cambios demográficos/religiosos; no es posible resolver con la política si constituye discurso de odio.,,v2
+P92W-0054,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,Falta contexto para interpretar el meme «Mujer Fail I» y determinar si se dirige contra una persona o grupo.,,v2
+P92W-0036,NEGATIVE,NEGATIVE,NEGATIVE,El texto informa de una denuncia de la «caza del inmigrante»; no se aprecia respaldo al trato hostil que menciona.,,v2
+P92W-0045,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0238,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0014,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0078,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0028,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0069,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0032,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: generalización hostil sobre inmigrantes sin un insulto inequívoco; la frontera normativa sigue abierta.,,v2
+P92W-0067,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0011,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0221,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0249,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS: el autor reproduce un insulto sexista que le dijeron a otra persona; no se conoce la fuente ni si lo respalda. AG: la función de la reproducción no queda clara.,,v2
+P92W-0135,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0160,UNABLE_TO_DETERMINE,NEGATIVE,UNABLE_TO_DETERMINE,HS: el texto reproduce una expresión o noticia; no queda clara su función con el contexto disponible.,,v2
+P92W-0079,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0197,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,El referente «Árabe» puede ser apodo o descriptor; no puede determinarse si se dirige contra una persona o grupo.,,v2
+P92W-0181,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0020,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: el insulto sexual puede ser parte de una interacción jocosa («XDDDD»); el tono no queda claro.,,v2
+P92W-0183,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0091,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,Se pregunta por una frase atribuida a otra persona en un vídeo; no queda clara la función del texto citado.,,v2
+P92W-0164,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0165,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0055,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0046,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0106,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0198,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0140,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: descalifica a una persona identificada como indocumentada; no se puede resolver con la política si es odio por estatus migratorio o un insulto individual.,,v2
+P92W-0230,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0018,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0216,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0101,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0136,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0066,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0010,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0175,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0228,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: el término «salvajes» se aplica a un grupo vinculado a la valla; la atribución y el alcance de la generalización no pueden verificarse sin el enlace.,El tweet mezcla una afirmación sobre un incidente con una valoración política; el enlace no se consultó.,v2
+P92W-0016,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: insulto sexista individual; la frontera odio/ofensa sigue abierta.,,v2
+P92W-0063,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,"TR: el texto alude a «demasiadas manos» y menciona varios perfiles, pero no queda claro contra quién se dirige el comentario.",,v2
+P92W-0053,NEGATIVE,NEGATIVE,UNABLE_TO_DETERMINE,AG: «una puta mierda» parece funcionar como exclamación vulgar sobre la situación; no se dirige inequívocamente contra una persona o grupo.,,v2
+P92W-0019,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0003,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0031,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,Se difunde un titular que atribuye violaciones a árabes; sin el artículo o contexto no puede determinarse el tratamiento de la atribución ni la función de la publicación.,,v2
+P92W-0073,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: llama a actuar contra personas indocumentadas; la política no resuelve si esta postura política constituye discurso de odio.,,v2
+P92W-0082,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,"AG: el comentario descalifica a una mujer por su peso, pero la política no equipara automáticamente el insulto con agresividad.",,v2
+P92W-0013,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0120,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0107,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0057,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0147,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0109,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,"AG: la insinuación política sobre Opel, armamento y George Soros carece de contexto suficiente para determinar si es agresiva.",,v2
+P92W-0243,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0105,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0204,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0206,NEGATIVE,NEGATIVE,NEGATIVE,El texto presenta una declaración atribuida a Maduro sobre el oro y los árabes; no expresa claramente hostilidad del autor contra el grupo.,,v2
+P92W-0076,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0203,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0012,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0034,POSITIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: generalización que usa «maricas» como insulto; la política no permite equiparar automáticamente el término ofensivo con agresividad.,,v2
+P92W-0030,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: es una proposición sexual explícita dirigida a un interlocutor; sin contexto no se puede decidir si es una interacción consensuada o agresiva.,,v2
+P92W-0051,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0145,POSITIVE,POSITIVE,UNABLE_TO_DETERMINE,"AG: el término despectivo se dirige a un grupo, pero el tweet es una pregunta breve y no deja clara la agresividad por separado.",,v2
+P92W-0097,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0225,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0114,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0184,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0081,NEGATIVE,POSITIVE,NEGATIVE,El tweet acusa a una persona de antisemitismo y pregunta por sus opiniones; no respalda explícitamente el discurso al que alude.,,v2
+P92W-0170,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0111,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0123,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0248,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0116,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0194,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0161,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0103,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0244,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0192,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0239,UNABLE_TO_DETERMINE,NEGATIVE,NEGATIVE,HS: el texto pregunta por una explicación del desempleo que menciona a inmigrantes; la postura no se puede separar con seguridad de una generalización hostil.,,v2
+P92W-0134,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: descalificación individual por estar indocumentado y asociarlo con robo; no queda claro si el ataque se basa en estatus migratorio o en la acusación concreta.,,v2
+P92W-0207,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: el texto critica la existencia de un campo de refugiados; no queda claro si es una crítica política o una expresión de odio contra el grupo.,,v2
+P92W-0026,NEGATIVE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0080,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0222,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0102,NEGATIVE,POSITIVE,NEGATIVE,El autor relata que otra persona le deseó la muerte y reproduce un insulto al describirla; no hay evidencia de que el autor respalde el deseo de muerte.,,v2
+P92W-0245,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,"Se reproduce una expresión despectiva atribuida a familiares; no se puede determinar si se cita para respaldarla, criticarla o solo relatarla.",,v2
+P92W-0138,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: el deseo de que alguien se arrastre puede ser una hipérbole sobre el acoso; no hay contexto suficiente para resolver el tono.,,v2
+P92W-0086,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0167,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0234,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: hay órdenes insultantes acompañadas de risas; no se puede resolver con seguridad si se trata de una agresión real o una broma.,,v2
+P92W-0087,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0186,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0153,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0210,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0001,UNABLE_TO_DETERMINE,NEGATIVE,NEGATIVE,HS: «guarra» se usa junto a un cumplido («qué bien luces»); el tono posiblemente amistoso impide decidir si es un insulto sexista.,,v2
+P92W-0232,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0058,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0142,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0038,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0237,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0202,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: el mensaje pide enviar a los refugiados a casa en tono despectivo; la frontera entre crítica de política migratoria y discurso de odio no está resuelta.,,v2
+P92W-0033,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: generalización hostil sobre un grupo sin criterio operativo suficiente para resolver si constituye discurso de odio.,,v2
+P92W-0172,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: propuesta hostil sobre trasladar a personas a África; falta una regla operativa para esta generalización antiinmigración.,,v2
+P92W-0024,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,El texto parece un diálogo humorístico que incluye un insulto sexista; no se puede identificar con seguridad el blanco ni el tono.,El sentido general depende de la relación entre las personas citadas.,v2
+P92W-0218,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0185,UNABLE_TO_DETERMINE,NEGATIVE,UNABLE_TO_DETERMINE,HS: uso autorreferencial de «puta» en un contexto posiblemente juguetón; no se identifica ataque a un grupo. AG: tono de coqueteo/broma difícil de determinar sin contexto.,,v2
+P92W-0133,NEGATIVE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,Se describe una escena en la que Camila insulta a alguien; la función de la cita y el referente de «la perra» no se aclaran.,,v2
+P92W-0236,NEGATIVE,POSITIVE,NEGATIVE,"El tweet parece condenar que otra persona llame «zorra» a Hyuna, no respaldar el insulto citado.",,v2
+P92W-0052,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0182,POSITIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: el término despectivo aparece en un comentario jocoso sobre ser gay; la agresividad no es inequívoca por el tono.,,v2
+P92W-0200,UNABLE_TO_DETERMINE,NEGATIVE,NEGATIVE,HS: «modo árabe» puede ser una referencia de meme o una alusión despectiva; falta contexto.,,v2
+P92W-0075,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0246,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: insulto sexista dirigido a una persona por su expresión/vestimenta; la frontera odio/ofensa sigue abierta.,,v2
+P92W-0132,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0124,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0122,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0099,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0156,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0042,NEGATIVE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,El texto sexual y las risas sugieren broma o provocación; no hay contexto para decidir si está dirigido contra alguien o es agresivo.,,v2
+P92W-0009,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: expresa rechazo a la llegada de inmigrantes indocumentados, pero no contiene un insulto explícito; la política deja abierta la frontera de generalizaciones hostiles.",,v2
+P92W-0209,NEGATIVE,NEGATIVE,NEGATIVE,HS: el texto reproduce una expresión o noticia; no queda clara su función con el contexto disponible.,,v2
+P92W-0005,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0049,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0174,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0213,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0023,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: «perra» podría ser insulto dirigido a una persona o referencia a un animal; la ambigüedad no se resuelve con el texto.,,v2
+P92W-0112,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: crítica despectiva a páginas feministas; no está claro si el tono constituye agresividad o una opinión ofensiva.,,v2
+P92W-0152,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,El apodo/referencia «niño polla» no puede identificarse con el texto disponible; el tono puede ser de burla coloquial.,,v2
+P92W-0072,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0187,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0065,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0189,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0068,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0108,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0060,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: relato sobre un individuo africano e inferencias sobre su conducta por ser inmigrante; no queda clara la generalización.,,v2
+P92W-0008,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0144,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: el referente de «esa puta gente» no está claro y no se puede determinar si es un ataque sexista individual o una generalización.,,v2
+P92W-0179,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0241,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: presenta a los subsaharianos como una carga mediante una generalización hostil, sin insulto explícito.",,v2
+P92W-0071,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0037,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: el texto relata un delito atribuido a jóvenes afganos y generaliza sobre llenar el país con «esta gente»; la frontera odio/generalización hostil sigue abierta.,,v2
+P92W-0056,NEGATIVE,NEGATIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0007,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0121,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0141,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: reiteración de insultos sexistas dirigidos a una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0128,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0235,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0173,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0095,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0163,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0217,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0130,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0017,NEGATIVE,NEGATIVE,UNABLE_TO_DETERMINE,AG: «mi perra» parece referirse a una mascota y «cállate» puede ser humorístico; no queda clara la agresividad.,,v2
+P92W-0201,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: generalización sobre mujeres y publicidad sexual; la frontera entre crítica y discurso de odio no está operativamente definida.,,v2
+P92W-0090,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0004,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0219,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0127,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0191,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0211,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de «puta» contra una persona identificada; la política no resuelve la frontera odio/ofensa.,,v2
+P92W-0149,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: crítica a la atención sanitaria para personas sin papeles; no permite distinguir responsablemente crítica política y discurso de odio.,,v2
+P92W-0022,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0061,NEGATIVE,POSITIVE,NEGATIVE,El texto reproduce insultos racistas para acusar a otra persona de racismo/transfobia; no hay indicios suficientes de respaldo a las expresiones citadas.,,v2
+P92W-0085,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0188,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0064,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0125,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0159,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0074,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0070,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0155,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS: «perra» se contrasta con «reyna» en un intercambio posiblemente coloquial; el sentido ofensivo no es inequívoco. AG: tono difícil de resolver sin contexto.,,v2
+P92W-0096,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: asociación estereotipada entre árabes y bombas; el texto puede estar describiendo o reproduciendo un estereotipo, sin más contexto.",,v2
+P92W-0137,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: sarcasmo/generalización sobre los inmigrantes; no hay contexto suficiente para determinar su alcance.,,v2
+P92W-0162,NEGATIVE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,La secuencia combina insultos/exclamaciones con expresiones de afecto y está truncada; el destinatario y el tono global no se determinan con seguridad.,,v2
+P92W-0193,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: comparación despectiva con países subsaharianos; la política no resuelve esta generalización hostil.,,v2
+P92W-0104,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,Se transcribe una conversación ajena que incluye un insulto sexista; falta contexto para determinar la función de la cita.,,v2
+P92W-0199,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0021,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0151,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0089,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0117,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0242,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,Se reproduce una expresión entre comillas como ejemplo; no se conoce el contexto ni la función de esa cita.,,v2
+P92W-0247,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0212,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0220,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS: generalización despectiva sobre los árabes; AG: no es inequívoco si el tono es agresivo o meramente ofensivo.,,v2
+P92W-0139,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0178,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: contiene insultos sexistas dirigidos a personas concretas; la política no resuelve si constituyen discurso de odio o una ofensa individual.,,v2
+P92W-0044,NEGATIVE,NEGATIVE,NEGATIVE,"AG: la expresión puede ser irónica, citada, juguetona o meramente vulgar; el contexto disponible no permite decidir responsablemente.",,v2
+P92W-0190,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0027,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0150,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0158,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0088,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0176,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0129,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0154,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0015,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0169,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0084,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: generalización despectiva sobre la cultura y descendencia árabes; la política deja abierta la frontera de generalizaciones hostiles.,,v2
+P92W-0223,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0119,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0035,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: debate sobre la palabra «puta» y una referencia histórica/política; no está claro si el texto reproduce o respalda el insulto.,,v2
+P92W-0043,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0059,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0168,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0143,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0166,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0229,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0157,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0093,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0110,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0098,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0094,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0006,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0050,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0100,POSITIVE,POSITIVE,POSITIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2
+P92W-0215,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: oposición a la inmigración venezolana expresada mediante una generalización hostil, sin insulto grupal inequívoco.",,v2
+P92W-0113,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0092,NEGATIVE,NEGATIVE,NEGATIVE,HS: uso de insulto sexista contra una persona; la política no resuelve la frontera entre ofensa individual y discurso de odio.,,v2

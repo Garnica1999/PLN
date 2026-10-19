@@ -1,0 +1,1165 @@
+# P96-02: escaneos estaticos de scripts
+
+
+## referencias a toxic_test / test.csv: 54 scripts
+
+- 01_eda_linguistico.py
+- 26_scaffold_v4.py
+- embedding_00_scaffold_v5.py
+- embedding_01_corpus_wikipedia_v5.py
+- embedding_06_auditoria_v5.py
+- p59_01_voronoi_local.py
+- p63_02_id_forensics.py
+- p63_10_cerrar.py
+- p64_06_cerrar.py
+- p65_00_audit_gap.py
+- p65_05_cerrar.py
+- p66_04_cerrar.py
+- p67_02_cerrar.py
+- p69_01_auditoria_downweight.py
+- p69_07_cierre_final.py
+- p69_10_submission_candidato.py
+- p72_00_auditoria_implementacion.py
+- p79_01_auditoria_sgns.py
+- p80_01_auditoria_w2v.py
+- p81_01_cierre_huecos.py
+- p82_02_submission_rnn.py
+- p84_01_dl01_corregido.py
+- p84_02_fasttext_supervisado.py
+- p84_03_ros_equivalencia.py
+- p84_04_sgns_corregido_anclado.py
+- p84_05_em_shrinkage_simulado.py
+- p84_06_notebook_completo.py
+- p85_01_sgns_twitter_corregido.py
+- p89_00_auditoria_final_consistencia.py
+- p90_00_casebook_errores_v03.py
+- p90_02_auditoria_integral.py
+- p90_02b_informe_y_handoff.py
+- p90_03_diagnostico_contribuciones.py
+- p90_03b_informe_handoff.py
+- p90_03r_reconstruccion_oof.py
+- p90_03rb_informe.py
+- p91_01_diagnostico_etiquetas.py
+- p91_02_informe_protocolo.py
+- p92_01_paquete_anotacion.py
+- p92_04_handoff_calibracion.py
+- p92_12_politica_v2.py
+- p92_14_p92w_reconstruccion.py
+- p93r5_01_comparacion_gold.py
+- p96_02_folds_leakage.py
+- v11_02_auditoria_legalidad.py
+- v16_01_generar_submissions.py
+- v19_03_diagnosticos_y_dictamen.py
+- v20_02_inferencia_y_candidata.py
+- v47_00_auditoria_datos.py
+- v57_00_sintesis_estrategica.py
+- v58_00_auditoria_candidatos.py
+- v58_01_integrar_notebook.py
+- v6_09_entregables.py
+- v9_03_near_dup_test.py
+
+## referencias a holdout (historico): 354 scripts
+
+- 00_auditoria_datos.py
+- 13_holdout_v2.py
+- 14_oof_corregido_v2.py
+- 15_cadenas_etiquetas_v2.py
+- 16_targeting_v2.py
+- 17_stacking_v2.py
+- 18_p7_holdout_y_submission_v08.py
+- 19_sintaxis_cita_negacion_v2.py
+- 20_emocion_nbsvm_ortografia_v2.py
+- 21_backlog_restante_v2.py
+- 22_artefactos_auditoria_v2.py
+- 23_candidatos_finales.py
+- 24_informe_final_candidatos.py
+- 25_submissions_candidatos.py
+- 26_scaffold_v4.py
+- 29_reweighting_v4.py
+- 30_supervised_weighting_v4.py
+- 31_joint_label_v4.py
+- 32_meta_shift_v4.py
+- 33_class_conditional_lm_v4.py
+- 34_structural_sparse_v4.py
+- 35_discovery_v4.py
+- 36_candidatos_v4.py
+- 38_refit_final_v4.py
+- embedding_00_scaffold_v5.py
+- embedding_01_corpus_wikipedia_v5.py
+- embedding_02_fasttext_baseline_v5.py
+- embedding_03_fusion_complementariedad_v5.py
+- embedding_05_fasttext_web_v5.py
+- embedding_06_auditoria_v5.py
+- embedding_08_fasttext_50M_v5.py
+- embedding_10_fasttext_5M_v5.py
+- embedding_11_auditoria_firmas_v5_1.py
+- embedding_12_vector_size_v5_1.py
+- embedding_13_window_v5_1.py
+- embedding_18_complementariedad_v5_1.py
+- embedding_19_notebook_v5_1.py
+- embedding_22_auditoria_final_v5_1.py
+- p59_00_registro_hipotesis.py
+- p59_01_voronoi_local.py
+- p59_02_voronoi_bloque.py
+- p59_03_confident_learning.py
+- p59_04_influence.py
+- p59_05_nmf_gap_analysis.py
+- p59_06_robust_loss.py
+- p59_07_local_window.py
+- p59_08_calibracion_local.py
+- p59_09_fusion_local.py
+- p59_10_grafo_regularizacion.py
+- p59_11_generativo_ngram.py
+- p59_12_informe_final.py
+- p59_90_integrar_notebook.py
+- p60_00_registro_hipotesis.py
+- p60_01_contrastive.py
+- p60_02_asl.py
+- p60_03_dro.py
+- p60_04_distribucion.py
+- p60_05_ruido_por_etiqueta.py
+- p60_06_intervencion_ag.py
+- p60_07_transporte.py
+- p60_09_polyloss.py
+- p60_10_metareweight.py
+- p60_11_cerrar.py
+- p60_12_total.py
+- p60_13_notebook.py
+- p60_14_auditoria.py
+- p60_registrar.py
+- p61_00_reconciliacion.py
+- p61_01_eda_probabilidades.py
+- p61_02_inventario.py
+- p61_03_lightgbm.py
+- p61_05_ensemble.py
+- p61_08_segunda_particion.py
+- p61_09_cerrar.py
+- p61_10_notebook.py
+- p62_00_auditoria_y_gap.py
+- p62_01_eda_linguistica.py
+- p62_03_pista_l.py
+- p62_04_pista_m.py
+- p62_05_cerrar.py
+- p62_06_notebook.py
+- p62_07_presupuesto_canal.py
+- p62_08_pos_o_no_pos.py
+- p62_09_cobertura.py
+- p62_10_techo_cortos.py
+- p62_11_cerrar.py
+- p63_02_id_forensics.py
+- p63_03_id_auditoria_predictiva.py
+- p63_04_estructura_relacional.py
+- p63_05_composicion_linguistica.py
+- p63_06_estructura_tweet_largo.py
+- p63_07_integracion_y_techo.py
+- p63_08_residuo_de_v03.py
+- p63_09_dataset_auxiliar.py
+- p63_10_cerrar.py
+- p64_02_segmentacion_eda.py
+- p64_03_evidencia_segmental.py
+- p64_04_leave_one_out.py
+- p64_05_especializacion_larga.py
+- p64_05_multiple_instance.py
+- p64_06_cerrar.py
+- p64_06_quote_mention.py
+- p64_07_negacion.py
+- p64_08_lda.py
+- p65_00_audit_gap.py
+- p65_01_ngrams.py
+- p65_02_huecos_contraste.py
+- p65_03_cohesion.py
+- p65_04_especialista.py
+- p65_05_cerrar.py
+- p66_00_audit_gap.py
+- p66_01_regenerar_scores.py
+- p66_02_fusion_espacio_scores.py
+- p66_03_complementariedad_bootstrap.py
+- p66_04_cerrar.py
+- p67_01_controles_decisivos.py
+- p67_02_cerrar.py
+- p67_04_gap_analysis.py
+- p68_01_enrutado_por_estructura.py
+- p68_02_h2_auditoria.py
+- p69_01_auditoria_downweight.py
+- p69_02_segunda_particion.py
+- p69_03_cierre_downweight.py
+- p69_04_tercera_particion.py
+- p69_05_permutacion.py
+- p69_06_particiones_corregidas.py
+- p69_07_cierre_final.py
+- p69_08_paquete_candidato.py
+- p69_10_submission_candidato.py
+- p70_01_sensibilidad_tamano.py
+- p70_02_postmortem.py
+- p70_03_correccion_postmortem.py
+- p71_00_auditoria_corpus.py
+- p71_01_auditoria_ampliada.py
+- p71_05_downstream.py
+- p71_09_downstream_lrfix.py
+- p71_10_downstream_corregido.py
+- p72_00_auditoria_implementacion.py
+- p72_02_dimension_downstream.py
+- p72_03_control_aleatorio.py
+- p72_04_control_aleatorio_normalizado.py
+- p73_01_solapamiento_corpus.py
+- p73_02_textcnn_vs_random.py
+- p73_03_segunda_particion.py
+- p73_04_auditoria_cierre.py
+- p74_01_null_replicado.py
+- p75_01_complementariedad_textcnn.py
+- p75_02_slices_recuperadas.py
+- p76_01_calibracion_nested.py
+- p77_01_operador_selectivo.py
+- p78_01_control_anidado.py
+- p79_01_auditoria_sgns.py
+- p80_01_auditoria_w2v.py
+- p81_01_cierre_huecos.py
+- p82_01_rnn_atencion.py
+- p82_02_submission_rnn.py
+- p83_01_bayesiano.py
+- p84_01_dl01_corregido.py
+- p84_02_fasttext_supervisado.py
+- p84_03_ros_equivalencia.py
+- p84_04_sgns_corregido_anclado.py
+- p84_05_em_shrinkage_simulado.py
+- p84_06_notebook_completo.py
+- p84_07_notebook_auditoria_oportunidades.py
+- p85_01_sgns_twitter_corregido.py
+- p85_02_integrar_resultado.py
+- p86_00_auditoria_novedad_fm.py
+- p87_00_gobernanza_anotacion_tr.py
+- p87_01_integrar_notebook.py
+- p88_00_auditoria_novedad_lgbm.py
+- p89_00_auditoria_final_consistencia.py
+- p90_00_casebook_errores_v03.py
+- p90_01_integrar_casebook.py
+- p90_02_auditoria_integral.py
+- p90_02b_informe_y_handoff.py
+- p90_03_diagnostico_contribuciones.py
+- p90_03_integrar_notebook.py
+- p90_03b_informe_handoff.py
+- p90_03r_reconstruccion_oof.py
+- p90_03rb_informe.py
+- p90_04_integrar_notebook.py
+- p90_05_integrar_notebook.py
+- p91_01_diagnostico_etiquetas.py
+- p91_02_informe_protocolo.py
+- p91_03_integrar_notebook.py
+- p92_01_paquete_anotacion.py
+- p92_02_informe_plan.py
+- p92_03_integrar_notebook.py
+- p92_04_handoff_calibracion.py
+- p92_05_analisis_calibracion.py
+- p92_06_informes.py
+- p92_07_integrar_notebook.py
+- p92_08_discusion_u.py
+- p92_10_auditoria_procedencia.py
+- p92_12_politica_v2.py
+- p92_13_integrar_notebook.py
+- p92_14_p92w_reconstruccion.py
+- p92_15_integrar_notebook.py
+- p92_16_p92x_auditoria_final.py
+- p92_17_integrar_notebook.py
+- p92_18_handoff_calibracion_v21.py
+- p92_19_integrar_notebook.py
+- p92_20_recepcion_respuestas.py
+- p92_21_integrar_notebook.py
+- p93_01_analisis_agreement.py
+- p93_02_integrar_notebook.py
+- p93r2_01_recepcion_revisiones.py
+- p93r3_01_auditoria_y_ronda2.py
+- p93r4_01_recepcion_bloqueo_analisis.py
+- p93r5_01_comparacion_gold.py
+- p93r5_02_integrar_notebook.py
+- p93r_01_paquete_adjudicacion.py
+- p93r_02_integrar_notebook.py
+- p94_00_inventario.py
+- p94_01_registro_hipotesis.py
+- p94_02_verificacion.py
+- p94_03_integrar_notebook.py
+- p95_00_opciones.py
+- p95_01_verificacion.py
+- p95_02_integrar_notebook.py
+- p96_01_metric_recompute.py
+- p96_02_folds_leakage.py
+- v10_01_holdout2.py
+- v10_02_ruido_particion.py
+- v10_04_calibracion_fuerte.py
+- v10_05_regla_f1_optima.py
+- v10_06_umbrales_estables.py
+- v10_08_confirmacion_dev2.py
+- v10_09_correlacion_eliminacion.py
+- v10_10_regla_conservacion.py
+- v10_11_bigru_finetuning.py
+- v11_00_reconciliacion.py
+- v11_01_reproduccion_v9_02.py
+- v11_02_auditoria_legalidad.py
+- v11_03_auditoria_cumplimiento.py
+- v11_05_registro.py
+- v11_06_validacion_estimadores.py
+- v11_07_correccion_prior.py
+- v11_08_cierre_y_tabla_maestra.py
+- v11_09_cierre_entregables.py
+- v12_00_auditoria_brecha.py
+- v12_01_regularizacion_grupo.py
+- v12_02_perdida_y_estructura.py
+- v12_03_entrenamiento_por_pares.py
+- v12_05_informe_final.py
+- v12_05_registrar.py
+- v13_00_auditoria_hs.py
+- v13_01_aislamiento_hs.py
+- v13_02_informe_final.py
+- v14_00_auditoria_partial_label.py
+- v14_01_informe_final.py
+- v15_01_gap_y_ortogonalidad.py
+- v15_02_informe_cierre.py
+- v16_01_generar_submissions.py
+- v16_02_promedio_umbrales.py
+- v16_03_vecinos_de_capacidad.py
+- v21_01_triaje_competitivo.py
+- v22_01_auditoria_preprocessing.py
+- v22_02_preprocessing_historic_vs_raw.py
+- v22_03_all_but_the_top.py
+- v23_01_auditoria_rbf_svc.py
+- v24_01_modelo_transferencia_complejidad.py
+- v24_03_sonda_knn_predictor.py
+- v24_03b_perfil_de_celdas.py
+- v25_01_factorization_machine.py
+- v26_01_geometria_kernel.py
+- v26_02_tsetlin.py
+- v26_03_tsetlin_oficial.py
+- v27_01_char_spectrum_kernel.py
+- v28_01_diagnostico_errores.py
+- v28_03_ambiguedad_etiquetas.py
+- v29_01_auditoria_near_duplicate.py
+- v29_03_vecinos_corrigen_errores.py
+- v30_01_perfil_error_residual.py
+- v31_01_url_estructural.py
+- v31_02_mencion_hashtag.py
+- v31_03_enfasis_ortografico.py
+- v31_04_interacciones_url.py
+- v32_00_reproducibilidad.py
+- v32_01_fold4.py
+- v32_02_aislar_fuente.py
+- v32_03_mencion_longitud.py
+- v32_04_hashtag_longitud.py
+- v32_05_cuatro_bins.py
+- v32_06_context_gated.py
+- v33_01_validacion.py
+- v33_04_integrar_notebook.py
+- v34_01_frontera.py
+- v35_01_sgd.py
+- v36_01_hashing.py
+- v37_01_bm25.py
+- v38_01_embedding_supervisado.py
+- v40_01_pls.py
+- v42_01_pls_correcto.py
+- v43_01_vw_optimizers.py
+- v44_01_vw_optimizers.py
+- v44_02_pls_correcto.py
+- v45_00_metrica_audit.py
+- v45_01_joint_label_structure.py
+- v45_02_integrar_notebook.py
+- v46_00_champion_audit.py
+- v47_00_auditoria_datos.py
+- v47_01_ajuste_pliegues.py
+- v47_01_especializacion.py
+- v47_01_especializacion_por_etiqueta.py
+- v47_01_integrar_notebook.py
+- v48_00_eda_traceability.py
+- v48_01_residual_atlas.py
+- v48_02_integrar_notebook.py
+- v49_00_rescate_forense.py
+- v50_00_brecha_y_oracle.py
+- v50_01_selector.py
+- v51_00_utilidad_y_asimetria.py
+- v51_01_selector_utilidad.py
+- v51_02_accion_utilidad_esperada.py
+- v52_00_auditoria_y_techo.py
+- v53_00_politica_fina.py
+- v54_00_atlas_no_rescatable.py
+- v55_00_auditoria_pipeline.py
+- v55_01_integrar_notebook.py
+- v56_00_transferencia_umbrales.py
+- v57_00_sintesis_estrategica.py
+- v57_01_integrar_notebook.py
+- v58_00_auditoria_candidatos.py
+- v58_01_integrar_notebook.py
+- v6_00_gap_analysis.py
+- v6_01_estructura_errores.py
+- v6_02_label_factorization.py
+- v6_03_ponderacion_grupo.py
+- v6_04_char_weight.py
+- v6_05_skipgrams.py
+- v6_06_bagging_grupos.py
+- v6_07_ruido_par.py
+- v6_08_aumento.py
+- v6_09_entregables.py
+- v7_01_perdida_f1.py
+- v7_02_prior_grupo.py
+- v7_03_umbral_anidado.py
+- v7_04_entregables.py
+- v8_01_ensamble_folds.py
+- v8_03_estabilidad_features.py
+- v8_04_log_count_ratio.py
+- v8_05_regularizacion_conjunta.py
+- v8_06_c_por_etiqueta.py
+- v8_07_peso_por_etiqueta.py
+- v8_08_corrector_margenes.py
+- v8_10_ensemble_cinco_modelos.py
+- v8_11_complejidad_idiosincrasias.py
+- v8_12_seleccion_por_grupo.py
+- v8_13_clasificadores_alternativos.py
+- v9_01_sensibilidad_fugas.py
+- v9_02_prior_shift_em.py
+- v9_04_dl_secuencial_fasttext.py
+- v9_05_proyecciones_supervisadas.py
+
+## referencias a holdout2: 51 scripts
+
+- p63_03_id_auditoria_predictiva.py
+- p63_10_cerrar.py
+- p64_06_cerrar.py
+- p65_00_audit_gap.py
+- p65_05_cerrar.py
+- p66_04_cerrar.py
+- p81_01_cierre_huecos.py
+- p90_02b_informe_y_handoff.py
+- p91_02_informe_protocolo.py
+- p92_02_informe_plan.py
+- p92_12_politica_v2.py
+- p92_13_integrar_notebook.py
+- p92_14_p92w_reconstruccion.py
+- p92_15_integrar_notebook.py
+- p92_16_p92x_auditoria_final.py
+- p92_18_handoff_calibracion_v21.py
+- p92_19_integrar_notebook.py
+- p92_20_recepcion_respuestas.py
+- p93_01_analisis_agreement.py
+- p93r5_01_comparacion_gold.py
+- p93r_01_paquete_adjudicacion.py
+- p94_00_inventario.py
+- p94_01_registro_hipotesis.py
+- p94_02_verificacion.py
+- p95_00_opciones.py
+- p95_01_verificacion.py
+- p96_02_folds_leakage.py
+- v10_01_holdout2.py
+- v10_02_ruido_particion.py
+- v10_08_confirmacion_dev2.py
+- v11_00_reconciliacion.py
+- v11_02_auditoria_legalidad.py
+- v11_03_auditoria_cumplimiento.py
+- v11_05_registro.py
+- v11_08_cierre_y_tabla_maestra.py
+- v11_09_cierre_entregables.py
+- v12_00_auditoria_brecha.py
+- v12_02_perdida_y_estructura.py
+- v12_05_informe_final.py
+- v12_05_registrar.py
+- v13_01_aislamiento_hs.py
+- v13_02_informe_final.py
+- v14_01_informe_final.py
+- v15_01_gap_y_ortogonalidad.py
+- v15_02_informe_cierre.py
+- v33_01_validacion.py
+- v33_04_integrar_notebook.py
+- v46_00_champion_audit.py
+- v47_00_auditoria_datos.py
+- v47_01_integrar_notebook.py
+- v48_01_residual_atlas.py
+
+## vecindades de test con fit cercano: 0
+
+
+## inventario de .fit/fit_transform (689 ocurrencias)
+
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/02_baseline_tfidf_lr.py:200:        matriz_entrenamiento = vectorizador.fit_transform(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/02_baseline_tfidf_lr.py:206:            modelo.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/02_baseline_tfidf_lr.py:257:    matriz = vectorizador.fit_transform(train["text"])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/02_baseline_tfidf_lr.py:261:        modelo.fit(matriz, train[etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/03_variantes_representaciones.py:976:        matriz_entrenamiento = vectorizador.fit_transform(textos.iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/03_variantes_representaciones.py:980:            modelo.fit(matriz_entrenamiento, estado.etiquetas[entrenamiento, indice])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/03_variantes_representaciones.py:985:        construir_vectorizador(espec_representacion).fit_transform(textos).shape[1]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/04_refit_submissions_v02_v03.py:314:        matriz_entrenamiento = vectorizador.fit_transform(train["text"].iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/04_refit_submissions_v02_v03.py:318:            modelo.fit(matriz_entrenamiento, train[etiqueta].iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/04_refit_submissions_v02_v03.py:596:    matriz = vectorizador.fit_transform(train["text"])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/04_refit_submissions_v02_v03.py:600:        modelo.fit(matriz, train[etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/05_ensembles.py:668:                vectorizador.fit_transform(train["text"].iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/05_ensembles.py:675:                modelo.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/05_ensembles.py:823:        dimension = int(vectorizador.fit_transform(train["text"]).shape[1])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/05_ensembles.py:1079:        meta.fit(proba[:, :, indice], y_true[:, indice])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/05_ensembles.py:1645:        matrices[clave] = vectorizador.fit_transform(train["text"])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/05_ensembles.py:1651:            modelo.fit(matrices[espec.representacion], train[etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/07_submission_v04_ens04.py:506:        matriz_entrenamiento = vectorizador.fit_transform(train["text"].iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/07_submission_v04_ens04.py:511:                modelo.fit(matriz_entrenamiento, train[etiqueta].iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/07_submission_v04_ens04.py:870:    matriz = vectorizador.fit_transform(train["text"])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/07_submission_v04_ens04.py:876:            modelo.fit(matriz, train[etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/08_features_densas_h11_h12.py:1259:            escalador = StandardScaler().fit(denso[columnas].iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/08_features_densas_h11_h12.py:1267:            matriz_train = vectorizador.fit_transform(textos.iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/08_features_densas_h11_h12.py:1283:            modelo.fit(matriz_train, etiquetas_entrenamiento[:, indice])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/08_features_densas_h11_h12.py:1300:        dimension_tfidf = int(construir_vectorizador_rep05().fit_transform(textos).shape[1])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/09_optuna_tfidf_lr.py:668:        matriz_entrenamiento = vectorizador.fit_transform(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/09_optuna_tfidf_lr.py:675:            modelo.fit(matriz_entrenamiento, y_true[entrenamiento, indice])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/09_optuna_tfidf_lr.py:696:            int(construir_vectorizador(params).fit_transform(train["text"]).shape[1])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/09_optuna_tfidf_lr.py:1153:    matriz = vectorizador.fit_transform(train["text"])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/09_optuna_tfidf_lr.py:1157:        modelo.fit(matriz, train[etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/10_sondas_robustez.py:470:        matriz_entrenamiento = vectorizador.fit_transform(textos.iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/10_sondas_robustez.py:474:            modelo.fit(matriz_entrenamiento, y_true[entrenamiento, indice])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/10_sondas_robustez.py:487:    dimension = int(construir_vectorizador(variante).fit_transform(textos).shape[1])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/10_sondas_robustez.py:863:    matriz = vectorizador.fit_transform(train["text"])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/10_sondas_robustez.py:867:        modelo.fit(matriz, train[etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/11_dl_desde_cero.py:887:    matriz_entrenamiento = vectorizador.fit_transform(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/11_dl_desde_cero.py:894:    denso_entrenamiento = svd.fit_transform(matriz_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/11_dl_desde_cero.py:897:    denso_entrenamiento = escalador.fit_transform(denso_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/12_control_pseudo_autores.py:191:                word.fit_transform(train["text"].iloc[idx_entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/12_control_pseudo_autores.py:192:                char.fit_transform(train["text"].iloc[idx_entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/12_control_pseudo_autores.py:203:            modelo.fit(matriz_entrenamiento, train[etiqueta].iloc[idx_entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/14_oof_corregido_v2.py:109:            vectorizador.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/14_oof_corregido_v2.py:115:            vectorizador.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/14_oof_corregido_v2.py:122:            word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/14_oof_corregido_v2.py:123:            char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/14_oof_corregido_v2.py:157:                modelo.fit(matriz_entrenamiento, train_dev[etiqueta].iloc[idx_entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/14_oof_corregido_v2.py:161:                modelo.fit(matriz_entrenamiento, train_dev[etiqueta].iloc[idx_entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/15_cadenas_etiquetas_v2.py:391:            escalador = StandardScaler().fit(denso)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/15_cadenas_etiquetas_v2.py:428:        modelo = LogisticRegression(**LR_PARAMS).fit(matriz_ajustada, y_entrenamiento[idx_int_ent])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/15_cadenas_etiquetas_v2.py:435:    modelo = LogisticRegression(**LR_PARAMS).fit(matriz_ajustada, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/15_cadenas_etiquetas_v2.py:575:            escalador = StandardScaler().fit(features[idx_entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/15_cadenas_etiquetas_v2.py:586:                modelo.fit(x_entrenamiento, y_verdadera[idx_entrenamiento, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/15_cadenas_etiquetas_v2.py:697:        modelo = LogisticRegression(**especificacion["params"]).fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/15_cadenas_etiquetas_v2.py:699:    modelo = LinearSVC(**especificacion["params"]).fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/15_cadenas_etiquetas_v2.py:772:    escalador = StandardScaler().fit(features_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/15_cadenas_etiquetas_v2.py:787:            modelo.fit(x_entrenamiento_meta, y_entrenamiento[:, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/16_targeting_v2.py:1401:    modelo.fit(x_entrenamiento, etiquetas_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/16_targeting_v2.py:1449:        escalador = StandardScaler().fit(numericas_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/16_targeting_v2.py:1460:        m_sim_ent = vectorizador_simbolico.fit_transform(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/17_stacking_v2.py:569:        modelo.fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/17_stacking_v2.py:573:        modelo_ridge.fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/17_stacking_v2.py:582:        modelo_svc.fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/17_stacking_v2.py:613:        escalador = StandardScaler().fit(x_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/17_stacking_v2.py:742:        modelo = LogisticRegression(**especificacion["params"]).fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/17_stacking_v2.py:744:    modelo = LinearSVC(**especificacion["params"]).fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/17_stacking_v2.py:1412:    escalador = StandardScaler().fit(features)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/17_stacking_v2.py:1428:        modelo.fit(features_escaladas, y_verdadera[:, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/18_p7_holdout_y_submission_v08.py:340:        return {"word": TfidfVectorizer(**modulo_14.PARAMS_WORD).fit(textos)}
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/18_p7_holdout_y_submission_v08.py:342:        return {"char": TfidfVectorizer(**modulo_14.PARAMS_CHAR).fit(textos)}
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/18_p7_holdout_y_submission_v08.py:344:        "word": TfidfVectorizer(**modulo_14.PARAMS_WORD).fit(textos),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/18_p7_holdout_y_submission_v08.py:345:        "char": TfidfVectorizer(**modulo_14.PARAMS_CHAR).fit(textos),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/18_p7_holdout_y_submission_v08.py:396:        modelo.fit(matriz, y[:, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/18_p7_holdout_y_submission_v08.py:502:    escalador = StandardScaler().fit(matriz_dev)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/18_p7_holdout_y_submission_v08.py:507:        modelo.fit(matriz_escalada, y_dev[:, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/19_sintaxis_cita_negacion_v2.py:891:        vectorizador.fit_transform(textos_entrenamiento).tocsr(),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/19_sintaxis_cita_negacion_v2.py:908:    escalador = StandardScaler().fit(numericos_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/19_sintaxis_cita_negacion_v2.py:1122:    modelo.fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/19_sintaxis_cita_negacion_v2.py:1426:        vectorizador = TfidfVectorizer(**{**params, "min_df": 1}).fit(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/20_emocion_nbsvm_ortografia_v2.py:557:    modelo.fit(x_entrenamiento, etiquetas_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/20_emocion_nbsvm_ortografia_v2.py:579:    modelo.fit(x_entrenamiento, etiquetas_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/20_emocion_nbsvm_ortografia_v2.py:1265:            escalador = StandardScaler().fit(crudos_entrenamiento[variante])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/20_emocion_nbsvm_ortografia_v2.py:1366:            vectorizador.fit_transform(textos_entrenamiento).tocsr(),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/20_emocion_nbsvm_ortografia_v2.py:1372:            vectorizador.fit_transform(textos_entrenamiento).tocsr(),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/20_emocion_nbsvm_ortografia_v2.py:1379:            [word.fit_transform(textos_entrenamiento), char.fit_transform(textos_entrenamiento)],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/20_emocion_nbsvm_ortografia_v2.py:1564:        vectorizador.fit_transform(serie.iloc[idx_entrenamiento]).tocsr(),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:881:                modelo.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:889:                modelo.fit(proba[ajuste, posicion], y_verdadera[ajuste, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:1373:        estimador.fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:1383:        estimador.fit(x_entrenamiento, y_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:1466:        escalador = StandardScaler().fit(x_meta_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:1469:        escalador_ent = StandardScaler().fit(features_ent_interno)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:1919:            modelo.fit(matriz_entrenamiento, y_verdadera[idx_ent_rebanada, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:1935:                modelo_interno.fit(matriz_int_ent, y_verdadera[idx_ent_rebanada, posicion][idx_int_ent])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:2257:            [word.fit_transform(textos_entrenamiento), char.fit_transform(textos_entrenamiento)]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/21_backlog_restante_v2.py:2303:            modelo.fit(matriz_entrenamiento, y_verdadera[idx_entrenamiento, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/25_submissions_candidatos.py:653:    escalador = StandardScaler().fit(matriz_dev)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/00_auditoria_datos.py:228:    matriz_train = vectorizador.fit_transform(textos_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/00_auditoria_datos.py:309:    matriz = vectorizador.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/23_candidatos_finales.py:880:    escalador = StandardScaler().fit(matriz_dev)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/27_label_consistency_v4.py:226:    matriz_word = vectorizador_word.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/27_label_consistency_v4.py:227:    matriz_char = vectorizador_char.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/29_reweighting_v4.py:112:    matriz_word = vectorizador_word.fit_transform(sub_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/29_reweighting_v4.py:113:    matriz_char = vectorizador_char.fit_transform(sub_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/29_reweighting_v4.py:377:                    modelo.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/29_reweighting_v4.py:493:            clon.fit(matriz, y_true[:, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/29_reweighting_v4.py:495:            clon.fit(matriz, y_true[:, posicion], sample_weight=sample_weight)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/30_supervised_weighting_v4.py:108:        [palabra.fit_transform(textos_entrenar), caracter.fit_transform(textos_entrenar)],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/30_supervised_weighting_v4.py:141:        matriz_entrenar = conteo.fit_transform(textos_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/30_supervised_weighting_v4.py:310:            modelo.fit(matriz_entrenar, y_entrenar[:, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/30_supervised_weighting_v4.py:312:            modelo.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/30_supervised_weighting_v4.py:618:            modelo.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/30_supervised_weighting_v4.py:646:                modelo.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/31_joint_label_v4.py:307:            [palabra.fit_transform(textos.iloc[entrenar]), caracter.fit_transform(textos.iloc[entrenar])],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/31_joint_label_v4.py:363:        modelo.fit(cache[indice_fold][0][posiciones], etiquetas)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/32_meta_shift_v4.py:131:    palabra_entrenar = palabra.fit_transform(textos_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/32_meta_shift_v4.py:133:    caracter_entrenar = caracter.fit_transform(textos_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/32_meta_shift_v4.py:174:        estimador.fit(matriz_entrenar, y_entrenar[:, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/32_meta_shift_v4.py:260:        calibrador.fit(x_meta[:, columna].reshape(-1, 1), y_meta[:, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/32_meta_shift_v4.py:428:        meta.fit(features_entrenamiento, y_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/33_class_conditional_lm_v4.py:367:            [palabra.fit_transform(textos_entrenar), caracter.fit_transform(textos_entrenar)],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/33_class_conditional_lm_v4.py:385:            modelo.fit(features_lm[entrenar], y_dev[entrenar, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/33_class_conditional_lm_v4.py:400:            meta.fit(matriz[entrenar], y_dev[entrenar])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/33_class_conditional_lm_v4.py:422:                modelo.fit(izquierda, y_dev[entrenar, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/33_class_conditional_lm_v4.py:435:            reducido_entrenar = svd.fit_transform(izquierda)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/33_class_conditional_lm_v4.py:448:                modelo.fit(reducido_entrenar, y_dev[entrenar, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/34_structural_sparse_v4.py:446:            matriz_canal = vectorizador_canal.fit_transform(cadena_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/34_structural_sparse_v4.py:452:                [palabra.fit_transform(textos_entrenar), caracter.fit_transform(textos_entrenar)],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/34_structural_sparse_v4.py:463:                modelo.fit(union, y_dev[entrenar, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/34_structural_sparse_v4.py:466:                modelo_solo.fit(matriz_canal, y_dev[entrenar, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/35_discovery_v4.py:439:            meta.fit(matriz[entrada], y_dev[entrada])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/36_candidatos_v4.py:164:    palabra_entrenar = palabra.fit_transform(textos_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/36_candidatos_v4.py:166:    caracter_entrenar = caracter.fit_transform(textos_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/36_candidatos_v4.py:199:            estimador.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/36_candidatos_v4.py:430:        meta.fit(features_entrenamiento, y_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/36_candidatos_v4.py:461:        [palabra.fit_transform(textos_entrenar), caracter.fit_transform(textos_entrenar)],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/36_candidatos_v4.py:475:        modelo.fit(izquierda, y_entrenar[:, posicion], sample_weight=sample_weight)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/38_refit_final_v4.py:205:    palabra_entrenar = palabra.fit_transform(textos_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/38_refit_final_v4.py:207:    caracter_entrenar = caracter.fit_transform(textos_entrenar)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/38_refit_final_v4.py:234:            estimador.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/38_refit_final_v4.py:326:    meta.fit(features_oof, y_dev)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_02_fasttext_baseline_v5.py:318:    vectorizador.fit(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_02_fasttext_baseline_v5.py:476:            escalador_local = StandardScaler().fit(matriz[indices_entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_02_fasttext_baseline_v5.py:489:                modelo.fit(bloque, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_02_fasttext_baseline_v5.py:497:                modelo.fit(bloque, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_03_fusion_complementariedad_v5.py:188:        [word.fit_transform(textos_entrenamiento), char.fit_transform(textos_entrenamiento)]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_03_fusion_complementariedad_v5.py:211:        modelo.fit(matriz, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_03_fusion_complementariedad_v5.py:214:    modelo.fit(matriz, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_03_fusion_complementariedad_v5.py:270:        escalador = StandardScaler().fit(embeddings[indices])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_03_fusion_complementariedad_v5.py:321:                escalador = StandardScaler().fit(bloque_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_03_fusion_complementariedad_v5.py:415:            escalador = StandardScaler().fit(embeddings[indices][interno_train])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_03_fusion_complementariedad_v5.py:433:        escalador = StandardScaler().fit(embeddings[indices])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/embedding_03_fusion_complementariedad_v5.py:452:        meta.fit(caracteristicas_internas, y[indices])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_01_voronoi_local.py:307:    xw_ref = palabra.fit_transform(textos_ref)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_01_voronoi_local.py:308:    xc_ref = caracter.fit_transform(textos_ref)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_02_voronoi_bloque.py:234:            mb.fit(x_b, yb)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_02_voronoi_bloque.py:235:            mc.fit(x_c, yb)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_04_influence.py:215:    lr.fit(x, y)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_04_influence.py:245:    lr3.fit(x2, y2)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_04_influence.py:254:        lr2.fit(x2[m], y2[m])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_04_influence.py:348:        x = hstack([palabra.fit_transform([textos[i] for i in idx_ref]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_04_influence.py:349:                    caracter.fit_transform([textos[i] for i in idx_ref])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_04_influence.py:354:            lr.fit(x, yb)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_05_nmf_gap_analysis.py:251:    z_svd = svd.fit_transform(matriz)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_05_nmf_gap_analysis.py:257:    z_nmf = nmf.fit_transform(matriz)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_06_robust_loss.py:460:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_06_robust_loss.py:461:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_06_robust_loss.py:468:            lr.fit(x, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_07_local_window.py:385:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_07_local_window.py:386:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_07_local_window.py:392:            lr.fit(x, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_07_local_window.py:434:        xw = hstack([pw.fit_transform(textos_win), pc.fit_transform(textos_win)]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_07_local_window.py:439:            lr.fit(xw, y[padre_win_arr, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_09_fusion_local.py:186:    lr.fit(x[idx_tr], y_bin[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_09_fusion_local.py:211:    xw = hstack([pw.fit_transform(textos_win_tr), pc.fit_transform(textos_win_tr)]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_09_fusion_local.py:215:    lr.fit(xw, y_bin[padre_win_padre])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_09_fusion_local.py:285:        x_por_pliegue[f] = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_09_fusion_local.py:286:                                   pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_10_grafo_regularizacion.py:322:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p59_10_grafo_regularizacion.py:323:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_01_contrastive.py:324:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_01_contrastive.py:325:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_01_contrastive.py:329:        z_tr = svd.fit_transform(x).astype(np.float32)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_02_asl.py:345:                                 sublinear_tf=True).fit_transform(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_02_asl.py:348:                                 sublinear_tf=True).fit_transform(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_02_asl.py:416:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_02_asl.py:417:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_03_dro.py:367:                                 sublinear_tf=True).fit_transform(textos[:nt]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_03_dro.py:369:                                 sublinear_tf=True).fit_transform(textos[:nt])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_03_dro.py:409:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_03_dro.py:410:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_04_distribucion.py:272:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_04_distribucion.py:273:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_05_ruido_por_etiqueta.py:250:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_05_ruido_por_etiqueta.py:251:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_05_ruido_por_etiqueta.py:264:            lr.fit(x, et_tr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_05_ruido_por_etiqueta.py:319:                sc = StandardScaler().fit_transform(X)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_05_ruido_por_etiqueta.py:325:                    l2.fit(sc[otr], error[otr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_06_intervencion_ag.py:267:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_06_intervencion_ag.py:268:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_06_intervencion_ag.py:283:            m.fit(x, ytr[:, j].astype(int))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_07_transporte.py:318:    pw.fit_transform([textos[i] for i in ir0])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_07_transporte.py:319:    pc.fit_transform([textos[i] for i in ir0])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_07_transporte.py:322:    xtok0 = vt0.fit_transform([" ".join(tokens[i]) for i in ir0])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_07_transporte.py:326:    svd0 = TruncatedSVD(n_components=RANK_SVD, random_state=SEMILLA).fit(xtok0)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_07_transporte.py:418:        pwf.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_07_transporte.py:419:        pcf.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_07_transporte.py:422:        xtok = vtf.fit_transform([" ".join(tokens[i]) for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_07_transporte.py:423:        svd = TruncatedSVD(n_components=RANK_SVD, random_state=SEMILLA).fit(xtok)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_09_polyloss.py:236:                                 sublinear_tf=True).fit_transform(textos[:nt]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_09_polyloss.py:238:                                 sublinear_tf=True).fit_transform(textos[:nt])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_09_polyloss.py:275:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_09_polyloss.py:276:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_10_metareweight.py:286:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p60_10_metareweight.py:287:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p61_00_reconciliacion.py:155:        "guard_presente": ("l2.fit(sc[otr], error[otr]) para el compuesto out-of-fold, y un "
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p61_00_reconciliacion.py:157:        "guard_buscado": "l2.fit(sc[otr], error[otr])",
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p61_03_lightgbm.py:248:        x = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p61_03_lightgbm.py:249:                    pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p61_03_lightgbm.py:273:            d1.fit(x, ytr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p61_03_lightgbm.py:297:                m.fit(_x[_itr], _ytr[_itr], eval_set=[(_x[_iva], _ytr[_iva])],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p61_03_lightgbm.py:333:            m2.fit(x, ytr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_03_pista_l.py:365:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_03_pista_l.py:366:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_03_pista_l.py:374:        xpos = pc_l.fit_transform(tok_l)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_03_pista_l.py:403:            xa = pc_c.fit_transform(tokens_word_pos(documentos, ir, rng_c, max(pool, 2)))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_03_pista_l.py:415:        xrand = pc_c.fit_transform(tok_ca)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_03_pista_l.py:448:                m.fit(xent, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_04_pista_m.py:232:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_04_pista_m.py:233:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_04_pista_m.py:240:        xdep = pd_m.fit_transform(tok)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_04_pista_m.py:266:            xa = pc_c.fit_transform(tokens_dep(documentos, ir, rng_c, max(pool, 2)))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_04_pista_m.py:279:        xrand = escalar(hstack([xbase, pc_c.fit_transform(tok_ca)]).tocsr(), objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_04_pista_m.py:286:                mo.fit(xent, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_07_presupuesto_canal.py:277:        xbase = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_07_presupuesto_canal.py:278:                        pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_07_presupuesto_canal.py:291:                _mo.fit(xbase, y[ir, _j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_07_presupuesto_canal.py:322:        xcanal = pc_pos.fit_transform(tok_ir)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_07_presupuesto_canal.py:369:                    xr = pc_r.fit_transform(filas_ruido)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_07_presupuesto_canal.py:385:                    mo.fit(xent, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_08_pos_o_no_pos.py:276:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_08_pos_o_no_pos.py:277:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_08_pos_o_no_pos.py:300:                _mo.fit(xbase, y[ir, _j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_08_pos_o_no_pos.py:317:            xc_ir = vec.fit_transform(tk_ir)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_08_pos_o_no_pos.py:360:                    mo.fit(xent, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_09_cobertura.py:226:        xw2 = w2.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_09_cobertura.py:227:        xc2 = c2.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_09_cobertura.py:248:        xw1 = w1.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_09_cobertura.py:251:        xc1 = c1.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_09_cobertura.py:262:        xpos = pc_pos.fit_transform(tok_ir)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p62_09_cobertura.py:309:                mo.fit(xent, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_03_id_auditoria_predictiva.py:243:                esc = StandardScaler().fit(xent)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_03_id_auditoria_predictiva.py:247:                    mo.fit(xent, y_obj[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_04_estructura_relacional.py:325:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_04_estructura_relacional.py:326:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_04_estructura_relacional.py:377:                mo.fit(xent, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_05_composicion_linguistica.py:379:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_05_composicion_linguistica.py:380:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_05_composicion_linguistica.py:450:                mo.fit(xent, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_06_estructura_tweet_largo.py:326:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_06_estructura_tweet_largo.py:327:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_06_estructura_tweet_largo.py:380:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_06_estructura_tweet_largo.py:385:                mo.fit(be[ir], y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_07_integracion_y_techo.py:234:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_07_integracion_y_techo.py:235:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_07_integracion_y_techo.py:287:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p63_08_residuo_de_v03.py:263:                mo.fit(matriz[ir], objetivo[ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_03_evidencia_segmental.py:287:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_03_evidencia_segmental.py:288:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_03_evidencia_segmental.py:311:            mo.fit(xbase, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_03_evidencia_segmental.py:343:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_04_leave_one_out.py:280:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_04_leave_one_out.py:281:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_04_leave_one_out.py:303:            mo.fit(xbase, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_04_leave_one_out.py:368:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_04_leave_one_out.py:369:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_04_leave_one_out.py:402:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_05_especializacion_larga.py:249:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_05_especializacion_larga.py:250:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_05_especializacion_larga.py:287:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_05_multiple_instance.py:239:        xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_05_multiple_instance.py:240:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_05_multiple_instance.py:275:            mo.fit(xs_tr, y_tr[:, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_05_multiple_instance.py:297:                    mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_05_multiple_instance.py:303:                    mo.fit(denso[ir], y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_05_multiple_instance.py:315:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_06_quote_mention.py:310:            pw.fit([textos[i] for i in np.where(pliegues != f)[0]])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_06_quote_mention.py:311:            pc.fit([textos[i] for i in np.where(pliegues != f)[0]])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_06_quote_mention.py:317:                mo.fit(xb, y[np.where(pliegues != f)[0], j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_06_quote_mention.py:369:        pw.fit([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_06_quote_mention.py:370:        pc.fit([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_06_quote_mention.py:376:            mo.fit(xb, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_06_quote_mention.py:443:        xbase = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_06_quote_mention.py:444:                        pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_06_quote_mention.py:478:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_07_negacion.py:267:        pw.fit([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_07_negacion.py:268:        pc.fit([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_07_negacion.py:274:            mo.fit(xb, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_07_negacion.py:341:        xw_alc = pwm.fit_transform([marcas_texto[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_07_negacion.py:346:        xbase = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_07_negacion.py:347:                        pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_07_negacion.py:384:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_07_negacion.py:392:            mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_07_negacion.py:406:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_08_lda.py:212:        xc = cv.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_08_lda.py:216:        lda.fit_transform(xc)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_08_lda.py:254:        xbase = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_08_lda.py:255:                        pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p64_08_lda.py:290:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_01_ngrams.py:193:        xc = pc.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_01_ngrams.py:197:        xw2 = pw2.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_01_ngrams.py:218:            xw = pw.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_01_ngrams.py:235:                    mo.fit(mat_tr, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_01_ngrams.py:254:        xr = pw_ref.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_01_ngrams.py:271:                mo.fit(mat_tr, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_02_huecos_contraste.py:297:        base = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_02_huecos_contraste.py:298:                       pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_02_huecos_contraste.py:330:                xw_ref = TfidfVectorizer(**PARAMS_WORD).fit_transform(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_02_huecos_contraste.py:344:                x3 = v3.fit_transform([Both[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_02_huecos_contraste.py:352:            xs = vec[nombre].fit_transform([canales[nombre][i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_02_huecos_contraste.py:360:                mo.fit(mat_tr, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_03_cohesion.py:312:        base = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_03_cohesion.py:313:                       pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_03_cohesion.py:346:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_04_especialista.py:190:        xtr = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_04_especialista.py:191:                      pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p65_04_especialista.py:232:                mo.fit(xa, ya[:, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:325:        pw.fit([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:326:        pc.fit([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:332:            mo.fit(xb, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:390:        xbase = hstack([pw.fit_transform([textos[i] for i in ir]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:391:                        pc.fit_transform([textos[i] for i in ir])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:413:            mo.fit(denso[ir], y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:428:                xs = pp.fit_transform([textos[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:432:                xs = pp.fit_transform([textos_canal[i] for i in ir])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:445:                mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_01_regenerar_scores.py:457:            mo.fit(xa, y[ir, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p66_02_fusion_espacio_scores.py:340:                    mo.fit(Xtr, ty[i_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p68_01_enrutado_por_estructura.py:189:            modelo.fit(X[it], etiqueta[it])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p68_01_enrutado_por_estructura.py:404:                mod.fit(X[it], tgt[it].astype(int))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p69_06_particiones_corregidas.py:126:        modelo.fit(izquierda, y_entrenar[:, posicion], sample_weight=sample_weight)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p69_10_submission_candidato.py:252:    x_train = sparse.hstack([palabra.fit_transform(desarrollo["text"]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p69_10_submission_candidato.py:253:                             caracter.fit_transform(desarrollo["text"])], format="csr")
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p69_10_submission_candidato.py:273:        modelo.fit(x_train, etiquetas[:, j], sample_weight=pesos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p70_01_sensibilidad_tamano.py:188:        modelo.fit(izquierda, y_entrenar[:, pos], sample_weight=sample_weight)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p71_05_downstream.py:140:            m.fit(X[tr], y[tr, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p71_05_downstream.py:185:    X_v03 = sparse.hstack([pal.fit_transform(textos), car.fit_transform(textos)],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p71_05_downstream.py:195:        P = StandardScaler().fit_transform(P).astype(np.float32)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p71_09_downstream_lrfix.py:128:            m.fit(X[tr], y[tr, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p71_09_downstream_lrfix.py:167:    X_v03 = sparse.hstack([pal.fit_transform(textos), car.fit_transform(textos)],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p71_09_downstream_lrfix.py:182:        Pe = StandardScaler().fit_transform(P).astype(np.float32)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p71_10_downstream_corregido.py:127:        Xi = sparse.hstack([p2.fit_transform(tx.iloc[a]), c2.fit_transform(tx.iloc[a])],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p71_10_downstream_corregido.py:131:            sc = StandardScaler().fit(D[a])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p71_10_downstream_corregido.py:141:            m.fit(Xi, y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p72_02_dimension_downstream.py:138:        Xi = sparse.hstack([p2.fit_transform(tx.iloc[a]), c2.fit_transform(tx.iloc[a])],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p72_02_dimension_downstream.py:142:            sc = StandardScaler().fit(D[a])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p72_02_dimension_downstream.py:152:            m.fit(Xi, y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p72_02_dimension_downstream.py:199:            sc = StandardScaler().fit(D[a])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p72_02_dimension_downstream.py:203:                m.fit(sc.transform(D[a]), y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p72_03_control_aleatorio.py:126:            m.fit(P[a], y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p72_04_control_aleatorio_normalizado.py:72:        sc = StandardScaler().fit(P[a])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p72_04_control_aleatorio_normalizado.py:77:            m.fit(Pa, y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p73_02_textcnn_vs_random.py:532:        xi = sparse.hstack([p2.fit_transform(tx.iloc[a]), c2.fit_transform(tx.iloc[a])],
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p73_02_textcnn_vs_random.py:538:            m.fit(xi, y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p73_02_textcnn_vs_random.py:558:        sc = StandardScaler().fit(D[a])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p73_02_textcnn_vs_random.py:562:            m.fit(sc.transform(D[a]), y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p76_01_calibracion_nested.py:124:        lr.fit(x, yj)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p76_01_calibracion_nested.py:163:            lr = LogisticRegression(C=1e6, solver="lbfgs", max_iter=1000).fit(x, yj)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p76_01_calibracion_nested.py:237:    xi = sparse.hstack([p2.fit_transform(tx.iloc[ia]), c2.fit_transform(tx.iloc[ia])], format="csr")
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p76_01_calibracion_nested.py:242:        m.fit(xi, y[ia, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p77_01_operador_selectivo.py:292:        gate.fit(X, yt)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p83_01_bayesiano.py:1829:        modelo.fit(logit[:, [k]], verdad[:, k])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p83_01_bayesiano.py:2585:    Xp = palabra.fit_transform(textos_ent)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p83_01_bayesiano.py:2586:    Xc = caracter.fit_transform(textos_ent)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p83_01_bayesiano.py:4729:        modelo.fit(densa, y[:, k])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_01_dl01_corregido.py:676:        matriz_palabra = self.palabra.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_01_dl01_corregido.py:677:        matriz_caracter = self.caracter.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_01_dl01_corregido.py:712:    svd.fit(x_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_01_dl01_corregido.py:713:    scaler = StandardScaler().fit(svd.transform(x_train))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_01_dl01_corregido.py:762:            modelo.fit(x_a, y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_03_ros_equivalencia.py:490:        matriz_palabra = self.palabra.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_03_ros_equivalencia.py:491:        matriz_caracter = self.caracter.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_03_ros_equivalencia.py:562:            modelo.fit(x_train, datos.y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_03_ros_equivalencia.py:824:                    modelo.fit(x_fit, y_fit)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_03_ros_equivalencia.py:826:                    modelo.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:566:        matriz_palabra = self.palabra.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:567:        matriz_caracter = self.caracter.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:613:            modelo.fit(x_a, y[a, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:1761:    modelo.fit(x_train, y_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:1812:            esc = StandardScaler().fit(d[a[mascara]])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:1833:        esc = StandardScaler().fit(d[a])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:1845:            modelo.fit(x_a, y[a, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:1912:        xi = sparse.hstack([p2.fit_transform(textos[a]), c2.fit_transform(textos[a])], format="csr")
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:1914:        esc = StandardScaler().fit(d[a])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p84_04_sgns_corregido_anclado.py:1929:            modelo.fit(xi, y[a, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_01_holdout2.py:132:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_01_holdout2.py:133:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_01_holdout2.py:185:            estimador.fit(matriz, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_02_ruido_particion.py:136:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_02_ruido_particion.py:137:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_02_ruido_particion.py:156:            estimador.fit(ajuste, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_03_arnes_evaluacion.py:253:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_03_arnes_evaluacion.py:254:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_03_arnes_evaluacion.py:273:            estimador.fit(ajuste, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_04_calibracion_fuerte.py:185:    modelo.fit(log_odds(probabilidades).reshape(-1, 1), y)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_04_calibracion_fuerte.py:214:    modelo.fit(probabilidades, y)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_05_regla_f1_optima.py:262:                    calibrador.fit(prob_tr, y_tr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_05_regla_f1_optima.py:373:            calibrador.fit(prob_tr, y_tr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_07_shift_features.py:121:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_07_shift_features.py:122:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_07_shift_features.py:209:        discriminador.fit(ajuste, origen[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_07_shift_features.py:240:    discriminador_total.fit(consulta_total, origen)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_09_correlacion_eliminacion.py:166:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_09_correlacion_eliminacion.py:167:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_09_correlacion_eliminacion.py:413:            estimador.fit(ajuste, y[entrenamiento, indice_etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v10_10_regla_conservacion.py:235:            estimador.fit(ajuste_recortado, y[entrenamiento, indice_etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v11_01_reproduccion_v9_02.py:147:        modelo.fit(matriz_train, train[ETIQUETAS[indice]])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v11_06_validacion_estimadores.py:282:            modelo.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v11_07_correccion_prior.py:296:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v11_07_correccion_prior.py:297:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v11_07_correccion_prior.py:343:            estimador.fit(ajuste, y[entrenamiento, indice_etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v11_07_correccion_prior.py:347:            calibrador.fit(crudas_entrenamiento, y[entrenamiento, indice_etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v12_01_regularizacion_grupo.py:191:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v12_01_regularizacion_grupo.py:192:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v12_01_regularizacion_grupo.py:274:        estimador.fit(matriz, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v12_02_perdida_y_estructura.py:322:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v12_02_perdida_y_estructura.py:323:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v12_02_perdida_y_estructura.py:354:    estimador.fit(matriz, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v12_03_entrenamiento_por_pares.py:162:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v12_03_entrenamiento_por_pares.py:163:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v13_01_aislamiento_hs.py:179:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v13_01_aislamiento_hs.py:180:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v13_01_aislamiento_hs.py:218:        estimador.fit(matriz, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v13_01_aislamiento_hs.py:609:    estimador.fit(features, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v14_00_auditoria_partial_label.py:414:            vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v14_00_auditoria_partial_label.py:415:            vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v14_00_auditoria_partial_label.py:454:        estimador.fit(matriz, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v14_00_auditoria_partial_label.py:456:        estimador.fit(matriz, objetivo, sample_weight=pesos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v15_01_gap_y_ortogonalidad.py:448:            estimador.fit(ajuste, y[entrenamiento, indice_etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v15_01_gap_y_ortogonalidad.py:494:            vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v15_01_gap_y_ortogonalidad.py:495:            vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_01_generar_submissions.py:290:    bloque_word = vectorizador_word.fit_transform(textos_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_01_generar_submissions.py:291:    bloque_char = vectorizador_char.fit_transform(textos_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_01_generar_submissions.py:305:            .fit(ajuste, train[etiqueta].to_numpy())
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_01_generar_submissions.py:420:                peso_word * vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_01_generar_submissions.py:421:                peso_char * vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_01_generar_submissions.py:437:            estimador.fit(ajuste, marco[etiqueta].to_numpy()[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_02_promedio_umbrales.py:299:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_02_promedio_umbrales.py:300:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_02_promedio_umbrales.py:319:            estimador.fit(ajuste, y[entrenamiento, indice_etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_02_promedio_umbrales.py:350:                vectorizador_word.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_02_promedio_umbrales.py:351:                vectorizador_char.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_02_promedio_umbrales.py:367:            estimador.fit(ajuste, y[:, indice_etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_03_vecinos_de_capacidad.py:283:            vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_03_vecinos_de_capacidad.py:284:            vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_03_vecinos_de_capacidad.py:326:            estimador.fit(ajuste, y[entrenamiento, indice_etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_03_vecinos_de_capacidad.py:355:            vectorizador_word.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_03_vecinos_de_capacidad.py:356:            vectorizador_char.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v16_03_vecinos_de_capacidad.py:373:        estimador.fit(ajuste_completo, y[:, indice_etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v20_01_informacion_incremental.py:422:    modelo.fit(matriz[ajuste], etiqueta[ajuste])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v20_01_informacion_incremental.py:565:        modelo.fit(matriz[ajuste], y[ajuste, objetivo])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v20_02_inferencia_y_candidata.py:220:    modelo.fit(diseno_oof, y_oof[:, 0])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v21_01_triaje_competitivo.py:273:            modelo.fit(disperso_ajuste, y[ajuste, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v23_01_auditoria_rbf_svc.py:27:**El SVD se ajusta dentro del pliegue.** `svd.fit_transform(entrenamiento)` y
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v23_01_auditoria_rbf_svc.py:161:            [palabra.fit_transform(textos.iloc[entrenar]), caracter.fit_transform(textos.iloc[entrenar])]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v23_01_auditoria_rbf_svc.py:180:            reducido_entrenar = svd.fit_transform(izquierda)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v23_01_auditoria_rbf_svc.py:190:                modelo.fit(reducido_entrenar, y[entrenar, posicion])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v23_02_submission_rbf_sigmoid.py:31:**El SVD se ajusta solo con el train.** `svd.fit_transform(matriz_train)` y
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v23_02_submission_rbf_sigmoid.py:148:        [palabra.fit_transform(textos_train), caracter.fit_transform(textos_train)]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v23_02_submission_rbf_sigmoid.py:162:        modelo.fit(matriz_train, train[etiqueta].to_numpy().astype(int))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v23_02_submission_rbf_sigmoid.py:184:    reducido_train = svd.fit_transform(matriz_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v23_02_submission_rbf_sigmoid.py:202:        modelo.fit(reducido_train, train[etiqueta].to_numpy().astype(int))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v24_01_modelo_transferencia_complejidad.py:243:                    palabra.fit_transform(textos.iloc[ajuste]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v24_01_modelo_transferencia_complejidad.py:244:                    caracter.fit_transform(textos.iloc[ajuste]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v24_01_modelo_transferencia_complejidad.py:253:                modelo.fit(izquierda, y[ajuste, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v24_03_sonda_knn_predictor.py:127:    buscador.fit(matriz_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v24_03_sonda_knn_predictor.py:145:    me = sparse.hstack([word.fit_transform(entrenamiento), char.fit_transform(entrenamiento)]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v24_03_sonda_knn_predictor.py:153:    return char.fit_transform(entrenamiento).tocsr(), char.transform(validacion).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v24_03b_perfil_de_celdas.py:112:            [word.fit_transform(train_dev["text"].iloc[idx_tr]), char.fit_transform(train_dev["text"].iloc[idx_tr])]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v24_03b_perfil_de_celdas.py:118:        buscador.fit(me)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v25_01_factorization_machine.py:396:    modelo.fit(matriz, y)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v25_01_factorization_machine.py:609:            [palabra.fit_transform(textos.iloc[entrenar]), caracter.fit_transform(textos.iloc[entrenar])]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v25_02_fm_paralela_lambda.py:421:            [palabra.fit_transform(textos.iloc[entrenar]), caracter.fit_transform(textos.iloc[entrenar])]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v26_01_geometria_kernel.py:214:    x_palabra = palabra.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v26_01_geometria_kernel.py:215:    x_caracter = caracter.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v26_01_geometria_kernel.py:273:    reducido = svd.fit_transform(normada)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v26_01_geometria_kernel.py:336:    svc.fit(gram_tr, y[filas_tr, 0])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v26_03_tsetlin_oficial.py:175:    modelo.fit(x, y, epochs=25)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v26_03_tsetlin_oficial.py:183:    modelo2.fit(x, y, epochs=25)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v26_03_tsetlin_oficial.py:247:    modelo.fit(x_ent, y_ent, epochs=epochs)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v26_03_tsetlin_oficial.py:287:    lr.fit(x_ent.astype(np.float64), y_ent)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v26_03_tsetlin_oficial.py:377:        x_ent = vec.fit_transform(textos.iloc[np.asarray(entrenar)])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v27_01_char_spectrum_kernel.py:526:        f_ent = vec.fit_transform(textos.iloc[np.asarray(entrenar)])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v27_01_char_spectrum_kernel.py:562:            svc.fit(f_ent, y_ent)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v27_01_char_spectrum_kernel.py:633:        tf = vec.fit_transform(textos.iloc[np.asarray(entrenar)])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_01_auditoria_near_duplicate.py:175:    matriz = vectorizador.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_01_auditoria_near_duplicate.py:208:    matriz = vectorizador.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_02_similitudes_laxas.py:263:        ).fit(hist),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_02_similitudes_laxas.py:266:        ).fit(agr),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_02_similitudes_laxas.py:269:        ).fit(agr),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_02_similitudes_laxas.py:279:        ).fit(agr),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_02_similitudes_laxas.py:282:        ).fit(agr),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_03_vecinos_corrigen_errores.py:152:        return TfidfVectorizer(analyzer="char_wb", ngram_range=(4, 4), min_df=1).fit(textos_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_03_vecinos_corrigen_errores.py:156:        ).fit(textos_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_03_vecinos_corrigen_errores.py:159:    ).fit(textos_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v29_04_transformaciones_contradictorias.py:242:    ).fit(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v31_01_url_estructural.py:105:    train = sparse.hstack([word.fit_transform(textos_train), char.fit_transform(textos_train)]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v31_01_url_estructural.py:141:            modelo.fit(train, train_dev[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v31_01_url_estructural.py:312:            modelo.fit(train, train_dev[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v32_02_aislar_fuente.py:135:            modelo.fit(train, train_dev[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v32_03_mencion_longitud.py:128:            modelo.fit(train, train_dev[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v32_04_hashtag_longitud.py:106:            modelo.fit(train, train_dev[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v32_05_cuatro_bins.py:153:            modelo.fit(train, train_dev[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v32_06_context_gated.py:110:    matriz = vectorizador.fit_transform(textos_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v32_06_context_gated.py:155:        .fit([textos[i] for i in idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v32_06_context_gated.py:192:        vectorizador.fit([textos[i] for i in idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v32_06_context_gated.py:210:            modelo.fit(train, desarrollo[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v33_01_validacion.py:180:            modelo.fit(train, train_dev[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v33_01_validacion.py:449:        modelo.fit(train, y_dev[:, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v33_02_generar_submission.py:125:        [word.fit_transform(textos_train), char.fit_transform(textos_train)]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v33_02_generar_submission.py:158:        modelo.fit(matriz_train, y_train[:, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v35_01_sgd.py:141:            word.fit_transform(train_dev["text"].iloc[idx_tr]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v35_01_sgd.py:142:            char.fit_transform(train_dev["text"].iloc[idx_tr]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v35_01_sgd.py:154:                modelo.fit(train, y_dev_j(train_dev, idx_tr, j))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v35_01_sgd.py:363:                word.fit_transform(train_dev["text"].iloc[idx_tr]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v35_01_sgd.py:364:                char.fit_transform(train_dev["text"].iloc[idx_tr]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v35_01_sgd.py:374:                modelo.fit(train, train_dev[ETIQUETAS[j]].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v36_01_hashing.py:141:            word.fit_transform(train_dev["text"].iloc[idx_tr]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v36_01_hashing.py:142:            char.fit_transform(train_dev["text"].iloc[idx_tr]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v36_01_hashing.py:149:        train = tfidf.fit_transform(train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v36_01_hashing.py:157:            modelo.fit(train, train_dev[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v36_01_hashing.py:260:        vec.fit(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v37_01_bm25.py:232:        mw_tr = conteo_word.fit_transform(train_dev["text"].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v37_01_bm25.py:245:        c_tr = char.fit_transform(train_dev["text"].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v37_01_bm25.py:264:            modelo.fit(train, train_dev[etiqueta].iloc[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v38_01_embedding_supervisado.py:145:    x_tr = conteo.fit_transform(textos_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v38_01_embedding_supervisado.py:158:    embedding = svd.fit_transform(m)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v38_01_embedding_supervisado.py:229:            modelo.fit(v_tr, y_tr[:, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v38_01_embedding_supervisado.py:323:    x_dev = conteo.fit_transform(desarrollo["text"].astype(str))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v40_01_pls.py:104:        word.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v40_01_pls.py:105:        char.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v40_01_pls.py:147:            modelo.fit(x_tr.toarray(), y_tr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v40_01_pls.py:156:            z_tr = modelo.fit_transform(x_tr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v40_01_pls.py:167:            clf.fit(z_tr, y_tr[:, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v40_01_pls.py:224:    pls.fit(x_tr.toarray(), y[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v42_01_pls_correcto.py:119:        word.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v42_01_pls_correcto.py:120:        char.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v42_01_pls_correcto.py:160:        pls.fit(x_tr_dense, y_tr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v42_01_pls_correcto.py:173:            clf.fit(z_tr, y_tr[:, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v42_01_pls_correcto.py:223:        z_tr = svd.fit_transform(x_tr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v42_01_pls_correcto.py:234:            clf.fit(z_tr, y_tr[:, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v42_01_pls_correcto.py:291:    pls.fit(x_tr.toarray(), y[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v43_01_vw_optimizers.py:105:        word.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v43_01_vw_optimizers.py:106:        char.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v44_01_vw_optimizers.py:115:        word.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v44_01_vw_optimizers.py:116:        char.fit_transform(textos_train),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v44_01_vw_optimizers.py:182:            modelo.fit(x_tr, y_tr[:, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v44_02_pls_correcto.py:123:        x_tr = vectorizador.fit_transform(train_dev["text"].iloc[idx_tr].astype(str))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v44_02_pls_correcto.py:127:        pls.fit(x_tr.toarray(), y_true[idx_tr])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v44_02_pls_correcto.py:140:            clf.fit(z_tr, y_true[idx_tr, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v44_02_pls_correcto.py:193:        x_tr = vectorizador.fit_transform(train_dev["text"].iloc[idx_tr].astype(str))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v44_02_pls_correcto.py:196:        z_tr = svd.fit_transform(x_tr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v44_02_pls_correcto.py:207:            clf.fit(z_tr, y_true[idx_tr, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v47_01_ajuste_pliegues.py:52:        X_word.fit_transform([textos[j] for j in idx_tr]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v47_01_ajuste_pliegues.py:54:        X_char.fit_transform([textos[j] for j in idx_tr]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v47_01_especializacion.py:105:    ).fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v47_01_especializacion.py:108:    ).fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v47_01_especializacion.py:137:    modelo.fit(x_train, y_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v47_01_especializacion_por_etiqueta.py:104:    ).fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v47_01_especializacion_por_etiqueta.py:107:    ).fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v47_01_especializacion_por_etiqueta.py:136:    modelo.fit(x_train, y_train)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v50_01_selector.py:234:            modelo.fit(Xa[ent], objetivo[ent])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v51_01_selector_utilidad.py:242:            modelo.fit(Xc[mask], (u[mask] > 0).astype(int))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v51_02_accion_utilidad_esperada.py:179:            modelo.fit(Xc[mask], (u[mask] > 0).astype(int))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v55_00_auditoria_pipeline.py:319:    vectorizador_dentro = ("fit_transform(textos_entrenamiento)" in codigo_14
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v56_00_transferencia_umbrales.py:125:    Xw_e = vw.fit_transform(texto_ent)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v56_00_transferencia_umbrales.py:128:    Xc_e = vc.fit_transform(texto_ent)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v56_00_transferencia_umbrales.py:212:                modelo.fit(Xe, y_outer[idx_e, j])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_01_estructura_errores.py:251:                matriz = vectorizador.fit_transform(textos.iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_01_estructura_errores.py:255:                matriz = vectorizador.fit_transform(textos.iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_01_estructura_errores.py:262:                        vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_01_estructura_errores.py:263:                        vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_01_estructura_errores.py:276:                    estimador.fit(matriz, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_01_estructura_errores.py:282:                    estimador.fit(matriz, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_02_label_factorization.py:155:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_02_label_factorization.py:156:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_02_label_factorization.py:169:        modelo_hs.fit(matriz, y_entrenamiento[:, 0])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_02_label_factorization.py:175:            modelo.fit(matriz, y_entrenamiento[:, indice])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_02_label_factorization.py:186:            modelo_tr.fit(matriz[mascara], y_entrenamiento[mascara, 1])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_02_label_factorization.py:205:                modelo_ag.fit(matriz[rama], y_entrenamiento[rama, 2])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_03_ponderacion_grupo.py:165:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_03_ponderacion_grupo.py:166:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_03_ponderacion_grupo.py:184:            estimador.fit(matriz, y[entrenamiento, etiqueta], sample_weight=peso)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_04_char_weight.py:118:        bloque_word = vectorizador_word.fit_transform(textos.iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_04_char_weight.py:119:        bloque_char = vectorizador_char.fit_transform(textos.iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_04_char_weight.py:132:            estimador.fit(matriz, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_05_skipgrams.py:192:        bloque_palabras = vectorizador_palabras_ajuste.fit_transform(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_05_skipgrams.py:195:        bloque_char = vectorizador_char.fit_transform(textos.iloc[entrenamiento])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_05_skipgrams.py:205:            estimador.fit(matriz, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_06_bagging_grupos.py:165:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_06_bagging_grupos.py:166:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_06_bagging_grupos.py:188:                estimador.fit(base[indices], y[entrenamiento[indices], etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_07_ruido_par.py:164:        [vectorizador_word.fit_transform(textos), vectorizador_char.fit_transform(textos)]
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_07_ruido_par.py:168:    vecinos.fit(matriz)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_07_ruido_par.py:239:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_07_ruido_par.py:240:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_07_ruido_par.py:256:            estimador.fit(matriz, y[entrenamiento, etiqueta], sample_weight=peso)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_08_aumento.py:202:                vectorizador_word.fit_transform(textos_tr),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_08_aumento.py:203:                vectorizador_char.fit_transform(textos_tr),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v6_08_aumento.py:214:            estimador.fit(matriz, y_tr[:, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_01_perdida_f1.py:289:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_01_perdida_f1.py:290:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_02_prior_grupo.py:268:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_02_prior_grupo.py:269:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_02_prior_grupo.py:289:            estimador.fit(matriz, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_03_umbral_anidado.py:203:    estimador.fit(matriz, objetivo)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_03_umbral_anidado.py:294:                vectorizador_ref_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_03_umbral_anidado.py:295:                vectorizador_ref_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_03_umbral_anidado.py:312:                vectorizador_word.fit_transform(textos.iloc[ajuste]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v7_03_umbral_anidado.py:313:                vectorizador_char.fit_transform(textos.iloc[ajuste]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_01_ensamble_folds.py:155:            vectorizador_word.fit_transform(textos_entrenamiento.iloc[indices_entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_01_ensamble_folds.py:156:            vectorizador_char.fit_transform(textos_entrenamiento.iloc[indices_entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_01_ensamble_folds.py:173:        estimador.fit(matriz, y[indices_entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_03_estabilidad_features.py:164:            vectorizador_word.fit_transform(textos.iloc[indices]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_03_estabilidad_features.py:165:            vectorizador_char.fit_transform(textos.iloc[indices]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_03_estabilidad_features.py:207:            estimador.fit(submatriz, destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_03_estabilidad_features.py:278:                estimador.fit(submatriz, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_04_log_count_ratio.py:214:            v_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_04_log_count_ratio.py:215:            v_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_04_log_count_ratio.py:225:            c_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_04_log_count_ratio.py:226:            c_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_04_log_count_ratio.py:294:                estimador.fit(ponderada, destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_04_log_count_ratio.py:471:        estimador.fit(tf_ent, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_05_regularizacion_conjunta.py:308:                vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_05_regularizacion_conjunta.py:309:                vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_05_regularizacion_conjunta.py:526:            v_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_05_regularizacion_conjunta.py:527:            v_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_05_regularizacion_conjunta.py:570:        estimador.fit(matriz, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_05_regularizacion_conjunta.py:615:            v_word.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_05_regularizacion_conjunta.py:616:            v_char.fit_transform(textos.iloc[entrenamiento]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_06_c_por_etiqueta.py:132:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_06_c_por_etiqueta.py:133:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_06_c_por_etiqueta.py:170:    estimador.fit(matriz, destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_07_peso_por_etiqueta.py:135:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_07_peso_por_etiqueta.py:136:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_07_peso_por_etiqueta.py:190:    estimador.fit(matriz, destino, sample_weight=pesos_por_clase(matriz.shape[0], destino, multiplicador))
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_08_corrector_margenes.py:142:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_08_corrector_margenes.py:143:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_08_corrector_margenes.py:230:                estimador.fit(matriz, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_08_corrector_margenes.py:285:                    estimador.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_08_corrector_margenes.py:300:                estimador.fit(diseno[entrenamiento][:, [etiqueta]], y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_08_corrector_margenes.py:406:            estimador.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_08_corrector_margenes.py:419:        estimador.fit(diseno_margen[:, [etiqueta]], y[:, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_08_corrector_margenes.py:451:                estimador.fit(matriz_repe, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_10_ensemble_cinco_modelos.py:133:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_10_ensemble_cinco_modelos.py:134:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_10_ensemble_cinco_modelos.py:179:                estimador.fit(matriz, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_10_ensemble_cinco_modelos.py:224:                estimador.fit(matriz, y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_11_complejidad_idiosincrasias.py:174:    matriz = vectorizador.fit_transform(textos_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_11_complejidad_idiosincrasias.py:215:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_11_complejidad_idiosincrasias.py:216:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_11_complejidad_idiosincrasias.py:303:                base.fit(matriz, destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_11_complejidad_idiosincrasias.py:311:                con_idio.fit(sparse.hstack([matriz, diseno_entrenamiento]), destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_11_complejidad_idiosincrasias.py:403:                estimador.fit(
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_12_seleccion_por_grupo.py:132:    palabra = vectorizador_word.fit_transform(textos_entrenamiento)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_12_seleccion_por_grupo.py:134:        [palabra, vectorizador_char.fit_transform(textos_entrenamiento)], format="csr"
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_12_seleccion_por_grupo.py:267:                    estimador.fit(matriz[:, columnas], destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_12_seleccion_por_grupo.py:351:                estimador.fit(matriz[:, columnas], y[entrenamiento, etiqueta])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_13_clasificadores_alternativos.py:131:            vectorizador_word.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_13_clasificadores_alternativos.py:132:            vectorizador_char.fit_transform(textos_entrenamiento),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_13_clasificadores_alternativos.py:245:                base.fit(matriz, destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_13_clasificadores_alternativos.py:253:                arbol.fit(sub_entrenamiento, destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_13_clasificadores_alternativos.py:262:                bosque.fit(sub_entrenamiento, destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_13_clasificadores_alternativos.py:286:                estimador.fit(matriz[:, columnas].toarray(), destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_13_clasificadores_alternativos.py:357:                    estimador.fit(matriz[:, columnas].toarray(), destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_13_clasificadores_alternativos.py:369:                    estimador.fit(matriz[:, columnas], destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v8_13_clasificadores_alternativos.py:382:                    estimador.fit(matriz[:, columnas], destino)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_01_sensibilidad_fugas.py:86:    matriz = vectorizador.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_02_prior_shift_em.py:128:    modelo.fit(logit(proba).reshape(-1, 1), y)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_02_prior_shift_em.py:172:        modelo.fit(matriz_train, train[ETIQUETAS[i]])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_03_near_dup_test.py:76:    matriz = vectorizador.fit_transform(textos)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_04_dl_secuencial_fasttext.py:199:            modelo.fit(medias_tr, y[tr, i])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_05_proyecciones_supervisadas.py:84:        x_tr = sparse.hstack([word.fit_transform(dev["text"].iloc[tr]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_05_proyecciones_supervisadas.py:85:                              char.fit_transform(dev["text"].iloc[tr])]).tocsr()
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_05_proyecciones_supervisadas.py:105:        svd_tr = svd.fit_transform(x_tr)
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_05_proyecciones_supervisadas.py:110:            modelo.fit(sdr_tr, y[tr, i])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/v9_05_proyecciones_supervisadas.py:114:            modelo.fit(svd_tr, y[tr, i])
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p90_03r_reconstruccion_oof.py:239:            word.fit_transform(train_dev["text"].iloc[idx_tra]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p90_03r_reconstruccion_oof.py:240:            char.fit_transform(train_dev["text"].iloc[idx_tra]),
+/home/carlos/Git/PLN/kaggle_toxic_2026_puj/experiments/p90_03r_reconstruccion_oof.py:249:            modelo.fit(x_tra, train_dev[etiqueta].iloc[idx_tra])

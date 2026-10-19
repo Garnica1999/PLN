@@ -1,0 +1,156 @@
+{
+  "experiment_id": "P98-12",
+  "etapa": "C98-1 (preentrenamiento)",
+  "fecha": "2026-10-13",
+  "cfg": {
+    "vocab_size": 50002,
+    "char_vocab_size": 256,
+    "char_dim": 32,
+    "nn_char": 128,
+    "word_dim": 200,
+    "enc_dim": 512,
+    "hidden": 1024,
+    "capas": 2,
+    "dropout": 0.2,
+    "max_char": 24,
+    "seq_len": 96,
+    "batch": 8192,
+    "lr": 0.001
+  },
+  "corpus": {
+    "ruta": "data/external/corpora/p98_c98_1/tokens_30m.txt",
+    "sha256": "9f562718ef4e7d45622040cd9ab5973182cc5405a99bfbc1636fa57abc6b9f0e",
+    "documentos": 166022,
+    "tokens": 29737183
+  },
+  "vocab": {
+    "tipos": 717232,
+    "cobertura_top50k": 0.9376,
+    "chars": 254
+  },
+  "val_documentos": 3320,
+  "direcciones": {
+    "ltr": {
+      "historial": [
+        {
+          "epoca": 1,
+          "lr": 0.001,
+          "tokens": 29310720,
+          "loss_muestra_inicio": 10.83072566986084,
+          "loss_muestra_fin": 5.290737152099609,
+          "val_loss": 5.220574736595154,
+          "val_perplexity": 185.04050306374518,
+          "segundos": 1692.6,
+          "tokens_por_segundo": 17316.5
+        },
+        {
+          "epoca": 2,
+          "lr": 0.001,
+          "tokens": 29310720,
+          "loss_muestra_inicio": 5.289790153503418,
+          "loss_muestra_fin": 4.867516040802002,
+          "val_loss": 4.839816987514496,
+          "val_perplexity": 126.44620837754039,
+          "segundos": 1684.1,
+          "tokens_por_segundo": 17404.1
+        },
+        {
+          "epoca": 3,
+          "lr": 0.001,
+          "tokens": 29310720,
+          "loss_muestra_inicio": 4.937490463256836,
+          "loss_muestra_fin": 4.640643119812012,
+          "val_loss": 4.65926616191864,
+          "val_perplexity": 105.55859081333416,
+          "segundos": 1681.2,
+          "tokens_por_segundo": 17434.9
+        },
+        {
+          "epoca": 4,
+          "lr": 0.0005,
+          "tokens": 29310720,
+          "loss_muestra_inicio": 4.7744035720825195,
+          "loss_muestra_fin": 4.462341785430908,
+          "val_loss": 4.551658660173416,
+          "val_perplexity": 94.78950156785594,
+          "segundos": 1672.1,
+          "tokens_por_segundo": 17529.3
+        }
+      ],
+      "mejor": {
+        "epoca": 4,
+        "val_loss": 4.551658660173416
+      },
+      "gpu_horas": 1.877
+    },
+    "rtl": {
+      "historial": [
+        {
+          "epoca": 1,
+          "lr": 0.001,
+          "tokens": 29310720,
+          "loss_muestra_inicio": 10.827625274658203,
+          "loss_muestra_fin": 5.226842880249023,
+          "val_loss": 5.19533007144928,
+          "val_perplexity": 180.42768699768632,
+          "segundos": 1718.2,
+          "tokens_por_segundo": 17059.3
+        },
+        {
+          "epoca": 2,
+          "lr": 0.001,
+          "tokens": 29310720,
+          "loss_muestra_inicio": 5.2650837898254395,
+          "loss_muestra_fin": 4.784173965454102,
+          "val_loss": 4.815659773349762,
+          "val_perplexity": 123.4282201021116,
+          "segundos": 1689.9,
+          "tokens_por_segundo": 17344.3
+        },
+        {
+          "epoca": 3,
+          "lr": 0.001,
+          "tokens": 29310720,
+          "loss_muestra_inicio": 4.93516206741333,
+          "loss_muestra_fin": 4.5499162673950195,
+          "val_loss": 4.627015340328216,
+          "val_perplexity": 102.2085506711707,
+          "segundos": 1698.1,
+          "tokens_por_segundo": 17261.3
+        },
+        {
+          "epoca": 4,
+          "lr": 0.0005,
+          "tokens": 29310720,
+          "loss_muestra_inicio": 4.748481750488281,
+          "loss_muestra_fin": 4.375014305114746,
+          "val_loss": 4.518235802650452,
+          "val_perplexity": 91.67372468980709,
+          "segundos": 1696.7,
+          "tokens_por_segundo": 17274.7
+        }
+      ],
+      "mejor": {
+        "epoca": 4,
+        "val_loss": 4.518235802650452
+      },
+      "gpu_horas": 1.898
+    }
+  },
+  "gpu_horas_totales_c98_1": 3.775,
+  "tiempo_total_s": 13679.4,
+  "checkpoints": {
+    "ltr": {
+      "ruta": "models/p98_c98_1_ltr.pt",
+      "sha256": "472891a7598a1daad3fd05b79ec75fa0bf13f2f398fad9b8eb89fc96682beba6",
+      "val_ppl": 94.78950156785594,
+      "epocas": 4
+    },
+    "rtl": {
+      "ruta": "models/p98_c98_1_rtl.pt",
+      "sha256": "cff68d45bf683cad57b90c6fb29c8c86e35bf9fd23af64e3f89cbcded07979e0",
+      "val_ppl": 91.67372468980709,
+      "epocas": 4
+    }
+  }
+}

@@ -294,3 +294,13 @@ Veredictos: **1 correcto con reservas (V32-E1), 3 correctos, 3 defecto confirmad
 - **Inventario**: 200 filas = 151 EJECUTADO + 26 DOCUMENTAL + 12 PREREGISTRO + 10 ENMIENDA +
   1 BLOQUEADO. 7/7 checks. Acta **D-091**.
 - **Campeon intacto** 0.6159732487657944. Sin push/merge/rebase/reset.
+
+## QA final del notebook de entrega Kaggle (`experimentos/ejecutado_r2.ipynb`) — 2026-10-17
+- **Veredicto: GO** (0 fallos). Detalle completo en `plan/kaggle_notebook/qa_final.md`.
+- Checklist `repro/verifica_ejecucion.py --checklist`: exit=0, 10/10 OK; mayor delta 7.10e-04 (V29), todo dentro de tolerancias declaradas (1e-3; V48 2e-3).
+- Estructura: 89 celdas (44 md + 45 codigo), 0 errores/stderr, 11 PNG en todas las fases, execution_count 1-45 monotono.
+- CRISP-ML Fases 1-6 + anexos en orden; cada experimento con que/por que/resultado; tecnicas citan autor+articulo (~128 inline + Anexo B); cifras texto vs salidas sin contradicciones.
+- Honestidad OK: 6.2 y nota final declaran zlib (max 0.115/media 5.4e-5), crudas ~1e-5, plug-in ~1e-3, NN <0.2% decisiones; sin promesa de bit-exactitud entre entornos; comparacion con submission sellada impresa (99.3029%, 787 celdas; SHA256 reconstruida vs proyecto impresos).
+- Submission: 8/8 checks de formato OK (112.892 filas, [id, age_range], ids unicos/orden, sin nulos, clases validas); escribe submission.csv y /kaggle/working/submission.csv.
+- Kaggle: sin deps prohibidas (0 pip/clone; stdlib+sklearn/lgbm/torch), torch sin fijar (usa preinstalado), runtime declarado ~5h (real 4h48m) < limite 12h; autonomia verificada (folds embebidos == regenerados 1.0; funciones de artifacts nunca invocadas).
+- Observaciones menores no bloqueantes: matizar "mismo resultado numerico" CPU vs GPU en portada; commitear `experimentos/` y `repro/` (untracked) antes del cierre.

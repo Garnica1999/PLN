@@ -1,0 +1,7 @@
+chequeo,alcance,resultado,evidencia,estado
+identidad_raw_casebook,441 tweets con error,0 diferencias,comparacion exacta por tweet_id contra data/raw/toxic_train.csv,MATCH_CONFIRMED
+identidad_raw_celdas,757 celdas,0 diferencias,comparacion exacta por tweet_id,MATCH_CONFIRMED
+ascii_del_desarrollo,1483 textos dev,0 textos con caracteres > 127,recuento byte a byte sobre el texto original,SOURCE_ALREADY_NORMALIZED
+formas_sin_diacriticos_en_el_raw,textos dev,"{""Espaa"": 28, ""agresin"": 4, ""estacin"": 3, ""polica"": 5, ""rabes"": 59, ""inmigracin"": 29}",busqueda literal en el texto original (las formas ya estan en la fuente),SOURCE_ALREADY_NORMALIZED
+vectorizadores_de_v03,pipeline_v03.json + 04_refit_submissions_v02_v03.py,"word={'analyzer': 'word', 'ngram_range': [1, 2], 'min_df': 2, 'sublinear_tf': True, 'lowercase': True}; char={'analyzer': 'char_wb', 'ngram_range': [3, 5], 'min_df': 2, 'sublinear_tf': True, 'lowercase': True}; strip_accents=None en los scripts de entrenamiento",configuracion congelada; ninguna operacion de retirada de diacriticos en la ruta de V03,MATCH_CONFIRMED
+documentacion_historica,D-010,D-010 declara que el corpus llega sin tildes ni enye y que train es 100 % ASCII,DECISIONS.md D-010 (2026-09-22),MATCH_CONFIRMED

@@ -1,0 +1,74 @@
+\section{Introducción}
+\label{sec:introduccion}
+
+La conversación pública en redes sociales plantea un problema de clasificación
+que no admite una lectura ingenua: el discurso de odio rara vez aparece
+aislado. En un mismo tuit conviven la deshumanización de un grupo, la
+agresión explícita y el señalamiento de una persona concreta. Los corpus
+anotados para la tarea lo reflejan: en HatEval, por ejemplo, las etiquetas de
+discurso de odio (\emph{hate speech}, HS), carácter dirigido (\emph{targeted},
+TR) y agresividad (AG) se anotan de forma conjunta y condicionada
+\cite{basile2019hateval}. Modelar las tres columnas como decisiones
+independientes ignora esa estructura; modelarlas como una única clase de seis
+combinaciones pierde la señal compartida y multiplica la escasez de cada
+celda. La formulación multietiqueta, con un clasificador por etiqueta y una
+regla ontológica que preserva la jerarquía, es el compromiso que adoptamos
+aquí.
+
+El contexto de este trabajo es la competencia académica \emph{TOXIC 2026 PUJ},
+organizada para el curso de Procesamiento de Lenguaje Natural de la Maestría
+en Inteligencia Artificial de la Pontificia Universidad Javeriana. La
+competencia impone tres restricciones fundamentales: (i) prohibición de
+utilizar arquitecturas basadas en transformers o modelos de lenguaje; (ii)
+obligación de entrenar todas las representaciones desde cero a partir del
+conjunto de entrenamiento; y (iii) prohibición de emplear el conjunto de
+prueba para el ajuste del modelo base (la calibración de la capa de decisión
+se guía únicamente por la retroalimentación agregada del leaderboard público). La métrica oficial es la media columnar de la $F_1$ binaria
+de la clase positiva sobre HS, TR y AG \cite{opitz2019macro}. La nota final
+combina el leaderboard privado con la claridad y justificación del cuaderno
+entregado, de modo que el resultado y su explicación pesan por igual.
+
+La pregunta que organiza este artículo es directa: \emph{¿puede un pipeline
+clásico, sin transformers ni representaciones preentrenadas, competir en un
+corpus pequeño y ruidoso de tuits en español?} La respuesta que documentamos
+es afirmativa, pero con una distinción que consideramos central. El modelo
+base ---representación subléxica, ensamble lineal y umbrales desacoplados---
+alcanza un $F_1$ out-of-fold de 0.787582 y una mejora estadísticamente
+sostenida sobre la línea base. La capa de decisión de última milla ---reglas
+de staging y pares compensados--- eleva el leaderboard público hasta 0.81447,
+pero lo hace con intervenciones específicas del test, guiadas por el propio
+leaderboard. Separar ambas fuentes de mejora, en lugar de presentar el
+0.81447 como si fuera una estimación limpia de generalización, es una de las
+contribuciones metodológicas del trabajo.
+
+Las contribuciones concretas son cinco. Primera, un pipeline clásico
+completo y reproducible: una representación TF-IDF multiescala de 86\,275
+características, un ensamble de tres optimizadores lineales con calibración
+de temperatura y umbrales por etiqueta. Segunda, un protocolo de validación
+agrupada que fusiona near-duplicados y pseudo-autores, verifica la ausencia
+de fuga en cada pliegue y se replica en dos particiones congeladas. Tercera,
+un análisis formal de la capa de decisión: demostramos que un par compensado
+que rescata un verdadero positivo y suprime un falso positivo en la misma
+columna incrementa la $F_1$ exactamente en $F_1/TP$, sin alterar el número de
+positivos. Cuarta, una descomposición explícita de la ganancia del
+leaderboard en sus dos componentes y una discusión de su validez externa.
+Quinta, un contrato de reproducibilidad verificado: el envío campeón se
+reconstruye bit a bit y dos ejecuciones independientes producen el mismo
+archivo.
+
+El resto del artículo sigue el orden de CRISP-DM. La
+Sección~\ref{sec:trabajos} sitúa el trabajo frente a la literatura
+(comprensión del negocio y estado del arte). La Sección~\ref{sec:datos}
+describe el corpus y el análisis exploratorio (comprensión de los datos). La
+Sección~\ref{sec:metodologia} detalla la preparación, la representación, los
+modelos y la capa de decisión. La Sección~\ref{sec:resultados} recorre los
+veinticinco experimentos evaluados en el leaderboard y separa lo que funcionó
+de lo que no (modelado). La Sección~\ref{sec:discusion} presenta el análisis
+estadístico, el análisis de error y los límites del enfoque (evaluación). La
+Sección~\ref{sec:reproducibilidad} documenta el despliegue y la verificación
+criptográfica. La Sección~\ref{sec:conclusiones} cierra con las lecciones y
+el trabajo futuro.
+
+Por convención numérica, y para no alterar los identificadores del registro
+oficial de Kaggle, en todo el artículo se usa el punto como separador decimal
+y el espacio fino para los miles.

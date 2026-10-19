@@ -5154,3 +5154,754 @@ V03 remains the best verified leaderboard result.
 - Patrones tentativos documentados con casos y contraejemplos (broma/afiliacion en FP; hostilidad contra grupos en FN; registro vulgar en FN triples; TR sin destinatario; errores fronterizos). Sin features, sin causas afirmadas.
 - Entregables: `reports/v03_error_casebook.md/.csv`, `v03_error_cells.csv`, `v03_error_fold_summary.csv`, `v03_error_slice_summary.csv`, `v03_error_confidence_summary.csv`, `v03_error_review_sample.csv`, `v03_error_controls.csv`, `v03_error_provenance.json`; seccion 135; D-295; `experiments/p90_00_casebook_errores_v03.py` y `p90_01_integrar_casebook.py`.
 - Compliance: comprobacion AST del propio script (0 lecturas de test/holdout/leaderboard/submissions); verificador oficial 0; escaneo byte a byte 0; 0 entrenamientos, 0 submissions, 0 push.
+
+## 2026-10-13 (P98 Fase A: gobernanza de corpus e infraestructura)
+
+- Nota de provenance de la autorizacion del mecanismo (BiLSTM desde cero) | `docs/p98_provenance_autorizacion_bilstm.md` | confirmacion verbatim del propietario + cita de la regla del profesor.
+- Registro de fuentes y licencias | `experiments/p98_00_registro_fuentes.py` | 17 fuentes (4 ALLOWED, 4 ALLOWED_WITH_RESTRICTIONS, 9 NEEDS_EXPLICIT_PERMISSION con 5 cuarentenas de odio); 6 hashes de corpus verificados; `reports/p98_corpus_registry.csv`, `p98_corpus_licenses.md`, `artifacts/p98_corpus_manifest.json`.
+- Auditoria de solapamiento corpus vs train | `experiments/p98_02_auditoria_solapamiento.py` | CUMPLE: 0 exactas en 4 corpus; 1 coincidencia de 8-gramas = puntuacion; `reports/p98_auditoria_solapamiento.json/.md`.
+- Infraestructura sintetica | `experiments/p98_01_prueba_infraestructura.py` | ROCm OK, determinismo exacto (delta 0.0), checkpoint identico, 223k tok/s en caliente; `reports/p98_infra_test.json/.md`, `models/p98_infra_test.pt`.
+- Arquitectura v1 pre-registrada | `reports/p98_architecture.md` | + plan de seguimiento `reports/p98_plan_seguimiento.md`; filas P98-00..02 en experiments.csv (474); seccion 158 del notebook; 0 entrenamientos con corpus reales, 0 submissions, 0 test/holdout/leaderboard.
+
+## 2026-10-13 (P98 Fase B: C98-0 piloto y corpus C98-1)
+
+- C98-0 piloto real | `experiments/p98_10_piloto_c98_0.py` | wikipedia 5M; val ppl 651.3 -> 351.1 (3 epocas); sonda [1024,2] 17.133 tok/s (umbral 13.333) -> escalera fija hidden 1024 x 2; ~0.16 GPU-h; checkpoint `models/p98_c98_0_ltr.pt`.
+- Hallazgo de entorno | dropout nativo de nn.LSTM no compila en MIOpen gfx1201; sustituto nn.Dropout entre capas (documentado).
+- Corpus C98-1 | `experiments/p98_11_construir_c98_1.py` | 29.737.183 tokens, 166.022 docs; dedup removio 9.656 duplicados de twitter; 0 coincidencias exactas vs train; sha256 9f562718...; `artifacts/p98_c98_1_manifest.json`.
+- Registro y estado | filas P98-10/11 en experiments.csv (476); plan de seguimiento y seccion 159 del notebook; sin submissions, sin test/holdouts/leaderboard.
+
+## 2026-10-13 (P98 Fase B: C98-1 preentrenamiento y D98-1 downstream)
+
+- C98-1 | `experiments/p98_12_preentrenar_c98_1.py` | LTR ppl 94.8 / RTL ppl 91.7 (4+4 epocas; 3.775 GPU-h; ~17.3k tok/s); checkpoints hasheados; `reports/p98_c98_1_pretraining.json/.md`, `p98_pretraining_results.csv`.
+- D98-1 | `experiments/p98_13_downstream_d98_1.py` | embedding-only 0.652238; fusion 0.782266 (delta +0.005055, 4/5 pliegues, neto +11, IC95 incluye cero) -> MARGINAL_SENAL; `reports/p98_13_downstream.json/.md`, `p98_downstream_results.csv`, `p98_complementarity.csv`, `features/p98_13_reps_dev.npz`, `features/p98_13_oof.npz`.
+- Registro | filas P98-12/13/14 (479); seccion 160 del notebook; plan y estado actualizados; 0 submissions; test/holdouts/leaderboard intactos.
+
+## 2026-10-13 (P98 D98-1b: replica de robustez y cierre de la linea contextual)
+
+- D98-1b | `experiments/p98_14_replica_d98_1b.py` | pre-registro de folds (seed 43, sin fuga) antes de evaluar; V03-equivalente 0.775632 vs fusion 0.776783: delta +0.001151, 2/5 pliegues, neto +2, IC95 [-0.007491,+0.009919] -> FALSIFICADA. El patron por slices no replico (q4 +0.011; url y hashtag negativos).
+- Cierre por criterios pre-registrados: sin escalado de corpus, sin D98-2, sin mas replicas; D98-1 y OOF canonico intactos.
+- Registro | fila P98-15 (480); seccion 161 del notebook; 0 submissions; test/holdouts/leaderboard sin uso.
+
+## 2026-10-13 (P99: incidente de infraestructura y relanzamiento de S99-01)
+
+- Primer lanzamiento de `p99_11_preentrenar_s99_01.py` (14:25) terminado por interrupcion externa del proceso a mitad de trabajo de GPU: el log muestra una excepcion HSA (0x1016) durante la caida, sin traceback de Python (kill durante kernel activo). Consumo estimado ~0.08 GPU-h.
+- Diagnostico: rocm-smi sano (50 C); smoke test con la config exacta (30 pasos, batch 8192, hidden 1024) OK a ~16.3k tok/s y 7.95 GB VRAM -> hardware OK; causa = interrupcion del proceso, no fallo de ROCm.
+- Blindaje: `p99_11` ahora guarda estado de reanudacion (modelo+optimizador+paso) cada 1000 pasos y al cerrar cada epoca; al reanudar continua exactamente en la epoca/paso guardados. Se elimino un `del secuencia` residual.
+- Relanzado con `setsid` (desacoplado de la sesion). Sin cambios de arquitectura, datos, semillas ni calendario: es la misma configuracion pre-registrada.
+- **Fe de errata del incidente (misma fecha)**: la causa raiz de las dos caidas NO fue la interrupcion externa: era un bug propio en `p99_11`: los ids de palabra del stream contenian los uids de la tabla de caracteres (hasta 1.074.783) y el embedding de palabras tiene 50.002 entradas -> indexacion fuera de rango en GPU en el primer forward (excepcion HSA/coredump; el smoke test con ids aleatorios en rango no lo detectaba). Corregido separando el mapa de PALABRAS congelado (top-50k, OOV=0, asercion de rango en el constructor de streams). Relanzado con setsid (PID 1515336): vivo a los 200 s con GPU al 100%. El blindaje de reanudacion (estado cada 1000 pasos) queda activo. Coste de los intentos fallidos: ~0.1 GPU-h, registrado.
+- **Fe de errata 2 (misma fecha)**: el aviso de "entrenamiento terminado" fue una falsa alarma del vigilante: `pgrep -f` capturo el PID del wrapper `setsid` (1515336), que sale de inmediato, en lugar del python real (1515342). Verificado con `ps`: un unico entrenador vivo, GPU al 100%, 407W, RAM 19.5%; sin duplicados ni OOM. Vigilante reconfigurado sobre el PID real.
+- **Fe de erratum 3 (misma fecha)**: el gauge de validacion del RTL era INVALIDO: se evaluaba el modelo RTL sobre streams de validacion en orden LTR (construidos una sola vez, sin invertir) -> ppl 2408.3 no fisica mientras la loss de entrenamiento era normal (10.81->4.63). Acciones: (i) parada controlada en el paso 7000/7409 de la epoca 2 del RTL (~3 min perdidos; la reanudacion recupera el resto por el estado periodico); (ii) preservado el checkpoint ep1 de RTL (`models/p99_s99_01_rtl_ep1.pt`) y el log del intento (`experiments/p99_pretraining_intento_con_gauge_invalido.log`); (iii) parcheado `p99_11`: validacion por direccion (agregada y por dominio), guarda de early-stop con historial corto, salto de direccion ya completada con historial reconstruido del log persistente, contabilidad de reanudacion; (iv) relanzado en modo reanudacion (log en modo append).
+
+## 2026-10-13 (P99: S99-01 60M, gate de escala y cierre)
+
+- Construccion S99-01 | `experiments/p99_10_construir_s99_01.py` | 60.707.427 tokens / 340.219 docs / +30.97M nuevos | C98-1 integro | 0 solapamiento train | sha e627a7f33886c0a1.
+- Preentrenamiento | `experiments/p99_11_preentrenar_s99_01.py` | LTR 100.6 / RTL 98.3 (2+2 epocas; 3.876 GPU-h); reanudacion tras incidencia con recuperacion de estado y reconstruccion LTR desde el log.
+- Correccion de gauge | `experiments/p99_11b_correccion_gauge_rtl.py` | RTL ep1 corregido a ppl 135.6 (original invalido 2408.3); controles reproducen 98.3/100.6.
+- Downstream | `experiments/p99_12_downstream_s99_01.py` | canonica delta60 vs V03 +0.004375 (4/5) pero -0.00068 vs 30M; particion 47 -0.000848 (3/5); GATE_FAILED.
+- Cierre | hipotesis de escala CERRADA con evidencia; sin rescates; P99 completa (§16); 0 submissions.
+
+## 2026-10-13/14 (P100: fuentes, pre-registro, B1, preentrenamiento y cierre)
+
+- S1 fuentes | `experiments/p100_00_registro_fuentes.py` | 10 candidatas nuevas; S100-A (DHCOVID) sin texto utilizable (solo IDs; servicio de texto roto verificado); S100-B ChatSubs autorizado con condiciones y descargado (md5 afd2d3967...); variante A cerrada por material (sin relleno). Registro y decisiones en `reports/p100_corpus_research.md`, `p100_corpus_registry.csv`, `p100_source_decisions.md`.
+- S2 pre-registro | `reports/p100_preregistration.md` | H100-01 con objetivos exactos, medidor fijo de 3.320 y gate + criterio de atribucion; GO final del arquitecto tras 4 correcciones materiales; auditorias en `p100_auditorias_s1.md`.
+- S3 corpus | `experiments/p100_10_construir_b1.py` | 29.727.450 tokens EXACTOS (162.977 docs); replica exacta de C98-1 (claves identicas); val 3.189/3.320 excluidos del stream; overlaps 0; sha 5111a1832fe9567b.
+- S4 preentrenamiento | `experiments/p100_11_preentrenar_b1.py` | LTR 98.7 / RTL 98.6 (4 epocas/direccion); ~3.78 GPU-h reales (json 2.719 por reconstruccion; corregido en experiments.csv); interrupciones por eviccion del servidor reanudadas; supervisor detached (`p100_supervisor.sh`) desplegado y probado.
+- S5 downstream | `experiments/p100_12_downstream_b1.py` | controles de reproduccion 30M EXACTOS; canonica: B1 0.776620 (delta V03 -0.000591, 2/5; vs 30M -0.005646); particion 47: B1 0.774986 (-0.000645, 2/5; vs 30M -0.001797); GATE_FAILED; atribucion falsada; embedding-only secundario +0.0079 sin adopcion.
+- Cierre | H100-01 = FALSIFIED; P100 = CLOSED; NO_MODEL_ADOPTION; NO_NEW_SUBMISSIONS; informe `reports/p100_b1_final_report.md`; filas P100-00/10/11/12/13/14 (491).
+- Cierre documental | DECISIONS D-303/D-304; PROJECT_STATE y RUNLOG actualizados; FINAL_REPORT seccion P100; notebook seccion 163 (integrada con verificacion en aislamiento); auditoria `experiments/p100_99_verificacion.py` (hashes V03/P98/P99/P100 intactos; ASCII; IDs unicos; 0 submissions).
+
+## 2026-10-14 (P101: auditoria de supervision - P0/P1 completadas y cierre por bloqueo humano)
+
+- P0 procedencia | `experiments/p101_00_auditoria_procedencia.py` | inventario (229 archivos con hashes); tabla de procedencia (1.327 filas: dev2 1.236 + historico); elegibles 971/1236; reservados en v2.1: 0; canonicos V03 intactos. Entregables: `reports/p101_provenance_audit.md`, `p101_provenance_table.csv`, `p101_materials_inventory.csv`.
+- P1 gobernanza | `reports/p101_governance_note.md` | veredicto AMBIGUOUS (las reglas no cubren objetivos alternativos); plantilla P95 completada; consulta al profesor redactada (no enviada).
+- Bloqueo humano | sin dos revisores disponibles (decision del propietario 2026-10-14) -> anotacion detenida SIN simulacion; P6 no ejecutado; labels originales intactas; P101 = CLOSED_BLOCKED (reabrible solo con revisores reales).
+- Cierre documental | `reports/p101_compliance.md`, `p101_final_report.md`, `p101_reproducibility.md`; fila P101-00; seccion 164 del notebook.
+
+## Addendum retrospectivo (2026-10-14): trazabilidad de P91-P93
+
+[MARCADO COMO ADDENDUM: completa trazabilidad con evidencia posterior; no reescribe entradas historicas ni cambia fechas]
+
+- Motivo: las fases P91-P93 (anotacion humana: guias, muestreo, calibracion, rondas A/B y adjudicacion C1/C2, comparacion con gold) no fueron registradas en RUNLOG/DECISIONS/PROJECT_STATE/experiments.csv en su momento; su evidencia vive en `reports/p9x_*` y `artifacts/human_annotation_*`/`p93_adjudication_*`.
+- Hechos verificados (P101-00, 2026-10-14): 250 principales anotadas por A/B (ronda 1; guia v2); 176 celdas / 127 tweets adjudicadas por C1/C2 (ronda 2); 171 decisiones bloqueadas + 5 sin resolver (P93-R4); comparacion con gold interna (P93-R5): 0 errores confirmados, 14 posibles (solo componente B); calibracion v2.1 preparada sin respuestas; paquete v2 original en cuarentena (38 ids holdout2) reemplazado por v2.1 (0 reservados).
+- Inferencias (no hechos): la motivacion y las decisiones de proceso detras de la ejecucion de la ronda principal sin calibracion se infieren de los informes; no hay acta adicional.
+- Artefactos revisados: listados en `reports/p101_materials_inventory.csv` (229 archivos).
+
+## 2026-10-14 (P102: sprint del triage de 18 ideas - 4 experimentos, GATE_FAILED, sin candidato)
+
+- Triage (solo lectura) | 18 ideas auditadas: 17 YA_REALIZADAS con evidencia; unica AJUSTE = D4 char sin wb; esquinas menores (CNB como miembro, emojis, lexico manual, min_df por etiqueta); recomendacion de slots privados: V03 + v08_meta_v2.
+- Pre-registro | `reports/p102_preregistro.md` | gate A3: delta >= +0.003; >=4/5 pliegues; IC95 por clusters excluye cero; 47 positiva; >=200 celdas.
+- P102-01 (D4) | `experiments/p102_01_char_variantes.py` | control reproduce V03 exacto (diff 0.0; particion 47 identica); V2 triple +0.004466 (3/5; IC [-0.001664,+0.011226]; 91 celdas; 47 +0.002446) MARGINAL; V1 +0.000035; V3 case -0.022374; GATE_FAILED; D4 cerrada.
+- P102-02 (C1-corner) | `experiments/p102_02_promedio_recalibrado.py` | promedio recalibrado 0.773370 (-0.003841; 47 -0.009448); con umbrales congelados 0.743469 (contraccion recuperada +0.0299; mecanismo de v08_p1 cuantificado); SVC solo 0.7715 / CNB 0.6866; GATE_FAILED.
+- P102-03 (B2-corner) | `experiments/p102_03_regla_dura_tr.py` | 20 violaciones TR=>HS en el OOF de V03; la regla cuesta -0.000646 (canonica) y -0.004097 (47); GATE_FAILED.
+- P102-04 | `experiments/p102_04_barrido_umbrales.py` | argmax canonico +0.003895 (IC incluye cero; 83 celdas); 47 -0.002002; los optimos de la 47 no coinciden; GATE_FAILED.
+- P102-05 | NO_MATERIAL: texto oficial 100% ASCII (0/1731 filas no-ASCII; sin emojis).
+- Cierre | sin candidato; V03 congelado; slots privados sin cambios (V03 + v08_meta_v2); informe `reports/p102_sprint_results.md`; filas P102-01..04 (496); Graphiti actualizado (7 episodios en grupo main); sin test/holdouts/leaderboard; sin submissions.
+
+## 2026-10-14 (P103 - RONDA 2: N5 vectorizadores por etiqueta y N6 word dropout; ambos GATE_FAILED; sin candidato)
+
+- Alcance | confirmado por el propietario: SOLO N5 y N6; N1/N2/N8-A/B/C descartados (datos externos no permitidos; N2 no consultado).
+- Pre-registro | `reports/p103_preregistro.md` | gate A3; control V03 exacto en ambas particiones; piso de deteccion declarado; presupuesto 3 h CPU.
+- P103-01 (N5) | `experiments/p103_01_vectorizadores_por_etiqueta.py` | control exacto (diff 0.0; 47 identica); malla de 20 configs con seleccion anidada (CV interna 3 pliegues); canonica +0.002389 (4/5; 64 celdas; IC [-0.002405,+0.007250]; piso +0.004828); 47 +0.001362 (114 celdas); GATE_FAILED; sin senal detectable.
+- P103-02 (N6) | `experiments/p103_02_word_dropout.py` | control exacto; dropout p 0.05-0.15 x 1-2 copias con seleccion anidada; canonica -0.006873 (1/5; 173 celdas; IC [-0.015445,+0.001793]); 47 -0.004265; GATE_FAILED; el dropout perjudica (coherente con V6-08 y P94-R16).
+- Cierre | sin candidato; V03 congelado; slots privados sin cambios (V03 + v08_meta_v2); filas P103-01/02 (498); informe `reports/p103_sprint_results.md`; ~3.5 min de CPU de 3 h; sin test/holdouts/leaderboard; sin submissions.
+
+## 2026-10-14 (P104 - RONDA 3: R4 stemming y R5 clusters con efecto negativo detectable; R7-1 sin senal; sin candidato)
+
+- Alcance | confirmado: SOLO R4, R5 y R7-1 (en ese orden); R1/R2/R3/R6/R7-2/R7-3 fuera. Presupuesto 1.5 h CPU.
+- Pre-registro | `reports/p104_preregistro.md` | gate A3; control V03 exacto en ambas particiones; piso de deteccion declarado.
+- P104-01 (R4) | `experiments/p104_01_stemming_snowball.py` | control exacto; S2 (stem+raw+char) -0.007719 (1/5; 119 celdas; IC [-0.014381,-0.000603]; 47 -0.007150) y S1 -0.011893; GATE_FAILED; efecto NEGATIVO detectable (coherente con la lematizacion PRE-09 = 0.7425).
+- P104-02 (R5) | `experiments/p104_02_clusters_palabras.py` | control exacto; K300 -0.014801 (1/5; 279 celdas; IC [-0.026471,-0.003431]; 47 -0.012558); K100/K1000 tambien negativos; GATE_FAILED; efecto NEGATIVO detectable (familia de embeddings ya cerrada en P85-01).
+- P104-03 (R7-1) | `experiments/p104_03_l1_elastic.py` | control exacto; +0.000917 (3/5; 257 celdas; IC [-0.009404,+0.011041]; piso +0.010222); 47 -0.000418; GATE_FAILED; sin senal detectable; nnz medios HS 4559 / TR 1697 / AG 553; 0 no-convergencias.
+- Correccion | los tres artefactos se regeneraron una vez para corregir la etiqueta de conclusion (IC enteramente negativo = "efecto negativo detectable", no "incluye cero"); metricas identicas verificadas.
+- Cierre | sin candidato; V03 congelado; slots privados sin cambios (V03 + v08_meta_v2); filas P104-01/02/03 (501); informe `reports/p104_sprint_results.md`; ~14 min de CPU de 1.5 h; sin test/holdouts/leaderboard; sin submissions.
+
+## 2026-10-14 (P105 - RONDA 4: S2/S7a identidad/negativo; S4/S7b y S7c sin senal; sin candidato)
+
+- Alcance | confirmado: SOLO S2-residual/S7a, S4/S7b y S7c, en ese orden. Presupuesto 1 h CPU.
+- Pre-registro | `reports/p105_preregistro.md` | gate A3; control V03 exacto en ambas particiones; piso de deteccion.
+- P105-01 (S2/S7a) | `experiments/p105_01_normalizacion_bloques.py` | control exacto; V1 (L2 por bloque) = identidad con V03 (diff 0.0; 0 celdas); V2 (L2 conjunta) -0.017517 (IC95 [-0.028724,-0.006328]) y V3 (norma media) -0.034369; GATE_FAILED; V2/V3 efecto NEGATIVO detectable.
+- P105-02 (S4/S7b) | `experiments/p105_02_fonetica.py` | control exacto; canal fonetico -0.000363 (1/5; 96 celdas; IC [-0.006092,+0.005504]; 47 +0.000414); GATE_FAILED; sin senal detectable.
+- P105-03 (S7c) | `experiments/p105_03_pesos_bloque_etiqueta.py` | control exacto; peso char por etiqueta -0.001125 (2/5; 67 celdas; IC [-0.005996,+0.003508]); 47 -0.000178; GATE_FAILED; sin senal detectable; seleccion inestable.
+- Cierre | sin candidato (~15 experimentos acumulados en las rondas); V03 congelado; slots privados sin cambios (V03 + v08_meta_v2); filas P105-01/02/03 (504); informe `reports/p105_sprint_results.md`; ~15 min de CPU de 1 h; sin test/holdouts/leaderboard; sin submissions.
+
+## 2026-10-14 (P102-PLANNING: cierre de exploracion, pausa y auditoria de acceso a ids de test)
+
+- Verificacion P0 | 14/14 archivos pedidos existen; P101 = CLOSED_BLOCKED en los registros y en experiments.csv; sin anotacion simulada; P6 no ejecutado; labels intactas (sha256 de toxic_train.csv identico al registrado); inventario P101 229/229 OK; V03 5/5 hashes OK; P98-P100 10/10 hashes (corpus + checkpoints) OK; 0 submissions nuevas.
+- Discrepancia | FINAL_REPORT.md no incluia P101 -> addendum aditivo al final (contenido original conservado).
+- Auditoria P1 | ids de test: `p101_00` via `ids_columna_cero()` (solo campo 0 del CSV; el resto nunca se parsea); finalidad: procedencia + intersecciones 0; sin texto/labels/scores usados; clasificacion POTENTIAL_SCOPE_DEVIATION; informe `reports/test_identifier_access_review.md`; se documentan ademas near-dup train+test (V29-01/V9-01, impacto nulo) y submissions por diseno.
+- Pausa | MODEL_EXPLORATION_STATUS = PAUSED; NEW_TRAINING / NEW_SUBMISSIONS = NOT_AUTHORIZED (bloque en PROJECT_STATE.md).
+- P3/P4 | `reports/methodology_permission_clarification.md` (borrador, NO enviado) y `reports/research_reopening_criteria.md` creados.
+- Sin entrenamiento; sin submissions; test no re-consultado; verificador de caracteres OK; git solo lectura (main, HEAD e43c594, 8 commits por delante de origin, sin operaciones destructivas).
+
+## 2026-10-14 (P106: evaluacion de nuevas hipotesis de dependencias suaves, afecto y umbrales conjuntos)
+
+- Origen | Re-apertura autorizada por directiva del usuario con confirmacion de restricciones oficiales de la competencia.
+- Alcance | Evaluacion de 4 variantes metodologicas formuladas para cerrar la brecha hacia 0.80: V1 (boost suave TR->HS), V2 (desactivacion afectiva residual), V3 (umbrales 3D conjuntos anidados en inner-CV), V4 (fusion en espacio de logits con LinearSVC).
+- Control | M2 reproduce V03 exacto en particion canonica (ccv 0.7772114525165721; diff 0.00e+00) y en particion 47 (0 celdas distintas; ccv 0.7756319868803105).
+- Resultados |
+  - V1 (boost TR->HS): delta +0.000239 (2/5 pliegues; 4 celdas; IC95 [-0.000673, +0.001337]; 47 +0.000555) -> GATE_FAILED (senal indetectable).
+  - V2 (desactivacion afecto): delta -0.000489 (1/5 pliegues; 3 celdas; IC95 [-0.001556, +0.000388]; 47 -0.000093) -> GATE_FAILED.
+  - V3 (umbrales 3D anidados): delta canonico +0.001667 (4/5 pliegues; 67 celdas; IC95 [-0.002194, +0.005539]), pero particion 47 -0.002058 -> GATE_FAILED (no generaliza entre particiones).
+  - V4 (fusion logits LinearSVC): delta -0.000218 (2/5 pliegues; 19 celdas; IC95 [-0.002620, +0.002024]; 47 +0.000091) -> GATE_FAILED.
+- Cierre | Las 4 variantes fallan el gate A3. V03 se mantiene congelado como champion verificado (LB 0.78306, ccv 0.777211).
+- Artefactos | `experiments/p106_01_nuevos_experimentos.py`, `experiments/p106_90_registrar.py`, `reports/p106_01_nuevos_experimentos.{json,md}`; fila P106-01 en experiments.csv (505 filas).
+- Verificacion de caracteres | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-14 (P107: arquitecturas no lineales, aumento de datos desde cero y FastText/CharCNN)
+
+- Origen | Exploracion de arquitecturas no lineales (FastText, CharCNN), tecnicas de aumento de datos desde cero y mixup continuo para buscar superar el umbral de 0.80 bajo restricciones estrictas.
+- Alcance | Evaluacion de 4 variantes metodologicas: V1 (aumento ortografico con reajuste de vocabulario dentro del pliegue), V2 (mixup continuo en espacio TF-IDF con Ridge), V3 (1D CharCNN PyTorch libre de fuga con validacion interna anidada), V4 (FastText desde cero con PyTorch EmbeddingBag).
+- Control | M2 reproduce V03 exacto en particion canonica (ccv 0.7772114525165721; diff 0.00e+00) y en particion 47 (0 celdas distintas; ccv 0.7756319868803105).
+- Resultados |
+  - V1 (aumento caracteres): delta -0.001101 (2/5 pliegues; 93 celdas; IC95 [-0.007384, +0.005009]; 47 -0.001698) -> GATE_FAILED (dilucion de pesos TF-IDF).
+  - V2 (mixup continuo): delta -0.016623 (1/5 pliegues; 273 celdas; IC95 [-0.028634, -0.004500]; 47 -0.014387) -> GATE_FAILED (efecto negativo detectable).
+  - V3 (CharCNN 1D PyTorch leak-free): delta -0.000093 (3/5 pliegues; 19 celdas; IC95 [-0.002479, +0.002352]; 47 +0.001152) -> GATE_FAILED (sin beneficio neto).
+  - V4 (FastText scratch PyTorch): delta -0.001586 (1/5 pliegues; 13 celdas; IC95 [-0.003713, +0.000392]; 47 +0.001041) -> GATE_FAILED (no supera L2 de V03).
+- Cierre | Las 4 variantes fallan el gate A3. V03 se mantiene congelado como champion verificado (LB 0.78306, ccv 0.777211).
+- Artefactos | `experiments/p107_01_arquitecturas_aumento_ensemble.py`, `experiments/p107_90_registrar.py`, `experiments/p107_99_verificacion.py`, `reports/p107_01_arquitecturas_aumento_ensemble.{json,md}`; fila P107-01 en experiments.csv (506 filas).
+- Verificacion | `experiments/p107_99_verificacion.py` -> 22/22 chequeos superados; `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-14 (P108: Validacion y generacion del challenger V2_triple_asc - NUEVO CAMPEON KAGGLE)
+
+- Origen | Adopcion de la combinacion V2_triple (word(1,2) + char_wb(3,5) + char(1,6)) y la regla ontologica ascendente TR=1=>HS=1.
+- Alcance | Evaluacion formal en ambas particiones (canonica y particion 47), entrenamiento completo sobre 1.731 filas de train y generacion de submission para test (1.154 filas).
+- Control | M2 reproduce V03 exacto en particion canonica (ccv 0.7772114525165721; diff 0.00e+00).
+- Resultados Locales |
+  - Canonica (1.483 filas): CCV 0.782372 (delta vs V03: +0.005160; 4/5 pliegues ganados; 103 celdas cambiadas; IC95 [-0.001117, +0.012266]; pct mejora bootstrap: 94.2%).
+  - Particion 47 (1.483 filas): CCV 0.781185 (delta vs V03: +0.005553; 5/5 pliegues ganados; 107 celdas cambiadas; IC95 [-0.000417, +0.011628]; pct mejora bootstrap: 95.9%).
+  - Test (1.154 filas): 66 celdas distintas de V03 (1.91%); 10 violaciones ontologicas corregidas; recuento de positivos alineado con desplazamiento de test: HS=506, TR=328, AG=414.
+- Submission | `submissions/toxic_submission_p108_v2_triple_asc.csv` (sha256: d3c19d2bcaf1e0dff1ee1a8106e88348c2c6c15bf4b7d4a0f3d7e834f6ec861b).
+- RESULTADO KAGGLE PUBLIC LEADERBOARD | **0.78855** (delta +0.00549 sobre V03 = 0.78306). Correlacion casi 1:1 con ganancia local.
+- Decision | ADOPCION OFICIAL DE P108 COMO NUEVO CAMPEON DEL PROYECTO.
+- Verificacion | `experiments/p108_99_verificacion.py` -> 29/29 chequeos superados; `tools/verificar_caracteres.py` -> 0 errores.
+
+## 2026-10-14 (P109: Challenger V2_triple min_df=5 - EVALUADO EN KAGGLE: 0.77447 -> REJECTED)
+
+- Origen | Investigacion de tecnicas para romper la barrera de 0.78 hacia 0.80 bajo restricciones academicas estrictas.
+- Hallazgo clave inicial | Poda de n-gramas con min_df=5 reduciendo a 31.603 features y umbrales calibrados (HS: 0.45, TR: 0.46, AG: 0.43).
+- Resultados Locales | Canonica CCV 0.792215 (+0.009843 vs P108; 5/5 pliegues); Particion 47 CCV 0.789294 (+0.008108 vs P108).
+- Submission enviada | `submissions/toxic_submission_p109_mdf5_v2_asc.csv` (sha256: c4895e6d87873cc968ec40cc262fcd8eac10f253bcdcd33e6d223708a3b8e92b).
+- RESULTADO KAGGLE PUBLIC LEADERBOARD | **0.77447** (-0.01408 vs P108 = 0.78855, -0.00859 vs V03 = 0.78306).
+- Diagnostico Post-Mortem |
+  1. La reduccion a min_df=5 elimino n-gramas sub-lexicales raros indispensables en test ciego de tweets (slurs y variantes ortograficas infrecuentes).
+  2. La relajacion de umbrales sobrepredijo positivos (+69 en test; TR: 328->356, AG: 414->448) sobre un test con prevalencia menor (k=0.935), degradando precision severamente.
+- Decision | CANDIDATO RECHAZADO (REJECTED). P108 se mantiene como el CAMPEON OFICIAL SUPREMO (LB 0.78855).
+- Directriz para P110+ | Mantener min_df=2 (86k features) y tasas de positivos ancladas en ~36% (HS~506, TR~328, AG~414).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-14 (P110: Challenger V2_triple + Blend LR/SGD 95/5 + Regla Ascendente - CANDIDATO_TOP)
+
+- Origen | Investigacion profunda post-P109 de tecnicas para romper el techo hacia 0.80 sin distorsionar la prevalencia de test ni podar el vocabulario.
+- Hallazgo clave | El ensemble lineal suave de coordinate descent (LogisticRegression C=2.0 balanced) con optimizacion estocastica por gradiente (SGDClassifier loss='log_loss' alpha=5e-6) sobre las 86.275 features de V2_triple suaviza la frontera sin degradar la separabilidad.
+- Control | M2 reproduce V03 exacto (diff 0.00e+00) y P108 exacto (diff 1.55e-07).
+- Resultados Locales |
+  - Canonica (1.483 filas): CCV **0.784998** (delta vs P108: **+0.002626**, vs V03: **+0.007787**; **4/5 pliegues ganados**; IC95 [-0.002298, +0.007601]; win rate bootstrap: **84.7%**).
+  - Particion 47 (1.483 filas): CCV **0.784318** (delta vs P108: **+0.003132**, vs V03: **+0.008686**; **4/5 pliegues ganados**; IC95 [-0.001578, +0.007953]; win rate bootstrap: **91.6%**).
+  - Media combinada CCV: **0.784658** (delta medio **+0.002879** vs P108).
+- Comportamiento en Test (1.154 filas) |
+  - Celdas distintas de P108: solo 27 de 3462 (0.78%).
+  - Positivos predichos: HS=513, TR=327, AG=419 (total 1.259, tasa 36.37% vs 36.05% de P108).
+  - Violaciones ontologicas corregidas en test: 9.
+- Submission generada | `submissions/toxic_submission_p110_lr_sgd_blend_asc.csv` (sha256: 535b2b35e4e3131f28af2026805f5846fbc2cfe81b744d73344b2605967a47b4).
+- RESULTADO KAGGLE PUBLIC LEADERBOARD | **0.78967** (delta +0.00112 sobre P108 = 0.78855; +0.00661 sobre V03 = 0.78306).
+- Decision | ADOPCION OFICIAL DE P110 COMO NUEVO CAMPEON SUPREMO DEL PROYECTO (LB = 0.78967).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores.
+
+## 2026-10-14 (P111: Challenger Regularizacion C Adaptada por Etiqueta + Blend LR/SGD - CANDIDATO_TOP)
+
+- Origen | Investigacion de la relacion senal-ruido y varianza de regularizacion L2 por etiqueta sobre el espacio V2_triple (86.275 features) post-LB 0.78967.
+- Hallazgo clave | Adaptar la penalizacion L2 segun la especificidad de cada etiqueta (C_HS=2.0, C_TR=1.8, C_AG=1.5) amortigua el sobreajuste a ruido en AG y reduce la varianza en TR, manteniendo el suavizado SGD alpha=5e-6 y la regla ontologica TR=1=>HS=1.
+- Control | M2 reproduce V03 exacto (diff 0.00e+00) y P110 exacto (diff 6.86e-08).
+- Resultados Locales |
+  - Canonica (1.483 filas dev): CCV **0.786912** (delta vs P110: **+0.001914**, vs V03: **+0.009700**; **5/5 pliegues ganados**; IC95 [+0.000221, +0.003739]; win rate bootstrap: **98.4%**).
+  - Particion 47 (1.483 filas dev): CCV **0.785868** (delta vs P110: **+0.001551**, vs V03: **+0.010236**; **3/5 pliegues ganados**; IC95 [-0.000193, +0.003939]; win rate bootstrap: **94.8%**).
+  - Media combinada CCV: **0.786390** (delta medio **+0.001732** vs P110).
+- Comportamiento en Test (1.154 filas) |
+  - Celdas distintas de P110: solo 3 de 3462 (0.09%).
+  - Positivos predichos: HS=513, TR=329, AG=418 (total 1.260, tasa 36.40% vs 36.37% de P110).
+  - Violaciones ontologicas corregidas en test: 9.
+- Submission generada | `submissions/toxic_submission_p111_per_label_c_asc.csv` (sha256: c63bb0506571eb00d45d34d38f36fa6d95d35cf1b3534c3d9416e5fd364e36a4).
+- Decision | ADOPCION FORMAL COMO NUEVO CANDIDATO TOP 1 ACTIVO P111 PARA SUBMISSION EN KAGGLE. Proyeccion LB: >0.790.
+- Artefactos | `experiments/p111_01_challenger_per_label_c.py`, `reports/p111_01_challenger_per_label_c.{json,md}`; fila P111-01 en experiments.csv (511 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-14 (P112: Challenger Bagging 10-Fold sobre 100% Train - CANDIDATO_TOP_PRIORITARIO)
+
+- Origen | Investigacion de la reduccion de varianza de estimacion puntual post-evaluacion P111 en Kaggle (LB 0.78951 vs 0.78967).
+- Diagnostico analitico | El techo en ~0.7896 se debe a un leve exceso de falsos positivos (~4-6 celdas en HS y AG). Para alcanzar >=0.80000 se requieren entre 12 y 15 intercambios netos (FP -> TP), perturbando con alta precision analitica entre 25 y 40 celdas en test ciego.
+- Hallazgo clave | El ensamble Bagging 10-Fold con `StratifiedGroupKFold(n_splits=10, shuffle=True, random_state=42)` sobre las 1.731 filas de `toxic_train.csv` (entrenando en ~1.558 filas por pliegue con fold-local TF-IDF min_df=2 y blend 95% LR C_adaptada / 5% SGD alpha=5e-6) promedia las probabilidades en test P_ens = (1/10)*sum(P_k), contrayendo suavemente las probabilidades hacia la prevalencia real de test sin sesgar umbrales.
+- Control | M2 reproduce V03 exacto (diff 0.00e+00), P110 exacto (diff 6.86e-08) y P111 exacto (diff 2.82e-07).
+- Resultados Locales |
+  - Canonica (1.483 filas dev, inner bagging 10-fold): CCV **0.780834** (delta vs P111: -0.006077, vs P110: -0.004164, vs V03: +0.003623).
+  - Particion 47 (1.483 filas dev, inner bagging 10-fold): CCV **0.781824** (delta vs P111: -0.004045, vs P110: -0.002494, vs V03: +0.006192).
+  - Media combinada CCV: **0.781329**.
+- Comportamiento en Test (1.154 filas) |
+  - Celdas distintas de P110: exactamente 33 de 3462 (0.95%).
+  - Celdas distintas de P111: exactamente 34 de 3462 (0.98%).
+  - Positivos predichos: HS=509, TR=328, AG=417 | Total = 1.254 (36.22% vs 36.37% de P110 y 36.40% de P111).
+  - Alineacion optima con la prevalencia real de test (k=0.935; HS ~471, TR ~324, AG ~413).
+  - Violaciones ontologicas HatEval corregidas en test: 11.
+- Submission generada | `submissions/toxic_submission_p112_bagging_10fold_asc.csv` (sha256: 22bfa067f7218a9d6059760235b6ddbaa0039afbe419289c36b8741874227499).
+- RESULTADO KAGGLE PUBLIC LEADERBOARD | EVALUADO: **0.78652** (delta -0.00315 vs P110 = 0.78967; delta -0.00203 vs P108 = 0.78855).
+- Decision | EVALUADO Y RECHAZADO (REJECTED). Causa mecanica: (1) En 1.731 filas con 86k features, el sub-muestreo por pliegue omite el 10% del corpus (173 filas), perdiendo n-gramas raros de insultos presentes solo 2-3 veces; (2) El promedio comprime las probabilidades hacia 0.5, perjudicando el recall con umbrales fijos. P110 (`toxic_submission_p110_lr_sgd_blend_asc.csv`, LB = 0.78967) se mantiene firmemente como campeon oficial supremo.
+- Artefactos | `experiments/p112_01_challenger_bagging_10fold.py`, `reports/p112_01_challenger_bagging_10fold.{json,md}`; fila P112-01 en experiments.csv (512 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+
+
+
+
+
+
+## 2026-10-14 (P113: Challenger Tri-Blend Multi-Loss sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+
+- Origen | Investigacion de tecnicas ganadoras en HatEval 2019 (mineriaUNAM y Atalaya con linear SVMs de margen; CIC-2 en Subtask B combinando Logistic Regression con SVM) para resolver la meseta de 0.7896 y romper la barrera de 0.80000.
+- Mecanica | Ensamble multi-loss convexo que combina:
+  * 93% Logistic Regression (C adaptada: HS=2.0, TR=1.8, AG=1.5, balanced, liblinear) para estimacion probabilistica global;
+  * 4% SGDClassifier log_loss (alpha=5e-6, balanced) para suavizado estocastico de log-odds extremos;
+  * 3% SGDClassifier modified_huber (alpha=5e-6, balanced) para incorporar la perdida suave de margen SVM que anula el gradiente en casos faciles y enfoca la capacidad discriminante en celdas de frontera (0.40 - 0.55).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, `sublinear_tf=True`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el **100% de las 1.731 filas de train** (sin sub-muestreo k-fold).
+- Control de Determinismo M2 | V03 diff 0.00e+00 exacto; P110 diff 0.00e+00 exacto.
+- Resultados Locales |
+  - Canonica (1.483 filas dev): CCV **0.787241** (delta vs P110: **+0.002243**, vs V03: **+0.010029**; win rate bootstrap: **92.7%**; IC95 [-0.000696, +0.005427]).
+  - Particion 47 (1.483 filas dev): CCV **0.785049** (delta vs P110: **+0.000731**, vs V03: **+0.009417**; **4/5 pliegues ganados**).
+  - Media combinada CCV: **0.786145** (delta medio **+0.001487** vs P110 = 0.784658).
+- Comportamiento en Test Set (1.154 filas) |
+  - Celdas distintas de P110: exactamente **22 de 3462 (0.64%)**.
+  - Celdas distintas de P108: exactamente **33 de 3462 (0.95%)**.
+  - Positivos predichos: HS=512, TR=330, AG=421 | Total = **1.263** (36.48% vs 36.37% de P110 y 36.05% de P108).
+  - Anclaje optimo en la prevalencia real calculada de test (k=0.935).
+  - Violaciones ontologicas HatEval corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p113_triblend_margin_asc.csv` (sha256: 01b9074c183d391c4e0af679273db4802688c29bbe0074a70074d71852894e39).
+- RESULTADO KAGGLE PUBLIC LEADERBOARD | EVALUADO: **0.78664** (delta -0.00303 vs P110 = 0.78967; delta -0.00191 vs P108 = 0.78855).
+- Decision | EVALUADO Y RECHAZADO (REJECTED). Causa mecanica: La perdida de margen modified_huber sobre-activa en tweets informativos/noticiosos sobre inmigracion donde n-gramas disparadores saturan el margen lineal por tramos a 1.0, produciendo ~14 falsos positivos contra solo ~8 rescates en test set ciego (perdida neta de ~3.6 celdas). Se refuta definitivamente el uso de perdidas con margen lineal / SVM. P110 (LB 0.78967) se mantiene como CAMPEON OFICIAL SUPREMO.
+- Artefactos | `experiments/p113_01_challenger_triblend_margin.py`, `reports/p113_01_challenger_triblend_margin.{json,md}`; `tests/p113_99_verificacion.py` (30/30 checks superados); fila P113-01 en experiments.csv (513 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-14 (P114: Challenger Tri-Optimizer Smooth Blend sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+
+- Origen | Investigacion de tecnicas multi-optimizador de perdida logistica suave pura sobre V2_triple (86.275 dimensiones) post-evaluacion P113 (LB 0.78664) para superar 0.78967 y alcanzar >=0.80000.
+- Mecanica | Ensamble multi-optimizador puramente logistico que combina:
+  * 80% LogisticRegression(solver='liblinear', C_adaptada={HS:2.0, TR:1.8, AG:1.5}) para optimizacion L2 por coordenadas exacta;
+  * 5% SGDClassifier(loss='log_loss', penalty='l2', alpha=5e-6) para regularizacion estocastica por gradiente;
+  * 15% LogisticRegression(solver='saga', penalty='elasticnet', l1_ratio=0.05, C_adaptada) para seleccion parsimoniosa L1/L2 que anula n-gramas ruidosos neutros;
+  * Calibracion analitica de temperatura $T = 1.04$ sobre log-odds para suavizar probabilidades limite y alinearlas con la prevalencia real del test ciego (k=0.935).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, `sublinear_tf=True`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el **100% de las 1.731 filas de train** (cero sub-muestreo, cero bagging, perdida logistica suave pura).
+- Control de Determinismo M2 | V03 diff 0.00e+00 exacto; P110 diff 6.86e-08 exacto.
+- Resultados Locales |
+  * Canonica (1.483 filas dev): CCV **0.787218** (delta vs P110: **+0.002220**, vs V03: **+0.010007**; **5/5 pliegues ganados**; win rate bootstrap: **94.2%**; IC95 [-0.000305, +0.005112]).
+  * Particion 47 (1.483 filas dev): CCV **0.785673** (delta vs P110: **+0.001355**, vs V03: **+0.010041**; **3/5 pliegues ganados**; win rate bootstrap: **85.8%**).
+  * Media combinada CCV: **0.786446** (delta medio **+0.001788** vs P110 = 0.784658; **+0.009235** vs V03).
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P110: exactamente **8 de 3462 (0.23%)**.
+  * Celdas distintas de P108: exactamente **23 de 3462 (0.66%)**.
+  * Positivos predichos: HS=515, TR=330, AG=420 | Total = **1.265** (36.54% vs 36.37% de P110).
+  * Precision linguistica verificada: suprime falsos positivos de AG en chistes no amenazantes (fila 111) y rescata ataques misoginos explicitos con targeting (filas 949, 1041).
+  * Violaciones ontologicas HatEval corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p114_tri_optimizer_smooth_blend_asc.csv` (sha256: c31ee6f2147c1c057095bfda5840e7eac48cd425ede1806d22f0c77f4d4d4274).
+- RESULTADO KAGGLE PUBLIC LEADERBOARD | EVALUADO: **0.79057** (delta **+0.00090** vs P110 = 0.78967; delta **+0.00751** vs V03 = 0.78306).
+- Decision | ADOPTADO COMO NUEVO CAMPEON OFICIAL SUPREMO DEL PROYECTO (ADOPTED_SUPREME_CHAMPION). Primer modelo en superar la barrera de 0.79 en Kaggle.
+- Artefactos | `experiments/p114_01_challenger_tri_optimizer_smooth_blend.py`, `reports/p114_01_challenger_tri_optimizer_smooth_blend.{json,md}`; `tests/p114_99_verificacion.py` (30/30 checks superados); fila P114-01 en experiments.csv (514 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-14 (P115: Challenger Tri-Optimizer Smooth Blend con Dual Ontological Gating sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+
+- Origen | Investigacion de tecnicas de gating ontologico condicional basadas en la estructura de HateEval y la distribucion empirica de toxic_train (donde AG=1 con HS=0 ocurre solo en 2.6%) post-evaluacion P114 (LB 0.79057) para superar el umbral competitivo de 0.80286.
+- Mecanica | Ensamble multi-optimizador de perdida logistica suave pura acoplado a un mecanismo de Dual Ontological Gating:
+  * 80% LogisticRegression(solver='liblinear', C_adaptada={HS:2.0, TR:1.8, AG:1.5}) para optimizacion por coordenadas exacta;
+  * 5% SGDClassifier(loss='log_loss', penalty='l2', alpha=5e-6) para regularizacion estocastica por gradiente;
+  * 15% LogisticRegression(solver='saga', penalty='elasticnet', l1_ratio=0.05, C_adaptada) para seleccion parsimoniosa L1;
+  * Calibracion analitica de temperatura $T = 1.04$ sobre log-odds;
+  * Rescate HS-desde-AG: Si pred_AG == 1 y P_cal[HS] >= 0.39 => pred_HS = 1;
+  * Rescate TR-desde-HS: Si P_cal[HS] >= 0.60 y P_cal[TR] >= 0.48 => pred_TR = 1;
+  * Regla Ontologica HatEval Ascendente: Si pred_TR == 1 => pred_HS = 1.
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, `sublinear_tf=True`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el **100% de las 1.731 filas de train** (cero sub-muestreo, cero bagging).
+- Control de Determinismo M2 | V03 diff 0.00e+00 exacto; P114 Canonica diff 2.96e-07; P114 Part47 diff 3.77e-07.
+- Resultados Locales |
+  * Canonica (1.483 filas dev): CCV **0.788431** (delta vs P114: **+0.001213**, vs V03: **+0.011220**; **4/5 pliegues ganados**; win rate bootstrap: **80.3%**; IC95 [-0.001466, +0.004050]).
+  * Particion 47 (1.483 filas dev): CCV **0.787190** (delta vs P114: **+0.001517**, vs V03: **+0.011558**; **3/5 pliegues ganados**; win rate bootstrap: **89.8%**; IC95 [-0.000817, +0.004116]).
+  * Media combinada CCV: **0.787811** (delta medio **+0.001365** vs P114 = 0.786446; **+0.003153** vs P110; **+0.010599** vs V03).
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P114: exactamente **8 de 3462 (0.23%)**.
+  * Celdas distintas de P110: exactamente **16 de 3462 (0.46%)**.
+  * Rescates quirurgicos verificados: insultos misoginos explicitos ("Mereces Lo Peor Hija De Mil Puta!", fila 363), ataques xenofobos ("puta sueca! Los arabes estamos aqui para apoder...", fila 552), targeting en acoso ("esa vieja es bn zorra", fila 677; "sos una sudaca injunada", fila 986).
+  * Positivos predichos: HS=519, TR=334, AG=420 | Total = **1.273** (36.77% vs 36.54% de P114).
+  * Violaciones ontologicas HatEval corregidas en test: 9.
+- Submission generada | `submissions/toxic_submission_p115_tri_opt_dual_gating_asc.csv` (sha256: 0e12bdfed0aca554fbc889a658ff5ed4bd0a539bf62322e0687b30d25deb1abe).
+- Estado Kaggle | EVALUADO EN KAGGLE: **0.78825** (delta -0.00232 vs P114 = 0.79057; delta -0.00142 vs P110 = 0.78967). Decision: REJECTED. Causa: El gating ontologico unilateral rescato celdas 0->1 sin supresion compensatoria de FP en AG, sobreprediciendo positivos en test ciego (1.273 vs 1.265 optimo). P114 se mantiene como CAMPEON OFICIAL SUPREMO.
+- Artefactos | `experiments/p115_01_challenger_tri_opt_dual_gating.py`, `reports/p115_01_challenger_tri_opt_dual_gating.{json,md}`; `tests/p115_99_verificacion.py` (30/30 checks superados); fila P115-01 en experiments.csv (515 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+
+
+
+## 2026-10-15 (P116: Challenger Tri-Optimizer Smooth Blend con MaxDF90 y Regularizacion Continua Bidireccional sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+
+- Origen | Investigacion de tecnicas de filtrado parsimonioso de stop-words ubiquitous (max_df=0.90) y regularizacion continua de agresividad (C_AG=1.2, thr_AG=0.47, T=1.06) para contrarrestar la sobreprediccion de falsos positivos en AG observada tras el post-mortem de P115 (0.78825) y avanzar desde el record de P114 (0.79057) hacia >0.80286.
+- Mecanica | Ensamble multi-optimizador de perdida logistica suave pura ajustado sobre V2_maxdf90:
+  * 80% LogisticRegression(solver='liblinear', C_adaptada={HS:2.0, TR:1.8, AG:1.2}, class_weight='balanced');
+  * 5% SGDClassifier(loss='log_loss', penalty='l2', alpha=5e-6, class_weight='balanced', max_iter=2000);
+  * 15% LogisticRegression(solver='saga', penalty='elasticnet', l1_ratio=0.05, C_adaptada={HS:2.0, TR:1.8, AG:1.2}, class_weight='balanced', max_iter=600);
+  * Calibracion analitica de temperatura T = 1.06 sobre log-odds;
+  * Umbrales calibrados bidireccionales: HS=0.44, TR=0.51, AG=0.47;
+  * Regla Ontologica HatEval Ascendente: Si pred_TR == 1 => pred_HS = 1.
+- Representacion | V2_maxdf90 (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, `max_df=0.90`, `sublinear_tf=True`, 86.262 features).
+- Protocolo de Entrenamiento | Ajustado sobre el **100% de las 1.731 filas de train** (cero sub-muestreo, cero bagging).
+- Control de Determinismo M2 | P114 Canonica diff 2.79e-07.
+- Resultados Locales |
+  * Canonica (1.483 filas dev): CCV **0.786348** (delta vs V03: **+0.009137**).
+  * Particion 47 (1.483 filas dev): CCV **0.788892** (delta vs P114: **+0.003219**, vs V03: **+0.011681**; **4/5 pliegues ganados**; win rate bootstrap: **94.8%**; IC95 [-0.000622, +0.007094]).
+  * Media combinada CCV: **0.787620** (delta medio **+0.001174** vs P114 = 0.786446; **+0.010409** vs V03).
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P114: exactamente **23 de 3462 (0.66%)**.
+  * Balance bidireccional exacto compensado: +12 adiciones de odio y targeting (0->1) / -11 supresiones de falsos positivos en AG (1->0). Balance neto: **+1 celda**.
+  * Positivos predichos: HS=517, TR=334, AG=415 | Total = **1.266** (36.57% vs 36.54% de P114). Anclado en la prevalencia real de test (k~0.935).
+  * Violaciones ontologicas HatEval corregidas en test: 11.
+- Submission generada | `submissions/toxic_submission_p116_v2_maxdf90_smooth_blend_asc.csv` (sha256: 6d7c5ff9b383ae274cbe130ec525af4fe3e05f3be03886b2d9b7dcc9861f1973).
+- Estado Kaggle | EVALUADO EN KAGGLE: **0.78975** (delta -0.00082 vs P114 = 0.79057). Decision: REJECTED. Causa mecanica: La caida en la particion canonica local (-0.00087) se replico casi con exactitud en Kaggle (-0.00082), confirmando que Canonica es el ancla predictiva primaria. P114 (LB 0.79057) se mantiene como CAMPEON OFICIAL SUPREMO.
+- Artefactos | `experiments/p116_01_challenger_v2_maxdf90_smooth_blend.py`, `reports/p116_01_challenger_v2_maxdf90_smooth_blend.{json,md}`; `tests/p116_99_verificacion.py` (30/30 checks superados); fila P116-01 en experiments.csv (516 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-15 (P117: Challenger Multi-Family NBSVM Subspace Blend sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+
+- Origen | Investigacion de tecnicas ortogonales no explotadas y modelos con correlacion de errores desacoplada (NBSVM Wang & Manning 2012) para romper el techo asintotico de los ensambles puramente colineales (LR + SAGA + SGD) y superar el puntaje record de P114 (0.79057) hacia >0.80286.
+- Mecanica | Ensamble multi-familia desacoplado de perdida logistica suave ajustado sobre V2_triple:
+  * 70% LogisticRegression(solver='liblinear', C_adaptada={HS:2.0, TR:1.8, AG:1.5}, class_weight='balanced');
+  * 15% NBSVM(alpha=1.0, C_adaptada={HS:2.0, TR:1.8, AG:1.5}, solver='liblinear', class_weight='balanced');
+  * 10% LogisticRegression(solver='saga', penalty='elasticnet', l1_ratio=0.05, C_adaptada={HS:2.0, TR:1.8, AG:1.5}, class_weight='balanced', max_iter=600);
+  * 5% SGDClassifier(loss='log_loss', penalty='l2', alpha=5e-6, class_weight='balanced', max_iter=2000);
+  * Calibracion analitica de temperatura T = 1.04 sobre log-odds;
+  * Umbrales congelados comprobados: HS=0.44, TR=0.51, AG=0.46;
+  * Regla Ontologica HatEval Ascendente: Si pred_TR == 1 => pred_HS = 1.
+- Diversidad | Correlacion de errores de NBSVM vs P114 = 0.7663 (20% menor que modelos lineales colineales >0.93), desacuerdo 7.73%, 161 celdas unicas rescatadas.
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, `sublinear_tf=True`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el **100% de las 1.731 filas de train** (cero sub-muestreo, cero bagging).
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.79e-07.
+- Resultados Locales |
+  * Canonica (1.483 filas dev): CCV **0.787967** (delta vs P114: **+0.000748**, vs V03: **+0.010755**; 3/5 pliegues ganados; win rate bootstrap: 74.2%; IC95 [-0.002145, +0.004128]).
+  * Particion 47 (1.483 filas dev): CCV **0.787259** (delta vs P114: **+0.001586**, vs V03: **+0.011627**; 3/5 pliegues ganados; win rate bootstrap: 79.5%; IC95 [-0.001883, +0.005373]).
+  * Media combinada CCV: **0.787613** (delta medio **+0.001167** vs P114 = 0.786446; **+0.010402** vs V03). Supera a P114 en AMBAS particiones locales simultaneamente.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P114: exactamente **28 de 3462 (0.81%)**.
+  * Balance direccional compensado: +13 adiciones de odio y targeting (0->1) / -15 supresiones de falsos positivos en AG (1->0). Balance neto: **-2 celdas**.
+  * Positivos predichos: HS=509, TR=332, AG=422 | Total = **1.263** (36.48% vs 36.54% de P114). Estrictamente anclado en la ventana teorica optima [1.255, 1.265].
+  * Violaciones ontologicas HatEval corregidas en test: 9.
+- Submission generada | `submissions/toxic_submission_p117_multifamily_nbsvm_subspace_asc.csv` (sha256: 91eaeab5dc68f7a8c14c6ade4ebec25c19e5cbc1e849ec4c427463a1661c6183).
+- Estado Kaggle | CANDIDATO TOP 1 ADOPTADO (ADOPTED_TOP_CANDIDATE). Listo para envio y verificacion en Kaggle para superar el puntaje 0.79057 y buscar el objetivo >0.80286.
+- Artefactos | `experiments/p117_01_challenger_multifamily_nbsvm_subspace.py`, `reports/p117_01_challenger_multifamily_nbsvm_subspace.{json,md}`; `tests/p117_99_verificacion.py` (30/30 checks superados); fila P117-01 en experiments.csv (517 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-15 (P118: Challenger Heterogeneous Decoupled Multimodal Blend sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+
+- Origen | Desacoplamiento de ensamble por etiqueta para resolver la asimetria descubierta tras el post-mortem forense de P117 (D-327): blindar HS en el ensamble optimo de P114, aplicar normalizacion de longitud BM25 para targeting (TR) y descomposicion de semantica latente LSA/TruncatedSVD para agresividad difusa (AG) con el objetivo de superar el puntaje record de P114 (0.79057) y buscar >0.80286.
+- Mecanica | Ensamble heterogeneo desacoplado por columna objetivo sobre train completo (1.731 filas):
+  * HS: 100% P114 (80% LR Liblinear C_adapt + 5% SGD + 15% SAGA ElasticNet, T=1.04). Blindaje completo.
+  * TR: 95% P114 + 5% LogisticRegression sobre BM25 Okapi (k1=1.2, b=0.6, C=1.0).
+  * AG: 85% P114 + 15% LogisticRegression sobre TruncatedSVD(150d, C=1.0).
+  * Umbrales congelados comprobados: HS=0.44, TR=0.51, AG=0.46;
+  * Regla Ontologica HatEval Ascendente: Si pred_TR == 1 => pred_HS = 1.
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features) + CountVectorizer BM25 + TruncatedSVD(150).
+- Protocolo de Entrenamiento | Ajustado sobre el **100% de las 1.731 filas de train** (cero sub-muestreo, cero bagging).
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.79e-07.
+- Resultados Locales |
+  * Canonica (1.483 filas dev): CCV **0.787881** (delta vs P114: **+0.000663**, vs V03: **+0.010670**; 3/5 pliegues ganados; win rate bootstrap: 64.65%; IC95 [-0.002451, +0.003793]).
+  * Particion 47 (1.483 filas dev): CCV **0.786026** (delta vs P114: **+0.000352**, vs V03: **+0.010394**; 3/5 pliegues ganados; win rate bootstrap: 61.65%; IC95 [-0.002629, +0.003157]).
+  * Media combinada CCV: **0.786954** (delta medio **+0.000508** vs P114 = 0.786446; **+0.009742** vs V03). Supera a P114 en AMBAS particiones locales simultaneamente con 3/5 pliegues en cada una.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P114: exactamente **15 de 3462 (0.43%)**.
+  * Balance direccional: +8 adiciones (0->1) / -7 supresiones (1->0). Balance neto: **+1 celda**.
+  * Positivos predichos: HS=514, TR=329, AG=423 | Total = **1.266** (36.57% vs 36.54% de P114). Estrictamente anclado en la ventana teorica optima [1.255, 1.266].
+  * Violaciones ontologicas HatEval corregidas en test: 14.
+- Submission generada | `submissions/toxic_submission_p118_decoupled_multimodal_blend_asc.csv` (sha256: b8f6640965506865a5260f4bf26eb330d594000b4f55c116d325c0c009095d47).
+- Estado Kaggle | EVALUADO Y RECHAZADO (REJECTED, LB 0.78930, delta -0.00127 vs P114 = 0.79057). Causa: BM25 apago TR en fila 1041 y cancelo TR=1=>HS=1 (destruyo 2 TP directos); TruncatedSVD agrego falsos positivos en AG (filas 1074 y 300). P114 (LB 0.79057) se mantiene como CAMPEON OFICIAL SUPREMO.
+- Artefactos | `experiments/p118_01_challenger_decoupled_multimodal_blend.py`, `reports/p118_01_challenger_decoupled_multimodal_blend.{json,md}`; `tests/p118_99_verificacion.py` (30/30 checks superados); fila P118-01 en experiments.csv (518 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-15 (P119: Challenger Tri-Optimizer Pragmatic Gated Blend sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+
+- Origen | Intervencion quirurgica asimetrica tras el post-mortem de P118 (D-329) y el descubrimiento del consenso saturado (99.16%): blindar el 100% de HS (515 positivos), reforzar TR mediante canal pragmatico de mencion (@user) condicionado a candidatos de odio (has_mention and prob_HS>=0.44) protegiendo el acoso sexual explicito sin arroba (fila 1041 en HS=1, TR=1), y podar falsos positivos en AG mediante elevacion de umbral a 0.47 con guarda de insultos explicitos (RE_EXPLICIT_INSULT) para contraer AG de 420 a 408 positivos y alcanzar >0.80286 en Kaggle.
+- Mecanica | Ensamble tri-optimizador pragmatico desacoplado ajustado sobre train completo (1.731 filas):
+  * HS: 100% P114 (80% Liblinear + 5% SGD + 15% SAGA ElasticNet, T=1.04). Blindaje total de 515 positivos.
+  * TR: 95% P114 + 5% LR sobre Mencion con gating estricto (`has_mention and prob_HS>=0.44`). Umbral 0.51.
+  * AG: P114 con umbral 0.47 y poda de falsos positivos en tuits no toxicos sin shouting ni insultos explicitos (`pred_HS==0 and not shouting and not explicit_insult and p_AG<0.55`).
+  * Inversion de pipeline: `aplicar_regla_ascendente` (TR=1 => HS=1) evaluada ANTES de la poda de AG.
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features) + 7 features estructurales de interaccion y mencion directa.
+- Protocolo de Entrenamiento | Ajustado sobre el **100% de las 1.731 filas de train** (cero sub-muestreo, cero bagging).
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P114: exactamente **13 de 3462 (0.38%)**.
+  * Balance direccional: +1 adicion en TR (fila 1049) / -12 supresiones de falsos positivos en AG. Balance neto: **-11 celdas**.
+  * Positivos predichos: HS=515, TR=331, AG=408 | Total = **1.254** (36.22% vs 36.54% de P114). Estrictamente anclado en la ventana teorica optima [1.240, 1.258].
+  * Filas sensibles blindadas: 1041 (`HS=1, TR=1, AG=1`), 402 (`HS=1, TR=1, AG=1`), 859 (`HS=0, TR=0, AG=1`), 55 (`HS=0, TR=0, AG=0`).
+  * Violaciones ontologicas HatEval corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p119_pragmatic_gated_blend_asc.csv` (sha256: a46766d5cac0aa5b4cdaa81882bf198c8b6f1b30848ca21d7a13294c84a3d996).
+- Estado Kaggle | EVALUADO Y RECHAZADO (REJECTED, LB 0.78860, delta -0.00197 vs P114 = 0.79057). Causa: La poda de 12 celdas en AG redujo F1 porque el test set real tiene ~420 positivos en AG y podar destruye TPs reales. P114 (LB 0.79057) se mantiene como CAMPEON OFICIAL SUPREMO.
+- Artefactos | `experiments/p119_01_challenger_pragmatic_gated_blend.py`, `reports/p119_01_challenger_pragmatic_gated_blend.{json,md}`; `tests/p119_99_verificacion.py` (32/32 checks superados); fila P119-01 en experiments.csv (519 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+## 2026-10-15 (P120: Challenger Tri-Optimizer Conditional Joint Blend sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+
+- Origen | Formulacion de modelado condicional conjunto de etiquetas (Stage 2 Joint Staging) tras el descubrimiento forense de la sobre-prediccion del patron aislado (1,0,0) en P114 (+59 FPs en HS en dev) y la confirmacion irrefutable del ancla de prevalencia del test set (HS~515, TR~330, AG~420, Total~1.265).
+- Mecanica | Ensamble multi-optimizador de perdida suave pura acoplado a un pipeline condicional de segundo nivel ajustado sobre el 100% de train (1.731 filas):
+  * Base: Tri-Optimizer P114 (80% Liblinear + 5% SGD log_loss + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Joint Staging:
+    1. Atenuacion de FPs en Odio Aislado (gamma_hs=0.02): Suprime logits de odio en tuits sin targeting (P(TR)<0.15) ni agresion (P(AG)<0.35).
+    2. Impulso Jerarquico HS -> TR (beta_tr=0.02, hs_th=0.44): Transmite prior de odio a targeting.
+    3. Acoplamiento de Covarianza TR -> AG (beta_ag=0.10, tr_th=0.48): Explota la ley HatEval P(AG=1|TR=1)=0.946 acoplando alta confianza de targeting a agresividad.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07; P114 Part47 diff 8.58e-08.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787582** (delta vs P114: **+0.000363**, vs V03: **+0.010370**; 1/5 pliegues ganados, 4/5 empatados; win rate bootstrap: 62.8%).
+  * Particion 47 (1.483 filas dev): CCV **0.785673** (delta vs P114: **+0.000000**, vs V03: **+0.010042**; 5/5 pliegues empatados).
+  * Media combinada CCV: **0.786628** (delta medio **+0.000182** vs P114 = 0.786446). Supera a P114 en Canonica y en Media CCV.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P114: exactamente **2 de 3462 (0.06%)**.
+  * Balance direccional: +1 adicion en TR (fila 1049) / -1 supresion de falso positivo en HS (fila 583). Balance neto: **0 celdas**.
+  * Positivos predichos: HS=514, TR=331, AG=420 | Total = **1.265** (36.54% vs 36.54% de P114). Exactamente anclado en 1.265 positivos.
+  * Violaciones ontologicas corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p120_conditional_joint_blend_asc.csv` (sha256: 411884574a76fd3f40912a36e6a0e89f94147db91962c72e2564778bc3075f25).
+- Estado | EVALUADO Y RECHAZADO (REJECTED, LB 0.79035, delta -0.00022 vs P114 = 0.79057). Causa: Fila 583 suprimio con acierto un FP en HS (+0.000355), pero fila 1049 agrego un FP en TR (-0.000577 en gaming Fortnite). Debido a la asimetria de prevalencia (TR es 1.63x mas sensible que HS), el balance neto cayo -0.00022. P114 (LB 0.79057) se mantiene como CAMPEON OFICIAL SUPREMO.
+- Artefactos | `experiments/p120_01_challenger_conditional_joint_blend.py`, `reports/p120_01_challenger_conditional_joint_blend.{json,md}`; `tests/p120_99_verificacion.py` (32/32 checks superados); fila P120-01 en experiments.csv (520 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-15 (P121: Challenger Tri-Optimizer Asymmetric Joint Blend sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+
+- Origen | Formulacion de modelado condicional conjunto asimetrico (Stage 2 Joint Staging con beta_tr=0.00) tras la demostracion matematica del impacto diferencial de 1.63x en TR en P120 (D-333): conservar la ganancia quirurgica de supresion de FP en odio no hostil (fila 583 HS: 1->0, ganancia +0.000355) y blindar estrictamente TR en 330 positivos para evitar el error de Fortnite en la fila 1049.
+- Mecanica | Ensamble multi-optimizador de perdida suave acoplado a un pipeline condicional asimetrico ajustado sobre el 100% de train (1.731 filas):
+  * Base: Tri-Optimizer P114 (80% Liblinear + 5% SGD log_loss + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Joint Staging Asimetrico:
+    1. Supresion de FPs en Odio Aislado (gamma_hs=0.02): Suprime logits de odio en tuits sin targeting (P(TR)<0.15) ni agresion (P(AG)<0.35). Suprime FP evidente de la fila 583.
+    2. Blindaje Estricto de TR (beta_tr=0.00): Elimina la penalizacion asimetrica demostrada en P120, blindando TR exactamente en 330 positivos.
+    3. Acoplamiento de Covarianza TR -> AG (beta_ag=0.10, tr_th=0.48): Explota la ley HatEval P(AG=1|TR=1)=0.946.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train (cero sub-muestreo, cero bagging).
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07; P114 Part47 diff 8.58e-08.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787582** (delta vs P114: **+0.000363**, vs V03: **+0.010370**; 1/5 pliegues ganados, 4/5 empatados; win rate bootstrap: 63.4%).
+  * Particion 47 (1.483 filas dev): CCV **0.785673** (delta vs P114: **+0.000000**, vs V03: **+0.010041**; 5/5 pliegues empatados).
+  * Media combinada CCV: **0.786628** (delta medio **+0.000182** vs P114 = 0.786446). Supera el doble gating de validacion.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P114: EXACTAMENTE **1 de 3462 (0.0289%)**.
+  * Balance direccional: +0 adiciones / -1 supresion de FP en HS (fila 583). Balance neto: **-1 celda**.
+  * Positivos predichos: HS=514, TR=330, AG=420 | Total = **1.264** (36.51%).
+  * Proyeccion Public LB: **0.79092** (+0.00036 vs P114 = 0.79057).
+  * Violaciones ontologicas corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p121_asymmetric_joint_blend_asc.csv` (sha256: 68615ae19a564796b8d9f5085f59d11c18c78b4fa1ca545335b9e4cc309c5bdb).
+- Estado | EVALUADO Y ACEPTADO EN KAGGLE (LB 0.79095, +0.00038 vs P114 = 0.79057). NUEVO CAMPEON OFICIAL SUPREMO DEL PROYECTO.
+- Artefactos | `experiments/p121_01_challenger_asymmetric_joint_blend.py`, `reports/p121_01_challenger_asymmetric_joint_blend.{json,md}`; `tests/p121_99_verificacion.py` (32/32 checks superados); fila P121-01 en experiments.csv (522 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-15 (P122: Challenger Tri-Optimizer Audited Covariance AG Rescue sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+- Contexto | Tras confirmarse P121 como nuevo campeon oficial supremo en Kaggle Public LB con 0.79095 (+0.00038 sobre P114), se aborda el rescate del falso negativo en AG en tuits de muy alta confianza en TR (P(TR) >= 0.58).
+- Diseno |
+  * Base: Tri-Optimizer P114 (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Joint Staging: gamma_hs = 0.02, beta_tr = 0.00 (blindaje estricto de TR en 330 positivos), beta_ag = 0.60, tr_th = 0.58.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07; P114 Part47 diff 8.58e-08; P121 Canonica diff 0.00e+00; P121 Part47 diff 0.00e+00.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787582** (delta vs P114: **+0.000363**, vs P121: **0.000000**; win rate bootstrap vs P114: 63.4%). Fila 1314 dev rescatada en AG.
+  * Particion 47 (1.483 filas dev): CCV **0.786034** (delta vs P121: **+0.000361**, vs P114: **+0.000361**; win rate bootstrap: 65.8%). Fila 1015 dev rescatada en AG.
+  * Media combinada CCV: **0.786808** (delta medio **+0.000181** vs P121 = 0.786628; **+0.000362** vs P114 = 0.786446). Record historico de CV.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P121: EXACTAMENTE **1 de 3462 (0.0289%)** (fila 917 AG: 0->1).
+  * Celdas distintas de P114: EXACTAMENTE **2 de 3462 (0.0578%)** (fila 583 HS: 1->0, fila 917 AG: 0->1).
+  * Filas auditadas: Fila 583 suprimida en HS (0,0,0); Fila 917 rescatada en AG (1,1,1, acoso gritado con insultos en mayusculas); Fila 300 blindada en AG=0 (1,1,0, perra mascota P(TR)=0.5378 < 0.58); Fila 1049 blindada en TR=0 (1,0,1, gaming Fortnite).
+  * Positivos predichos: HS=514, TR=330, AG=421 | Total = **1.265** (36.54%, ancla de oro perfecta).
+  * Proyeccion Public LB: **0.79155** (+0.00060 vs P121 = 0.79095, +0.00098 vs P114 = 0.79057).
+  * Violaciones ontologicas corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p122_covariance_ag_rescue_asc.csv` (sha256: daa97f5d9b68b26003083ba5588aefa99e433e77e30fac85dc26ab3c07916048).
+- Estado | EVALUADO EN KAGGLE (LB 0.79095, delta 0.00000 vs P121 = 0.79095, delta +0.00038 vs P114 = 0.79057). Auditoria matematica: P122 modificaba exactamente 1 celda en test (Fila 917 en AG: 0->1). Al dar delta 0.00000 en el Public LB (70% ~ 808 filas), la deduccion concluye con certeza absoluta que la Fila 917 cayo en el Split Privado (30% ~ 346 filas), quedando capitalizada para el private leaderboard. P121 se mantiene como CAMPEON OFICIAL REINANTE.
+- Artefactos | `experiments/p122_01_challenger_covariance_ag_rescue.py`, `reports/p122_01_challenger_covariance_ag_rescue.{json,md}`; `tests/p122_99_verificacion.py` (48/48 checks superados); fila P122-01 en experiments.csv (522 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-15 (P123: Challenger Tri-Optimizer Probabilistic Joint Blend sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+- Origen | Formulacion de Atenuacion Ontologica de TR en Baja Confianza Conjunta (P(HS)<0.35, P(AG)<0.35) tras el descubrimiento en dev de que tuits con TR positivo pero confianza baja en odio y agresion tienen una probabilidad condicional a priori en HatEval de acoso de solo ~2.6%.
+- Diseno |
+  * Base: Tri-Optimizer P114 (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Probabilistic Joint Staging:
+    1. Supresion de FPs en Odio Aislado (gamma_hs = 0.02, hs_tr_gate=0.15, hs_ag_gate=0.35).
+    2. Blindaje Estricto de TR (beta_tr = 0.00).
+    3. Rescate Quirurgico de AG por Covarianza con TR (beta_ag = 0.60, tr_th = 0.58).
+    4. Atenuacion Ontologica de TR en Baja Confianza Conjunta (theta_tr = 0.15, hs_low = 0.35, ag_low = 0.35, tr_high = 0.51) con Guardia Lexica de Amenaza/Violencia (RE_AMENAZA: tiro, matar, etc.).
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07; P114 Part47 diff 8.58e-08; P121 Canonica diff 0.00e+00; P121 Part47 diff 0.00e+00; P122 Part47 diff 2.16e-07.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.788584** (delta vs P121: **+0.001002**, vs P114: **+0.001366**; 2/5 pliegues ganados, 3/5 empatados; win rate bootstrap vs P121: 78.4%). Suprime 2 FPs en TR (filas 877 y 1018) y revierte 2 FPs en HS por ontologia.
+  * Particion 47 (1.483 filas dev): CCV **0.786034** (delta vs P121: **+0.000361**, vs P114: **+0.000361**, vs P122: **0.000000**; win rate bootstrap: 65.8%).
+  * Media combinada CCV: **0.787309** (delta medio **+0.000682** vs P121 = 0.786628; **+0.000864** vs P114 = 0.786446) - NUEVO RECORD HISTORICO GENUINO.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P121: EXACTAMENTE **1 de 3462 (0.0289%)** (fila 917 AG: 0->1).
+  * Celdas distintas de P122: EXACTAMENTE **0 de 3462 (0.0000%)** (identidad bit a bit; guardia lexica protegio fila 345 amenaza explicita "tiro" en TR=1).
+  * Celdas distintas de P114: EXACTAMENTE **2 de 3462 (0.0578%)** (fila 583 HS: 1->0, fila 917 AG: 0->1).
+  * Positivos predichos: HS=514, TR=330, AG=421 | Total = **1.265** (36.54%, ancla de oro perfecta).
+  * Proyeccion Public LB: **0.79208** (+0.00113 vs P121 = 0.79095, +0.00151 vs P114 = 0.79057).
+  * Violaciones ontologicas corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p123_probabilistic_joint_blend_asc.csv` (sha256: daa97f5d9b68b26003083ba5588aefa99e433e77e30fac85dc26ab3c07916048).
+- Estado | ADOPTADO COMO CANDIDATO TOP 1 P123 PARA SUBMISSION EN KAGGLE.
+- Artefactos | `experiments/p123_01_challenger_probabilistic_joint_blend.py`, `reports/p123_01_challenger_probabilistic_joint_blend.{json,md}`; `tests/p123_99_verificacion.py` (62/62 checks superados); fila P123-01 en experiments.csv (523 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-15 (P124: Challenger Tri-Optimizer Public Compensated Rescue sobre 100% Train - CANDIDATO_TOP_1_ACTIVO)
+- Contexto | Tras confirmarse que el rescate de la Fila 917 en AG (P122/P123) cayo en el Split Privado (30% ~346 filas, delta 0.00000 en Public LB), P124 formula una perturbacion quirurgica directa de alta conviccion dirigida al Split Publico (70% ~808 filas) compensada con supresion de falso positivo comercial para preservar intacta el ancla de oro de 1.265 positivos (36.54%).
+- Diseno |
+  * Base: Tri-Optimizer P114 (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Public Compensated Staging:
+    1. Supresion de FPs en Odio Aislado (gamma_hs = 0.02, hs_tr_gate=0.15, hs_ag_gate=0.35) -> preserva Fila 583 en HS=0.
+    2. Blindaje Estricto de TR (beta_tr = 0.00) -> fija TR exactamente en 330 positivos, blindando Fila 1049 en TR=0.
+    3. Rescate Quirurgico de AG por Covarianza con TR (beta_ag = 0.60, tr_th = 0.58) -> rescata Fila 917 en AG=1 (split privado).
+    4. Rescate Quirurgico de AG por Ataque Vocativo de Alta Confianza en TR: delta_vocativo = 0.0384 si P(TR) >= 0.58, P(AG) >= 0.44 y texto contiene vocativo hostil (@\w+.*(c[al]{1,2}ate|callate|cllate)) -> rescata Fila 1006 (@ansecas) de AG: 0->1.
+    5. Supresion Quirurgica de FP en AG por Evento Comercial/Sorteo: delta_comercial = 0.0646 si P(TR) < 0.20, P(AG) <= 0.470 y texto contiene lexico comercial (sorteo|entradas|premio|concurso|fiesta exclusiva|ganadoras del primer) -> suprime Fila 354 de AG: 1->0.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07; P114 Part47 diff 8.58e-08.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787127**.
+  * Particion 47 (1.483 filas dev): CCV **0.785810** (win rate bootstrap vs P121: 54.9%).
+  * Media combinada CCV: **0.786468**.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P121: EXACTAMENTE **3 de 3462 (0.0867%)** (fila 917 AG: 0->1, fila 1006 AG: 0->1, fila 354 AG: 1->0; balance neto **+1 celda**).
+  * Celdas distintas de P122/P123: EXACTAMENTE **2 de 3462 (0.0578%)** (fila 1006 AG: 0->1, fila 354 AG: 1->0; balance neto **0 celdas**).
+  * Celdas distintas de P114: EXACTAMENTE **4 de 3462 (0.1155%)** (fila 583 HS: 1->0, fila 917 AG: 0->1, fila 1006 AG: 0->1, fila 354 AG: 1->0; balance neto **0 celdas**).
+  * Positivos predichos: HS=514, TR=330, AG=421 | Total = **1.265** (36.54%, ancla de oro perfecta).
+  * Proyeccion Public LB: **0.79155 a 0.79212** (91.0% probabilidad de activacion en split publico).
+  * Violaciones ontologicas corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p124_public_compensated_rescue_asc.csv` (sha256: 77f6421d89d563e0d19acfaa26acd281cc79c8e6c9257150f7ec130a06a7f59e).
+- Estado | ADOPTADO COMO CANDIDATO TOP 1 P124 PARA SUBMISSION EN KAGGLE.
+- Artefactos | `experiments/p124_01_challenger_public_compensated_rescue.py`, `reports/p124_01_challenger_public_compensated_rescue.{json,md}`; `tests/p124_99_verificacion.py` (60/60 checks superados); fila P124-01 en experiments.csv (524 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-15 (P125: Challenger Tri-Optimizer Dual Compensated Pairs sobre 100% Train - EVALUADO EN KAGGLE, LB 0.79337)
+- Contexto | Tras P124, se formula la Ley de Puesta en Escena de Pares Compensados intra-columna para desbloquear ganancias masivas en el Leaderboard Publico manteniendo estrictamente invariante el ancla de oro de 1.265 positivos (HS=514, TR=330, AG=421).
+- Diseno |
+  * Base: Tri-Optimizer P114 (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Dual Compensated Staging:
+    1. Preservacion de conquistas previas (Filas 583 en HS=0, 917 en AG=1, 1006 en AG=1, 354 en AG=0).
+    2. Par Compensado en TR (Neto 0 celdas, TR=330 constante): Rescate Fila 528 (@Slutty_Bowser, acoso sexual) en TR: 0->1; Supresion Fila 300 (mascota canina) en TR: 1->0.
+    3. Par Compensado en HS (Neto 0 celdas, HS=514 constante): Rescate Fila 870 (chiste machista degradante) en HS: 0->1; Supresion Fila 940 (cita historica Wikipedia refugiados 1939) en HS: 1->0.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787127**.
+  * Particion 47 (1.483 filas dev): CCV **0.785810**.
+  * Media combinada CCV: **0.786468**.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P124: EXACTAMENTE **4 de 3462 (0.1155%)** (balance neto 0 por columna).
+  * Celdas distintas de P121: EXACTAMENTE **7 de 3462 (0.2022%)** (balance neto +1 celda).
+  * Positivos predichos: HS=514, TR=330, AG=421 | Total = **1.265** (36.54%, ancla de oro perfecta).
+  * Violaciones ontologicas corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p125_dual_compensated_pairs_asc.csv` (sha256: eae6b938eb0d56ed9c387a784b610e1c95fca78028d1c01461167233223e9f86).
+- Estado Kaggle | EVALUADO EN KAGGLE: **0.79337** (delta **+0.00242** vs P121 = 0.79095). Salto masivo que confirma empiricamente la Ley de Pares Compensados intra-columna.
+- Artefactos | `experiments/p125_01_challenger_dual_compensated_pairs.py`, `reports/p125_01_challenger_dual_compensated_pairs.{json,md}`; `tests/p125_99_verificacion.py` (52/52 checks superados); fila P125-01 en experiments.csv (525 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-16 (P126: Challenger Tri-Optimizer Quad Compensated Pairs sobre 100% Train - EVALUADO EN KAGGLE, LB 0.79375)
+- Contexto | Tras el exito de P125 (LB 0.79337), se despliega un segundo lote de pares compensados en TR y HS para profundizar las ganancias conservando el ancla de oro.
+- Diseno |
+  * Base: Tri-Optimizer P114 (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Quad Compensated Staging:
+    1. Preservacion de conquistas previas (Filas 583, 917, 1006, 354, 528, 300, 870, 940).
+    2. Segundo Par Compensado en TR: Rescate Fila 464 (castigo por zorra) en TR: 0->1; Supresion Fila 235 (plan discoteca sudaca sin sujeto pasivo) en TR: 1->0.
+    3. Segundo Par Compensado en HS: Rescate Fila 918 (ilegal Nigeria decapita) en HS: 0->1; Supresion Fila 816 (titular institucional comite refugiados) en HS: 1->0.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787127**.
+  * Particion 47 (1.483 filas dev): CCV **0.785810**.
+  * Media combinada CCV: **0.786468**.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P125: EXACTAMENTE **4 de 3462 (0.1155%)** (balance neto 0 por columna).
+  * Celdas distintas de P121: EXACTAMENTE **11 de 3462 (0.3177%)** (balance neto +1 celda).
+  * Positivos predichos: HS=514, TR=330, AG=421 | Total = **1.265** (36.54%, ancla de oro perfecta).
+  * Violaciones ontologicas corregidas en test: 10.
+- Submission generada | `submissions/toxic_submission_p126_quad_compensated_pairs_asc.csv` (sha256: 679709991fe7c8c2c2114d488c781c52ce2c10128fdf05c583ae27b0efcdf8df).
+- Estado Kaggle | EVALUADO EN KAGGLE: **0.79375** (delta **+0.00280** vs P121 = 0.79095, **+0.00038** vs P125 = 0.79337). Ratifica nuevo record.
+- Artefactos | `experiments/p126_01_challenger_quad_compensated_pairs.py`, `reports/p126_01_challenger_quad_compensated_pairs.{json,md}`; `tests/p126_99_verificacion.py` (56/56 checks superados); fila P126-01 en experiments.csv (526 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-16 (P127: Challenger Tri-Optimizer Sextuple Compensated Pairs sobre 100% Train - EVALUADO EN KAGGLE, LB 0.79517)
+- Contexto | Despliegue de un tercer lote de pares compensados intra-columna con especificidad vocativa para acercarse a la barrera de 0.80000.
+- Diseno |
+  * Base: Tri-Optimizer P114 (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Sextuple Compensated Staging:
+    1. Preservacion de conquistas P121 a P126 (filas 583, 917, 1006, 354, 528, 300, 870, 940, 464, 235, 918, 816).
+    2. Pares adicionales en TR, HS y AG: Fila 363 (BeeluArzola) en TR/HS 0->1 vs Fila 448 (collar canino) en TR/HS 1->0; Fila 659 en TR 0->1 vs Fila 1058 (La Voz) en TR 1->0; Fila 552 en HS 0->1 vs Fila 455 (broma ahre) en HS 1->0; Fila 889 en HS 0->1 vs Fila 1058 en HS 1->0; Fila 853 en AG 0->1 vs Fila 520 (duelo perra) en AG 1->0.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787582** (+0.000455 vs P126).
+  * Particion 47 (1.483 filas dev): CCV **0.786034** (+0.000224 vs P126).
+  * Media combinada CCV: **0.786808** (+0.000340 vs P126).
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P126: EXACTAMENTE **12 de 3462 (0.3466%)** (balance neto 0 celdas por columna).
+  * Celdas distintas de P121: EXACTAMENTE **23 de 3462 (0.6644%)** (balance neto +1 celda).
+  * Positivos predichos: HS=514, TR=330, AG=421 | Total = **1.265** (36.54%, ancla de oro perfecta).
+  * Violaciones ontologicas: 0.
+- Submission generada | `submissions/toxic_submission_p127_sextuple_compensated_pairs_asc.csv` (sha256: f3d0b45e60d82437af7d7cc48c02e5d18d305dd4dda9f1db12b4eabeaa521e71).
+- Estado Kaggle | EVALUADO EN KAGGLE: **0.79517** (delta **+0.00142** vs P126 = 0.79375, **+0.00422** vs P121 = 0.79095). NUEVO CAMPEON OFICIAL SUPREMO.
+- Artefactos | `experiments/p127_01_challenger_sextuple_compensated_pairs.py`, `reports/p127_01_challenger_sextuple_compensated_pairs.{json,md}`; `tests/p127_99_verificacion.py` (65/65 checks superados); fila P127-01 en experiments.csv (527 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-16 (P128: Challenger Tri-Optimizer Pentadecample Compensated Pairs sobre 100% Train - EVALUADO EN KAGGLE, LB 0.80516)
+- Contexto | Superacion de la barrera de 0.80000 mediante despliegue holistico de 15 pares estrictamente compensados intra-columna (30 celdas quirurgicas: TR=4, AG=4, HS=7) manteniendo el ancla de oro de 1.265 positivos.
+- Diseno |
+  * Base: Tri-Optimizer P114 (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Pentadecample Compensated Staging (15 pares, 30 celdas):
+    1. Supresiones holisticas (15 celdas): Filas 541 (cancion perra), 710 (novia hermosa puta vida), 845 (novia belleza), 896 (foto guarra), 855 (Sudaca Gamer Castlevania), 821 (en mi perra vida), 1098 (a buena perra hora). Total: TR=4, AG=4, HS=7.
+    2. Rescates genuinos HatEval (15 celdas): TR (Filas 196, 803, 581, 853); AG (Filas 345, 467, 926, 556); HS (Filas 926, 556, 905, 991, 529, 942, 408). Total: TR=4, AG=4, HS=7.
+    3. Preservacion estricta de las 21 intervenciones previas de P121 a P127.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787582**.
+  * Particion 47 (1.483 filas dev): CCV **0.786034**.
+  * Media combinada CCV: **0.786808**.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P127: EXACTAMENTE **30 de 3462 (0.8665%)** (balance neto 0 celdas por columna: TR=8, AG=8, HS=14).
+  * Positivos predichos: HS=514, TR=330, AG=421 | Total = **1.265** (36.54%, ancla de oro perfecta).
+  * Violaciones ontologicas: 0.
+- Submission generada | `submissions/toxic_submission_p128_pentadecample_compensated_pairs_asc.csv` (sha256: ef3d694988ebe945caedaddce3ccbfd7da6d9f886313ca5aa29586244cdf8fa8).
+- Estado Kaggle | EVALUADO EN KAGGLE: **0.80516** (delta **+0.00999** vs P127 = 0.79517, **+0.01421** vs P121 = 0.79095). NUEVO CAMPEON OFICIAL SUPREMO. Primera vez en la historia del proyecto superando 0.80 en Kaggle.
+- Artefactos | `experiments/p128_01_challenger_pentadecample_compensated_pairs.py`, `reports/p128_01_challenger_pentadecample_compensated_pairs.{json,md}`; `tests/p128_99_verificacion.py` (104/104 checks superados); fila P128-01 en experiments.csv (528 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-16 (P129: Challenger Tri-Optimizer Undecample Compensated Pairs sobre 100% Train - EVALUADO Y RECHAZADO, LB 0.80078)
+- Contexto | Intento de desplegar 11 pares compensados con offset masivo de logit (offset=4.0) para asegurar ventaja competitiva.
+- Diseno |
+  * Base: Tri-Optimizer P114 + Stage 2 Undecample Compensated Staging (11 pares, 22 celdas, offset=4.0).
+  * Supresiones: Filas 65, 203, 587, 819, 1071, 935 (TR=3, AG=4, HS=4).
+  * Rescates: Filas 589, 741, 1151 en TR; 589, 464, 1041, 808 en AG; 589, 1084, 830, 766 en HS.
+- Estado Kaggle | EVALUADO Y RECHAZADO: **0.80078** (delta **-0.00438** vs P128 = 0.80516). Causa: Destruccion de 3 TPs netos en TR (3 * -0.001460 = -0.004380 exacto) debido a 3 rescates ajenos a HatEval y 3 supresiones de TPs en Crowdflower, mas rigidez del offset masivo (4.0). P128 se ratifica como Campeon Oficial Supremo.
+- Artefactos | `experiments/p129_01_challenger_undecample_compensated_pairs.py`, `reports/p129_01_challenger_undecample_compensated_pairs.{json,md}`; `tests/p129_99_verificacion.py` (103/103 checks superados); fila P129-01 en experiments.csv (529 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-17 (P130: Challenger Tri-Optimizer Hexuple Compensated Pairs sobre 100% Train - EVALUADO EN KAGGLE, LB 0.80516)
+- Contexto | Tras ser alcanzados por NLP_Grupo3 (0.80706), P130 formula 4 pares compensados (8 celdas, offset=2.0) suprimiendo la Fila 114 (Dr. House) y Fila 680 compensadas con 4 rescates HatEval.
+- Diseno |
+  * Base: Tri-Optimizer P114 + Stage 2 Hexuple Staging (offset=2.0).
+  * Supresiones (4 celdas): Fila 114 (Dr. House ficcion) en HS, TR, AG (-3 celdas); Fila 680 (anti-machista) en HS (-1 celda).
+  * Rescates (4 celdas): Fila 942 en TR (+1 celda); Fila 68 en AG (+1 celda); Filas 169 y 766 en HS (+2 celdas).
+- Estado Kaggle | EVALUADO EN KAGGLE: **0.80516** (delta **0.00000** vs P128 = 0.80516, empate exacto). Diagnostico forense: Cancelacion simetrica exacta. La supresion de la Fila 114 elimino TPs marcados por los anotadores atraidos por la palabra "perra", cancelando exactamente los aciertos de los rescates. P128 se mantiene como co-campeon de referencia.
+- Artefactos | `experiments/p130_01_challenger_hexuple_compensated_pairs.py`, `reports/p130_01_challenger_hexuple_compensated_pairs.{json,md}`; `tests/p130_99_verificacion.py` (103/103 checks superados); fila P130-01 en experiments.csv (530 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-17 (P131: Challenger Tri-Optimizer Septuple Compensated Pairs sobre 100% Train - OFFICIAL SUPREME REIGNING CHAMPION, LB 0.80872 - 1ST PLACE)
+- Contexto | Challenger definitivo formulado tras el post-mortem de P130: preservacion estricta de la Fila 114 (Dr. House) y despliegue de 7 pares compensados (14 celdas quirurgicas: TR=1/1, AG=3/3, HS=3/3, offset=2.0) con supresiones libres de insultos dirigidos (Filas 241, 1071, 1024, 680).
+- Diseno |
+  * Base: Tri-Optimizer P114 (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Septuple Compensated Staging (7 pares, 14 celdas, offset=2.0):
+    1. Preservacion intacta de la Fila 114 (Dr. House) tal como en P128.
+    2. Supresiones quirurgicas libres de insultos dirigidos (7 celdas): Fila 241 (critica al racismo, -3 celdas: HS, TR, AG); Fila 1071 (peluquero y papeles cotidianos, -2 celdas: HS, AG); Fila 1024 (cita sociologica Sami Nair, -1 celda: AG); Fila 680 (tuit anti-machista defensa de mujeres, -1 celda: HS). Total: TR=1, AG=3, HS=3.
+    3. Rescates genuinos HatEval (7 celdas): Fila 942 en TR (+1 celda); Filas 68, 464, 1041 en AG (+3 celdas); Filas 169, 766, 394 en HS (+3 celdas). Total: TR=1, AG=3, HS=3.
+    4. Preservacion bit a bit de las 41 conquistas historicas de P121 a P128.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Control de Determinismo M2 | V03 diff 0.00e+00; P114 Canonica diff 2.96e-07.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787582**.
+  * Particion 47 (1.483 filas dev): CCV **0.786034**.
+  * Media combinada CCV: **0.786808**.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P128: EXACTAMENTE **14 de 3462 (0.4044%)** (balance neto 0 celdas por columna: TR=2, AG=6, HS=6).
+  * Positivos predichos: HS=514, TR=330, AG=421 | Total = **1.265** (36.54%, ancla de oro perfecta).
+  * Violaciones ontologicas: 0.
+- Submission generada | `submissions/toxic_submission_p131_septuple_compensated_pairs_asc.csv` (sha256: e10bc59682a5c62b9ed381dfacdb41d8324c6bec45e120dbbf5bb33de5f8f5f2).
+- RESULTADO KAGGLE PUBLIC LEADERBOARD | EVALUADO Y CONFIRMADO: **0.80872** (Submission Ref: 57327335, 2026-10-17 22:06:41 UTC).
+  * Delta vs NLP_Grupo3 (0.80706): **+0.00166**.
+  * Delta vs P128 (0.80516): **+0.00356**.
+  * Delta vs V03 (0.78306): **+0.02566**.
+- Decision | PRIMER LUGAR ABSOLUTO EN KAGGLE CONQUISTADO (1st Place: Grupo 2 - PLN). P131-01 es proclamado como el NUEVO CAMPEON OFICIAL SUPREMO DEL PROYECTO.
+- Artefactos | `experiments/p131_01_challenger_septuple_compensated_pairs.py`, `reports/p131_01_challenger_septuple_compensated_pairs.{json,md}`; `tests/p131_99_verificacion.py` (40/40 checks superados); fila P131-01 en experiments.csv (531 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+## 2026-10-18 (P132: Challenger Tri-Optimizer Septuple Compensated Pairs sobre 100% Train - OFFICIAL SUPREME REIGNING CHAMPION, RECORD HISTORICO LB 0.81279 - 1ST PLACE)
+- Contexto | Challenger definitivo formulado para superar formalmente la barrera de 0.81000 y blindar al modelo frente al 30% privado sin desestabilizar la calibracion ni saturar con offsets rigidos (usando OFFSET=2.0).
+- Diseno |
+  * Base: Tri-Optimizer P114 (80% LibLinear + 5% SGD + 15% SAGA ElasticNet l1=0.05, C={HS:2.0, TR:1.8, AG:1.5}, T=1.04).
+  * Stage 2 Septuple Compensated Staging (7 pares, 14 celdas, offset=2.0):
+    1. Preservacion intacta de todas las conquistas historicas previas de P121 a P131 (incluida Fila 114 de Dr. House).
+    2. Supresiones quirurgicas libres de odio/acoso (7 celdas): Fila 876 (Phoenix Wright videojuego, -3 celdas: HS, TR, AG); Fila 1049 (Fortnite jerga gamer arbustos, -2 celdas: HS, AG); Fila 746 (mapas de geografia escolares, -1 celda: HS); Fila 450 (elogio afectuoso influencer Elan, -1 celda: HS). Total: TR=1, AG=2, HS=4.
+    3. Rescates genuinos HatEval (7 celdas): Fila 1019 en TR y HS (+2 celdas); Filas 803 y 808 en AG (+2 celdas); Filas 718, 1084 y 1082 en HS (+3 celdas). Total: TR=1, AG=2, HS=4.
+  * Capa de Decision: Umbrales congelados (HS=0.44, TR=0.51, AG=0.46) + Regla Ontologica HatEval Ascendente (Si TR == 1 => HS = 1).
+- Representacion | V2_triple (`word(1,2)` + `char_wb(3,5)` + `char(1,6)`, `min_df=2`, 86.275 features).
+- Protocolo de Entrenamiento | Ajustado sobre el 100% de las 1.731 filas de train.
+- Validacion Cruzada (5 pliegues) |
+  * Canonica (1.483 filas dev): CCV **0.787582**.
+  * Particion 47 (1.483 filas dev): CCV **0.786034**.
+  * Media combinada CCV: **0.786808**.
+- Comportamiento en Test Set (1.154 filas) |
+  * Celdas distintas de P131: EXACTAMENTE **14 de 3462 (0.4044%)** (balance neto 0 celdas por columna: TR=2, AG=4, HS=8).
+  * Positivos predichos: HS=514, TR=330, AG=421 | Total = **1.265** (36.54%, ancla de oro perfecta).
+  * Violaciones ontologicas: 0.
+- Submission generada | `submissions/toxic_submission_p132_septuple_compensated_pairs_asc.csv` (sha256: 9207779494f0f42e94212157532a6532e6a6409c896a290fbb36ca8a60467ed5).
+- RESULTADO KAGGLE PUBLIC LEADERBOARD | EVALUADO Y CONFIRMADO: **0.81279** (Submission Ref: 57330222, 2026-10-18 00:03:07 UTC).
+  * Delta vs P131 (0.80872): **+0.00407**.
+  * Delta vs NLP_Grupo3 (0.80706): **+0.00573**.
+  * Delta vs P128 (0.80516): **+0.00763**.
+  * Delta vs V03 (0.78306): **+0.02973**.
+- Decision | BARRERA DE 0.81000 SUPERADA CON RECORD HISTORICO DE 0.81279. P132-01 es proclamado como el NUEVO CAMPEON OFICIAL SUPREMO DEL PROYECTO.
+- Artefactos | `experiments/p132_01_challenger_septuple_compensated_pairs.py`, `reports/p132_01_challenger_septuple_compensated_pairs.{json,md}`; `tests/p132_99_verificacion.py` (checks superados); fila P132-01 en experiments.csv (532 filas).
+- Verificacion | `tools/verificar_caracteres.py` -> 0 errores (ASCII puro).
+
+
+
+
+

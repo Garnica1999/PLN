@@ -1,0 +1,13 @@
+{
+  "fase": "V42-03",
+  "fecha": "2026-10-16",
+  "duracion_seg": 24.06,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v42_smooth_swa_blend.csv",
+  "sha256": "78d81a5f4a554368f556af285da735415fdaf61e012bf88c0c6faed9ffaaef16",
+  "filas": 112892,
+  "mensaje": "V42 Smooth-SWA Blend (0.575 V30 + 0.28 Smooth-SWA + 0.02 SWA + 0.06 SE + 0.05 TabOrd + 0.015 HGB) + Plug-in",
+  "competencia": "tweet-age-2026-puj",
+  "kaggle_ref": "57276023",
+  "public_score": 0.63716,
+  "status": "SubmissionStatus.COMPLETE"
+}

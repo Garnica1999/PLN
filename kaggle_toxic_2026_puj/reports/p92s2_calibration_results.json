@@ -1,0 +1,148 @@
+{
+ "version": 3,
+ "anotadores": "A (0/1), B (0/1), C, D",
+ "acuerdo": {
+  "HS": {
+   "pares": {
+    "AB": "10/15",
+    "AC": "5/15",
+    "AD": "6/15",
+    "BC": "6/15",
+    "BD": "6/15",
+    "CD": "12/15"
+   },
+   "cuadruple": "4/15",
+   "alpha_utd_categoria": 0.243,
+   "alpha_utd_faltante": 0.466,
+   "UTD": {
+    "A": 0,
+    "B": 0,
+    "C": 7,
+    "D": 8
+   }
+  },
+  "TR": {
+   "pares": {
+    "AB": "11/15",
+    "AC": "9/15",
+    "AD": "9/15",
+    "BC": "11/15",
+    "BD": "11/15",
+    "CD": "14/15"
+   },
+   "cuadruple": "8/15",
+   "alpha_utd_categoria": 0.104,
+   "alpha_utd_faltante": 0.093,
+   "UTD": {
+    "A": 0,
+    "B": 0,
+    "C": 1,
+    "D": 0
+   }
+  },
+  "AG": {
+   "pares": {
+    "AB": "12/15",
+    "AC": "11/15",
+    "AD": "8/15",
+    "BC": "10/15",
+    "BD": "7/15",
+    "CD": "11/15"
+   },
+   "cuadruple": "6/15",
+   "alpha_utd_categoria": 0.354,
+   "alpha_utd_faltante": 0.491,
+   "UTD": {
+    "A": 0,
+    "B": 0,
+    "C": 1,
+    "D": 3
+   }
+  }
+ },
+ "combinacion_exacta_cuatro": "1/15",
+ "hashes_respuestas": {
+  "A": "a20521989aa3fea94e059f0666713b437a333d2cead31f9e4198d24dde9c9596",
+  "B": "41e50c1f1d48760eaf293a8e5f51b9dd0d036b19e8d48f92a2e1ce34c024a49f",
+  "C": "8de76e21046d5091bfa360cce6fb5299d2ef9951685b46ae85178ce45e477d0f",
+  "D": "763229f9a9caa176df7b9ee1ff247269aa6ea51259a9ce3f8ca658dc3432f8a4"
+ },
+ "utd_comunes_HS_CD": [
+  "P92C-05",
+  "P92C-09",
+  "P92C-11",
+  "P92C-13",
+  "P92C-14",
+  "P92C-15"
+ ],
+ "notas_A": [
+  "P92C-02",
+  "P92C-04"
+ ],
+ "notas_B": [
+  "P92C-01",
+  "P92C-05",
+  "P92C-13"
+ ],
+ "codificacion_AB": {
+  "confirmada_por_carlos": "2026-10-12",
+  "regla": "0=NEGATIVE, 1=POSITIVE en las tres columnas; 1 en uncertainty_notes = dificil de determinar para cualquier clase (flag de fila)",
+  "normalizadas": {
+   "A": "7e7b3c805620e6139bfa94ce695864f6a8badde495a63a08b6ad44f07206e808",
+   "B": "7cca95e20a1243c01dcfb23578b82f181261dd8210bd0a919465acd2a88b6dae"
+  }
+ },
+ "senales_de_duda_fila": {
+  "flags_A": [
+   "P92C-02",
+   "P92C-04"
+  ],
+  "flags_B": [
+   "P92C-01",
+   "P92C-05",
+   "P92C-13"
+  ],
+  "utd_any_C": [
+   "P92C-01",
+   "P92C-05",
+   "P92C-07",
+   "P92C-09",
+   "P92C-11",
+   "P92C-13",
+   "P92C-14",
+   "P92C-15"
+  ],
+  "utd_any_D": [
+   "P92C-01",
+   "P92C-03",
+   "P92C-04",
+   "P92C-05",
+   "P92C-06",
+   "P92C-07",
+   "P92C-09",
+   "P92C-11",
+   "P92C-13",
+   "P92C-14",
+   "P92C-15"
+  ],
+  "union": [
+   "P92C-01",
+   "P92C-02",
+   "P92C-03",
+   "P92C-04",
+   "P92C-05",
+   "P92C-06",
+   "P92C-07",
+   "P92C-09",
+   "P92C-11",
+   "P92C-13",
+   "P92C-14",
+   "P92C-15"
+  ],
+  "sin_senal": [
+   "P92C-08",
+   "P92C-10",
+   "P92C-12"
+  ]
+ }
+}

@@ -1,0 +1,44 @@
+{
+  "fase": "V53-01",
+  "modelo": "TabularDenseNet_SWA_Cramer",
+  "fecha": "2026-10-18",
+  "duracion_seg": 252.29,
+  "f1_global_raw": 0.6100597025212204,
+  "f1_global_plugin": 0.6111343474841596,
+  "fold_scores_raw": [
+    0.6136032345891144,
+    0.6115749509717442,
+    0.6131751739273562,
+    0.6100568295755955,
+    0.6018225222851273
+  ],
+  "fold_scores_plugin": [
+    0.614323144770415,
+    0.6109394751336018,
+    0.6143129866703504,
+    0.6123288482699004,
+    0.603671484213657
+  ],
+  "hyperparameters": {
+    "batch_size": 256,
+    "epochs": 16,
+    "swa_start": 6,
+    "lr": 0.001,
+    "lr_min": 0.0001,
+    "weight_decay": 0.0001,
+    "smoothing": 0.1,
+    "lambda_cramer": 0.5,
+    "outlier_clip": 6.0,
+    "init_dim": 192,
+    "growth_rate": 128,
+    "drop": 0.2
+  },
+  "oof_shape": [
+    169336,
+    6
+  ],
+  "test_shape": [
+    112892,
+    6
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "particion": {
+    "n_train": 1731,
+    "n_dev": 1483,
+    "n_holdout": 248,
+    "dev_y_holdout_particionan_train": true,
+    "dev_y_holdout_son_disjuntos": true
+  },
+  "grupos": {
+    "mismo_orden_ids_que_train_dev": true,
+    "iguales_etiqueta_a_etiqueta": true,
+    "equivalencia_de_particion": true
+  },
+  "pliegues": {
+    "tamanos": [
+      297,
+      297,
+      296,
+      296,
+      297
+    ],
+    "sin_asignar": 0,
+    "pliegues_con_grupos_compartidos": [],
+    "v2_oof_base_corrected_guarda_pliegues": false,
+    "igualdad_estricta_misma_numeracion": false,
+    "particion_identica_tras_traducir_numeracion": true,
+    "mapeo_recomputado_a_guardado": {
+      "0": [
+        1
+      ],
+      "1": [
+        2
+      ],
+      "2": [
+        3
+      ],
+      "3": [
+        4
+      ],
+      "4": [
+        5
+      ]
+    },
+    "seed": 42,
+    "n_splits": 5
+  },
+  "alineacion": {
+    "y_true_v2_bases_igual_a_train_dev": true
+  },
+  "escaneos": {
+    "scripts_con_test": 54,
+    "scripts_con_holdout": 354,
+    "scripts_con_holdout2": [
+      "p63_03_id_auditoria_predictiva.py",
+      "p63_10_cerrar.py",
+      "p64_06_cerrar.py",
+      "p65_00_audit_gap.py",
+      "p65_05_cerrar.py",
+      "p66_04_cerrar.py",
+      "p81_01_cierre_huecos.py",
+      "p90_02b_informe_y_handoff.py",
+      "p91_02_informe_protocolo.py",
+      "p92_02_informe_plan.py",
+      "p92_12_politica_v2.py",
+      "p92_13_integrar_notebook.py",
+      "p92_14_p92w_reconstruccion.py",
+      "p92_15_integrar_notebook.py",
+      "p92_16_p92x_auditoria_final.py",
+      "p92_18_handoff_calibracion_v21.py",
+      "p92_19_integrar_notebook.py",
+      "p92_20_recepcion_respuestas.py",
+      "p93_01_analisis_agreement.py",
+      "p93r5_01_comparacion_gold.py",
+      "p93r_01_paquete_adjudicacion.py",
+      "p94_00_inventario.py",
+      "p94_01_registro_hipotesis.py",
+      "p94_02_verificacion.py",
+      "p95_00_opciones.py",
+      "p95_01_verificacion.py",
+      "p96_02_folds_leakage.py",
+      "v10_01_holdout2.py",
+      "v10_02_ruido_particion.py",
+      "v10_08_confirmacion_dev2.py",
+      "v11_00_reconciliacion.py",
+      "v11_02_auditoria_legalidad.py",
+      "v11_03_auditoria_cumplimiento.py",
+      "v11_05_registro.py",
+      "v11_08_cierre_y_tabla_maestra.py",
+      "v11_09_cierre_entregables.py",
+      "v12_00_auditoria_brecha.py",
+      "v12_02_perdida_y_estructura.py",
+      "v12_05_informe_final.py",
+      "v12_05_registrar.py",
+      "v13_01_aislamiento_hs.py",
+      "v13_02_informe_final.py",
+      "v14_01_informe_final.py",
+      "v15_01_gap_y_ortogonalidad.py",
+      "v15_02_informe_cierre.py",
+      "v33_01_validacion.py",
+      "v33_04_integrar_notebook.py",
+      "v46_00_champion_audit.py",
+      "v47_00_auditoria_datos.py",
+      "v47_01_integrar_notebook.py",
+      "v48_01_residual_atlas.py"
+    ],
+    "vecindades_test_fit": [],
+    "ocurrencias_fit_total": 689
+  }
+}

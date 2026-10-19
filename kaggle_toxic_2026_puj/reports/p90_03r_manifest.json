@@ -1,0 +1,148 @@
+{
+ "audit_id": "P90-03-R",
+ "decision": "EXACT_OOF_ATTRIBUTION_RECOVERED",
+ "git_head": "e43c594917fc643d0e300b73646aefb7dbd6b61d",
+ "branch": "main",
+ "software_versions": {
+  "python": "3.14.7",
+  "scikit_learn": "1.8.0",
+  "numpy": "1.26.4",
+  "scipy": "1.17.1"
+ },
+ "source_oof": {
+  "path": "features/oof_v03_final.npz",
+  "sha256": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab"
+ },
+ "source_script": {
+  "path": "experiments/14_oof_corregido_v2.py",
+  "sha256": "f0e8065bfbbc210e3a05f5b9b216b69698712feac8ecdf1a87732579d0a5ee44"
+ },
+ "baseline_model": {
+  "path": "experiments/baseline_v03_frozen/model_v03.joblib",
+  "sha256": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca"
+ },
+ "data_identifiers": {
+  "train": {
+   "path": "data/raw/toxic_train.csv",
+   "sha256": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f"
+  },
+  "partition": {
+   "path": "data/processed/holdout_v2_ids.csv",
+   "sha256": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd"
+  },
+  "splits_module": {
+   "path": "src/splits.py",
+   "sha256": "755d3cef5b06c5859c654df7e988b82e1051834854fcb0c4752e2597f1c4995e"
+  },
+  "data_module": {
+   "path": "src/data.py",
+   "sha256": "79c1f04d2be4bae6d36a694d46d3b77a47eebb0db940df3f87d915be1e352300"
+  }
+ },
+ "fold_definitions": "pliegues persistidos en el OOF (1..5, StratifiedGroupKFold con grupos fusionados); recomputados y coincidentes",
+ "vectorizer_parameters": {
+  "word": {
+   "analyzer": "word",
+   "ngram_range": [
+    1,
+    2
+   ],
+   "min_df": 2,
+   "sublinear_tf": true
+  },
+  "char": {
+   "analyzer": "char_wb",
+   "ngram_range": [
+    3,
+    5
+   ],
+   "min_df": 2,
+   "sublinear_tf": true
+  }
+ },
+ "classifier_parameters": {
+  "C": 2.0,
+  "class_weight": "balanced",
+  "max_iter": 1000,
+  "solver": "liblinear",
+  "random_state": 42
+ },
+ "thresholds": {
+  "HS": 0.44,
+  "TR": 0.51,
+  "AG": 0.46
+ },
+ "random_seeds": {
+  "random_state": 42
+ },
+ "reproduction_tolerances": {
+  "allclose_rtol": 1e-07,
+  "allclose_atol": 1e-08,
+  "corrected_cv_abs": 1e-07,
+  "binary_discordances": 0
+ },
+ "reproduction_results": {
+  "allclose_rtol_1e-7_atol_1e-8": true,
+  "max_abs_error": 0.0,
+  "mean_abs_error": 0.0,
+  "p99_abs_error": 0.0,
+  "binary_discordances": 0,
+  "ccv_reconstructed": 0.7772114525165721,
+  "ccv_difference": 0.0,
+  "tolerance_ccv": 1e-07,
+  "max_error_by_fold": {
+   "fold1": 0.0,
+   "fold2": 0.0,
+   "fold3": 0.0,
+   "fold4": 0.0,
+   "fold5": 0.0
+  },
+  "max_error_by_label": {
+   "HS": 0.0,
+   "TR": 0.0,
+   "AG": 0.0
+  },
+  "folds_recomputed_equal": true,
+  "gate_passed": true
+ },
+ "coefficient_checksums": {
+  "fold1_HS": "725ee0233b9780b6",
+  "fold1_TR": "c04573b335def198",
+  "fold1_AG": "03355d230ab68c34",
+  "fold2_HS": "789063b9ea033db6",
+  "fold2_TR": "52b47290d0f72068",
+  "fold2_AG": "00611bcb3fa80a01",
+  "fold3_HS": "44770411ba6c923a",
+  "fold3_TR": "168cf52da9033bcd",
+  "fold3_AG": "730c60496e34dbbe",
+  "fold4_HS": "9c68dcaa8de4d657",
+  "fold4_TR": "8d2c85ade55ec3c4",
+  "fold4_AG": "7d290b77fd9e2a76",
+  "fold5_HS": "ba0f0d4febfd12dc",
+  "fold5_TR": "ccc91c255d6c240a",
+  "fold5_AG": "88e2190764468d92"
+ },
+ "artifact_paths": [
+  "reports/p90_03r_exact_oof_attribution.md",
+  "reports/p90_03r_exact_oof_attribution.csv",
+  "reports/p90_03r_oof_reproduction.csv",
+  "reports/p90_03r_feature_contributions.csv",
+  "reports/p90_03r_audit_results.json",
+  "experiments/p90_03r_reconstruccion_oof.py",
+  "experiments/p90_03rb_informe.py"
+ ],
+ "artifact_sha256": {
+  "reports/p90_03r_exact_oof_attribution.md": "58f421944cf84a566b1348532c79908d59d4b3a6cfd63c1e19d17e60d32c8b27",
+  "reports/p90_03r_exact_oof_attribution.csv": "4b10562758bf894f0029c87b5378b5e293a055d8732ca08f65f3d4263db0773f",
+  "reports/p90_03r_oof_reproduction.csv": "e73da1df95fe434b8f64fc937e0f31929c4844c1427b836d717f9f4c68a0273b",
+  "reports/p90_03r_feature_contributions.csv": "8da14e30574bf919b16fae2e4e85e20a65e2e0993bf587d33862df2c46ccd311",
+  "reports/p90_03r_audit_results.json": "2d362b689b021918c6fced85d46c25efb1d5d11769dca39085738eb1866f482e",
+  "experiments/p90_03r_reconstruccion_oof.py": "58bcdc1d27a83d73eee3b263d668a69d00083e01bac631e34486b3e313f2214e",
+  "experiments/p90_03rb_informe.py": "f001c3dad819ce988a322d2badcf5447d46709b55a3e4ca0ae03c8f4aafe7bfb"
+ },
+ "limitations": [
+  "reproduccion exacta en el entorno actual (sklearn 1.8.0)",
+  "contribuciones locales no son causalidad semantica",
+  "slices pequenas con incertidumbre alta"
+ ]
+}

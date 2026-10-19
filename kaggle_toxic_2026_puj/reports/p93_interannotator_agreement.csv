@@ -1,0 +1,54 @@
+label,metrica,numerador,denominador,valor,nota
+HS,marginal_A_POSITIVE,36,250,,distribucion marginal del anotador A
+HS,marginal_B_POSITIVE,35,250,,distribucion marginal del anotador B
+HS,marginal_A_NEGATIVE,111,250,,distribucion marginal del anotador A
+HS,marginal_B_NEGATIVE,108,250,,distribucion marginal del anotador B
+HS,marginal_A_UNABLE_TO_DETERMINE,103,250,,distribucion marginal del anotador A
+HS,marginal_B_UNABLE_TO_DETERMINE,107,250,,distribucion marginal del anotador B
+HS,raw_agreement_3cat,199,250,0.7960,UTD como tercera categoria
+HS,acuerdo_binario_condicional,119,120,0.9917,solo celdas con ambas respuestas binarias
+HS,acuerdo_positivo_dice,62,63,0.9841,celdas binarias
+HS,acuerdo_negativo_dice,176,177,0.9944,celdas binarias
+HS,kappa_cohen_3cat,,250,0.6665,"nominal, UTD como categoria"
+HS,kappa_cohen_bin,,120,0.9785,solo celdas binarias
+HS,alpha_krippendorff_utd_categoria,,250,0.6671,
+HS,alpha_krippendorff_utd_faltante,,250,0.9786,
+HS,cobertura_determinada_ambos,120,250,0.4800,celdas con ambas respuestas determinables
+HS,celdas_utd_both,80,250,,acuerdo en incertidumbre (no desacuerdo)
+TR,marginal_A_POSITIVE,140,250,,distribucion marginal del anotador A
+TR,marginal_B_POSITIVE,168,250,,distribucion marginal del anotador B
+TR,marginal_A_NEGATIVE,77,250,,distribucion marginal del anotador A
+TR,marginal_B_NEGATIVE,69,250,,distribucion marginal del anotador B
+TR,marginal_A_UNABLE_TO_DETERMINE,33,250,,distribucion marginal del anotador A
+TR,marginal_B_UNABLE_TO_DETERMINE,13,250,,distribucion marginal del anotador B
+TR,raw_agreement_3cat,201,250,0.8040,UTD como tercera categoria
+TR,acuerdo_binario_condicional,192,213,0.9014,solo celdas con ambas respuestas binarias
+TR,acuerdo_positivo_dice,270,291,0.9278,celdas binarias
+TR,acuerdo_negativo_dice,114,135,0.8444,celdas binarias
+TR,kappa_cohen_3cat,,250,0.6314,"nominal, UTD como categoria"
+TR,kappa_cohen_bin,,213,0.7730,solo celdas binarias
+TR,alpha_krippendorff_utd_categoria,,250,0.6287,
+TR,alpha_krippendorff_utd_faltante,,250,0.7728,
+TR,cobertura_determinada_ambos,213,250,0.8520,celdas con ambas respuestas determinables
+TR,celdas_utd_both,9,250,,acuerdo en incertidumbre (no desacuerdo)
+AG,marginal_A_POSITIVE,79,250,,distribucion marginal del anotador A
+AG,marginal_B_POSITIVE,110,250,,distribucion marginal del anotador B
+AG,marginal_A_NEGATIVE,157,250,,distribucion marginal del anotador A
+AG,marginal_B_NEGATIVE,109,250,,distribucion marginal del anotador B
+AG,marginal_A_UNABLE_TO_DETERMINE,14,250,,distribucion marginal del anotador A
+AG,marginal_B_UNABLE_TO_DETERMINE,31,250,,distribucion marginal del anotador B
+AG,raw_agreement_3cat,172,250,0.6880,UTD como tercera categoria
+AG,acuerdo_binario_condicional,170,207,0.8213,solo celdas con ambas respuestas binarias
+AG,acuerdo_positivo_dice,138,175,0.7886,celdas binarias
+AG,acuerdo_negativo_dice,202,239,0.8452,celdas binarias
+AG,kappa_cohen_3cat,,250,0.4623,"nominal, UTD como categoria"
+AG,kappa_cohen_bin,,207,0.6392,solo celdas binarias
+AG,alpha_krippendorff_utd_categoria,,250,0.4499,
+AG,alpha_krippendorff_utd_faltante,,250,0.6346,
+AG,cobertura_determinada_ambos,207,250,0.8280,celdas con ambas respuestas determinables
+AG,celdas_utd_both,2,250,,acuerdo en incertidumbre (no desacuerdo)
+JOINT,triple_exacto,131,250,0.5240,las tres etiquetas identicas
+JOINT,tweets_con_al_menos_un_desacuerdo,119,250,,complemento del triple exacto
+JOINT,celdas_con_desacuerdo,178,750,,sobre 750 celdas (250 x 3)
+JOINT,tweets_con_al_menos_un_utd,150,250,,cualquiera de los dos anotadores
+JOINT,celdas_con_utd,210,750,,cualquiera de los dos anotadores

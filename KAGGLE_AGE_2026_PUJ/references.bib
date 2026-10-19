@@ -300,3 +300,256 @@
   doi       = {10.63317/5ihmqb5uqzzs},
   note      = {DOI verificado via Crossref. Corpus con etiquetas de edad; solo referencia metodologica bajo D-001}
 }
+
+% ---------------------------------------------------------------- Corriente E: Aprendizaje profundo tabular y regularizacion neuronal
+
+@inproceedings{izmailov2018,
+  author    = {Izmailov, Pavel and Podoprikhin, Dmitrii and Garipov, Timur and Vetrov, Dmitry and Wilson, Andrew Gordon},
+  title     = {Averaging Weights Leads to Wider Optima and Better Generalization},
+  booktitle = {Proceedings of the 34th Conference on Uncertainty in Artificial Intelligence (UAI 2018)},
+  pages     = {876--885},
+  year      = {2018},
+  url       = {https://arxiv.org/abs/1803.05407},
+  note      = {Verificado en arXiv (1803.05407). Stochastic Weight Averaging (SWA) promedia pesos en cuencas planas de perdida; clave en el salto a LB 0.63722 en V41-V48}
+}
+
+@inproceedings{hu2018,
+  author    = {Hu, Jie and Shen, Li and Sun, Gang},
+  title     = {Squeeze-and-Excitation Networks},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR 2018)},
+  pages     = {7132--7141},
+  year      = {2018},
+  doi       = {10.1109/CVPR.2018.00745},
+  url       = {https://openaccess.thecvf.com/content_cvpr_2018/html/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.html},
+  note      = {DOI y CVF verificados. Compuertas de atencion adaptativa por canal aplicadas a bloques tabulares densos en SE-TabularNet (V40-V48)}
+}
+
+@inproceedings{gorishniy2021,
+  author    = {Gorishniy, Yury and Rubachev, Ivan and Khrulkov, Valentin and Babenko, Artem},
+  title     = {Revisiting Deep Learning Models for Tabular Data},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS 2021)},
+  volume    = {34},
+  pages     = {18932--18943},
+  year      = {2021},
+  url       = {https://proceedings.neurips.cc/paper/2021/hash/9d86d83f925f2149e9edb0ac3b49229c-Abstract.html},
+  note      = {Verificado en NeurIPS Proceedings. Fundamento de la arquitectura TabularResNet implementada en PyTorch sobre matriz_279 (V38-V48)}
+}
+
+@inproceedings{loshchilov2017,
+  author    = {Loshchilov, Ilya and Hutter, Frank},
+  title     = {{SGDR}: Stochastic Gradient Descent with Warm Restarts},
+  booktitle = {International Conference on Learning Representations (ICLR 2017)},
+  year      = {2017},
+  url       = {https://openreview.net/forum?id=Skq89Scxx},
+  note      = {Verificado en OpenReview. Programacion de decaimiento cosenoidal (CosineAnnealingLR) utilizada en el entrenamiento de redes tabulares V38-V48}
+}
+
+@inproceedings{muller2019,
+  author    = {M{\"u}ller, Rafael and Kornblith, Simon and Hinton, Geoffrey E.},
+  title     = {When Does Label Smoothing Help?},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS 2019)},
+  volume    = {32},
+  pages     = {4694--4705},
+  year      = {2019},
+  url       = {https://proceedings.neurips.cc/paper/2019/hash/f1748d6b0fd9d439f71450117eba2725-Abstract.html},
+  note      = {Verificado en NeurIPS Proceedings. Regularizacion de logits mediante objetivos suaves (alpha=0.10); previene sobreconfianza en fronteras de edad (V42-V48)}
+}
+
+@inproceedings{szegedy2016,
+  author    = {Szegedy, Christian and Vanhoucke, Vincent and Ioffe, Sergey and Shlens, Jonathon and Wojna, Zbigniew},
+  title     = {Rethinking the Inception Architecture for Computer Vision},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR 2016)},
+  pages     = {2818--2826},
+  year      = {2016},
+  doi       = {10.1109/CVPR.2016.308},
+  note      = {DOI verificado. Formulacion fundacional de regularizacion por Label Smoothing}
+}
+
+@inproceedings{klambauer2017,
+  author    = {Klambauer, G{\"u}nter and Unterthiner, Thomas and Mayr, Andreas and Hochreiter, Sepp},
+  title     = {Self-Normalizing Neural Networks},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS 2017)},
+  volume    = {30},
+  pages     = {971--980},
+  year      = {2017},
+  url       = {https://proceedings.neurips.cc/paper/2017/hash/5d44ee6f2c3f71b73125876103c8f6c4-Abstract.html},
+  note      = {Verificado en NeurIPS Proceedings. Redes auto-normalizantes con activacion SELU y AlphaDropout evaluadas en la fase de falsacion V52}
+}
+
+% ---------------------------------------------------------------- Corriente F: Perdidas ordinales, transporte optimo y consenso bayesiano
+
+@article{cramer1928,
+  author  = {Cram{\'e}r, Harald},
+  title   = {On the composition of elementary errors: First paper: Mathematical deductions},
+  journal = {Scandinavian Actuarial Journal},
+  volume  = {1928},
+  number  = {1},
+  pages   = {13--74},
+  year    = {1928},
+  doi     = {10.1080/03461238.1928.10416862},
+  note    = {DOI verificado via Crossref. Base matematica de la distancia cuadratica de distribucion acumulada (Cramer-von Mises) implementada en V43-V48}
+}
+
+@book{vonmises1931,
+  author    = {von Mises, Richard},
+  title     = {Wahrscheinlichkeitsrechnung und ihre Anwendung in der Statistik und theoretischen Physik},
+  publisher = {Franz Deuticke},
+  address   = {Leipzig und Wien},
+  year      = {1931},
+  note      = {Obra historica que formaliza el criterio estadistico integral de Cram{\'e}r-von Mises}
+}
+
+@article{szekely2013,
+  author  = {Sz{\'e}kely, G{\'a}bor J. and Rizzo, Maria L.},
+  title   = {Energy statistics: A class of statistics based on energy distances},
+  journal = {Journal of Statistical Planning and Inference},
+  volume  = {143},
+  number  = {8},
+  pages   = {1249--1272},
+  year    = {2013},
+  doi     = {10.1016/j.jspi.2013.03.018},
+  note    = {DOI verificado. Fundamento de estadisticos de energia y distancia L2 entre distribuciones acumuladas unidimensionales (Wasserstein-2)}
+}
+
+@inproceedings{frogner2015,
+  author    = {Frogner, Charlie and Zhang, Chiyuan and Mobahi, Hossein and Araya, Mauricio and Poggio, Tomaso A.},
+  title     = {Learning with a {W}asserstein Loss},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS 2015)},
+  volume    = {28},
+  pages     = {2053--2061},
+  year      = {2015},
+  url       = {https://proceedings.neurips.cc/paper/2015/hash/70efdf2ec9b086079795c442636b55fb-Abstract.html},
+  note      = {Verificado en NeurIPS Proceedings. Marco formal de aprendizaje supervisado con distancias de transporte optimo sobre el simplex}
+}
+
+@inproceedings{diaz2019,
+  author    = {Diaz, Raul and Marathe, Amit},
+  title     = {Soft Labels for Ordinal Regression},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR 2019)},
+  pages     = {4738--4747},
+  year      = {2019},
+  doi       = {10.1109/CVPR.2019.00487},
+  url       = {https://openaccess.thecvf.com/content_CVPR_2019/html/Diaz_Soft_Labels_for_Ordinal_Regression_CVPR_2019_paper.html},
+  note      = {DOI verificado. Metodo SORD para distribuciones suaves ordinales; analizado en C1 e integrado en variantes ordinales}
+}
+
+@inproceedings{frank2001,
+  author    = {Frank, Eibe and Hall, Mark},
+  title     = {A Simple Approach to Ordinal Classification},
+  booktitle = {Proceedings of the 12th European Conference on Machine Learning (ECML 2001)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {2167},
+  pages     = {145--156},
+  year      = {2001},
+  publisher = {Springer},
+  doi       = {10.1007/3-540-44795-4_13},
+  note      = {DOI verificado. Descomposicion ordinal en K-1 clasificadores acumulativos; implementado en miembros ordinales E-021a y TabNet Ordinal}
+}
+
+@article{cao2020,
+  author  = {Cao, Wenzhi and Mirjalili, Vahid and Raschka, Sebastian},
+  title   = {Rank consistent ordinal regression for neural networks with application to age estimation},
+  journal = {Pattern Recognition Letters},
+  volume  = {140},
+  pages   = {325--331},
+  year    = {2020},
+  doi     = {10.1016/j.patrec.2020.11.008},
+  note    = {DOI verificado via Crossref. Marco CORAL de regresion ordinal consistente; evaluado y auditado en V22-V23}
+}
+
+@article{hinton2002,
+  author  = {Hinton, Geoffrey E.},
+  title   = {Training Products of Experts by Minimizing Contrastive Divergence},
+  journal = {Neural Computation},
+  volume  = {14},
+  number  = {8},
+  pages   = {1771--1800},
+  year    = {2002},
+  doi     = {10.1162/089976602760128018},
+  note    = {DOI verificado via Crossref. Fundamento teorico del modelo CAMPEON V48: ensamble multiplicativo geometrico en espacio logaritmico que opera como un consenso probabilistico estricto (AND logico)}
+}
+
+@inproceedings{heskes1998,
+  author    = {Heskes, Tom},
+  title     = {Selecting Weighting Factors in Logarithmic Opinion Pools},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS 1998)},
+  volume    = {11},
+  pages     = {266--272},
+  year      = {1998},
+  url       = {https://proceedings.neurips.cc/paper/1998/hash/9a96876e2f8f3dc4f3cf45f02c61c0c1-Abstract.html},
+  note      = {Verificado en NeurIPS Proceedings. Optimizacion de pesos en combinadores logaritmicos de opiniones probabilisticas}
+}
+
+% ---------------------------------------------------------------- Corriente G: Arboles por gradiente y representaciones de lenguaje
+
+@inproceedings{ke2017,
+  author    = {Ke, Guolin and Meng, Qi and Finley, Thomas and Wang, Taifeng and Chen, Wei and Ma, Weidong and Ye, Qiwei and Liu, Tie-Yan},
+  title     = {{LightGBM}: A Highly Efficient Gradient Boosting Decision Tree},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS 2017)},
+  volume    = {30},
+  pages     = {3146--3154},
+  year      = {2017},
+  url       = {https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html},
+  note      = {Verificado en NeurIPS Proceedings. Algoritmo de GBDT base de V19, V20, V29 y el modelo troncal V30}
+}
+
+@inproceedings{prokhorenkova2018,
+  author    = {Prokhorenkova, Liudmila and Gusev, Gleb and Vorobev, Aleksandr and Dorogush, Anna Veronika and Gulin, Andrey},
+  title     = {{CatBoost}: unbiased boosting with categorical features},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS 2018)},
+  volume    = {31},
+  pages     = {6638--6648},
+  year      = {2018},
+  url       = {https://proceedings.neurips.cc/paper/2018/hash/14491b756b3a51daac41c24863285549-Abstract.html},
+  note      = {Verificado en NeurIPS Proceedings. Arboles de decision simetricos (oblivious trees) evaluados en V32-E2 y V49}
+}
+
+@inproceedings{wang2012,
+  author    = {Wang, Sida and Manning, Christopher D.},
+  title     = {Baselines and Bigrams: Simple, Good Sentiment and Topic Classification},
+  booktitle = {Proceedings of the 50th Annual Meeting of the Association for Computational Linguistics (ACL 2012)},
+  pages     = {90--94},
+  year      = {2012},
+  url       = {https://aclanthology.org/P12-2018/},
+  note      = {Verificado en ACL Anthology (P12-2018). Ponderacion Naive Bayes log-count ratio para LinearSVC; implementado en miembros ADV-05 y ADV-07}
+}
+
+% ---------------------------------------------------------------- Corriente H: Integridad experimental, estadistica y metodologia de datos
+
+@article{kaufman2012,
+  author  = {Kaufman, Shachar and Rosset, Saharon and Perlich, Claudia and Stitelman, Ori},
+  title   = {Leakage in Data Mining: Formulation, Detection, and Avoidance},
+  journal = {ACM Transactions on Knowledge Discovery from Data},
+  volume  = {6},
+  number  = {4},
+  pages   = {1--21},
+  year    = {2012},
+  doi     = {10.1145/2382577.2382579},
+  note    = {DOI verificado via Crossref. Marco metodologico para la deteccion y neutralizacion de fuga de datos; fundamento del protocolo StratifiedGroupKFold por cluster de near-duplicados (D-003)}
+}
+
+@article{simpson1951,
+  author  = {Simpson, Edward H.},
+  title   = {The Interpretation of Interaction in Contingency Tables},
+  journal = {Journal of the Royal Statistical Society: Series B (Methodological)},
+  volume  = {13},
+  number  = {2},
+  pages   = {238--241},
+  year    = {1951},
+  doi     = {10.1111/j.2517-6161.1951.tb00088.x},
+  note    = {DOI verificado. Fundamento del analisis de subgrupos y descomposicion de metricas no agregables en validacion cruzada}
+}
+
+% ---------------------------------------------------------------- Corriente I: Redes Densas y Reutilización de Características
+
+@inproceedings{huang2017,
+  author    = {Huang, Gao and Liu, Zhuang and van der Maaten, Laurens and Weinberger, Kilian Q.},
+  title     = {Densely Connected Convolutional Networks},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR 2017)},
+  pages     = {4700--4708},
+  year      = {2017},
+  doi       = {10.1109/CVPR.2017.243},
+  url       = {https://openaccess.thecvf.com/content_cvpr_2017/html/Huang_Densely_Connected_Convolutional_CVPR_2017_paper.html},
+  note      = {DOI y enlace open access CVF verificados. Propone la arquitectura DenseNet con concatenacion multi-escala; adaptada en V53 como TabularDenseNet con Squeeze-and-Excitation y SWA para preservar representaciones tempranas sin dilucion aditiva}
+}
+

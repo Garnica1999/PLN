@@ -1,0 +1,12 @@
+{
+  "fase": "V54-02",
+  "fecha": "2026-10-18",
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v54_hierarchical_poe_consensus.csv",
+  "sha256": "0646653f8a3d6b2adf9a70715cfcfcfd11e0b8245350159cee69989048cec90d",
+  "filas": 112892,
+  "ref": 57348352,
+  "status": "SubmissionStatus.COMPLETE",
+  "public_score": 0.63712,
+  "mensaje": "V54 Hierarchical Multi-Loss PoE Consensus (8-model Bayes consensus w=[0.5515, 0.0652, 0.0163, 0.1690, 0.0739, 0.0503, 0.0538, 0.0200]) + Plug-in",
+  "duracion_seg": 32.5
+}

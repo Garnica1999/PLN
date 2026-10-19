@@ -1,0 +1,12 @@
+{
+  "fase": "V56-02",
+  "fecha": "2026-10-18",
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v56_nonlinear_poe_consensus.csv",
+  "sha256": "944592baab7b4b742f205e66474dc1a6a2a508ca9371de07256f1975bd03c694",
+  "filas": 112892,
+  "ref": 57350295,
+  "status": "SubmissionStatus.COMPLETE",
+  "public_score": 0.63717,
+  "mensaje": "V56 Non-Linear Multi-Modal PoE Consensus (9-model Bayes consensus w=[0.5594, 0.0602, 0.0209, 0.1687, 0.0608, 0.0438, 0.0520, 0.0104, 0.0238]) + Plug-in",
+  "duracion_seg": 32.0
+}

@@ -1,0 +1,76 @@
+{
+  "experiment_id": "P102-02",
+  "fase": "P102 sprint (triage): C1-corner promedio recalibrado",
+  "fecha": "2026-10-14",
+  "control": {
+    "diff_max_proba_lr": 0.0,
+    "reproduce_v03": true
+  },
+  "promedio": {
+    "miembros": [
+      "lr_M2",
+      "svc_C1",
+      "cnb_alpha1"
+    ],
+    "umbrales_recalibrados": {
+      "HS": 0.41,
+      "TR": 0.38,
+      "AG": 0.37
+    },
+    "corrected_cv_recalibrado": 0.7733699841302739,
+    "corrected_cv_frozen_v03": 0.7434692856519893,
+    "delta_vs_v03": -0.003841,
+    "folds_canonicos": [
+      0.782732,
+      0.796669,
+      0.781611,
+      0.743789,
+      0.761144
+    ],
+    "pliegues_mejorados": 3,
+    "celdas_cambiadas": 163,
+    "bootstrap_vs_v03": {
+      "ic95": [
+        -0.011717,
+        0.004407
+      ],
+      "pct_mejora": 0.1795
+    },
+    "particion_47": {
+      "recalibrado_transferido": 0.766183,
+      "frozen": 0.74488,
+      "v03_equivalente": 0.775632,
+      "delta_recal_vs_v03": -0.009448
+    },
+    "gate": {
+      "condiciones": {
+        "delta_can_ge_0003": false,
+        "pliegues_ge_4": false,
+        "ic95_excluye_cero": false,
+        "delta_47_positivo": false,
+        "celdas_ge_200": false
+      },
+      "veredicto": "GATE_FAILED"
+    }
+  },
+  "contexto_miembros_solos": {
+    "svc": {
+      "ccv_frozen": 0.771508,
+      "umbrales_propios": {
+        "HS": 0.46,
+        "TR": 0.51,
+        "AG": 0.47
+      }
+    },
+    "cnb": {
+      "ccv_frozen": 0.68662,
+      "umbrales_propios": {
+        "HS": 0.2,
+        "TR": 0.26,
+        "AG": 0.21
+      }
+    }
+  },
+  "sha_oof_final": "559265816ce4f631",
+  "tiempo_s": 41.1
+}

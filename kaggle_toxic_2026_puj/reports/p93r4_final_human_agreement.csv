@@ -1,0 +1,41 @@
+label,metrica,numerador,denominador,valor,nota
+HS,celdas,23,23,,"unidad: celdas (tweet,etiqueta)"
+HS,acuerdo_bruto_3cat,23,23,1.0000,UTD como tercera categoria
+HS,acuerdo_binario_condicional,23,23,1.0000,solo celdas binarias de ambos
+HS,dice_positivo,6,6,1.0000,celdas binarias
+HS,dice_negativo,40,40,1.0000,celdas binarias
+HS,kappa_cohen_3cat,,23,1.0000,"nominal, UTD como categoria"
+HS,kappa_cohen_bin,,23,1.0000,solo celdas binarias
+HS,alpha_utd_categoria,,23,1.0000,
+HS,alpha_utd_faltante,,23,1.0000,
+HS,utd_final_C1,0,23,,
+HS,utd_final_C2,0,23,,
+TR,celdas,87,87,,"unidad: celdas (tweet,etiqueta)"
+TR,acuerdo_bruto_3cat,85,87,0.9770,UTD como tercera categoria
+TR,acuerdo_binario_condicional,85,85,1.0000,solo celdas binarias de ambos
+TR,dice_positivo,158,158,1.0000,celdas binarias
+TR,dice_negativo,12,12,1.0000,celdas binarias
+TR,kappa_cohen_3cat,,87,0.8466,"nominal, UTD como categoria"
+TR,kappa_cohen_bin,,85,1.0000,solo celdas binarias
+TR,alpha_utd_categoria,,87,0.8472,
+TR,alpha_utd_faltante,,87,1.0000,
+TR,utd_final_C1,0,87,,
+TR,utd_final_C2,2,87,,
+AG,celdas,66,66,,"unidad: celdas (tweet,etiqueta)"
+AG,acuerdo_bruto_3cat,63,66,0.9545,UTD como tercera categoria
+AG,acuerdo_binario_condicional,63,64,0.9844,solo celdas binarias de ambos
+AG,dice_positivo,52,53,0.9811,celdas binarias
+AG,dice_negativo,74,75,0.9867,celdas binarias
+AG,kappa_cohen_3cat,,66,0.9089,"nominal, UTD como categoria"
+AG,kappa_cohen_bin,,64,0.9678,solo celdas binarias
+AG,alpha_utd_categoria,,66,0.9095,
+AG,alpha_utd_faltante,,66,0.9681,
+AG,utd_final_C1,0,66,,
+AG,utd_final_C2,2,66,,
+JOINT,exacto_celdas,171,176,0.9716,"celdas (tweet,etiqueta)"
+JOINT,exacto_tweets,122,127,0.9606,tweets cuyas celdas candidatas coinciden todas
+JOINT,cambios_C1_HS,1,,,final != inicial
+JOINT,cambios_C1_TR,1,,,final != inicial
+JOINT,cambios_C2_AG,8,,,final != inicial
+JOINT,cambios_C2_HS,1,,,final != inicial
+JOINT,cambios_C2_TR,3,,,final != inicial

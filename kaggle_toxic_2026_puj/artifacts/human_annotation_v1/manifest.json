@@ -1,0 +1,55 @@
+{
+ "package": "human_annotation_v1",
+ "date": "2026-10-09",
+ "guideline_version": "v1",
+ "counts": {
+  "annotator_rows": 250,
+  "principal_tweets": 250,
+  "cells_per_annotator": 750,
+  "calibration_tweets": 15,
+  "adjudication_rows": 750
+ },
+ "blinding": {
+  "hidden": [
+   "original_example_id",
+   "original_labels",
+   "oof_probabilities",
+   "v03_predictions",
+   "threshold_distances",
+   "fold",
+   "sample_component",
+   "selection_reasons",
+   "dup_groups",
+   "other_annotator_responses"
+  ],
+  "visible": [
+   "review_id",
+   "text",
+   "empty annotation columns",
+   "uncertainty_notes",
+   "guideline_version"
+  ]
+ },
+ "random_seeds": {
+  "A": 20261010,
+  "B": 20261011,
+  "calibracion": 20261012,
+  "review_id": 20261013,
+  "orden_A": 20261015,
+  "orden_B": 20261016
+ },
+ "files": {
+  "annotator_A.csv": "7dfd5b898d3905f21e431d4a076655d034b7f791730e6ccac3b9d9612ca9546b",
+  "annotator_B.csv": "956646fa479f0c6515af7c76ec323d5d9d9ca5a9c47004249490c1a507ba8351",
+  "calibration_sample.csv": "42b13e52ec11d20838d90525ed34e65eaa4e87ac40388b1123a43f9d0803c1f9",
+  "adjudication_template.csv": "4237fa3f4e607ce3730aca65f12f3d9e234967541d8a8c36d5fd479ff5d5c10f",
+  "README_annotators.md": "24f3f7b733e0593b8733c76cb344cdba7ebc27b885832a52d697ee308dcc7931"
+ },
+ "internal_key_separate": "reports/p92_internal_sampling_key.csv",
+ "limitations": [
+  "guia provisional v1",
+  "B no representativa",
+  "sin adjudicacion aun; ningun gold standard"
+ ],
+ "terminology_note": "750 anotaciones de etiqueta por anotador; 3 respuestas posibles por anotacion (POSITIVE/NEGATIVE/UNABLE_TO_DETERMINE)"
+}

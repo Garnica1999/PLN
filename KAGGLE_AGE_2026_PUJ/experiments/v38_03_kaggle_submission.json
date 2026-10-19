@@ -1,0 +1,12 @@
+{
+  "fase": "V38 03 Kaggle Submission",
+  "fecha": "2026-10-16 10:05:39",
+  "archivo": "age_submission_v38_tabular_blend.csv",
+  "sha256": "bc5802091d81d5c962a84bee0a0b3375171d5225162bb4de7c667b29cd87b1d5",
+  "competition": "tweet-age-2026-puj",
+  "message": "V38 TabularNet Blend (0.88 V30 + 0.12 TabNet ResNet) + Plug-in",
+  "ref": "57273347",
+  "status": "SubmissionStatus.COMPLETE",
+  "public_score": 0.6359,
+  "duracion_seg": 83.8
+}

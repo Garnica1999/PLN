@@ -1,0 +1,100 @@
+{
+  "fase": "P96 - auditoria forense integral",
+  "fecha": "2026-10-13",
+  "v03_reproducido_exacto": true,
+  "v03_valor": 0.7772114525165721,
+  "comparaciones_curadas": "20/20 exactas dentro de tolerancia",
+  "folds": "particion identica (biyeccion 0..4 -> 1..5); sin grupos compartidos entre entrenamiento y validacion",
+  "recomputaciones_variantes": "159 valores recomputados de variantes sin claim escalar guardado (sin discrepancia)",
+  "bootstrap": {
+    "A_cost_sensitive_downweight": {
+      "ic_filas": [
+        0.000192,
+        0.016189
+      ],
+      "ic_clusters": [
+        0.000347,
+        0.016311
+      ],
+      "delta": 0.008205
+    },
+    "B_meta36": {
+      "ic_filas": [
+        -0.004135,
+        0.014312
+      ],
+      "ic_clusters": [
+        -0.003715,
+        0.014602
+      ],
+      "delta": 0.005562
+    },
+    "C_meta36_downweight": {
+      "ic_filas": [
+        0.000726,
+        0.021142
+      ],
+      "ic_clusters": [
+        0.000466,
+        0.02136
+      ],
+      "delta": 0.010962
+    },
+    "D_svd300_rbf": {
+      "ic_filas": [
+        0.003164,
+        0.023957
+      ],
+      "ic_clusters": [
+        0.002303,
+        0.023833
+      ],
+      "delta": 0.013198
+    }
+  },
+  "hallazgos": {
+    "total": 17,
+    "severidad": {
+      "P4": 8,
+      "P3": 5,
+      "P2": 4
+    },
+    "clasificacion": {
+      "NO_DEFECT_FOUND_IN_AUDITED_SCOPE": 6,
+      "PROVENANCE_GAP": 7,
+      "COMPARABILITY_PROBLEM": 4
+    }
+  },
+  "reproducciones": {
+    "total": 2,
+    "justificadas_por_defecto": 0
+  },
+  "canonicos_intactos": {
+    "data/raw/toxic_train.csv": true,
+    "features/oof_v03_final.npz": true,
+    "experiments/baseline_v03_frozen/submission_v03.csv": true,
+    "experiments/baseline_v03_frozen/model_v03.joblib": true,
+    "data/processed/holdout_v2_ids.csv": true
+  },
+  "hashes": {
+    "reports/p96_forensic_audit.md": "3408bf6b3cf6e6c962c9b10acafee41b385901adfa43ac6c596e0ed91a414d12",
+    "reports/p96_experiment_integrity_matrix.csv": "21e884c194f1d3e0a1df6edf67bf06155090a9e1fcd9664a9576953acf43c0c9",
+    "reports/p96_code_and_metric_findings.csv": "08793d176e81eec4188fa2208ae03bd8880c1a5f11606cc340c8b72b8917c842",
+    "reports/p96_reproducibility_matrix.csv": "a60a9a0de6ee0215f4996b03c8e34b3b90976437afa368b010c9b9c0ed0457ad",
+    "reports/p96_validation_and_leakage_audit.md": "b2bba6c1715e009121a89f3693f359968da22998848d7a12ae071587448f05e4",
+    "reports/p96_historical_conclusions_review.md": "b829409543a8d25a7f1b74a75928995d61a122ad10fc2bbb4296ff6f745a677a",
+    "reports/p96_reproduction_candidates.csv": "ffe06f0a28d7172d65a7dbd7e0dd0d7aa99c6936a8580b03dafbd239ed82946f",
+    "reports/p96_manifest.json": "6ad3d79a02e36e9c1e2726dc2ddace22d45f27b5c4adf57e33df5aebdf40346b",
+    "reports/p96_folds_evidence.json": "f8aad349e6416ea2107a73fbb1928a84e21947772d40f090dfdb906084b307a8",
+    "reports/p96_static_scans.txt": "3a3e077b6b3bf35b68e334eb6d88f95db5e05f05958c3b2272086e2346895c11",
+    "experiments/p96_00_registro_audit.py": "3df99478b06af3bdac66c48b7efb430e7067d034a94f13ec0b700acaa0955b1f",
+    "experiments/p96_01_metric_recompute.py": "67f682ba14aad867f9d88a63db5318a3b7f0287ce5462a739f3f08ba5bf01828",
+    "experiments/p96_02_folds_leakage.py": "b77318de51244a1440564793151bcf0f5e9fcd5b53728e219a6a7e74510215d2",
+    "experiments/p96_03_informes.py": "f722f8019358c0a95b949eea319ac4cbb1dac88d3b2064e9215ba7ce914de2f8",
+    "experiments/p96_04_verificacion.py": "6b5bd0bcff578776dcc09ab41aee634848375a39dbd7ee8ab514ff94282841c4",
+    "experiments/p96_05_integrar_notebook.py": "478ce6e3c5114866e41e27156ce51f418df2a6b3e42a3c6ca3a643641310e09c",
+    "notebooks/10_final_pipeline.ipynb": "9b9dd57b0cd8661090c663f33521ea3f5c29dacce310b660cd67127ad3335050"
+  },
+  "git_head": "e43c594",
+  "nota": "Artefactos ASCII; sin entrenamiento, sin predicciones nuevas, sin accesos a particiones reservadas."
+}

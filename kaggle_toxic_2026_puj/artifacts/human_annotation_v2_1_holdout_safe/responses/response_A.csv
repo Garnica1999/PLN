@@ -1,0 +1,251 @@
+review_id,HS_annotation,TR_annotation,AG_annotation,uncertainty_notes,tweet_note,guideline_version
+P92W-0061,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0127,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0009,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0112,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0007,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0185,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0207,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0192,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0197,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0159,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0099,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0244,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0138,NEGATIVE,UNABLE_TO_DETERMINE,POSITIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0052,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0199,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0069,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0144,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0049,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0051,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0122,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0154,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0155,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0225,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0151,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,"HS/TR/AG: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0100,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0217,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0129,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0161,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0010,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0175,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0250,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0222,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0169,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: 'puto' ambiguo (insulto general vs. homofobo); duda odio vs. ofensa,,v2
+P92W-0091,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: funcion de la cita o discurso reproducido no determinable (Q5),,v2
+P92W-0213,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0220,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0025,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0134,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0012,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0117,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS/AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0004,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0080,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0038,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0024,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: funcion de la cita o discurso reproducido no determinable (Q5),,v2
+P92W-0072,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0206,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0023,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0236,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0022,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0248,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0109,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0048,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0042,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0003,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0184,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0065,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0028,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0056,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0047,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0098,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0015,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0142,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0017,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0234,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0106,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0230,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0039,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0036,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0208,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0084,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0147,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0063,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0183,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0171,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0082,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0191,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0107,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0034,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0237,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0135,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0195,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0119,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0032,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0242,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,HS/TR/AG: funcion de la cita o discurso reproducido no determinable (Q5),,v2
+P92W-0205,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0157,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0067,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0105,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0031,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0177,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0139,NEGATIVE,UNABLE_TO_DETERMINE,POSITIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0249,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0233,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0221,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0136,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0173,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0148,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0115,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0085,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,"HS/AG: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0095,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0227,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0102,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0150,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0165,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0204,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0149,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0120,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0239,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0090,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0016,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0070,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0054,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0133,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0037,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0194,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0055,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0137,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0235,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0027,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0053,NEGATIVE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,"TR/AG: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0218,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0178,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0021,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0125,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0219,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS/AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0152,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0081,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0182,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0076,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: funcion de la cita o discurso reproducido no determinable (Q5),,v2
+P92W-0005,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS/AG: funcion de la cita o discurso reproducido no determinable (Q5),,v2
+P92W-0074,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0068,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0060,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0188,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: deseo de muerte o ataque sin referencia a grupo; duda odio vs. ofensa,,v2
+P92W-0019,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0168,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0214,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0030,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0210,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0160,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0108,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0240,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0180,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0057,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0241,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0097,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0064,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0094,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0040,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0078,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0044,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0124,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS/AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0035,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0101,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0113,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0167,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0146,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0245,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: funcion de la cita o discurso reproducido no determinable (Q5),,v2
+P92W-0179,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0196,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0029,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0215,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0045,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0130,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0203,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0170,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0232,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0111,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0141,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0002,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0163,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0181,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0198,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0128,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0132,UNABLE_TO_DETERMINE,NEGATIVE,NEGATIVE,HS: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0014,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0026,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0200,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0247,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0092,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0104,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0140,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0164,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0238,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0087,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0190,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0110,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0114,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0126,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0018,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0103,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0073,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,"HS/AG: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0096,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0172,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0075,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0209,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0187,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0050,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0118,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0089,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0043,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0143,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0216,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0231,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0116,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0093,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0001,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0041,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0202,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0011,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0176,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0186,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0162,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0121,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0224,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0158,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0201,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0077,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0088,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS/AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0228,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0008,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0166,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0013,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0223,POSITIVE,POSITIVE,POSITIVE,,,v2
+P92W-0153,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0083,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0226,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0145,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0212,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0189,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0243,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,HS/TR: funcion de la cita o discurso reproducido no determinable (Q5),,v2
+P92W-0156,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS/AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0131,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0123,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0058,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0079,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P92W-0006,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0033,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0211,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0071,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0174,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: deseo de muerte o ataque sin referencia a grupo; duda odio vs. ofensa,,v2
+P92W-0086,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P92W-0046,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0020,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,TR: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P92W-0193,UNABLE_TO_DETERMINE,NEGATIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P92W-0066,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0229,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P92W-0059,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P92W-0062,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P92W-0246,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
