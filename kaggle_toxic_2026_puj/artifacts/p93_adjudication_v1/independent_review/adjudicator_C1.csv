@@ -1,0 +1,128 @@
+adjudication_review_id,HS_annotation,TR_annotation,AG_annotation,uncertainty_notes,tweet_note,guideline_version
+P93R-0029,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0019,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0071,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P93R-0114,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0011,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0112,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0013,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0117,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P93R-0052,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0110,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: deseo de muerte o ataque sin referencia a grupo; duda odio vs. ofensa,,v2
+P93R-0049,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0030,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0008,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0103,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0036,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0020,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0039,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0004,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0014,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0021,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0076,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0088,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0051,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0058,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P93R-0113,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0035,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0069,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0012,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0086,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0054,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P93R-0064,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0107,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0100,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0065,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0025,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0120,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0077,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0070,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: funcion de la cita o discurso reproducido no determinable (Q5),,v2
+P93R-0073,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0105,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0119,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0005,NEGATIVE,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,TR/AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P93R-0125,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0038,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0044,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0032,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P93R-0111,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0053,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0023,UNABLE_TO_DETERMINE,NEGATIVE,NEGATIVE,HS: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P93R-0059,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0093,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0080,NEGATIVE,POSITIVE,UNABLE_TO_DETERMINE,AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P93R-0056,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0109,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0018,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,HS: 'puto' ambiguo (insulto general vs. homofobo); duda odio vs. ofensa,,v2
+P93R-0072,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0033,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0068,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0037,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0046,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0108,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0042,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0096,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,"HS/AG: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0028,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0002,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,HS: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P93R-0001,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0106,UNABLE_TO_DETERMINE,POSITIVE,UNABLE_TO_DETERMINE,HS/AG: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P93R-0095,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0083,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0124,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0015,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0006,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0092,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0010,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0090,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0094,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0097,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0003,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0079,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0089,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0031,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0115,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0024,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P93R-0062,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0063,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0075,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0048,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0061,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0127,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0121,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0060,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0017,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0050,UNABLE_TO_DETERMINE,POSITIVE,POSITIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0116,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0091,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0027,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0082,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0034,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0081,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0016,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0007,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0099,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0084,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0122,UNABLE_TO_DETERMINE,NEGATIVE,NEGATIVE,HS: tono jocoso/ironico o entre conocidos; no decidible sin contexto (Q4),,v2
+P93R-0041,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0085,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0087,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0045,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0055,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0074,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0098,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0126,UNABLE_TO_DETERMINE,NEGATIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0009,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0123,NEGATIVE,UNABLE_TO_DETERMINE,POSITIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P93R-0067,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0101,NEGATIVE,POSITIVE,POSITIVE,,,v2
+P93R-0102,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0047,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0043,NEGATIVE,UNABLE_TO_DETERMINE,NEGATIVE,"TR: falta contexto o referente no identificable (tweet original, enlace, apodo)",,v2
+P93R-0066,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0026,UNABLE_TO_DETERMINE,POSITIVE,NEGATIVE,"HS: insulto sexista individual o estereotipo sexista; duda odio vs. ofensa (seccion 6, pregunta 1)",,v2
+P93R-0118,NEGATIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0040,POSITIVE,POSITIVE,NEGATIVE,,,v2
+P93R-0057,POSITIVE,POSITIVE,POSITIVE,,,v2
+P93R-0022,NEGATIVE,NEGATIVE,NEGATIVE,,,v2
+P93R-0078,UNABLE_TO_DETERMINE,UNABLE_TO_DETERMINE,NEGATIVE,"HS/TR: generalizacion hostil sin insulto explicito; frontera no definida (seccion 6, pregunta 2)",,v2
+P93R-0104,NEGATIVE,NEGATIVE,NEGATIVE,,,v2

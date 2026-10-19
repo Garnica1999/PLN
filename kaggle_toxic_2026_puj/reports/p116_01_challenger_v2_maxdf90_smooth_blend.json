@@ -1,0 +1,172 @@
+{
+  "experimento": "P116-01",
+  "descripcion": "Challenger Tri-Optimizer Smooth Blend con MaxDF90, C_AG=1.2, T=1.06, thr_AG=0.47 y Regla Ascendente",
+  "duracion_segundos": 645.76,
+  "features": {
+    "tipo": "Union triple TF-IDF V2_maxdf90 (word(1,2) + char_wb(3,5) + char(1,6), max_df=0.90)",
+    "min_df": 2,
+    "max_df": 0.9,
+    "dimension": 86262,
+    "bloques": [
+      [
+        "word",
+        [
+          1,
+          2
+        ],
+        true,
+        0.9
+      ],
+      [
+        "char_wb",
+        [
+          3,
+          5
+        ],
+        true,
+        0.9
+      ],
+      [
+        "char",
+        [
+          1,
+          6
+        ],
+        true,
+        0.9
+      ]
+    ]
+  },
+  "modelos": {
+    "lr_liblinear": {
+      "solver": "liblinear",
+      "C_per_label": {
+        "HS": 2.0,
+        "TR": 1.8,
+        "AG": 1.2
+      },
+      "class_weight": "balanced",
+      "peso": 0.8
+    },
+    "sgd_log_loss": {
+      "loss": "log_loss",
+      "penalty": "l2",
+      "alpha": 5e-06,
+      "class_weight": "balanced",
+      "peso": 0.05
+    },
+    "saga_elasticnet": {
+      "solver": "saga",
+      "penalty": "elasticnet",
+      "l1_ratio": 0.05,
+      "C_per_label": {
+        "HS": 2.0,
+        "TR": 1.8,
+        "AG": 1.2
+      },
+      "class_weight": "balanced",
+      "peso": 0.15
+    },
+    "pesos_blend": {
+      "w_lr": 0.8,
+      "w_sgd": 0.05,
+      "w_saga": 0.15
+    },
+    "calibracion_temperatura": 1.06
+  },
+  "umbrales": {
+    "HS": 0.44,
+    "TR": 0.51,
+    "AG": 0.47
+  },
+  "regla_postproceso": "TR=1 => HS=1",
+  "controles": {
+    "diff_p114_m2": 2.792620253933009e-07
+  },
+  "validacion": {
+    "canonica": {
+      "ccv_p116": 0.786348101628505,
+      "ccv_p114": 0.7872182792620254,
+      "delta_vs_p114": -0.0008701776335203748,
+      "delta_vs_v03": 0.009136649111932904,
+      "f1_por_etiqueta": {
+        "HS": 0.7684288905435592,
+        "TR": 0.8220720720720721,
+        "AG": 0.7685433422698839
+      },
+      "f1_pliegues_p116": [
+        0.7990120652478067,
+        0.8048129899041792,
+        0.7833336724353771,
+        0.7533887975998382,
+        0.791950560089564
+      ],
+      "f1_pliegues_p114": [
+        0.8011762411762411,
+        0.8034748515641604,
+        0.7905041818085298,
+        0.7561227785946887,
+        0.7848276112427056
+      ],
+      "pliegues_ganados": "2/5",
+      "bootstrap_win_rate": 0.311,
+      "bootstrap_ci95": [
+        -0.0041244271830385955,
+        0.002285888371037582
+      ],
+      "violaciones_ascendentes": 24
+    },
+    "particion_47": {
+      "ccv_p116": 0.788891972025007,
+      "ccv_p114": 0.7856733330466952,
+      "delta_vs_p114": 0.003218638978311872,
+      "delta_vs_v03": 0.011680519508434961,
+      "f1_por_etiqueta": {
+        "HS": 0.7665920954511558,
+        "TR": 0.8292134831460675,
+        "AG": 0.7708703374777975
+      },
+      "f1_pliegues_p116": [
+        0.7748356961107706,
+        0.7773410941950267,
+        0.7895107897322845,
+        0.8066457969691389,
+        0.7950718400633511
+      ],
+      "f1_pliegues_p114": [
+        0.7711918893264466,
+        0.7812763322892237,
+        0.7821473611442854,
+        0.8032624366015221,
+        0.7895522388059701
+      ],
+      "pliegues_ganados": "4/5",
+      "bootstrap_win_rate": 0.9485,
+      "bootstrap_ci95": [
+        -0.000622268873278195,
+        0.007094156410529016
+      ],
+      "violaciones_ascendentes": 22
+    },
+    "ccv_media_p116": 0.7876200368267561,
+    "ccv_media_p114": 0.7864458061543602,
+    "delta_media_vs_p114": 0.0011742306723958595
+  },
+  "test": {
+    "celdas_distintas_vs_p114": 23,
+    "pct_distintas_vs_p114": 0.6643558636626228,
+    "cambios_0_a_1": 12,
+    "cambios_1_a_0": 11,
+    "balance_neto": 1,
+    "violaciones_ascendentes_corregidas": 11,
+    "total_positivos_p116": 1266,
+    "tasa_positivos_pct": 36.56845753899481,
+    "positivos_por_etiqueta": {
+      "HS": 517,
+      "TR": 334,
+      "AG": 415
+    },
+    "submission_archivo": "submissions/toxic_submission_p116_v2_maxdf90_smooth_blend_asc.csv",
+    "submission_sha256": "6d7c5ff9b383ae274cbe130ec525af4fe3e05f3be03886b2d9b7dcc9861f1973"
+  }
+}

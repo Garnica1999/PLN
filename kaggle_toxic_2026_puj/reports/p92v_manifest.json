@@ -1,0 +1,64 @@
+{
+  "package": "human_annotation_v2",
+  "policy_id": "PROJECT_OPERATIONAL_ANNOTATION_POLICY_V2",
+  "guideline_file": "reports/p92_annotation_guidelines_v2_frozen.md",
+  "guideline_sha256": "46be258ad47074405abce99e79ef831970d7b877e1987705de375432413117f8",
+  "guideline_sha256_convencion": "sha256 del contenido sin la linea que contiene el hash",
+  "date": "2026-10-13",
+  "counts": {
+    "annotator_rows": 250,
+    "principal_tweets": 250,
+    "cells_per_annotator": 750,
+    "tweets_componente_A": 100,
+    "tweets_componente_B": 150
+  },
+  "guideline_version_csv": "v2",
+  "source": {
+    "membership": "identica a human_annotation_v1 (mismos 250 review_id; orden por anotador preservado de v1; ordenes A y B distintos)",
+    "texts": "identicos a data/raw/toxic_train.csv (verificado fila a fila, 500 comprobaciones)",
+    "v1_annotator_A_sha256": "7dfd5b898d3905f21e431d4a076655d034b7f791730e6ccac3b9d9612ca9546b",
+    "v1_annotator_B_sha256": "956646fa479f0c6515af7c76ec323d5d9d9ca5a9c47004249490c1a507ba8351"
+  },
+  "blinding": {
+    "hidden": [
+      "original_example_id",
+      "original_labels",
+      "oof_probabilities",
+      "v03_predictions",
+      "threshold_distances",
+      "fold",
+      "sample_component",
+      "selection_reasons",
+      "dup_groups",
+      "internal_key",
+      "other_annotator_responses"
+    ],
+    "visible": [
+      "review_id",
+      "text",
+      "empty annotation columns",
+      "uncertainty_notes",
+      "tweet_note",
+      "guideline_version"
+    ]
+  },
+  "files": {
+    "artifacts/human_annotation_v2/annotator_A/annotator_A.csv": "1238591610216bf3b8378bfdf5e9bc2fa034644da4f19e2dc01b5e104bc456ac",
+    "artifacts/human_annotation_v2/annotator_A/README_annotator.md": "9c38f06586e80712638e75c55e443c373d8fe2f2955a44dcf123cf7d8e4f991b",
+    "artifacts/human_annotation_v2/annotator_A/annotation_guidelines_v2_frozen.md": "77de86cab947c8cd8452bd65ebc76bb371e4715d6da2ec184534dafa568f9db4",
+    "artifacts/human_annotation_v2/annotator_B/annotator_B.csv": "8085697fe408d7a83636de495673627af800dbc9e0542fe7323f05c7b7501e22",
+    "artifacts/human_annotation_v2/annotator_B/README_annotator.md": "470295b7bf4bd0e341384824109f593d8500cb3adabfaea128fd1e9322c0c994",
+    "artifacts/human_annotation_v2/annotator_B/annotation_guidelines_v2_frozen.md": "77de86cab947c8cd8452bd65ebc76bb371e4715d6da2ec184534dafa568f9db4",
+    "reports/p92_annotation_guidelines_v2_frozen.md": "77de86cab947c8cd8452bd65ebc76bb371e4715d6da2ec184534dafa568f9db4",
+    "v1/annotator_A.csv": "7dfd5b898d3905f21e431d4a076655d034b7f791730e6ccac3b9d9612ca9546b",
+    "v1/annotator_B.csv": "956646fa479f0c6515af7c76ec323d5d9d9ca5a9c47004249490c1a507ba8351"
+  },
+  "distribution": "NOT_DISTRIBUTED",
+  "limitations": [
+    "politica operativa interna; no definicion oficial de la competencia",
+    "official_semantics = UNRESOLVED (sin aclaracion solicitada)",
+    "componente B no representativa (heredado de v1)",
+    "sin adjudicacion aun; ningun gold standard"
+  ],
+  "terminology_note": "750 anotaciones de etiqueta por anotador; 3 respuestas posibles por anotacion"
+}

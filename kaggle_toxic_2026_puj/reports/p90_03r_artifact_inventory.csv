@@ -1,0 +1,50 @@
+path,status_git,phase,artifact_type,exists,sha256,referenced_in_manifest,referenced_in_report,discrepancy
+experiments/p90_02_auditoria_integral.py,??,P90.02,script,SI,5519b6a5343b80e082b38033415ada75b352b8163909ab52db4e302fb748883e,SI,n/a (fase anterior),NINGUNA
+experiments/p90_02b_informe_y_handoff.py,??,P90.02,script,SI,9d6953dff65aec837665761cec89d25109e9ae90220173542bc20f8fa6a8fc5b,SI,n/a (fase anterior),NINGUNA
+experiments/p90_03_diagnostico_contribuciones.py,??,P90.03,script,SI,268fdcd7b2ffc4916040b129f0f5b131dce2d69cfbaf7cdb3877173bb8a02e34,SI,n/a (fase anterior),incluido en el conjunto del escaneo de 13 de la respuesta final; NO es artefacto nuevo de P90.03-R
+experiments/p90_03_integrar_notebook.py,??,P90.02 (integrador seccion 136; prefijo p90_03),script,SI,55080ac146a8c04a9d083a64eae9b5bb71b223948d060902dd9e10af369decad,SI,n/a (fase anterior),incluido en el conjunto del escaneo de 13 de la respuesta final; NO es artefacto nuevo de P90.03-R
+experiments/p90_03b_informe_handoff.py,??,P90.03,script,SI,5b20ae376bca19ecdaec37f31434fed0aaa0d8d16989bb6a6bcf21d4dd76b559,SI,n/a (fase anterior),incluido en el conjunto del escaneo de 13 de la respuesta final; NO es artefacto nuevo de P90.03-R
+experiments/p90_03r_reconstruccion_oof.py,??,P90.03-R,script,SI,58bcdc1d27a83d73eee3b263d668a69d00083e01bac631e34486b3e313f2214e,SI,SI,NINGUNA
+experiments/p90_03rb_informe.py,??,P90.03-R,script,SI,f001c3dad819ce988a322d2badcf5447d46709b55a3e4ca0ae03c8f4aafe7bfb,SI,SI,NINGUNA
+experiments/p90_04_integrar_notebook.py,??,P90.03 (integrador seccion 137),script,SI,9369b35e16b30170e64a1b178ac2a9d73d23535abcfada001ca615541bfcfcb7,NO,n/a (fase anterior),incluido en el conjunto del escaneo de 13 de la respuesta final; NO es artefacto nuevo de P90.03-R
+experiments/p90_05_integrar_notebook.py,??,P90.03-R,script,SI,fc6cca398734a969f0e47ae1aa44bcd515bcdb2b9f644e85c07a28a6d20d79a6,NO,SI,no hasheado en p90_03r_manifest.json (creado despues del manifiesto; hash registrado aqui)
+reports/p90_02_artifact_inventory.csv,??,P90.02,tabla_csv,SI,23d86a96837c2256cf79679e4a6fbedff8bf9dc718bbb16784debc23eda75241,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_audit_manifest.json,??,P90.02,json,SI,ac5f3c0ea7329c4b4c8dbf036cf9e4fece0ec2053a183627407e95f73f9ae1fe,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_audit_results.json,??,P90.02,json,SI,e53bfeabdbc9d7f606defaa5c821fb7b362fd1e938af7ec65b14b8d08929d487,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_casebook_validation.csv,??,P90.02,tabla_csv,SI,3c1e501e786d17413e5fc41ca33b8f15dd6b99aae764113a5a28e4c84ba00c48,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_chatgpt_handoff.md,??,P90.02,informe_md,SI,2f34c136c9e3e3939b4d1071df9cf37e980c1a6cadee729e6c6b8095191e629b,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_corpus_profile.csv,??,P90.02,tabla_csv,SI,1ea2dcc90d9ab21b04d9c882c1fd91d0bcb33b2b4a6912108622605d3d80daa7,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_error_diagnosis.csv,??,P90.02,tabla_csv,SI,9de411f85ae330e4946202455e912b3669cb529e25378304306ad97fc310f578,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_error_intersections.csv,??,P90.02,tabla_csv,SI,54bf8cf000075b99d1931e8877c0666ee3e86263f958c2c46fef343848dff7a9,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_final_consistency_check.md,??,P90.02,informe_md,SI,c6dd99cf7cbce23ce61864364e573e7611dd8b00759d9e3ae80ad4eb3f5b26f5,NO,n/a (fase anterior),NINGUNA
+reports/p90_02_group_audit_addendum.md,??,P90.02,informe_md,SI,b4f3cd5031be3fb94064ec519d4321201be66b04bce1792a5d3c671e81f572d6,NO,n/a (fase anterior),NINGUNA
+reports/p90_02_historical_eda_matrix.csv,??,P90.02,tabla_csv,SI,f7c9316fb593fa8703d9c0c3fdd890d55639a37c68cfe2e71f951423a997b477,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_hypothesis_status.csv,??,P90.02,tabla_csv,SI,76d94b19774c9c2561a47be9f24c4609dd554916c26768ae168b23f24e822523,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_integrity_and_corpus_audit.md,??,P90.02,informe_md,SI,c002c4531b459c7a877a39f16958a810a8fd1435472ebc3f85f0b0b97e27d401,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_label_distribution.csv,??,P90.02,tabla_csv,SI,7263a94428de3dc914e86e7b9e856f47aa5fb00c95c5e19bd2de7fc908af2422,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_metric_reconciliation.csv,??,P90.02,tabla_csv,SI,116cdd466a891f303216c7d29857ac6dfab7c779f7fd775ee47b116f1e7ef48d,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_representative_cases.csv,??,P90.02,tabla_csv,SI,dbc7dddd18a12318bda4b17eacb7e6be913404ec4eea65a583a367abb4aa0517,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_review_sample_audit.csv,??,P90.02,tabla_csv,SI,e574eca07b5667c73c3c659300cb50e8084139e1e37b18fdaeb19bc5ad7f5a94,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_slice_metrics.csv,??,P90.02,tabla_csv,SI,0df8b4e43c08c3156eff603dae7a3fd58c5f6ec36e52a21e1d800c45e9049167,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_slice_overlap.csv,??,P90.02,tabla_csv,SI,b1bd665f8f17354c1aa0ac2ccb8c5c4fcc353d85906e730cdf2fd529fde50bef,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_slice_registry.csv,??,P90.02,tabla_csv,SI,408e5f91a6695bd3c79f7389d37c18dd76acf57b2d70f031ceaa7743cd14734a,SI,n/a (fase anterior),NINGUNA
+reports/p90_02_text_provenance.csv,??,P90.02,tabla_csv,SI,6a8c3a58269a2961a8a682a87ae12a2d225862144669670d23d4372029ade900,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_artifact_manifest.json,??,P90.03,json,SI,9da88948002d181139107770cfefa5daf22b263cb76dc98d7e48898427f4c8bc,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_audit_results.json,??,P90.03,json,SI,f0bc0695b12c36cf7326b76792796d0e93b6cfdc0c10b0e9036b61baab4f73af,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_chatgpt_handoff.md,??,P90.03,informe_md,SI,6a7e70af0eea9c8465c4331d75ceadc74560c48fd4675bc156c5a5f77d3f8f8d,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_error_contribution_by_cell.csv,??,P90.03,tabla_csv,SI,872fb3cfbf28e511275081ef7cc39dacd25474855af2fc7eddf45100041c37ac,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_error_control_comparison.csv,??,P90.03,tabla_csv,SI,cdef1ea4e04e7eae5b286b95605f6679ed44ae20edc2721ebbc8bfc2819bad78,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_error_signature_profiles.csv,??,P90.03,tabla_csv,SI,f2c43cc148179bb9d0d01980a53da992ce3be489ba7f68849d319474cfcd43c3,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_feature_contribution_diagnostic.md,??,P90.03,informe_md,SI,a586bd3c8ef36cf6ea74a00e5bd046e5bf953f9940d4445c610c46f32cfcbbb6,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_feature_contribution_summary.csv,??,P90.03,tabla_csv,SI,584453e4ea3309f48ad5b5b1fd1a3ef9713d067a57361be7158a21e306c733f6,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_hypothesis_candidates.csv,??,P90.03,tabla_csv,SI,18f277b1bb0fce5d8226d2d47a1ffbf284442e6b8cd36910c4f26e907d7d7904,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_hypothesis_gap_analysis.csv,??,P90.03,tabla_csv,SI,8bd3490e03e3903b1b4182345561656d4fc6a51eec647a6232a84967d548a808,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_key_feature_associations.csv,??,P90.03,tabla_csv,SI,a425e5eab6da79967a601e78a52f4bd625211a8dff812d56129d8d49fd6ce4d2,SI,n/a (fase anterior),NINGUNA
+reports/p90_03_slice_contribution_summary.csv,??,P90.03,tabla_csv,SI,985cfd7ca8b8cb16d2f94b99acab914b3e1aede65c02ada55765f5a0ad06fcef,SI,n/a (fase anterior),NINGUNA
+reports/p90_03r_audit_results.json,??,P90.03-R,json,SI,2d362b689b021918c6fced85d46c25efb1d5d11769dca39085738eb1866f482e,SI,SI,NINGUNA
+reports/p90_03r_exact_oof_attribution.csv,??,P90.03-R,tabla_csv,SI,4b10562758bf894f0029c87b5378b5e293a055d8732ca08f65f3d4263db0773f,SI,SI,NINGUNA
+reports/p90_03r_exact_oof_attribution.md,??,P90.03-R,informe_md,SI,58f421944cf84a566b1348532c79908d59d4b3a6cfd63c1e19d17e60d32c8b27,SI,SI,NINGUNA
+reports/p90_03r_feature_contributions.csv,??,P90.03-R,tabla_csv,SI,8da14e30574bf919b16fae2e4e85e20a65e2e0993bf587d33862df2c46ccd311,SI,SI,NINGUNA
+reports/p90_03r_manifest.json,??,P90.03-R,json,SI,42beb541d0575e08873bf458f7b13764e5033a1bf482184dc214d7f5e68288ac,NO,SI,no auto-hasheado (normal en el patron del proyecto)
+reports/p90_03r_oof_reproduction.csv,??,P90.03-R,tabla_csv,SI,e73da1df95fe434b8f64fc937e0f31929c4844c1427b836d717f9f4c68a0273b,SI,SI,NINGUNA
+notebooks/10_final_pipeline.ipynb,M,MODIFICADO (P90.02+P90.03+P90.03-R),notebook,SI,66349a8e79a416c72ef43d3f44407cbf660cf23beaf06803e913b7e398018e1d,SI,NO,modificado (271 inserciones; secciones 135/136/137/137R); no es salida del manifiesto P90.03-R

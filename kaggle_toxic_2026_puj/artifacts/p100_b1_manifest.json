@@ -1,0 +1,108 @@
+{
+  "experiment_id": "P100-10",
+  "fase": "P100-B1 (construccion)",
+  "fecha": "2026-10-13",
+  "seed": 20260925,
+  "objetivo_total": 29727450,
+  "tokens_finales": 29727450,
+  "documentos_finales": 162977,
+  "objetivos_nominales": {
+    "social": 4227450,
+    "conversacional": 9000000,
+    "wikipedia": 11650000,
+    "mc4": 4850000
+  },
+  "tokens_por_fuente": {
+    "social": 4227450,
+    "mc4": 4850000,
+    "conversacional": 9000000,
+    "wikipedia": 11650000
+  },
+  "documentos_por_fuente": {
+    "social": 148413,
+    "mc4": 7848,
+    "conversacional": 3445,
+    "wikipedia": 3271
+  },
+  "exactitud": "objetivos exactos por componente; documento limite truncado a nivel token; sin relleno por duplicacion",
+  "truncamientos": {
+    "wikipedia": {
+      "truncado": true,
+      "doc_sha1_original": "a65bf3dfcabd968ef4abb7c70888107026f10bb4",
+      "tokens_originales": 3802,
+      "tokens_conservados": 2267
+    },
+    "mc4": {
+      "truncado": true,
+      "doc_sha1_original": "bb61472a1e6c3b58ffc642dcd792886c46f8b691",
+      "tokens_originales": 346,
+      "tokens_conservados": 297
+    },
+    "conversacional": {
+      "truncado": true,
+      "doc_sha1_original": "1a04411b1bbef1dbcbd533394341f2f4f996cb6c",
+      "tokens_originales": 5777,
+      "tokens_conservados": 1216
+    }
+  },
+  "conversacional_stats": {
+    "archivos_totales": 204061,
+    "archivos_leidos": 3455,
+    "errores_lectura": 0,
+    "duplicados_removidos": 10,
+    "truncamiento": {
+      "truncado": true,
+      "doc_sha1_original": "1a04411b1bbef1dbcbd533394341f2f4f996cb6c",
+      "tokens_originales": 5777,
+      "tokens_conservados": 1216
+    }
+  },
+  "referencia_c98_1": {
+    "documentos": 166022,
+    "tokens": 29737183,
+    "sha256": "9f562718ef4e7d45622040cd9ab5973182cc5405a99bfbc1636fa57abc6b9f0e",
+    "replicacion_claves_identica": true,
+    "por_fuente": {
+      "wikipedia": {
+        "documentos": 5191,
+        "tokens": 18009963
+      },
+      "mc4": {
+        "documentos": 12418,
+        "tokens": 7499770
+      },
+      "twitter": {
+        "documentos": 148413,
+        "tokens": 4227450
+      }
+    }
+  },
+  "subset_verificacion": {
+    "docs_social_general": 159532,
+    "en_c98_1_exactos": 159530,
+    "prefijos_limite": 2,
+    "prefijos_limite_verificados": 2,
+    "fallos": 0
+  },
+  "val_language_docs": 3320,
+  "val_presentes_en_b1": 3189,
+  "val_por_componente": {
+    "wikipedia": 63,
+    "mc4": 158,
+    "social": 2968,
+    "conversacional": 0
+  },
+  "val_exclusion": "p100_11 excluye las claves val del stream de entrenamiento y evalua el medidor fijo de 3.320 documentos materializados (regla p98_12)",
+  "coincidencias_exactas_vs_train": 0,
+  "overlap_conversacional_vs_s99_01": 0,
+  "fuentes": {
+    "wikipedia": "wikipedia_es_50M (CC BY-SA 4.0)",
+    "mc4": "mc4_es (ODC-BY 1.0)",
+    "social": "twitter_domain COVID-es (CC BY-SA 4.0; autorizacion p73/P98)",
+    "conversacional": "ChatSubs es (CC BY-NC 4.0; condiciones del propietario 2026-10-13)"
+  },
+  "sha256": "5111a1832fe9567bac5b777d31cea4daaf76ba3a7023ce7625c1ef73a6c40b9e",
+  "ruta": "data/external/corpora/p100_b1/tokens_30m.txt",
+  "criterios": "pre-registrado en reports/p100_preregistration.md; objetivos exactos autorizados 2026-10-13; dedup exacta; sin toxic_test; sin descargas nuevas",
+  "tiempo_s": 113.0
+}

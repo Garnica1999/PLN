@@ -1,0 +1,98 @@
+{
+ "audit_id": "P91-01",
+ "hashes": {
+  "oof": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+  "v2base": "27dfa83736b979518a94bc93e32bb9cae07bc82eaff92234fe9e15d1f9822774",
+  "consistencia": "8c90b9dd7f68fb8f3afdc9687b5adb99aed239162414575a43b87e6cf50c7587",
+  "grupos": "afabf9ae1c295ea8f203120bf28578cb4bdb4e8f16b89178d820baeaac62e622",
+  "particion": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd"
+ },
+ "marginales": {
+  "HS": 648,
+  "TR": 445,
+  "AG": 567
+ },
+ "combos": {
+  "(0, 0, 0)": 813,
+  "(0, 0, 1)": 22,
+  "(1, 0, 0)": 79,
+  "(1, 0, 1)": 124,
+  "(1, 1, 0)": 24,
+  "(1, 1, 1)": 421
+ },
+ "tr_sin_hs": 0,
+ "ag_sin_hs": 22,
+ "conteos_por_etiqueta": {
+  "HS": {
+   "n_pos": 648,
+   "n_neg": 835,
+   "fn_p_le_0.05": 0,
+   "fn_p_le_0.10": 5,
+   "fp_p_ge_0.95": 1,
+   "fp_p_ge_0.90": 5,
+   "cerca_threshold": 81,
+   "errores": 316
+  },
+  "TR": {
+   "n_pos": 445,
+   "n_neg": 1038,
+   "fn_p_le_0.05": 4,
+   "fn_p_le_0.10": 8,
+   "fp_p_ge_0.95": 1,
+   "fp_p_ge_0.90": 9,
+   "cerca_threshold": 26,
+   "errores": 164
+  },
+  "AG": {
+   "n_pos": 567,
+   "n_neg": 916,
+   "fn_p_le_0.05": 0,
+   "fn_p_le_0.10": 1,
+   "fp_p_ge_0.95": 2,
+   "fp_p_ge_0.90": 6,
+   "cerca_threshold": 72,
+   "errores": 277
+  }
+ },
+ "unanimidad_4modelos": {
+  "HS": 199,
+  "TR": 118,
+  "AG": 179
+ },
+ "desacuerdo_histograma": {
+  "0": 3255,
+  "1": 351,
+  "2": 176,
+  "3": 171,
+  "4": 496
+ },
+ "vecindad": {
+  "en_cluster_dev": 68,
+  "discrepancia_por_etiqueta": {
+   "HS": 42,
+   "TR": 42,
+   "AG": 43
+  }
+ },
+ "duplicados": {
+  "near_dup_grupos_div": 1,
+  "near_dup_filas_div": 3,
+  "near_dup_grupos_no_unitarios": 2,
+  "fused_grupos_div": 13,
+  "fused_filas_div": 43,
+  "fused_grupos_no_unitarios": 37
+ },
+ "cola": {
+  "celdas": 882,
+  "razones": {
+   "HIGH_CONFIDENCE_OOF_DISAGREEMENT": 418,
+   "RANDOM_REFERENCE_SAMPLE": 300,
+   "POSSIBLE_INSTANCE_LABEL_INCONSISTENCY": 129,
+   "DOCUMENTED_RULE_CONFLICT": 22,
+   "LABEL_SPECIFIC_MARGIN": 84
+  },
+  "muestra_referencia_tweets": 100,
+  "semilla": 20261010,
+  "cap_enriquecido_por_componente": 150
+ }
+}

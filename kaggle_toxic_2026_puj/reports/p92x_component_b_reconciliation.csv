@@ -1,0 +1,34 @@
+categoria,clave,valor,nota
+unique_tweets,componente_A,100,tweets unicos
+unique_tweets,componente_B,150,tweets unicos
+unique_tweets,calibracion,15,tweets unicos
+unique_tweets,principal,250,A + B
+reason_assignments,DOCUMENTED_RULE_CONFLICT,19,asignaciones de motivo (con solapes; no suman 150)
+reason_assignments,HIGH_CONFIDENCE_OOF_DISAGREEMENT,124,asignaciones de motivo (con solapes; no suman 150)
+reason_assignments,LABEL_SPECIFIC_MARGIN,14,asignaciones de motivo (con solapes; no suman 150)
+reason_assignments,POSSIBLE_INSTANCE_LABEL_INCONSISTENCY,19,asignaciones de motivo (con solapes; no suman 150)
+reason_assignments,RANDOM_REFERENCE_SAMPLE,10,asignaciones de motivo (con solapes; no suman 150)
+reason_assignments,TOTAL,186,suma de asignaciones; mayor que 150 por multi-motivo
+reason_assignments,combinaciones_distintas,11,combinaciones de motivos presentes
+assignment_combination,DOCUMENTED_RULE_CONFLICT,11,filas con esta combinacion exacta
+assignment_combination,DOCUMENTED_RULE_CONFLICT; HIGH_CONFIDENCE_OOF_DISAGREEMENT,7,filas con esta combinacion exacta
+assignment_combination,DOCUMENTED_RULE_CONFLICT; LABEL_SPECIFIC_MARGIN,1,filas con esta combinacion exacta
+assignment_combination,HIGH_CONFIDENCE_OOF_DISAGREEMENT,93,filas con esta combinacion exacta
+assignment_combination,HIGH_CONFIDENCE_OOF_DISAGREEMENT; LABEL_SPECIFIC_MARGIN,10,filas con esta combinacion exacta
+assignment_combination,HIGH_CONFIDENCE_OOF_DISAGREEMENT; LABEL_SPECIFIC_MARGIN; POSSIBLE_INSTANCE_LABEL_INCONSISTENCY,1,filas con esta combinacion exacta
+assignment_combination,HIGH_CONFIDENCE_OOF_DISAGREEMENT; LABEL_SPECIFIC_MARGIN; RANDOM_REFERENCE_SAMPLE,1,filas con esta combinacion exacta
+assignment_combination,HIGH_CONFIDENCE_OOF_DISAGREEMENT; POSSIBLE_INSTANCE_LABEL_INCONSISTENCY,4,filas con esta combinacion exacta
+assignment_combination,HIGH_CONFIDENCE_OOF_DISAGREEMENT; RANDOM_REFERENCE_SAMPLE,8,filas con esta combinacion exacta
+assignment_combination,LABEL_SPECIFIC_MARGIN; POSSIBLE_INSTANCE_LABEL_INCONSISTENCY; RANDOM_REFERENCE_SAMPLE,1,filas con esta combinacion exacta
+assignment_combination,POSSIBLE_INSTANCE_LABEL_INCONSISTENCY,13,filas con esta combinacion exacta
+exclusive_sampling_tier,PILI,19,prioridad PILI > DRC > HCD > LSM; sin doble contabilizacion
+exclusive_sampling_tier,DRC,19,prioridad PILI > DRC > HCD > LSM; sin doble contabilizacion
+exclusive_sampling_tier,HCD,112,prioridad PILI > DRC > HCD > LSM; sin doble contabilizacion
+exclusive_sampling_tier,LSM_otros,0,prioridad PILI > DRC > HCD > LSM; sin doble contabilizacion
+exclusive_sampling_tier,TOTAL,150,suma exacta de la seleccion final
+available_vs_admitted,PILI,33 -> 19,bloqueadas por cap 2/grupo: 14
+available_vs_admitted,DRC,19 -> 19,bloqueadas: 0
+available_vs_admitted,HCD,182 -> 112,tope 150 alcanzado
+available_vs_admitted,LSM_otros,35 -> 0,tope 150 alcanzado
+checks,simulacion_reproduce_seleccion,True,misma semilla 20261018 y mismo algoritmo
+checks,exclusiones_cola_con_causa_reservada,69/69,todas las exclusiones de la cola pertenecen a particiones reservadas

@@ -1,0 +1,164 @@
+{
+  "experiment_id": "P103-02",
+  "fase": "P103 RONDA 2 (N6): word dropout conservador",
+  "fecha": "2026-10-14",
+  "control": {
+    "diff_max_proba": 0.0,
+    "ccv": 0.7772114525165721,
+    "reproduce_v03": true,
+    "particion_47": {
+      "celdas_distintas": 0,
+      "diff_max_proba": 0.0
+    }
+  },
+  "v03_referencia": {
+    "corrected_cv": 0.7772114525165721,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    }
+  },
+  "malla": [
+    [
+      0.05,
+      1
+    ],
+    [
+      0.05,
+      2
+    ],
+    [
+      0.1,
+      1
+    ],
+    [
+      0.1,
+      2
+    ],
+    [
+      0.15,
+      1
+    ],
+    [
+      0.15,
+      2
+    ]
+  ],
+  "canonica": {
+    "corrected_cv": 0.770339,
+    "delta_vs_v03": -0.006873,
+    "folds": [
+      0.780078,
+      0.781112,
+      0.778236,
+      0.741932,
+      0.770164
+    ],
+    "pliegues_mejorados": 1,
+    "celdas_cambiadas": 173,
+    "bootstrap": {
+      "ic95": [
+        -0.015445,
+        0.001793
+      ],
+      "pct_mejora": 0.0625
+    },
+    "deteccion": {
+      "se_bootstrap": 0.004398,
+      "delta_min_detectable_95": 0.008619
+    }
+  },
+  "particion_47": {
+    "corrected_cv": 0.771367,
+    "delta_vs_v03": -0.004265,
+    "folds": [
+      0.763565,
+      0.766219,
+      0.765741,
+      0.789756,
+      0.771053
+    ],
+    "pliegues_mejorados": 1,
+    "celdas_cambiadas": 178,
+    "bootstrap": {
+      "ic95": [
+        -0.012961,
+        0.00414
+      ],
+      "pct_mejora": 0.1795
+    },
+    "deteccion": {
+      "se_bootstrap": 0.004363,
+      "delta_min_detectable_95": 0.00855
+    }
+  },
+  "gate": {
+    "condiciones": {
+      "delta_can_ge_0003": false,
+      "pliegues_ge_4": false,
+      "ic95_excluye_cero": false,
+      "delta_47_positivo": false,
+      "celdas_ge_200": false
+    },
+    "veredicto": "GATE_FAILED"
+  },
+  "conclusion": "sin senal detectable: IC95 del delta [-0.015445,+0.001793] incluye cero; piso de deteccion +0.008619.",
+  "seleccion_por_pliegue_canonica": [
+    {
+      "pliegue": 1,
+      "p": 0.1,
+      "copias": 2
+    },
+    {
+      "pliegue": 2,
+      "p": 0.05,
+      "copias": 1
+    },
+    {
+      "pliegue": 3,
+      "p": 0.15,
+      "copias": 1
+    },
+    {
+      "pliegue": 4,
+      "p": 0.05,
+      "copias": 2
+    },
+    {
+      "pliegue": 5,
+      "p": 0.1,
+      "copias": 2
+    }
+  ],
+  "seleccion_por_pliegue_47": [
+    {
+      "pliegue": 1,
+      "p": 0.05,
+      "copias": 2
+    },
+    {
+      "pliegue": 2,
+      "p": 0.05,
+      "copias": 1
+    },
+    {
+      "pliegue": 3,
+      "p": 0.15,
+      "copias": 2
+    },
+    {
+      "pliegue": 4,
+      "p": 0.15,
+      "copias": 2
+    },
+    {
+      "pliegue": 5,
+      "p": 0.05,
+      "copias": 2
+    }
+  ],
+  "sha_oof_final": "559265816ce4f631",
+  "sha_oof_base": "27dfa83736b97951",
+  "tiempo_s": 104.4
+}

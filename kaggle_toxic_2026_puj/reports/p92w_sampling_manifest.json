@@ -1,0 +1,90 @@
+{
+  "pilot": "P92-W rebuilt main annotation package (holdout-safe)",
+  "date": "2026-10-13",
+  "population_definition": "tweets etiquetados del corpus (toxic_train.csv, 1731) que pertenecen a dev (1483) y NO a holdout2 (247): dev2 = 1236",
+  "exclusion_rules": {
+    "test": "ids de la plantilla submission.csv (1154); no accedido el archivo de test",
+    "historical_holdout": "particion holdout de holdout_v2_ids.csv (248)",
+    "holdout2": "data/processed/holdout2_ids.csv (247)",
+    "no_verificables": "ninguna fila quedo sin particion demostrable (1731 = 1236 + 248 + 247)"
+  },
+  "sampling_frame_size": 1236,
+  "sample_size": {
+    "A_referencia": 100,
+    "B_enriquecido": 150,
+    "calibracion": 15,
+    "principal": 250
+  },
+  "random_seeds": {
+    "A": 20261017,
+    "B": 20261018,
+    "calibracion": 20261019,
+    "review_id": 20261020,
+    "orden_A": 20261021,
+    "orden_B": 20261022,
+    "orden_calibracion": 20261023
+  },
+  "inclusion_probability": {
+    "A": "100/1236 = SRS sin reemplazo",
+    "B": "no probabilistica (seleccion por evidencia; no ponderable sin diseno)",
+    "calibracion": "SRS de 15 sobre dev2 fuera de A y B"
+  },
+  "finite_population_correction": 0.9590818821561389,
+  "expected_sampling_precision": {
+    "supuestos": "95%, DEFF 1.2 (heredado de P91-R), FPC aplicada, p por etiqueta",
+    "por_etiqueta_p005": "+-4.49 pp (N=1236, n=100)",
+    "por_etiqueta_p010": "+-6.18 pp",
+    "por_etiqueta_p050": "+-10.30 pp (peor caso)",
+    "agregado_celdas_p005": "+-2.59 pp (N=3708, n=300)",
+    "nota": "recalculado para N=1236; no se reutilizan los margenes de P91/P92"
+  },
+  "stratification": {
+    "A": "ninguna (SRS sobre dev2 ordenado)",
+    "B": "tiers PILI/DRC/HCD/LSM con round-robin por etiqueta en HCD; cap 2 por grupo",
+    "tiers_disponibles_en_dev2": {
+      "PILI": 33,
+      "DRC": 19,
+      "HCD": 182,
+      "LSM_otros": 35
+    }
+  },
+  "composition_B": {
+    "motivos": {
+      "POSSIBLE_INSTANCE_LABEL_INCONSISTENCY": 13,
+      "HIGH_CONFIDENCE_OOF_DISAGREEMENT; POSSIBLE_INSTANCE_LABEL_INCONSISTENCY": 4,
+      "LABEL_SPECIFIC_MARGIN; POSSIBLE_INSTANCE_LABEL_INCONSISTENCY; RANDOM_REFERENCE_SAMPLE": 1,
+      "HIGH_CONFIDENCE_OOF_DISAGREEMENT; LABEL_SPECIFIC_MARGIN; POSSIBLE_INSTANCE_LABEL_INCONSISTENCY": 1,
+      "DOCUMENTED_RULE_CONFLICT; LABEL_SPECIFIC_MARGIN": 1,
+      "DOCUMENTED_RULE_CONFLICT": 11,
+      "DOCUMENTED_RULE_CONFLICT; HIGH_CONFIDENCE_OOF_DISAGREEMENT": 7,
+      "HIGH_CONFIDENCE_OOF_DISAGREEMENT": 93,
+      "HIGH_CONFIDENCE_OOF_DISAGREEMENT; RANDOM_REFERENCE_SAMPLE": 8,
+      "HIGH_CONFIDENCE_OOF_DISAGREEMENT; LABEL_SPECIFIC_MARGIN": 10,
+      "HIGH_CONFIDENCE_OOF_DISAGREEMENT; LABEL_SPECIFIC_MARGIN; RANDOM_REFERENCE_SAMPLE": 1
+    },
+    "combinaciones_etiqueta": {
+      "000": 48,
+      "001": 19,
+      "100": 11,
+      "101": 33,
+      "110": 7,
+      "111": 32
+    },
+    "grupos_usados": 10,
+    "max_por_grupo": 2
+  },
+  "hashes_origen": {
+    "train": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+    "particion": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd",
+    "holdout2_ids": "f6c6ed958abf728b8210d15c26ec43fbd71659a0918d36089a9c6d6cef1639dc",
+    "submission_plantilla": "0dfb4d07dffc31d3d452f5e53508d259e6ab5c2ec0dcd67bd70e4b03c5016ecc",
+    "cola_p91": "074675225df0bae453fc759fe51aa6c8024e7c01da8875e58795f258395759dc",
+    "guia_congelada": "77de86cab947c8cd8452bd65ebc76bb371e4715d6da2ec184534dafa568f9db4"
+  },
+  "limitations": [
+    "B no representativa de la poblacion",
+    "dependencia residual por grupos near-dup (cap 2)",
+    "politica operativa no oficial",
+    "sin adjudicacion; no es gold standard"
+  ]
+}

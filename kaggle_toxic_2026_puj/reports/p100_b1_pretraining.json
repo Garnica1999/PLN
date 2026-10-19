@@ -1,0 +1,240 @@
+{
+  "experiment_id": "P100-11",
+  "etapa": "P100-B1 (preentrenamiento)",
+  "fecha": "2026-10-13",
+  "cfg": {
+    "vocab_size": 50002,
+    "char_vocab_size": 256,
+    "char_dim": 32,
+    "nn_char": 128,
+    "word_dim": 200,
+    "enc_dim": 512,
+    "hidden": 1024,
+    "capas": 2,
+    "dropout": 0.2,
+    "max_char": 24,
+    "seq_len": 96,
+    "batch": 8192,
+    "lr": 0.001
+  },
+  "corpus": {
+    "ruta": "data/external/corpora/p100_b1/tokens_30m.txt",
+    "sha256": "5111a1832fe9567bac5b777d31cea4daaf76ba3a7023ce7625c1ef73a6c40b9e",
+    "documentos": 162977,
+    "tokens_archivo": 29727450,
+    "composicion": {
+      "social": 4227450,
+      "mc4": 4850000,
+      "conversacional": 9000000,
+      "wikipedia": 11650000
+    }
+  },
+  "vocab_congelado": {
+    "ruta": "features/p98_c98_1_vocab.json",
+    "sha256": "92fecce611f164b74f54f3b05e5b8370b00128ca8523e8a4c5469289b760c9b8"
+  },
+  "val_fijo": {
+    "documentos": 3320,
+    "por_fuente": {
+      "wikipedia": 104,
+      "mc4": 248,
+      "twitter": 2968
+    },
+    "presentes_en_b1_excluidos": 3189
+  },
+  "diagnostico_chatsubs_docs": 500,
+  "epocas": 4,
+  "fraccion_lr": 0.751,
+  "direcciones": {
+    "ltr": {
+      "historial": [
+        {
+          "epoca": 3,
+          "tokens": 29581312,
+          "pasos": 10833,
+          "loss_muestra_inicio": 4.94,
+          "loss_muestra_fin": 3.331,
+          "val_loss": 4.713127327493184,
+          "val_perplexity": 111.4,
+          "val_por_dominio": null,
+          "segundos": 1701.0,
+          "tokens_por_segundo": 17325.0,
+          "nota": "reconstruida del log (reanudacion tras una corrida previa)"
+        },
+        {
+          "epoca": 4,
+          "tokens": 29581312,
+          "pasos": 14444,
+          "loss_muestra_inicio": 4.772,
+          "loss_muestra_fin": 3.206,
+          "val_loss": 4.592084946439436,
+          "val_perplexity": 98.7,
+          "val_por_dominio": {
+            "wikipedia": {
+              "val_loss": 4.5074432492256165,
+              "perplexity": 90.68965100434275
+            },
+            "mc4": {
+              "val_loss": 5.333208084106445,
+              "perplexity": 207.10130798661663
+            },
+            "twitter": {
+              "val_loss": 4.223452234268189,
+              "perplexity": 68.26875769105354
+            }
+          },
+          "segundos": 1699.0,
+          "tokens_por_segundo": 17340.0,
+          "nota": "reconstruida del log (reanudacion tras una corrida previa); verificacion de reanudacion: ppl medida 98.7"
+        }
+      ],
+      "mejor": {
+        "epoca": 4,
+        "val_loss": 4.592084946439436
+      },
+      "gpu_horas": 0.944,
+      "nota": "direccion completada en una corrida previa; historial reconstruido del log persistente"
+    },
+    "rtl": {
+      "historial": [
+        {
+          "epoca": 1,
+          "tokens": 21305760,
+          "pasos": 3611,
+          "loss_muestra_inicio": 5.883683681488037,
+          "loss_muestra_fin": 3.6539833545684814,
+          "val_loss": 5.326493287086487,
+          "val_perplexity": 205.71532325166302,
+          "val_por_dominio": {
+            "wikipedia": {
+              "val_loss": 5.292000031471252,
+              "perplexity": 198.7405154662537
+            },
+            "mc4": {
+              "val_loss": 5.824421430888929,
+              "perplexity": 338.46525087836727
+            },
+            "twitter": {
+              "val_loss": 4.683326196670532,
+              "perplexity": 108.12913385114511
+            }
+          },
+          "diagnostico_chatsubs": {
+            "loss": 3.400057816505432,
+            "perplexity": 29.965832517032357
+          },
+          "segundos": 1227.7,
+          "tokens_por_segundo": 17353.6
+        },
+        {
+          "epoca": 2,
+          "tokens": 29465760,
+          "pasos": 7222,
+          "loss_muestra_inicio": 5.199997901916504,
+          "loss_muestra_fin": 3.353670358657837,
+          "val_loss": 4.932224953174591,
+          "val_perplexity": 138.68774304752966,
+          "val_por_dominio": {
+            "wikipedia": {
+              "val_loss": 4.873651671409607,
+              "perplexity": 130.79767601680118
+            },
+            "mc4": {
+              "val_loss": 5.543968275973671,
+              "perplexity": 255.69063993440858
+            },
+            "twitter": {
+              "val_loss": 4.376441431045532,
+              "perplexity": 79.55442916991981
+            }
+          },
+          "diagnostico_chatsubs": {
+            "loss": 3.2318980216979982,
+            "perplexity": 25.32768387204388
+          },
+          "segundos": 1697.9,
+          "tokens_por_segundo": 17354.0
+        },
+        {
+          "epoca": 3,
+          "tokens": 29465760,
+          "pasos": 10833,
+          "loss_muestra_inicio": 4.895940780639648,
+          "loss_muestra_fin": 3.223496437072754,
+          "val_loss": 4.718781054019928,
+          "val_perplexity": 112.03160892471786,
+          "val_por_dominio": {
+            "wikipedia": {
+              "val_loss": 4.647193717956543,
+              "perplexity": 104.2919020399491
+            },
+            "mc4": {
+              "val_loss": 5.392687948126542,
+              "perplexity": 219.79338547284203
+            },
+            "twitter": {
+              "val_loss": 4.2371885776519775,
+              "perplexity": 69.2129910992362
+            }
+          },
+          "diagnostico_chatsubs": {
+            "loss": 3.15773286819458,
+            "perplexity": 23.51721881070868
+          },
+          "segundos": 1691.1,
+          "tokens_por_segundo": 17423.8
+        },
+        {
+          "epoca": 4,
+          "tokens": 29465760,
+          "pasos": 14444,
+          "loss_muestra_inicio": 4.697220802307129,
+          "loss_muestra_fin": 3.1213560104370117,
+          "val_loss": 4.59143483042717,
+          "val_perplexity": 98.63585440288854,
+          "val_por_dominio": {
+            "wikipedia": {
+              "val_loss": 4.509270679950714,
+              "perplexity": 90.85553158050405
+            },
+            "mc4": {
+              "val_loss": 5.303318349938643,
+              "perplexity": 201.00270183595194
+            },
+            "twitter": {
+              "val_loss": 4.158998489379883,
+              "perplexity": 64.00738641150348
+            }
+          },
+          "diagnostico_chatsubs": {
+            "loss": 3.1045517683029176,
+            "perplexity": 22.299221516950197
+          },
+          "segundos": 1703.2,
+          "tokens_por_segundo": 17300.3
+        }
+      ],
+      "mejor": {
+        "epoca": 4,
+        "val_loss": 4.59143483042717
+      },
+      "gpu_horas": 1.775
+    }
+  },
+  "gpu_horas_totales": 2.719,
+  "tiempo_total_s": 6478.3,
+  "checkpoints": {
+    "ltr": {
+      "ruta": "models/p100_b1_ltr.pt",
+      "sha256": "a4c057a762500f544d071072f63cd2b298f77607ee2888df8f87be505779951c",
+      "val_ppl": 98.7,
+      "epocas": 2
+    },
+    "rtl": {
+      "ruta": "models/p100_b1_rtl.pt",
+      "sha256": "fb38bbbdac055732e5438921eadd58b7428b06a8fd234aa8a07ff83da26a6cf2",
+      "val_ppl": 98.63585440288854,
+      "epocas": 4
+    }
+  }
+}

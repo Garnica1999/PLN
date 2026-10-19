@@ -1,0 +1,98 @@
+{
+  "particion": "47 (seed 43; hash verificado contra p98_14_preregistro)",
+  "reglas": {
+    "v03_equivalente_47": {
+      "regla": "v03_equivalente_47",
+      "corrected_cv": 0.7756319868803105,
+      "f1_por_etiqueta": {
+        "HS": 0.7565938206480783,
+        "TR": 0.8247191011235955,
+        "AG": 0.7455830388692579
+      },
+      "f1_pliegues": [
+        0.7726395514161739,
+        0.7644659121331728,
+        0.7747572598950403,
+        0.7910958015412218,
+        0.7745470056346976
+      ],
+      "std_pliegues": 0.009677579008628838
+    },
+    "fusion_30M_47": {
+      "regla": "fusion_30M_47",
+      "corrected_cv": 0.7767830428785141,
+      "f1_por_etiqueta": {
+        "HS": 0.7609022556390977,
+        "TR": 0.8150609080841639,
+        "AG": 0.7543859649122807
+      },
+      "f1_pliegues": [
+        0.7700689675230395,
+        0.773154290532884,
+        0.7700253294096392,
+        0.8077593007814228,
+        0.7629784456423483
+      ],
+      "std_pliegues": 0.01770598620323099,
+      "correccion_vs_ref": {
+        "rescatadas": 91,
+        "rotas": 89,
+        "neto": 2
+      }
+    },
+    "fusion_60M_47": {
+      "regla": "fusion_60M_47",
+      "corrected_cv": 0.774783573122165,
+      "f1_por_etiqueta": {
+        "HS": 0.7579425113464447,
+        "TR": 0.8102678571428571,
+        "AG": 0.756140350877193
+      },
+      "f1_pliegues": [
+        0.7807576103477283,
+        0.7651193200392284,
+        0.7714336345915292,
+        0.8014235895619893,
+        0.7550739594083247
+      ],
+      "std_pliegues": 0.017595922369685206,
+      "correccion_vs_ref": {
+        "rescatadas": 82,
+        "rotas": 83,
+        "neto": -1
+      }
+    }
+  },
+  "control_reproduccion_30M_47": {
+    "valor": 0.7767830428785141,
+    "esperado": 0.7767830429,
+    "ok": true
+  },
+  "comparacion": {
+    "delta60_vs_v03": -0.000848,
+    "pliegues60_mejorados_vs_v03": 3,
+    "delta60_vs_30": -0.001999,
+    "neto60_vs_v03": -1,
+    "bootstrap_60_vs_v03": {
+      "ic95": [
+        -0.009192,
+        0.007706
+      ],
+      "pct_mejora": 0.433
+    }
+  },
+  "tiempo_total_s": 20.9,
+  "gate": {
+    "condiciones": {
+      "delta60_vs_v03_canonica_ge_0003": true,
+      "pliegues_canonica_ge_4": true,
+      "positivo_vs_30M": false,
+      "positivo_en_particion_47": false,
+      "neto_positivo_canonica": true,
+      "neto_positivo_47": false
+    },
+    "veredicto": "GATE_FAILED",
+    "nota": "cumplir el gate permite proponer el siguiente experimento; no autoriza adopcion"
+  },
+  "experiment_id": "P99-14"
+}

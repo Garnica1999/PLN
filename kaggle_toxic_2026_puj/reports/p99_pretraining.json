@@ -1,0 +1,193 @@
+{
+  "experiment_id": "P99-11",
+  "etapa": "S99-01 (preentrenamiento)",
+  "fecha": "2026-10-13",
+  "cfg": {
+    "vocab_size": 50002,
+    "char_vocab_size": 256,
+    "char_dim": 32,
+    "nn_char": 128,
+    "word_dim": 200,
+    "enc_dim": 512,
+    "hidden": 1024,
+    "capas": 2,
+    "dropout": 0.2,
+    "max_char": 24,
+    "seq_len": 96,
+    "batch": 8192,
+    "lr": 0.001
+  },
+  "corpus": {
+    "ruta": "data/external/corpora/p99_s99_01/tokens_60m.txt",
+    "sha256": "e627a7f33886c0a177849c2b9e76dc2bb9665c8476c000b3ed4f510f97b6e956",
+    "documentos": 340219,
+    "tokens_archivo": 60707427
+  },
+  "vocab_congelado": {
+    "ruta": "features/p98_c98_1_vocab.json",
+    "sha256": "92fecce611f164b74f54f3b05e5b8370b00128ca8523e8a4c5469289b760c9b8"
+  },
+  "val_documentos": 3320,
+  "epocas": 2,
+  "fraccion_lr": 0.751,
+  "direcciones": {
+    "ltr": {
+      "historial": [
+        {
+          "epoca": 1,
+          "tokens": 60694528,
+          "pasos": 7409,
+          "loss_muestra_inicio": 10.81,
+          "loss_muestra_fin": 4.655,
+          "val_loss": 4.919250732294404,
+          "val_perplexity": 136.9,
+          "val_por_dominio": null,
+          "segundos": 3478.0,
+          "tokens_por_segundo": 17385.0,
+          "nota": "reconstruida del log (reanudacion tras una corrida previa)"
+        },
+        {
+          "epoca": 2,
+          "tokens": 60694528,
+          "pasos": 14818,
+          "loss_muestra_inicio": 4.782,
+          "loss_muestra_fin": 4.34,
+          "val_loss": 4.611152257665639,
+          "val_perplexity": 100.6,
+          "val_por_dominio": {
+            "wikipedia": {
+              "val_loss": 4.4042176604270935,
+              "perplexity": 81.79512624094295
+            },
+            "mc4": {
+              "val_loss": 5.2334796002036645,
+              "perplexity": 187.44389991798377
+            },
+            "twitter": {
+              "val_loss": 4.21130633354187,
+              "perplexity": 67.44458741458318
+            }
+          },
+          "segundos": 3484.0,
+          "tokens_por_segundo": 17354.0,
+          "nota": "reconstruida del log (reanudacion tras una corrida previa); verificacion de reanudacion: ppl medida 100.6"
+        }
+      ],
+      "mejor": {
+        "epoca": 2,
+        "val_loss": 4.611152257665639
+      },
+      "gpu_horas": 1.934,
+      "nota": "direccion completada en una corrida previa; historial reconstruido del log persistente"
+    },
+    "rtl": {
+      "historial": [
+        {
+          "epoca": 1,
+          "tokens": 60457440,
+          "pasos": 7409,
+          "loss_muestra_inicio": 10.812576293945312,
+          "loss_muestra_fin": 4.627643585205078,
+          "val_loss": 7.7866857051849365,
+          "val_perplexity": 2408.3224497923206,
+          "val_por_dominio": {
+            "wikipedia": {
+              "val_loss": 7.9021461486816404,
+              "perplexity": 2703.077313406906
+            },
+            "mc4": {
+              "val_loss": 7.810159532647384,
+              "perplexity": 2465.5237354413366
+            },
+            "twitter": {
+              "val_loss": 7.1855278491973875,
+              "perplexity": 1320.1859134655274
+            }
+          },
+          "segundos": 3487.2,
+          "tokens_por_segundo": 17336.7,
+          "nota_gauge": "valor original INVALIDO (orden de validacion incorrecto); corregido con el checkpoint preservado",
+          "val_perplexity_corregida": 135.623,
+          "val_por_dominio_corregido": {
+            "wikipedia": {
+              "val_loss": 4.75848907828331,
+              "perplexity": 116.56966513585333
+            },
+            "mc4": {
+              "val_loss": 5.5002594998008325,
+              "perplexity": 244.7554380114163
+            },
+            "twitter": {
+              "val_loss": 4.393010377883911,
+              "perplexity": 80.88354287812079
+            }
+          }
+        },
+        {
+          "epoca": 2,
+          "tokens": 3337440,
+          "pasos": 14818,
+          "loss_muestra_inicio": 4.731479644775391,
+          "loss_muestra_fin": 4.295347690582275,
+          "val_loss": 4.588014888763428,
+          "val_perplexity": 98.29910170039766,
+          "val_por_dominio": {
+            "wikipedia": {
+              "val_loss": 4.3970648646354675,
+              "perplexity": 81.21214984728024
+            },
+            "mc4": {
+              "val_loss": 5.200552287854646,
+              "perplexity": 181.372383983813
+            },
+            "twitter": {
+              "val_loss": 4.151697492599487,
+              "perplexity": 63.54177048785685
+            }
+          },
+          "segundos": 194.2,
+          "tokens_por_segundo": 17189.4
+        }
+      ],
+      "mejor": {
+        "epoca": 2,
+        "val_loss": 4.588014888763428
+      },
+      "gpu_horas": 1.942,
+      "nota_reanudacion": "incluye 6782 s de una corrida previa (derivados del log y del estado persistido)"
+    }
+  },
+  "gpu_horas_totales": 3.876,
+  "tiempo_total_s": 301.2,
+  "checkpoints": {
+    "ltr": {
+      "ruta": "models/p99_s99_01_ltr.pt",
+      "sha256": "559309e0042d8c4422fb6893bbf43c8210f186f6cb7365bbc77a9494b6d24f6d",
+      "val_ppl": 100.6,
+      "epocas": 2
+    },
+    "rtl": {
+      "ruta": "models/p99_s99_01_rtl.pt",
+      "sha256": "dde2147f1147d142ac720ad20771281ef6b329e2e26b031531e625d204adabea",
+      "val_ppl": 98.29910170039766,
+      "epocas": 2
+    }
+  },
+  "correccion_gauge_rtl_ep1": {
+    "fecha": "2026-10-13",
+    "motivo": "el gauge original evaluo el modelo RTL sobre streams de validacion en orden LTR (ppl 2408.3 no fisica; la loss de entrenamiento era normal)",
+    "valor_original_invalido": 2408.3,
+    "valor_corregido": 135.623,
+    "por_dominio_corregido": {
+      "wikipedia": 116.57,
+      "mc4": 244.755,
+      "twitter": 80.884
+    },
+    "checkpoint_evaluado": "models/p99_s99_01_rtl_ep1.pt",
+    "checkpoint_sha256": "5c3e7023b690b3f7eac40d64f1cd3f2e33c6d1c13b3c17eef91eb6045b8e35ff",
+    "controles": {
+      "rtl_final": 98.299,
+      "ltr_final": 100.641
+    }
+  }
+}

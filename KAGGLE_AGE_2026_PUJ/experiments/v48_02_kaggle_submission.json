@@ -1,0 +1,13 @@
+{
+  "fase": "V48-02",
+  "fecha": "2026-10-16",
+  "duracion_seg": 30.5,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v48_geometric_poe_blend.csv",
+  "sha256": "bf2554571ca6676195af66a053e28411fc1cfc9e3946fd95bac1cae0ce71df62",
+  "filas": 112892,
+  "mensaje": "V48 Geometric PoE Blend (Log-space Bayes consensus 6 models w=[0.563, 0.083, 0.172, 0.075, 0.051, 0.055]) + Plug-in",
+  "competencia": "tweet-age-2026-puj",
+  "kaggle_ref": "57283487",
+  "public_score": 0.63724,
+  "status": "SubmissionStatus.COMPLETE"
+}

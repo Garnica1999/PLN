@@ -1,0 +1,64 @@
+{
+ "pilot": "P92 human label review",
+ "date": "2026-10-09",
+ "guideline_version": "v1",
+ "population_definition": "tweets del desarrollo autorizado (1483) con etiquetas originales",
+ "eligible_partitions": [
+  "dev"
+ ],
+ "excluded_partitions": [
+  "test (no accedido)",
+  "holdout (no accedido)",
+  "holdout2 (no accedido)"
+ ],
+ "sampling_frame": "data/processed/holdout_v2_ids.csv (particion dev); ids verificados contra features/oof_v03_final.npz",
+ "sampling_unit": "tweet (3 decisiones por tweet: HS, TR, AG)",
+ "sample_size": {
+  "A_referencia": 100,
+  "B_enriquecido": 150,
+  "calibracion": 15,
+  "principal": 250
+ },
+ "sampling_probability": {
+  "A": "100/1483 (SRS sin reemplazo, conocida)",
+  "B": "no probabilistica (seleccion por evidencia; no usar sin ponderacion)",
+  "calibracion": "SRS de 15 sobre dev fuera de A y B"
+ },
+ "random_seeds": {
+  "A": 20261010,
+  "B": 20261011,
+  "calibracion": 20261012,
+  "review_id": 20261013,
+  "orden_A": 20261015,
+  "orden_B": 20261016
+ },
+ "stratification": {
+  "A": "ninguna (SRS)",
+  "B": "tiers PILI/DRC/HCD/LSM con round-robin por etiqueta en HCD",
+  "grupos": "cap 2 tweets por grupo near-dup/fusionado"
+ },
+ "group_handling": "cap 2 por grupo; dependencia residual documentada",
+ "precision_assumptions": {
+  "por_etiqueta_p005_deff12": "+-4.52 pp (N=1483, n=100)",
+  "por_etiqueta_p010_deff12": "+-6.22 pp",
+  "agregado_celdas_p005_deff12": "+-2.61 pp (N=4449, n=300)",
+  "nota": "calculos condicionados a supuestos (P91-R); no precision garantizada"
+ },
+ "limitations": [
+  "B no representativa de la poblacion",
+  "dependencia por grupos/pseudo-autor",
+  "guia provisional sin criterios operativos oficiales",
+  "no es gold standard; sin adjudicacion no hay etiqueta final"
+ ],
+ "hashes": {
+  "oof": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+  "train": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+  "particion": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd",
+  "candidatos_p91": "074675225df0bae453fc759fe51aa6c8024e7c01da8875e58795f258395759dc"
+ },
+ "package_dir": "artifacts/human_annotation_v1",
+ "internal_key": "reports/p92_internal_sampling_key.csv (fuera del paquete)",
+ "reason_code_notes": {
+  "DRC": "identificador heredado del criterio de seleccion (tension estructural empirica AG=1/HS=0); P91-R lo clasifico EMPIRICAL_STRUCTURE_ANOMALY; NO es una violacion normativa confirmada; los 22 casos historicos estan los 22 en el componente B"
+ }
+}

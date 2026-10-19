@@ -1,0 +1,112 @@
+\documentclass[journal]{IEEEtran}
+
+% ---------------------------------------------------------------------------
+% Paquetes
+% ---------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{cite}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc}
+
+\graphicspath{{figuras/}}
+
+% ---------------------------------------------------------------------------
+% Metadatos
+% ---------------------------------------------------------------------------
+\hypersetup{
+  pdftitle={Clasificación multietiqueta de discurso de odio, carácter dirigido y agresividad en tuits en español mediante TF-IDF y ensambles lineales},
+  pdfauthor={Rivera Jiménez, Carrillo Meneses, Garnica Salazar y Prieto Moreno},
+  pdfsubject={Clasificación multietiqueta de discurso de odio},
+  hidelinks
+}
+
+\renewcommand{\abstractname}{Resumen}
+\renewcommand{\IEEEkeywordsname}{Palabras clave}
+\addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+
+\newtheorem{proposicion}{Proposición}
+
+% ---------------------------------------------------------------------------
+% Documento
+% ---------------------------------------------------------------------------
+\begin{document}
+
+\title{Clasificación multietiqueta de discurso de odio, carácter dirigido y
+agresividad en tuits en español mediante TF-IDF y ensambles lineales}
+
+\author{
+\IEEEauthorblockN{Erika Valeria Rivera Jiménez\IEEEauthorrefmark{1},
+Julián Guillermo Carrillo Meneses\IEEEauthorrefmark{1},
+Carlos Andrés Garnica Salazar\IEEEauthorrefmark{1} y
+Oscar Andrés Prieto Moreno\IEEEauthorrefmark{1}}\\
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Pontificia Universidad Javeriana,
+Bogotá, Colombia\\
+Maestría en Inteligencia Artificial --- Procesamiento de Lenguaje Natural\\
+\url{riveraev@javeriana.edu.co}, \url{carrillojuliang@javeriana.edu.co},\\
+\url{carlos_garnicas@javeriana.edu.co}, \url{o-prieto@javeriana.edu.co}}
+}
+
+\maketitle
+
+\begin{abstract}
+La detección automática de discurso de odio en español es una tarea
+multietiqueta: un mismo tuit puede ser odioso, estar dirigido contra una
+persona o grupo y ser agresivo, y las tres decisiones no son independientes.
+Este artículo documenta el diseño, la experimentación y la validación del
+sistema presentado a la competencia académica \emph{TOXIC 2026 PUJ}, sujeta a
+una restricción severa: prohibido usar transformers, modelos de lenguaje o
+embeddings preentrenados; las representaciones debían entrenarse desde cero.
+Sobre 1\,731 tuits de entrenamiento y 1\,154 sin etiquetas, construimos una
+representación subléxica multiescala de 86\,275 características TF-IDF, un
+ensamble de tres optimizadores lineales con calibración de temperatura,
+umbrales desacoplados por etiqueta y la regla ontológica de HatEval. La
+validación cruzada agrupada, que fusiona near-duplicados y pseudo-autores,
+sitúa al modelo base en 0.787582 out-of-fold, con una mejora de $+0.010370$
+sobre la línea base (IC95 $[+0.003924, +0.017386]$). Una capa de decisión de
+pares compensados, que preserva la prevalencia predicha y se calibra con el
+leaderboard público, eleva el $F_1$ público a 0.81447, primer lugar al cierre
+de este informe. El artículo separa el modelo base, validado estadísticamente,
+de la capa de última milla, específica del test, y discute su riesgo de
+sobreajuste. El envío se reconstruye bit a bit (SHA256
+\texttt{b0979a8a\ldots}), con dos celdas de frontera fijadas y auditadas; dos
+ejecuciones independientes producen el mismo archivo.
+\end{abstract}
+
+\begin{IEEEkeywords}
+detección de discurso de odio, clasificación multietiqueta, representación
+subléxica, TF-IDF, calibración de umbrales, validación agrupada,
+reproducibilidad.
+\end{IEEEkeywords}
+
+% Ajuste de espaciado de flotantes para consolidar la maquetacion
+\setlength{\textfloatsep}{6pt plus 1.0pt minus 2.0pt}
+\setlength{\floatsep}{5pt plus 1.0pt minus 2.0pt}
+\setlength{\intextsep}{5pt plus 1.0pt minus 2.0pt}
+
+\input{secciones/01_introduccion}
+\input{secciones/02_trabajos}
+\input{secciones/03_datos}
+\input{secciones/04_metodologia}
+\input{secciones/05_resultados}
+\input{secciones/06_discusion}
+\input{secciones/07_reproducibilidad}
+\input{secciones/08_conclusiones}
+
+\bibliographystyle{IEEEtran}
+\IEEEtriggeratref{48}
+\bibliography{referencias}
+
+\end{document}

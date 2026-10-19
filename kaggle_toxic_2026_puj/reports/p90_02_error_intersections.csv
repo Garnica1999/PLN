@@ -1,0 +1,8 @@
+interseccion,n,de,nota
+HS+TR,115,316 HS y 164 TR,errores simultaneos; no implica causa comun
+HS+AG,179,316 HS y 277 AG,errores simultaneos; no implica causa comun
+TR+AG,120,164 TR y 277 AG,errores simultaneos; no implica causa comun
+HS_solo,120,errores de esa etiqueta,errores aislados
+TR_solo,27,errores de esa etiqueta,errores aislados
+AG_solo,76,errores de esa etiqueta,errores aislados
+tres_etiquetas,98,todos los errores,98 historicos verificados

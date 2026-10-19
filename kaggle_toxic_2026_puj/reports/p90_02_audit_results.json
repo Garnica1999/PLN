@@ -1,0 +1,354 @@
+{
+ "audit_id": "P90-02",
+ "git_commit": "e43c594917fc643d0e300b73646aefb7dbd6b61d",
+ "hashes": {
+  "oof": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+  "train": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+  "submission": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+  "modelo": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+  "particion": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd"
+ },
+ "fuente_oof": "features/v2_oof_base_corrected.npz, modelo 'M2_union_lr_c2' (fila 2 de 4; mismos ids, grupos y pliegues corregidos v2)",
+ "nota_mapeo": "proba = v2_oof_base_corrected.npz['proba'][:, posicion_M2, :] reordenada por su clave 'ids'; pred = proba >= [0.44, 0.51, 0.46] en el orden HS, TR, AG",
+ "texto": {
+  "clasificacion": "SOURCE_ALREADY_NORMALIZED",
+  "diferencias_casebook": 0,
+  "diferencias_celdas": 0,
+  "ascii_dev": 0,
+  "formas": {
+   "Espaa": 28,
+   "agresin": 4,
+   "estacin": 3,
+   "polica": 5,
+   "rabes": 59,
+   "inmigracin": 29
+  },
+  "entrada_v03": "texto original del CSV + lowercase del vectorizador; sin strip_accents",
+  "conclusion": "las formas sin diacriticos (Espaa, rabes) ya estan en la fuente autorizada: los organizadores normalizaron el corpus a ASCII (D-010). No hay perdida en el pipeline ni discrepancia entre raw, casebook y entrada de V03."
+ },
+ "metricas": {
+  "corrected_cv_definicion": "macro pooled: media de los F1 por etiqueta calculados sobre las 1483 predicciones OOF agregadas",
+  "corrected_cv_reproducido": "0.7772114525165722",
+  "f1_por_etiqueta_pooled": {
+   "HS": 0.7616892911010559,
+   "TR": 0.8157303370786517,
+   "AG": 0.7542147293700089
+  },
+  "matrices_pooled": {
+   "HS": {
+    "TP": 505,
+    "FP": 173,
+    "FN": 143,
+    "TN": 662
+   },
+   "TR": {
+    "TP": 363,
+    "FP": 82,
+    "FN": 82,
+    "TN": 956
+   },
+   "AG": {
+    "TP": 425,
+    "FP": 135,
+    "FN": 142,
+    "TN": 781
+   }
+  },
+  "media_folds_por_etiqueta": {
+   "HS": 0.761536,
+   "TR": 0.815846,
+   "AG": 0.754553
+  },
+  "media_macro_pliegues": "0.777312",
+  "explicacion": "las cifras citadas como discrepantes (TP 614/431/517) proceden de la tabla historica del TRAIN completo de 1731 filas con MOD-03b (reports/error_analysis.md), una poblacion distinta del desarrollo de 1483 filas; las matrices del desarrollo son 505/173/143/662, 363/82/82/956 y 425/135/142/781, y sus F1 coinciden exactamente con los F1 por etiqueta reportados (0.761689/0.815730/0.754215). corrected_cv es el macro pooled y no la media entre folds (0.7773117), que es un nivel de agregacion distinto.",
+  "discrepancias_abiertas": 0
+ },
+ "casebook": {
+  "tweets_con_error": 441,
+  "tweets_sin_error": 1042,
+  "celdas_error": 757,
+  "una_etiqueta": 223,
+  "dos_etiquetas": 120,
+  "tres_etiquetas": 98,
+  "controles": 757,
+  "controles_unicos": 454,
+  "controles_incumplen": 0,
+  "controles_sin_control": 0,
+  "muestra_errores": 100,
+  "muestra_controles": 185
+ },
+ "corpus": {
+  "n": 1483,
+  "chars": {
+   "min": 10,
+   "media": 104.7,
+   "mediana": 92.0,
+   "max": 306
+  },
+  "tokens": {
+   "min": 1,
+   "media": 17.21,
+   "mediana": 15.0,
+   "max": 57
+  },
+  "vocab_tipos": 8888,
+  "vocab_tokens": 25519,
+  "combos": {
+   "(0, 0, 0)": 813,
+   "(0, 0, 1)": 22,
+   "(1, 0, 0)": 79,
+   "(1, 0, 1)": 124,
+   "(1, 1, 0)": 24,
+   "(1, 1, 1)": 421
+  },
+  "no_unitarios": 6,
+  "grupos": 1479
+ },
+ "slices": {
+  "URLs": 458,
+  "hashtags": 144,
+  "menciones": 702,
+  "mencion_inicial": 605,
+  "elongaciones": 76,
+  "mayusculas_sostenidas": 864,
+  "coloquial": 240,
+  "colectivos_superficie": 363,
+  "segunda_persona": 680,
+  "imperativo": 335,
+  "cita": 33,
+  "insultos": 1114,
+  "insultos_nucleo": 901,
+  "interpersonal": 458,
+  "sin_odio_explicito": 143,
+  "colectivos_v4": 142,
+  "afiliacion": 83,
+  "interpersonal_v4": 82,
+  "news": 156
+ },
+ "diagnostico": {
+  "errores_celda": 757,
+  "tweets_error": 441,
+  "combos": {
+   "AG_FP": 35,
+   "HS_FP|TR_FP|AG_FP": 56,
+   "HS_FP|AG_FP": 34,
+   "HS_FP|TR_FP": 11,
+   "HS_FN|AG_FN": 47,
+   "HS_FN": 48,
+   "HS_FP": 72,
+   "AG_FN": 41,
+   "HS_FN|TR_FN|AG_FN": 40,
+   "HS_FN|TR_FN": 6,
+   "TR_FN": 18,
+   "TR_FN|AG_FN": 14,
+   "TR_FP": 9,
+   "TR_FP|AG_FP": 6,
+   "HS_FN|TR_FN|AG_FP": 2,
+   "TR_FN|AG_FP": 2
+  },
+  "fronterizos": 84,
+  "lejanos": 466
+ },
+ "casos": [
+  {
+   "tweet_id": 22628,
+   "fold": "2",
+   "error_pattern": "AG_FP",
+   "n_wrong_labels": "1",
+   "text": "@kleopatreus T eres bien perra",
+   "HS": "p=0.975399 u=0.44 pred=1 true=1",
+   "TR": "p=0.981433 u=0.51 pred=1 true=1",
+   "AG": "p=0.965068 u=0.46 pred=1 true=0",
+   "distancias": "AG:0.505068",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 23076,
+   "fold": "3",
+   "error_pattern": "HS_FP|TR_FP|AG_FP",
+   "n_wrong_labels": "3",
+   "text": "@CamilaArvayo Cllate todo te queda bien zorra te amo",
+   "HS": "p=0.912303 u=0.44 pred=1 true=0",
+   "TR": "p=0.928366 u=0.51 pred=1 true=0",
+   "AG": "p=0.884273 u=0.46 pred=1 true=0",
+   "distancias": "HS:0.472303; TR:0.418366; AG:0.424273",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 23839,
+   "fold": "5",
+   "error_pattern": "HS_FP|TR_FP",
+   "n_wrong_labels": "2",
+   "text": "@Barbijaputa A mi perra me la tienen frita!!",
+   "HS": "p=0.440046 u=0.44 pred=1 true=0",
+   "TR": "p=0.618201 u=0.51 pred=1 true=0",
+   "AG": "p=0.437796 u=0.46 pred=0 true=0",
+   "distancias": "HS:4.6e-05; TR:0.108201",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 21362,
+   "fold": "4",
+   "error_pattern": "HS_FP|TR_FP|AG_FP",
+   "n_wrong_labels": "3",
+   "text": "Cllate Zorra' el 'cllate perro' de este semestre",
+   "HS": "p=0.938901 u=0.44 pred=1 true=0",
+   "TR": "p=0.960505 u=0.51 pred=1 true=0",
+   "AG": "p=0.947944 u=0.46 pred=1 true=0",
+   "distancias": "HS:0.498901; TR:0.450505; AG:0.487944",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 20331,
+   "fold": "4",
+   "error_pattern": "AG_FN",
+   "n_wrong_labels": "1",
+   "text": "Os acordais de cuando decian los del lacito que preferian inmigrantes subsaharianos antes que espaoles? Pues ala deseo concedido... Ya teneis barcelona plagada de manteros",
+   "HS": "p=0.736936 u=0.44 pred=1 true=1",
+   "TR": "p=0.104573 u=0.51 pred=0 true=0",
+   "AG": "p=0.375764 u=0.46 pred=0 true=1",
+   "distancias": "AG:0.084236",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 20678,
+   "fold": "5",
+   "error_pattern": "HS_FN|AG_FN",
+   "n_wrong_labels": "2",
+   "text": "Mierda para aquellos que saltan la valla de Melilla y Ceuta. Cabrones que solo queris venir a violar y pasaramos pipa! Quedaros all y no queris ms a las fuerzas del estado con cal viva! No soy racista pero si persona y ya estamos artos!!!",
+   "HS": "p=0.427622 u=0.44 pred=0 true=1",
+   "TR": "p=0.132091 u=0.51 pred=0 true=0",
+   "AG": "p=0.380005 u=0.46 pred=0 true=1",
+   "distancias": "HS:0.012378; AG:0.079995",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 23074,
+   "fold": "2",
+   "error_pattern": "HS_FN|AG_FN",
+   "n_wrong_labels": "2",
+   "text": "Xdios odio a estos arabes q se extingan",
+   "HS": "p=0.426743 u=0.44 pred=0 true=1",
+   "TR": "p=0.07558 u=0.51 pred=0 true=0",
+   "AG": "p=0.321133 u=0.46 pred=0 true=1",
+   "distancias": "HS:0.013257; AG:0.138867",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 21973,
+   "fold": "5",
+   "error_pattern": "HS_FN|AG_FN",
+   "n_wrong_labels": "2",
+   "text": "Ms de 40.000 invasores negros africanos se preparan para invadir Espaa en los prximos meses. Slo el uso contundente de armas en las fronteras espaolas podr detener y revertir este efecto llamada creado por el gobierno de Pedro Snchez. https://t.co/KZisJkW3P8",
+   "HS": "p=0.412253 u=0.44 pred=0 true=1",
+   "TR": "p=0.031292 u=0.51 pred=0 true=0",
+   "AG": "p=0.353203 u=0.46 pred=0 true=1",
+   "distancias": "HS:0.027747; AG:0.106797",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 24508,
+   "fold": "5",
+   "error_pattern": "AG_FN",
+   "n_wrong_labels": "1",
+   "text": "El nefasto ministro de @interiorgob Marlaska acude a #Algeciras para ver si los moromierdas son tratados correctamente y no para interesarse por los @guardiacivil quemados https://t.co/e8ZZmLRWiT",
+   "HS": "p=0.551514 u=0.44 pred=1 true=1",
+   "TR": "p=0.06083 u=0.51 pred=0 true=0",
+   "AG": "p=0.437317 u=0.46 pred=0 true=1",
+   "distancias": "AG:0.022683",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 20932,
+   "fold": "5",
+   "error_pattern": "HS_FN|TR_FN|AG_FN",
+   "n_wrong_labels": "3",
+   "text": "Gorda chaconda.. tu eres por mi polla la mujer perfecta.. quiero ver todo el tuyo cuerpo da BBW mueverse sobra de mi.. @SamyBBW",
+   "HS": "p=0.435866 u=0.44 pred=0 true=1",
+   "TR": "p=0.339292 u=0.51 pred=0 true=1",
+   "AG": "p=0.360675 u=0.46 pred=0 true=1",
+   "distancias": "HS:0.004134; TR:0.170708; AG:0.099325",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 20956,
+   "fold": "4",
+   "error_pattern": "HS_FN|TR_FN|AG_FN",
+   "n_wrong_labels": "3",
+   "text": "@zvonimirsoldo @FOXSports_Chile No quera empezar el ao puteando pero vo te mereces unas chuchas tonto sapo y la ctm rata perra culia :)",
+   "HS": "p=0.307532 u=0.44 pred=0 true=1",
+   "TR": "p=0.451593 u=0.51 pred=0 true=1",
+   "AG": "p=0.301618 u=0.46 pred=0 true=1",
+   "distancias": "HS:0.132468; TR:0.058407; AG:0.158382",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 24269,
+   "fold": "5",
+   "error_pattern": "TR_FN",
+   "n_wrong_labels": "1",
+   "text": "El agressor de una mujer de 25 ha sido detenido. La agresin se produjo en la estacin de Miln. Es un inmigrante ilegal de origen Nigeriano con antecedentes #StopInvasion #CloseBorders #IllegalImmigration https://t.co/DSYj8kdCiA",
+   "HS": "p=0.453678 u=0.44 pred=1 true=1",
+   "TR": "p=0.023354 u=0.51 pred=0 true=1",
+   "AG": "p=0.115681 u=0.46 pred=0 true=0",
+   "distancias": "TR:0.486646",
+   "estado": "VERIFICADO"
+  },
+  {
+   "tweet_id": 23724,
+   "fold": "2",
+   "error_pattern": "AG_FN",
+   "n_wrong_labels": "1",
+   "text": "Quintana ha explotado como una cucaracha. Que se jodan los sudacas Menuda mentira de to #TDF2018",
+   "HS": "p=0.645607 u=0.44 pred=1 true=1",
+   "TR": "p=0.108442 u=0.51 pred=0 true=0",
+   "AG": "p=0.413561 u=0.46 pred=0 true=1",
+   "distancias": "AG:0.046439",
+   "estado": "VERIFICADO"
+  }
+ ],
+ "compliance": {
+  "ast_tokens": [
+   "holdout_v2_ids.csv",
+   "test.csv",
+   "toxic_submission_v03_lr_union_thr.csv"
+  ],
+  "ast_modulos": [
+   "__future__",
+   "ast",
+   "collections",
+   "csv",
+   "hashlib",
+   "json",
+   "numpy",
+   "pathlib",
+   "re",
+   "spacy",
+   "subprocess",
+   "typing"
+  ],
+  "lecturas_autorizadas": [
+   "DECISIONS.md",
+   "experiments.csv",
+   "fase2_lexico_inducido_agresividad.csv",
+   "grupos_near_duplicados.csv",
+   "hashes.txt",
+   "holdout_v2_ids.csv",
+   "model_v03.joblib",
+   "oof_v03_final.npz",
+   "p57_family_status.csv",
+   "pipeline_v03.json",
+   "toxic_remaining_legal_opportunities.csv",
+   "toxic_submission_v03_lr_union_thr.csv",
+   "toxic_train.csv",
+   "v03_error_casebook.csv",
+   "v03_error_cells.csv",
+   "v03_error_confidence_summary.csv",
+   "v03_error_controls.csv",
+   "v03_error_fold_summary.csv",
+   "v03_error_provenance.json",
+   "v03_error_review_sample.csv",
+   "v03_error_slice_summary.csv"
+  ]
+ }
+}

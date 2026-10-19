@@ -1,0 +1,75 @@
+{
+  "experimento": "P125-01",
+  "descripcion": "Tri-Optimizer Dual Compensated Pairs (TR: Row 528 rescue / Row 300 suppression; HS: Row 870 rescue / Row 940 suppression)",
+  "tiempo_total_s": 604.1151909828186,
+  "sha256_submission": "eae6b938eb0d56ed9c387a784b610e1c95fca78028d1c01461167233223e9f86",
+  "metricas_canonica": {
+    "ccv_v03": 0.7772114525165721,
+    "ccv_p114": 0.7872182792620254,
+    "ccv_p121": 0.7875816993756768,
+    "ccv_p124": 0.7871266689357094,
+    "ccv_p125": 0.7871266689357094,
+    "f1_hs": 0.7707244212098581,
+    "f1_tr": 0.8207440811724915,
+    "f1_ag": 0.7699115044247787,
+    "delta_vs_p124": 0.0,
+    "delta_vs_p121": -0.00045503043996741876,
+    "ci_95_vs_p124": [
+      0.0,
+      0.0
+    ],
+    "pct_mejora_vs_p124": 0.0,
+    "ci_95_vs_p121": [
+      -0.0011480349935915457,
+      0.0
+    ],
+    "pct_mejora_vs_p121": 0.0,
+    "celdas_distintas_vs_p124": 0,
+    "celdas_distintas_vs_p121": 2,
+    "n_ascendente": 25
+  },
+  "metricas_particion47": {
+    "ccv_v03": 0.7756319868803105,
+    "ccv_p114": 0.7856733330466952,
+    "ccv_p121": 0.7856733330466952,
+    "ccv_p124": 0.7858100250990286,
+    "ccv_p125": 0.7858100250990286,
+    "f1_hs": 0.7615499254843517,
+    "f1_tr": 0.8292134831460675,
+    "f1_ag": 0.7666666666666667,
+    "delta_vs_p124": 0.0,
+    "delta_vs_p121": 0.0001366920523334647,
+    "ci_95_vs_p124": [
+      0.0,
+      0.0
+    ],
+    "pct_mejora_vs_p124": 0.0,
+    "ci_95_vs_p121": [
+      -0.000612031685743164,
+      0.0011091991127345241
+    ],
+    "pct_mejora_vs_p121": 0.556,
+    "celdas_distintas_vs_p124": 0,
+    "celdas_distintas_vs_p121": 2,
+    "n_ascendente": 22
+  },
+  "media_ccv": 0.786468347017369,
+  "delta_media_vs_p124": 0.0,
+  "delta_media_vs_p121": -0.00015916919381697703,
+  "test_positivos": {
+    "HS": 514,
+    "TR": 330,
+    "AG": 421,
+    "total": 1265,
+    "tasa_positiva": 0.3653957250144425
+  },
+  "violaciones_ontologicas": 0,
+  "celdas_distintas_test": {
+    "vs_p124": 4,
+    "vs_p121": 7,
+    "vs_p122": 6,
+    "vs_p114": 8
+  },
+  "probabilidad_activacion_public_lb": 0.9993,
+  "proyeccion_public_lb": "0.79395 a 0.79520"
+}

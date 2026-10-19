@@ -1,0 +1,232 @@
+{
+  "experimento": "P118-01",
+  "descripcion": "Challenger Decoupled Multimodal Blend (HS: 100% P114, TR: 95% P114 + 5% BM25, AG: 85% P114 + 15% SVD) + Regla Ascendente",
+  "duracion_segundos": 607.86,
+  "features": {
+    "tipo": "Union triple TF-IDF V2_triple (word(1,2) + char_wb(3,5) + char(1,6))",
+    "min_df": 2,
+    "dimension": 86275,
+    "bloques": [
+      [
+        "word",
+        [
+          1,
+          2
+        ],
+        true
+      ],
+      [
+        "char_wb",
+        [
+          3,
+          5
+        ],
+        true
+      ],
+      [
+        "char",
+        [
+          1,
+          6
+        ],
+        true
+      ]
+    ],
+    "bm25_params": {
+      "k1": 1.2,
+      "b": 0.6
+    },
+    "svd_components": 150
+  },
+  "modelos": {
+    "m_p114_core": {
+      "pesos": {
+        "w_lr": 0.8,
+        "w_sgd": 0.05,
+        "w_saga": 0.15
+      },
+      "lr_liblinear": {
+        "solver": "liblinear",
+        "C_per_label": {
+          "HS": 2.0,
+          "TR": 1.8,
+          "AG": 1.5
+        },
+        "class_weight": "balanced"
+      },
+      "sgd_log_loss": {
+        "loss": "log_loss",
+        "penalty": "l2",
+        "alpha": 5e-06,
+        "class_weight": "balanced"
+      },
+      "saga_elasticnet": {
+        "solver": "saga",
+        "penalty": "elasticnet",
+        "l1_ratio": 0.05,
+        "C_per_label": {
+          "HS": 2.0,
+          "TR": 1.8,
+          "AG": 1.5
+        },
+        "class_weight": "balanced"
+      },
+      "calibracion_temperatura": 1.04
+    },
+    "m_bm25": {
+      "solver": "liblinear",
+      "C_per_label": {
+        "HS": 2.0,
+        "TR": 1.8,
+        "AG": 1.5
+      },
+      "class_weight": "balanced"
+    },
+    "m_svd": {
+      "n_components": 150,
+      "C": 1.0,
+      "class_weight": "balanced"
+    },
+    "mezcla_desacoplada": {
+      "HS": {
+        "w_p114": 1.0,
+        "w_bm25": 0.0,
+        "w_svd": 0.0
+      },
+      "TR": {
+        "w_p114": 0.95,
+        "w_bm25": 0.05,
+        "w_svd": 0.0
+      },
+      "AG": {
+        "w_p114": 0.85,
+        "w_bm25": 0.0,
+        "w_svd": 0.15
+      }
+    }
+  },
+  "umbrales": {
+    "HS": 0.44,
+    "TR": 0.51,
+    "AG": 0.46
+  },
+  "regla_postproceso": "TR=1 => HS=1",
+  "controles": {
+    "diff_v03_m2": 0.0,
+    "diff_p114_m2": 2.9606578710872355e-07
+  },
+  "validacion": {
+    "canonica": {
+      "ccv_p118": 0.7878813801472541,
+      "ccv_p114": 0.7872182792620254,
+      "ccv_v03": 0.7772114525165721,
+      "delta_vs_p114": 0.0006631008852286957,
+      "delta_vs_v03": 0.010669927630681975,
+      "f1_por_etiqueta_p118": {
+        "HS": 0.7715355805243446,
+        "TR": 0.8221970554926388,
+        "AG": 0.7699115044247787
+      },
+      "f1_por_etiqueta_p114": {
+        "HS": 0.7707244212098581,
+        "TR": 0.8207440811724915,
+        "AG": 0.7701863354037267
+      },
+      "f1_pliegues_p118": [
+        0.8037511748013911,
+        0.8057685307137347,
+        0.7886528047451683,
+        0.7617386269453799,
+        0.7791483379404043
+      ],
+      "f1_pliegues_p114": [
+        0.8011762411762411,
+        0.8034748515641604,
+        0.7905041818085298,
+        0.7561227785946887,
+        0.7848276112427056
+      ],
+      "pliegues_ganados": "3/5",
+      "deltas_por_pliegue": [
+        0.0025749336251500443,
+        0.002293679149574235,
+        -0.0018513770633614701,
+        0.005615848350691177,
+        -0.005679273302301335
+      ],
+      "bootstrap_ci95": [
+        -0.0024508088612021695,
+        0.0037930473307176225
+      ],
+      "bootstrap_win_rate": 0.6465,
+      "celdas_distintas_vs_p114": 21,
+      "n_violaciones_ascendentes_corregidas": 21
+    },
+    "particion_47": {
+      "ccv_p118": 0.7860258308208617,
+      "ccv_p114": 0.7856733330466952,
+      "ccv_v03": 0.7756319868803105,
+      "delta_vs_p114": 0.00035249777416657135,
+      "delta_vs_v03": 0.010393843940551206,
+      "f1_por_etiqueta_p118": {
+        "HS": 0.760268857356236,
+        "TR": 0.8284424379232506,
+        "AG": 0.7693661971830986
+      },
+      "f1_por_etiqueta_p114": {
+        "HS": 0.7615499254843517,
+        "TR": 0.8292134831460675,
+        "AG": 0.7662565905096661
+      },
+      "f1_pliegues_p118": [
+        0.7761071979994529,
+        0.7823523505326239,
+        0.7868776499415459,
+        0.796448258395161,
+        0.787767541634905
+      ],
+      "f1_pliegues_p114": [
+        0.7711918893264466,
+        0.7812763322892237,
+        0.7821473611442854,
+        0.8032624366015221,
+        0.7895522388059701
+      ],
+      "pliegues_ganados": "3/5",
+      "deltas_por_pliegue": [
+        0.00491530867300638,
+        0.0010760182434002008,
+        0.004730288797260451,
+        -0.006814178206361099,
+        -0.0017846971710651083
+      ],
+      "bootstrap_ci95": [
+        -0.002629368474114152,
+        0.0031568523877292033
+      ],
+      "bootstrap_win_rate": 0.6165,
+      "celdas_distintas_vs_p114": 17,
+      "n_violaciones_ascendentes_corregidas": 19
+    },
+    "ccv_media_p118": 0.7869536054840579,
+    "ccv_media_p114": 0.7864458061543602,
+    "delta_media_vs_p114": 0.000507799329697689
+  },
+  "test": {
+    "celdas_distintas_vs_p114": 15,
+    "pct_distintas_vs_p114": 0.43327556325823224,
+    "cambios_0_a_1": 8,
+    "cambios_1_a_0": 7,
+    "balance_neto": 1,
+    "violaciones_ascendentes_corregidas": 9,
+    "total_positivos_p118": 1266,
+    "tasa_positivos_pct": 36.56845753899481,
+    "positivos_por_etiqueta": {
+      "HS": 514,
+      "TR": 329,
+      "AG": 423
+    },
+    "submission_archivo": "submissions/toxic_submission_p118_decoupled_multimodal_blend_asc.csv",
+    "submission_sha256": "b8f6640965506865a5260f4bf26eb330d594000b4f55c116d325c0c009095d47"
+  }
+}

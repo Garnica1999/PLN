@@ -1,0 +1,100 @@
+slice,familia,ambito,label,n_rows,n_error_cells,FP,FN,TP,TN,precision,recall,F1,nota
+URLs,SLICE_TEXT_DEFINED,dentro,HS,458,112,50,62,110,236,0.6875,0.639535,0.662651,
+URLs,SLICE_TEXT_DEFINED,dentro,TR,458,39,12,27,42,377,0.777778,0.608696,0.682927,
+URLs,SLICE_TEXT_DEFINED,dentro,AG,458,102,39,63,86,270,0.688,0.577181,0.627737,
+URLs,SLICE_TEXT_DEFINED,fuera,HS,1025,204,123,81,395,426,0.762548,0.829832,0.794769,
+URLs,SLICE_TEXT_DEFINED,fuera,TR,1025,125,70,55,321,579,0.820972,0.853723,0.837027,
+URLs,SLICE_TEXT_DEFINED,fuera,AG,1025,175,96,79,339,511,0.77931,0.811005,0.794842,
+hashtags,SLICE_TEXT_DEFINED,dentro,HS,144,37,24,13,27,80,0.529412,0.675,0.593407,
+hashtags,SLICE_TEXT_DEFINED,dentro,TR,144,12,8,4,6,126,0.428571,0.6,0.5,
+hashtags,SLICE_TEXT_DEFINED,dentro,AG,144,30,16,14,15,99,0.483871,0.517241,0.5,
+hashtags,SLICE_TEXT_DEFINED,fuera,HS,1339,279,149,130,478,582,0.76236,0.786184,0.774089,
+hashtags,SLICE_TEXT_DEFINED,fuera,TR,1339,152,74,78,357,830,0.828306,0.82069,0.82448,
+hashtags,SLICE_TEXT_DEFINED,fuera,AG,1339,247,119,128,410,682,0.775047,0.762082,0.76851,
+menciones,SLICE_TEXT_DEFINED,dentro,HS,702,123,83,40,306,273,0.786632,0.884393,0.832653,
+menciones,SLICE_TEXT_DEFINED,dentro,TR,702,83,51,32,270,349,0.841121,0.89404,0.866774,
+menciones,SLICE_TEXT_DEFINED,dentro,AG,702,107,70,37,279,316,0.799427,0.882911,0.839098,
+menciones,SLICE_TEXT_DEFINED,fuera,HS,781,193,90,103,199,389,0.688581,0.65894,0.673435,
+menciones,SLICE_TEXT_DEFINED,fuera,TR,781,81,31,50,93,607,0.75,0.65035,0.696629,
+menciones,SLICE_TEXT_DEFINED,fuera,AG,781,170,65,105,146,465,0.691943,0.581673,0.632035,
+mencion_inicial,SLICE_TEXT_DEFINED,dentro,HS,605,100,70,30,278,227,0.798851,0.902597,0.847561,
+mencion_inicial,SLICE_TEXT_DEFINED,dentro,TR,605,78,50,28,262,265,0.839744,0.903448,0.870432,
+mencion_inicial,SLICE_TEXT_DEFINED,dentro,AG,605,88,63,25,262,255,0.806154,0.912892,0.856209,
+mencion_inicial,SLICE_TEXT_DEFINED,fuera,HS,878,216,103,113,227,435,0.687879,0.667647,0.677612,
+mencion_inicial,SLICE_TEXT_DEFINED,fuera,TR,878,86,32,54,101,691,0.759398,0.651613,0.701389,
+mencion_inicial,SLICE_TEXT_DEFINED,fuera,AG,878,189,72,117,163,526,0.693617,0.582143,0.63301,
+elongaciones,SLICE_TEXT_DEFINED,dentro,HS,76,22,15,7,27,27,0.642857,0.794118,0.710526,
+elongaciones,SLICE_TEXT_DEFINED,dentro,TR,76,9,7,2,28,39,0.8,0.933333,0.861538,
+elongaciones,SLICE_TEXT_DEFINED,dentro,AG,76,18,12,6,26,32,0.684211,0.8125,0.742857,
+elongaciones,SLICE_TEXT_DEFINED,fuera,HS,1407,294,158,136,478,635,0.751572,0.778502,0.7648,
+elongaciones,SLICE_TEXT_DEFINED,fuera,TR,1407,155,75,80,335,917,0.817073,0.807229,0.812121,
+elongaciones,SLICE_TEXT_DEFINED,fuera,AG,1407,259,123,136,399,749,0.764368,0.745794,0.754967,
+mayusculas_sostenidas,SLICE_TEXT_DEFINED,dentro,HS,864,186,101,85,254,424,0.715493,0.749263,0.731988,
+mayusculas_sostenidas,SLICE_TEXT_DEFINED,dentro,TR,864,98,42,56,157,609,0.788945,0.737089,0.762136,
+mayusculas_sostenidas,SLICE_TEXT_DEFINED,dentro,AG,864,173,83,90,210,481,0.716724,0.7,0.708263,
+mayusculas_sostenidas,SLICE_TEXT_DEFINED,fuera,HS,619,130,72,58,251,238,0.77709,0.812298,0.794304,
+mayusculas_sostenidas,SLICE_TEXT_DEFINED,fuera,TR,619,66,40,26,206,347,0.837398,0.887931,0.861925,
+mayusculas_sostenidas,SLICE_TEXT_DEFINED,fuera,AG,619,104,52,52,215,300,0.805243,0.805243,0.805243,
+coloquial,SLICE_TEXT_DEFINED,dentro,HS,240,49,28,21,97,94,0.776,0.822034,0.798354,
+coloquial,SLICE_TEXT_DEFINED,dentro,TR,240,29,17,12,85,126,0.833333,0.876289,0.854271,
+coloquial,SLICE_TEXT_DEFINED,dentro,AG,240,45,26,19,87,108,0.769912,0.820755,0.794521,
+coloquial,SLICE_TEXT_DEFINED,fuera,HS,1243,267,145,122,408,568,0.737794,0.769811,0.753463,
+coloquial,SLICE_TEXT_DEFINED,fuera,TR,1243,135,65,70,278,830,0.810496,0.798851,0.804631,
+coloquial,SLICE_TEXT_DEFINED,fuera,AG,1243,232,109,123,338,673,0.756152,0.733189,0.744493,
+colectivos_superficie,SLICE_TEXT_DEFINED,dentro,HS,363,100,46,54,105,158,0.695364,0.660377,0.677419,
+colectivos_superficie,SLICE_TEXT_DEFINED,dentro,TR,363,25,5,20,22,316,0.814815,0.52381,0.637681,
+colectivos_superficie,SLICE_TEXT_DEFINED,dentro,AG,363,95,32,63,52,216,0.619048,0.452174,0.522613,
+colectivos_superficie,SLICE_TEXT_DEFINED,fuera,HS,1120,216,127,89,400,504,0.759013,0.817996,0.787402,
+colectivos_superficie,SLICE_TEXT_DEFINED,fuera,TR,1120,139,77,62,341,640,0.815789,0.846154,0.830694,
+colectivos_superficie,SLICE_TEXT_DEFINED,fuera,AG,1120,182,103,79,373,565,0.783613,0.825221,0.803879,
+segunda_persona,SLICE_TEXT_DEFINED,dentro,HS,680,134,81,53,270,276,0.769231,0.835913,0.801187,
+segunda_persona,SLICE_TEXT_DEFINED,dentro,TR,680,96,54,42,220,364,0.80292,0.839695,0.820896,
+segunda_persona,SLICE_TEXT_DEFINED,dentro,AG,680,120,66,54,242,318,0.785714,0.817568,0.801325,
+segunda_persona,SLICE_TEXT_DEFINED,fuera,HS,803,182,92,90,235,386,0.718654,0.723077,0.720859,
+segunda_persona,SLICE_TEXT_DEFINED,fuera,TR,803,68,28,40,143,592,0.836257,0.781421,0.80791,
+segunda_persona,SLICE_TEXT_DEFINED,fuera,AG,803,157,69,88,183,463,0.72619,0.675277,0.699809,
+imperativo,SLICE_TEXT_DEFINED,dentro,HS,335,67,37,30,112,156,0.751678,0.788732,0.769759,
+imperativo,SLICE_TEXT_DEFINED,dentro,TR,335,38,20,18,83,214,0.805825,0.821782,0.813725,
+imperativo,SLICE_TEXT_DEFINED,dentro,AG,335,57,24,33,99,179,0.804878,0.75,0.776471,
+imperativo,SLICE_TEXT_DEFINED,fuera,HS,1148,249,136,113,393,506,0.742911,0.77668,0.75942,
+imperativo,SLICE_TEXT_DEFINED,fuera,TR,1148,126,62,64,280,742,0.818713,0.813953,0.816327,
+imperativo,SLICE_TEXT_DEFINED,fuera,AG,1148,220,111,109,326,602,0.745995,0.749425,0.747706,
+cita,SLICE_TEXT_DEFINED,dentro,HS,33,10,5,5,11,12,0.6875,0.6875,0.6875,
+cita,SLICE_TEXT_DEFINED,dentro,TR,33,1,0,1,1,31,1.0,0.5,0.666667,
+cita,SLICE_TEXT_DEFINED,dentro,AG,33,6,0,6,27,0,1.0,0.818182,0.9,
+cita,SLICE_TEXT_DEFINED,fuera,HS,1450,306,168,138,494,650,0.746224,0.781646,0.763524,
+cita,SLICE_TEXT_DEFINED,fuera,TR,1450,163,82,81,362,925,0.815315,0.817156,0.816234,
+cita,SLICE_TEXT_DEFINED,fuera,AG,1450,271,135,136,398,781,0.746717,0.745318,0.746017,
+insultos,SLICE_LEXICON_INDUCED,dentro,HS,1114,248,140,108,487,379,0.776715,0.818487,0.797054,lexico inducido in-sample: diagnostico
+insultos,SLICE_LEXICON_INDUCED,dentro,TR,1114,150,78,72,360,604,0.821918,0.833333,0.827586,lexico inducido in-sample: diagnostico
+insultos,SLICE_LEXICON_INDUCED,dentro,AG,1114,242,123,119,414,458,0.77095,0.776735,0.773832,lexico inducido in-sample: diagnostico
+insultos,SLICE_LEXICON_INDUCED,fuera,HS,369,68,33,35,18,283,0.352941,0.339623,0.346154,lexico inducido in-sample: diagnostico
+insultos,SLICE_LEXICON_INDUCED,fuera,TR,369,14,4,10,3,352,0.428571,0.230769,0.3,lexico inducido in-sample: diagnostico
+insultos,SLICE_LEXICON_INDUCED,fuera,AG,369,35,12,23,11,323,0.478261,0.323529,0.385965,lexico inducido in-sample: diagnostico
+insultos_nucleo,SLICE_LEXICON_INDUCED,dentro,HS,901,188,111,77,437,276,0.797445,0.850195,0.822976,lexico inducido in-sample: diagnostico
+insultos_nucleo,SLICE_LEXICON_INDUCED,dentro,TR,901,126,70,56,349,426,0.832936,0.861728,0.847087,lexico inducido in-sample: diagnostico
+insultos_nucleo,SLICE_LEXICON_INDUCED,dentro,AG,901,183,103,80,388,330,0.790224,0.82906,0.809176,lexico inducido in-sample: diagnostico
+insultos_nucleo,SLICE_LEXICON_INDUCED,fuera,HS,582,128,62,66,68,386,0.523077,0.507463,0.515152,lexico inducido in-sample: diagnostico
+insultos_nucleo,SLICE_LEXICON_INDUCED,fuera,TR,582,38,12,26,14,530,0.538462,0.35,0.424242,lexico inducido in-sample: diagnostico
+insultos_nucleo,SLICE_LEXICON_INDUCED,fuera,AG,582,94,32,62,37,451,0.536232,0.373737,0.440476,lexico inducido in-sample: diagnostico
+interpersonal,SLICE_LEXICON_INDUCED,dentro,HS,458,67,50,17,253,138,0.834983,0.937037,0.883072,lexico inducido in-sample: diagnostico
+interpersonal,SLICE_LEXICON_INDUCED,dentro,TR,458,61,43,18,246,151,0.851211,0.931818,0.889693,lexico inducido in-sample: diagnostico
+interpersonal,SLICE_LEXICON_INDUCED,dentro,AG,458,64,49,15,245,149,0.833333,0.942308,0.884477,lexico inducido in-sample: diagnostico
+interpersonal,SLICE_LEXICON_INDUCED,fuera,HS,1025,249,123,126,252,524,0.672,0.666667,0.669323,lexico inducido in-sample: diagnostico
+interpersonal,SLICE_LEXICON_INDUCED,fuera,TR,1025,103,39,64,117,805,0.75,0.646409,0.694362,lexico inducido in-sample: diagnostico
+interpersonal,SLICE_LEXICON_INDUCED,fuera,AG,1025,213,86,127,180,632,0.676692,0.586319,0.628272,lexico inducido in-sample: diagnostico
+sin_odio_explicito,SLICE_ERROR_CONDITIONED,subconjunto_de_error,HS,143,143,0,143,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 143 con 1/2/3 etiquetas = 48/53/42
+sin_odio_explicito,SLICE_ERROR_CONDITIONED,subconjunto_de_error,TR,143,48,0,48,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 143 con 1/2/3 etiquetas = 48/53/42
+sin_odio_explicito,SLICE_ERROR_CONDITIONED,subconjunto_de_error,AG,143,89,2,87,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 143 con 1/2/3 etiquetas = 48/53/42
+colectivos_v4,SLICE_ERROR_CONDITIONED,subconjunto_de_error,HS,142,87,0,87,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 142 con 1/2/3 etiquetas = 41/61/40
+colectivos_v4,SLICE_ERROR_CONDITIONED,subconjunto_de_error,TR,142,54,0,54,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 142 con 1/2/3 etiquetas = 41/61/40
+colectivos_v4,SLICE_ERROR_CONDITIONED,subconjunto_de_error,AG,142,142,0,142,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 142 con 1/2/3 etiquetas = 41/61/40
+afiliacion,SLICE_ERROR_CONDITIONED,subconjunto_de_error,HS,83,83,83,0,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 83 con 1/2/3 etiquetas = 27/21/35
+afiliacion,SLICE_ERROR_CONDITIONED,subconjunto_de_error,TR,83,41,41,0,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 83 con 1/2/3 etiquetas = 27/21/35
+afiliacion,SLICE_ERROR_CONDITIONED,subconjunto_de_error,AG,83,50,50,0,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 83 con 1/2/3 etiquetas = 27/21/35
+interpersonal_v4,SLICE_ERROR_CONDITIONED,subconjunto_de_error,HS,82,48,0,48,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 82 con 1/2/3 etiquetas = 18/22/42
+interpersonal_v4,SLICE_ERROR_CONDITIONED,subconjunto_de_error,TR,82,82,0,82,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 82 con 1/2/3 etiquetas = 18/22/42
+interpersonal_v4,SLICE_ERROR_CONDITIONED,subconjunto_de_error,AG,82,58,4,54,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 82 con 1/2/3 etiquetas = 18/22/42
+news,SLICE_ERROR_CONDITIONED,subconjunto_de_error,HS,156,112,50,62,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 156 con 1/2/3 etiquetas = 84/47/25
+news,SLICE_ERROR_CONDITIONED,subconjunto_de_error,TR,156,39,12,27,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 156 con 1/2/3 etiquetas = 84/47/25
+news,SLICE_ERROR_CONDITIONED,subconjunto_de_error,AG,156,102,39,63,,,,,,F1 omitido (cero por construccion); tweets en el subconjunto: 156 con 1/2/3 etiquetas = 84/47/25

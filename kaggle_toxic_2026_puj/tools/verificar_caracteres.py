@@ -51,6 +51,7 @@ SIMBOLOS_PERMITIDOS = frozenset(
     chr(codigo)
     for codigo in (
         0x0394,  # Delta
+        0x03A3,  # Sigma mayuscula (sumatoria)
         0x03B1,  # alfa
         0x03B2,  # beta
         0x03B5,  # epsil
@@ -60,8 +61,9 @@ SIMBOLOS_PERMITIDOS = frozenset(
         0x03BC,  # mu
         0x03BD,  # nu
         0x03C0,  # pi
-        0x03C3,  # sigma
+        0x03C3,  # sigma minuscula
         0x03C4,  # tau
+        0x03C6,  # phi (correlacion de Pearson / Phi)
         0x2212,  # signo menos
         0x2264,  # menor o igual
         0x2265,  # mayor o igual

@@ -1,0 +1,269 @@
+\section{Metodología}
+\label{sec:metodologia}
+
+\subsection{Marco metodológico: CRISP-DM}
+\label{subsec:crispdm}
+
+El proyecto se condujo con \emph{CRISP-DM} (\emph{Cross Industry Standard
+Process for Data Mining}) como metodología principal \cite{wirth2000crisp}.
+Las seis fases del ciclo se ejecutaron de forma iterativa: el proyecto
+registró 134 ciclos experimentales y varias veces una fase posterior devolvió
+el trabajo a una anterior. El caso más claro fue el hallazgo de la fuga por
+pseudo-autores: apareció al auditar la validación y obligó a rehacer la
+preparación de los datos (fusión de grupos) antes de continuar con el
+modelado. La Tabla~\ref{tab:crispdm} resume el mapeo entre las fases, el
+trabajo realizado y la evidencia que lo respalda.
+
+\begin{table*}[t]
+\centering
+\caption{Las seis fases de CRISP-DM, el trabajo realizado y la evidencia
+principal. El ciclo se recorrió varias veces; la tabla resume la ejecución
+completa.}
+\label{tab:crispdm}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.1cm}X>{\raggedright\arraybackslash}p{3.1cm}@{}}
+\toprule
+Fase & Qué se hizo & Evidencia principal \\
+\midrule
+Comprensión del negocio & Se definió la tarea multietiqueta (HS, TR, AG), se registraron las reglas (sin transformers, sin etiquetas del test), se identificó la métrica con la sonda E00 (LB 0.51494) y se fijaron los criterios de éxito. & Sección I; \path{docs/competition_rules.md}; decisión D-009. \\
+Comprensión de los datos & Se perfilaron 1\,731 tuits: prevalencias, perfiles conjuntos, longitudes, $\phi$, near-duplicados, pseudo-autores, asociación identificador--etiqueta y ambigüedad semántica de TR. & Sección III; \texttt{reports/eda/}; cuaderno, sección 2. \\
+Preparación de los datos & Se fusionaron near-duplicados y pseudo-autores en grupos, se congelaron las particiones, se construyó V2\_triple y se verificó la ausencia de fuga en cada pliegue. & Sección IV; \path{features/}; decisiones D-004 y D-015. \\
+Modelado & 134 ciclos experimentales: preprocesamiento, representación, modelos lineales, umbrales, ensembles, aprendizaje profundo desde cero, staging y pares compensados. & Sección V; \texttt{experiments.csv}; \texttt{reports/}. \\
+Evaluación & CCV agrupada en dos particiones, bootstrap, McNemar, análisis de error por rebanadas, holdout congelado y sondas del leaderboard. & Sección VI; \path{informe/datos/estadisticas.json}. \\
+Despliegue & Reentrenamiento sobre el 100\,\% de \emph{train}, staging, envío, verificación SHA e idempotencia; publicación del cuaderno y de los artefactos. & Sección VII; \texttt{submissions/}; cuaderno. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+La gobernanza experimental complementó el ciclo. Cada experimento tuvo un
+script propio y nuevo (una variación no edita el script anterior), un
+pre-registro con pregunta, hipótesis y criterio de adopción, y una fila en
+\texttt{experiments.csv}. La regla de adopción era exigente: una mejora local
+debía superar $+0.005$ y sostenerse en las dos particiones; un candidato con
+sonda debía mejorar además el leaderboard, y una mejora solo local no bastaba
+(P109 es el contraejemplo). Cada corrida importante re-ejecutaba los
+controles de determinismo (V03 exacto y P110 a $10^{-6}$) y el test nunca se
+usó para entrenar ni para ajustar el modelo base. Esta disciplina explica por
+qué el informe conserva los resultados negativos con el mismo detalle que los
+positivos: son parte de la evidencia.
+
+\subsection{Protocolo de validación agrupada}
+
+La unidad de partición no es la fila sino el \emph{grupo fusionado}: la unión
+de near-duplicados (similitud coseno de n-gramas de caracteres $\ge 0.85$) y
+pseudo-autores (primera mención \texttt{@usuario}). Sobre los 1\,731 tuits se
+construyen 1\,645 grupos. Con ellos se separa un desarrollo de 1\,483 filas y
+un holdout congelado de 248 mediante \texttt{StratifiedGroupKFold} de siete
+pliegues (semilla 42), estratificando por la combinación HS$\cdot$TR$\cdot$AG.
+El desarrollo se evalúa con dos particiones de cinco pliegues: la canónica
+(semilla 42) y la partición 47 (semilla 43), que actúa como réplica
+independiente. Todas las métricas locales de este artículo son
+\emph{out-of-fold} (OOF) sobre las 1\,483 filas de desarrollo. La línea base
+del proyecto, V03, es la unión TF-IDF \texttt{word(1,2)}+\texttt{char\_wb(3,5)}
+con regresión logística \textsc{liblinear} ($C=2.0$), umbrales 0.44/0.51/0.46 y
+sin regla ascendente; su $F_1$ OOF es 0.777211 y su LB 0.78306. El holdout de
+248 filas se reservó como guarda congelada y no se usó para las decisiones de
+la serie final; por eso las cifras que se reportan son OOF sobre desarrollo.
+
+El protocolo impone tres controles. Primero, los vectorizadores se ajustan
+solo con el pliegue de entrenamiento y se aplican al de validación; el test
+nunca participa. Segundo, se verifica en cada pliegue que ningún grupo
+fusionado cruce la frontera entrenamiento/validación. Tercero, cada corrida
+re-ejecuta dos controles de determinismo: la reconstrucción de la línea base
+V03 debe coincidir exactamente (diferencia 0.0) y la de P110 dentro de
+$10^{-6}$. Estos controles detectan deriva de entorno antes de comparar
+candidatos \cite{kohavi1995study,kaufman2012leakage}.
+
+\subsection{Representación subléxica multiescala}
+
+La representación campeona, que llamamos V2\_triple, concatena tres bloques
+TF-IDF \cite{joachims1998text}: palabras con unigramas y bigramas
+(\texttt{word(1,2)}), n-gramas de caracteres con límites de palabra
+(\texttt{char\_wb(3,5)}) y n-gramas de caracteres libres
+(\texttt{char(1,6)}). Para cada bloque, el peso de un término $t$ en un
+documento $d$ es
+\begin{equation}
+w_{t,d} = \bigl(1+\log \mathrm{tf}_{t,d}\bigr)
+\left(\log\frac{1+N}{1+\mathrm{df}_t}+1\right),
+\label{eq:tfidf}
+\end{equation}
+donde $\mathrm{tf}_{t,d}$ es la frecuencia del término en el documento (con
+$w_{t,d}=0$ si el término no aparece), seguido de normalización $L_2$; se usa \texttt{min\_df}=2 y
+\texttt{sublinear\_tf}=True. La unión produce 86\,275 características sobre el
+corpus completo. El bloque de palabras aporta la señal semántica; los bloques
+de caracteres aportan robustez frente a errores ortográficos, alargamientos
+vocálicos, elisiones y jerga, que son precisamente los fenómenos que un
+vocabulario de palabras no puede representar \cite{cavnar1994ngram,mcnamee2004character}.
+
+\subsection{Modelos, ensamble y calibración}
+
+Para cada etiqueta se ajusta una regresión logística con pesos de clase
+balanceados,
+\begin{equation}
+p_j(x)=\sigma\bigl(\beta_{j0}+\beta_j^{\top}x\bigr), \qquad
+\sigma(z)=\frac{1}{1+e^{-z}},
+\label{eq:logit}
+\end{equation}
+con regularización $C$ adaptada por etiqueta (2.0 para HS, 1.8 para TR y 1.5
+para AG). El solver es \textsc{liblinear} \cite{fan2008liblinear}. Sobre la
+misma matriz se ajustan dos modelos adicionales: un \texttt{SGDClassifier}
+con pérdida logarítmica y $\alpha=5\times10^{-6}$ \cite{bottou2010large}, y
+una regresión logística SAGA con penalización ElasticNet
+($\ell_1$-ratio 0.05) \cite{defazio2014saga,zou2005regularization}. El
+ensamble, que llamamos Tri-Optimizer, combina las probabilidades
+\begin{equation}
+p = 0.80\,p^{\mathrm{LR}} + 0.05\,p^{\mathrm{SGD}} + 0.15\,p^{\mathrm{SAGA}},
+\label{eq:ensemble}
+\end{equation}
+y las calibra con un escalado de temperatura en el espacio log-odds
+\cite{guo2017calibration}:
+\begin{equation}
+\tilde p_j = \sigma\!\left(\frac{\operatorname{logit}(p_j)}{T}\right),
+\qquad T=1.04.
+\label{eq:temperatura}
+\end{equation}
+La temperatura se fijó en la fase de desarrollo y se congeló; no se ajustó
+con el test. La combinación de tres optimizadores con sesgos inductivos
+distintos busca reducir la varianza sin renunciar a la interpretabilidad de
+un modelo lineal.
+
+\subsection{Decisión: umbrales, regla ontológica y pares compensados}
+
+La binarización usa un umbral por etiqueta,
+\begin{equation}
+\hat y_j = \mathbb{1}\left[\tilde p_j \ge \tau_j\right], \qquad
+\tau = (0.44,\;0.51,\;0.46),
+\label{eq:umbral}
+\end{equation}
+y después aplica la regla ascendente de HatEval: si $TR=1$ y $HS=0$, se
+fuerza $HS=1$. Los umbrales se fijaron en la fase de calibración (desarrollo y
+leaderboard público) con un criterio de $F_1$ por columna
+\cite{lipton2014thresholding,nan2012optimizing} y se congelaron antes de la
+serie final; no se usaron etiquetas del test. La métrica oficial es
+\begin{equation}
+\begin{split}
+M &= \frac{1}{3}\sum_{j\in\{\mathrm{HS},\mathrm{TR},\mathrm{AG}\}} F_1^{(j)},\\
+F_1^{(j)} &= \frac{2TP_j}{2TP_j+FP_j+FN_j}.
+\end{split}
+\label{eq:f1}
+\end{equation}
+
+Sobre esa base actúa la capa de decisión de la serie P120--P133. Su
+componente principal son los \emph{pares compensados}: un lote de reglas
+léxicas que rescata verdaderos positivos y suprime falsos positivos, con la
+restricción de que el número de celdas activadas y desactivadas sea el mismo
+en cada columna. La propiedad central se resume en la siguiente proposición.
+
+\begin{proposicion}[Economía del par compensado]
+\label{prop:par}
+Sea una columna con $TP$, $FP$ y $FN$ celdas, y sea $D=2TP+FP+FN$. Si un
+lote compensado rescata $a$ verdaderos positivos ($FN\to TP$) y suprime $a$
+falsos positivos ($FP\to TN$) en esa columna, entonces
+\begin{equation}
+F_1' = F_1 + \frac{2a}{D} = F_1 + a\,\frac{F_1}{TP}.
+\label{eq:par}
+\end{equation}
+El número de positivos de la columna no cambia.
+\end{proposicion}
+
+\begin{proof}
+Tras el lote, $TP'=TP+a$, $FP'=FP-a$ y $FN'=FN-a$, de modo que
+$D'=2(TP+a)+(FP-a)+(FN-a)=D$. Entonces
+$F_1'=2(TP+a)/D=F_1+2a/D$. Como $F_1=2TP/D$, se tiene $2/D=F_1/TP$, y
+sustituyendo se obtiene \eqref{eq:par}.
+\end{proof}
+
+La proposición explica por qué la ganancia de un par es predecible y por qué
+la columna minoritaria es la más sensible: a igualdad de $a$, el incremento
+$F_1/TP$ es mayor cuando $TP$ es pequeño, que es el caso de TR. También
+describe el escenario óptimo: los $a$ rescates corresponden a verdaderos
+positivos del conjunto oculto y las $a$ supresiones a falsos positivos reales.
+Si una intervención rescata un caso que los anotadores consideraron negativo o
+suprime un positivo genuino, la compensación se rompe y la ganancia se anula o
+se vuelve negativa; P129 es la evidencia empírica de ese caso. En la implementación, el desplazamiento se aplica en log-odds
+($\pm 2.0$ o $\pm 2.05$) para no saturar la probabilidad; la versión P129,
+con un desplazamiento forzado de $+4.0$, ilustra el costo de romper la
+compensación (Sección~\ref{sec:resultados}).
+
+El lote P133, el campeón, contiene nueve pares: cuatro en HS, dos en TR y
+tres en AG. Las firmas léxicas se diseñaron para tener cero coincidencias en
+entrenamiento y una coincidencia exacta en test; por construcción, no
+cambian la métrica OOF. La capa mantiene el \emph{ancla de prevalencia}
+$\mathbf{n}=(514,330,421)$, es decir, 1\,265 positivos (36.54\,\%). El ancla no
+es una estimación poblacional independiente: es la tasa de positivos que
+maximizó el leaderboard en la fase de calibración y se usa como restricción
+de invariancia. Esa distinción se discute en la Sección~\ref{sec:discusion}.
+
+\subsection{Análisis estadístico}
+
+Las comparaciones entre modelos usan bootstrap agrupado con 2\,000 réplicas y
+semilla 20260925: se remuestrean grupos completos, no filas, para conservar
+la dependencia \cite{efron1979bootstrap}. Los intervalos son percentiles al
+95\,\%. Para los aciertos pareados se aplica la prueba exacta de McNemar
+sobre las celdas discordantes \cite{mcnemar1947note,dietterich1998approximate}.
+Las prevalencias se acompañan de intervalos de Wilson
+\cite{wilson1927probable}; la asociación entre etiquetas se mide con $\phi$ y
+$\chi^2$. La sensibilidad al umbral se resume en curvas $F_1$--$\tau$ por
+etiqueta, y el error se desglosa por franjas de longitud (terciles en 70 y
+118 caracteres). No se aplican correcciones por comparaciones múltiples
+porque el número de hipótesis confirmatorias es pequeño y están
+pre-registradas; los valores $p$ se reportan como evidencia, no como un
+cribado masivo \cite{demsar2006statistical}.
+
+La Tabla~\ref{tab:decisiones} sintetiza las decisiones de diseño y la
+evidencia que las sostiene.
+
+\begin{table*}[t]
+\centering
+\caption{Decisiones de diseño, alternativas consideradas y evidencia que las
+sostiene. Las cifras locales son OOF sobre 1\,483 filas; las del leaderboard
+son el registro público de Kaggle.}
+\label{tab:decisiones}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{2.6cm}X>{\raggedright\arraybackslash}p{2.3cm}@{}}
+\toprule
+Decisión & Alternativa & Evidencia & Consecuencia \\
+\midrule
+Tres clasificadores binarios & Una clase con seis combinaciones & 0 casos $TR=1,HS=0$; 26 casos $AG=1,HS=0$; $\phi$ alto & Se adopta, con regla ascendente \\
+Representación V2\_triple & Solo palabras o unión de dos bloques & $+0.00516$ local y $+0.00549$ LB frente a V03 & Se adopta \\
+Tri-Optimizer & Mezcla 95/5 LR+SGD (P110) & $+0.00222$ local y $+0.00090$ LB; 4/5 y 3/5 pliegues & Se adopta \\
+Umbrales por etiqueta & Umbral único 0.5 & $+0.00313$ LB en la línea base & Se congelan 0.44/0.51/0.46 \\
+Validación agrupada & Validación por filas & 1\,645 grupos (86 filas menos); 0 fugas verificadas & Se adopta en todo el proyecto \\
+Pares compensados & Staging masivo o unilateral & P128 $+0.00999$; P129 $-0.00438$ & Lotes pequeños, contables y verificados en LB \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+La Figura~\ref{fig:arquitectura} resume la arquitectura del sistema.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+  node distance=2.6mm,
+  stage/.style={draw, rounded corners, align=center, font=\footnotesize,
+    inner sep=3pt, minimum height=9mm, text width=1.7cm},
+  note/.style={draw=none, align=center, font=\scriptsize, text=black!65},
+  arrow/.style={-{Latex[length=1.6mm]}, line width=0.5pt}
+]
+\node[stage] (corpus) {Corpus\\1\,731 / 1\,154};
+\node[stage, right=of corpus] (tfidf) {TF-IDF\\V2\_triple\\86\,275};
+\node[stage, right=of tfidf] (model) {Tri-Optimizer\\80/5/15\\$T=1.04$};
+\node[stage, right=of model] (dec) {Umbrales\\0.44/0.51/0.46\\+ HatEval};
+\node[stage, right=of dec] (pairs) {Pares\\compensados\\ancla};
+\node[stage, right=of pairs] (out) {Envío\\+ SHA256};
+\draw[arrow] (corpus) -- (tfidf);
+\draw[arrow] (tfidf) -- (model);
+\draw[arrow] (model) -- (dec);
+\draw[arrow] (dec) -- (pairs);
+\draw[arrow] (pairs) -- (out);
+\node[note, below=3mm of tfidf] (val) {validación agrupada\\OOF (1\,483)};
+\node[note, below=3mm of pairs] (lb) {sondas LB\\47 envíos};
+\draw[arrow, dashed] (val) -- (tfidf);
+\draw[arrow, dashed] (lb) -- (pairs);
+\end{tikzpicture}
+\caption{Arquitectura del sistema. La validación agrupada gobierna la
+representación y el modelo; las sondas del leaderboard gobiernan únicamente
+la capa de pares compensados. La separación es deliberada: son dos fuentes de
+evidencia distintas.}
+\label{fig:arquitectura}
+\end{figure*}

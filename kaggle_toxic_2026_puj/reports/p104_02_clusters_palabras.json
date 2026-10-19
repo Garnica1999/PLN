@@ -1,0 +1,237 @@
+{
+  "experiment_id": "P104-02",
+  "fase": "P104 RONDA 3 (R5): clusters de palabras",
+  "fecha": "2026-10-14",
+  "embedding": {
+    "ruta": "modelos/twitter_domain/w2v_twitter_lrfix.npz",
+    "palabras": 77657,
+    "dim": 200,
+    "nota": "corpus externo Twitter/X sin etiquetas (P71-02); sin folds ni texto de dev/test"
+  },
+  "clusters": {
+    "K100": {
+      "n_clusters": 100,
+      "tam_min": 70,
+      "tam_max": 4315,
+      "tam_mediana": 444,
+      "segundos": 2.7
+    },
+    "K300": {
+      "n_clusters": 300,
+      "tam_min": 31,
+      "tam_max": 1323,
+      "tam_mediana": 183,
+      "segundos": 9.0
+    },
+    "K1000": {
+      "n_clusters": 1000,
+      "tam_min": 1,
+      "tam_max": 549,
+      "tam_mediana": 58,
+      "segundos": 34.0
+    }
+  },
+  "control": {
+    "diff_max_proba": 0.0,
+    "ccv": 0.7772114525165721,
+    "reproduce_v03": true,
+    "particion_47": {
+      "celdas_distintas": 0,
+      "diff_max_proba": 0.0
+    }
+  },
+  "v03_referencia": {
+    "corrected_cv": 0.7772114525165721,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    }
+  },
+  "variantes": {
+    "K100": {
+      "canonica": {
+        "corrected_cv": 0.761455,
+        "delta_vs_v03": -0.015756,
+        "folds": [
+          0.753989,
+          0.775027,
+          0.767502,
+          0.734985,
+          0.775844
+        ],
+        "pliegues_mejorados": 0,
+        "celdas_cambiadas": 302,
+        "bootstrap": {
+          "ic95": [
+            -0.027868,
+            -0.004064
+          ],
+          "pct_mejora": 0.0025
+        },
+        "deteccion": {
+          "se_bootstrap": 0.006073,
+          "delta_min_detectable_95": 0.011902
+        }
+      },
+      "particion_47": {
+        "corrected_cv": 0.756294,
+        "delta_vs_v03": -0.019338,
+        "folds": [
+          0.747057,
+          0.759005,
+          0.753684,
+          0.788573,
+          0.732042
+        ],
+        "pliegues_mejorados": 0,
+        "celdas_cambiadas": 295,
+        "bootstrap": {
+          "ic95": [
+            -0.031237,
+            -0.007941
+          ],
+          "pct_mejora": 0.0005
+        },
+        "deteccion": {
+          "se_bootstrap": 0.005943,
+          "delta_min_detectable_95": 0.011648
+        }
+      },
+      "gate": {
+        "condiciones": {
+          "delta_can_ge_0003": false,
+          "pliegues_ge_4": false,
+          "ic95_excluye_cero": false,
+          "delta_47_positivo": false,
+          "celdas_ge_200": true
+        },
+        "veredicto": "GATE_FAILED"
+      }
+    },
+    "K300": {
+      "canonica": {
+        "corrected_cv": 0.76241,
+        "delta_vs_v03": -0.014801,
+        "folds": [
+          0.774003,
+          0.794417,
+          0.778106,
+          0.712454,
+          0.75341
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 279,
+        "bootstrap": {
+          "ic95": [
+            -0.026471,
+            -0.003431
+          ],
+          "pct_mejora": 0.004
+        },
+        "deteccion": {
+          "se_bootstrap": 0.005878,
+          "delta_min_detectable_95": 0.01152
+        }
+      },
+      "particion_47": {
+        "corrected_cv": 0.763074,
+        "delta_vs_v03": -0.012558,
+        "folds": [
+          0.746085,
+          0.768409,
+          0.759782,
+          0.780953,
+          0.758426
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 289,
+        "bootstrap": {
+          "ic95": [
+            -0.024579,
+            -0.001131
+          ],
+          "pct_mejora": 0.0185
+        },
+        "deteccion": {
+          "se_bootstrap": 0.005982,
+          "delta_min_detectable_95": 0.011724
+        }
+      },
+      "gate": {
+        "condiciones": {
+          "delta_can_ge_0003": false,
+          "pliegues_ge_4": false,
+          "ic95_excluye_cero": false,
+          "delta_47_positivo": false,
+          "celdas_ge_200": true
+        },
+        "veredicto": "GATE_FAILED"
+      }
+    },
+    "K1000": {
+      "canonica": {
+        "corrected_cv": 0.75935,
+        "delta_vs_v03": -0.017862,
+        "folds": [
+          0.767551,
+          0.764958,
+          0.766783,
+          0.742954,
+          0.754563
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 293,
+        "bootstrap": {
+          "ic95": [
+            -0.030264,
+            -0.005551
+          ],
+          "pct_mejora": 0.001
+        },
+        "deteccion": {
+          "se_bootstrap": 0.006304,
+          "delta_min_detectable_95": 0.012356
+        }
+      },
+      "particion_47": {
+        "corrected_cv": 0.752699,
+        "delta_vs_v03": -0.022933,
+        "folds": [
+          0.707369,
+          0.739578,
+          0.757998,
+          0.781493,
+          0.774131
+        ],
+        "pliegues_mejorados": 0,
+        "celdas_cambiadas": 279,
+        "bootstrap": {
+          "ic95": [
+            -0.035434,
+            -0.011342
+          ],
+          "pct_mejora": 0.0
+        },
+        "deteccion": {
+          "se_bootstrap": 0.006146,
+          "delta_min_detectable_95": 0.012046
+        }
+      },
+      "gate": {
+        "condiciones": {
+          "delta_can_ge_0003": false,
+          "pliegues_ge_4": false,
+          "ic95_excluye_cero": false,
+          "delta_47_positivo": false,
+          "celdas_ge_200": true
+        },
+        "veredicto": "GATE_FAILED"
+      }
+    }
+  },
+  "mejor_variante": "K300",
+  "conclusion": "K300: efecto NEGATIVO detectable (IC95 [-0.026471,-0.003431] excluye cero por abajo): la variante perjudica; no es candidata.",
+  "sha_oof_final": "559265816ce4f631",
+  "tiempo_s": 287.5
+}

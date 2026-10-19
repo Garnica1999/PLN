@@ -1,0 +1,10 @@
+elemento,tecnica,representacion,protocolo,resultado,clasificacion,fuente
+Propuesta de la directiva,"LightGBM, tres clasificadores binarios","TF-IDF word(1,2) + char_wb(3,5) de V03, CSR","folds agrupados D-016; vectorizadores del train; umbrales [0.44,0.51,0.46]",no ejecutada,DUPLICATE,este informe
+P61-01,LightGBM 3 binarios (por defecto y con Optuna anidado),"TF-IDF de V03 tal cual, 27431 rasgos, hstack(...).tocsr()",pliegues canonicos del OOF congelado; umbrales congelados; early stopping interno,brazo 1 -0.0302397191; brazo 2 -0.0258463023; 2/5 pliegues; neto -28; gate no superado,CLOSED_BY_DUPLICATION (precedente directo),reports/p61_lightgbm_capacidad.json; experiments/p61_03_lightgbm.py
+P61-05,LightGBM como miembro de un ensemble de cinco,scores del pool historico,particion canonica y segunda particion,supera el gate en la canonica; REJECTED en la segunda particion,cerrado,experiments.csv
+V8-13,DecisionTree + RandomForest,TF-IDF de V03 reducido a subespacio discriminante (2.000 columnas),"3 repeticiones, profundidades 6",ninguna alternativa supera al control,cerradas sin envio,experiments/v8_13_clasificadores_alternativos.py; experiments.csv
+V4-G01-G03,HistGB y ExtraTrees,SVD-300 (denso),el de la fase v4,svd:hist_gb 0.7297; svd:extra_trees 0.7033,cerrado (muy por debajo de V03),reports/p61_lightgbm_capacidad.md
+P64-05,HistGradientBoosting (MI_arbol),bloque multiple-instance (canal denso),el de la fase P64,unico residuo con componente no lineal; score regenerado en P66-01,cerrado,DECISIONS.md D-169/D-170; experiments.csv
+P66-01,HistGB para regenerar scores,espacio de probabilidad,el de la fase P66,"REPRODUCEN 5, NO VERIFICABLE 1, DIFERENCIA NO RESUELTA 1",cerrado,experiments.csv
+P68-01,HistGB para enrutado de la decision,estructura del ejemplo (denso),el de la fase P68,"INVALIDATED, -0.0018992302, 1/5 pliegues",cerrado,experiments.csv
+OPT-01 (transferencia),Optuna sobre el TF-IDF de V03 (LR),TF-IDF de V03,24 trials sobre OOF,+0.008565 OOF pero 0.77602 LB (-0.028); descartado,patron cerrado: la busqueda por OOF premia capacidad que no generaliza,DECISIONS.md D-143; reports/p61_lightgbm_capacidad.md

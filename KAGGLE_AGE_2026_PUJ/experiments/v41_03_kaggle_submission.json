@@ -1,0 +1,13 @@
+{
+  "fase": "V41-03",
+  "fecha": "2026-10-16",
+  "duracion_seg": 23.8,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v41_swa_se_blend.csv",
+  "sha256": "7f0e3119eaca51b9c0bc8ed940fc7e6da98a4e0e3a1b84d2ce62710516f60c37",
+  "filas": 112892,
+  "mensaje": "V41 SWA-SE Blend (0.63 V30 + 0.26 SWA-SE-TabNet + 0.04 SE-Tab + 0.05 TabOrd + 0.02 HGB) + Plug-in",
+  "competencia": "tweet-age-2026-puj",
+  "kaggle_ref": "57275353",
+  "public_score": 0.63722,
+  "status": "SubmissionStatus.COMPLETE"
+}

@@ -1,13 +1,13 @@
 """Actualizacion del notebook consolidado: autocontenido, completo y limpio.
 
-Genera la version del 2026-10-03 de notebooks/10_final_pipeline.ipynb:
+Genera la version consolidada de notebooks/10_final_pipeline.ipynb:
 
 1. Autocontenido: las funciones que el notebook importaba de src/ (data.py,
    evaluation.py y embedding_utils.py) quedan embebidas en una celda nueva, y
    se eliminan los imports y las inserciones en sys.path.
 2. Completo: se anade la seccion 127 (fase P84), el anexo A (seccion 128) con
-   los 488 identificadores de la union del registro (455 filas) y el inventario
-   (483 filas), y la verificacion de completitud (seccion 129).
+   los identificadores de la union del registro y el inventario (483 filas),
+   y la verificacion de completitud (seccion 129).
 3. Limpieza: se sustituyen los simbolos no ASCII distintos de la ortografia
    espanola (guion largo, signo menos, comillas angulares, etc.) por sus
    equivalentes ASCII.
@@ -323,10 +323,10 @@ def sha256_de(ruta: Path) -> str:
 
 CODIGO_VERIF_INVENTARIO = r'''"""Verificacion del inventario y del registro.
 
-Comprueba el estado del 2026-10-03: el inventario de la auditoria conserva 483
-experimentos y 376 scripts clasificados; el registro tiene 455 filas validas y
-unicas (P84-01 a P84-05 se anadieron tras la auditoria); y no quedan filas
-malformadas de P67 a P77. La cobertura completa del anexo A se verifica en la
+Comprueba el estado del 2026-10-09: el inventario de la auditoria conserva 483
+experimentos y 376 scripts clasificados; el registro tiene 459 filas validas y
+unicas (P84-01 a P84-05, P85-01, P86-00, P87-00 y P88-00 se anadieron tras la auditoria); y no quedan
+filas malformadas de P67 a P77. La cobertura completa del anexo A se verifica en la
 seccion 129.
 """
 
@@ -365,21 +365,21 @@ malformadas = inventario_experimentos.loc[
 assert len(malformadas) == 0, f"tras la reparacion no debe haber malformadas, hay {len(malformadas)}"
 
 registro = pd.read_csv(PROJECT_ROOT / "experiments.csv")
-assert len(registro) == 455, f"el registro debe tener 455 filas, tiene {len(registro)}"
+assert len(registro) == 459, f"el registro debe tener 459 filas, tiene {len(registro)}"
 assert registro["experiment_id"].is_unique, "los identificadores del registro deben ser unicos"
 
-print("Inventario y registro (estado 2026-10-03):")
+print("Inventario y registro (estado 2026-10-09):")
 print(f"  inventario: {len(inventario_experimentos)} experimentos | {len(inventario_scripts)} scripts")
-print(f"  registro experiments.csv: {len(registro)} filas validas y unicas (455 tras P84)")
+print(f"  registro experiments.csv: {len(registro)} filas validas y unicas (459 tras P88-00)")
 print(f"  filas malformadas de P67 a P77: {len(malformadas)}")
 print("Verificacion completada.")
 '''
 
 CODIGO_VERIF_ANEXO = r'''"""Verificacion de completitud del anexo A.
 
-Comprueba que el notebook lista los 488 identificadores de la union: los 455
-del registro (experiments.csv) y los 33 ayudantes del inventario
-(auditoria/inventario_experimentos.csv) que no tienen fila propia.
+Comprueba que el notebook lista los identificadores de la union del registro
+(experiments.csv) y del inventario (auditoria/inventario_experimentos.csv) que
+no tienen fila propia.
 """
 
 import json
@@ -454,14 +454,23 @@ def cargar_filas() -> tuple[list[dict], list[dict]]:
 
 
 def construir_anexo(registro: list[dict], inventario: list[dict]) -> str:
-    """Devuelve el markdown de la seccion 128 con los 488 identificadores."""
+    """Devuelve el markdown de la seccion 128 con los identificadores de la union."""
     ids_registro = {fila["experiment_id"].strip() for fila in registro}
     familia_por_id = {fila["id"].strip(): fila.get("familia", "").strip() for fila in inventario}
 
     filas_a1 = []
     for fila in registro:
         identificador = fila["experiment_id"].strip()
-        familia = familia_por_id.get(identificador) or ("p84" if identificador.startswith("P84") else "-")
+        familia = familia_por_id.get(identificador) or (
+            "p84" if identificador.startswith("P84")
+            else (
+                "p85" if identificador.startswith("P85")
+                else (
+                    "p86" if identificador.startswith("P86")
+                    else ("p87" if identificador.startswith("P87") else ("p88" if identificador.startswith("P88") else "-"))
+                )
+            )
+        )
         fecha = (fila.get("date") or "").strip() or "-"
         f1 = (fila.get("f1") or "").strip() or "-"
         decision = truncar(limpiar_texto(fila.get("decision") or "-"), 100)
@@ -479,12 +488,13 @@ def construir_anexo(registro: list[dict], inventario: list[dict]) -> str:
         filas_a2.append((identificador, familia, estado, nota))
     filas_a2.sort(key=lambda tupla: tupla[0])
 
+    total = len(filas_a1) + len(filas_a2)
     lineas = [
-        "## 128. Anexo A. Lista completa de experimentos (488)",
+        f"## 128. Anexo A. Lista completa de experimentos ({total})",
         "",
-        "El anexo reúne los 488 identificadores de la unión de las dos fuentes del proyecto: los 455 del registro `experiments.csv` (sección A.1) y los 33 ayudantes del inventario `auditoria/inventario_experimentos.csv` que no tienen fila propia (sección A.2). La columna `decisión` reproduce el inicio de la decisión registrada y la columna `F1` el valor local registrado cuando existe. La verificación de la sección 129 comprueba que no falta ningún identificador.",
+        f"El anexo reúne los {total} identificadores de la unión de las dos fuentes del proyecto: los {len(filas_a1)} del registro `experiments.csv` (sección A.1) y los {len(filas_a2)} ayudantes del inventario `auditoria/inventario_experimentos.csv` que no tienen fila propia (sección A.2). La columna `decisión` reproduce el inicio de la decisión registrada y la columna `F1` el valor local registrado cuando existe. La verificación de la sección 129 comprueba que no falta ningún identificador.",
         "",
-        "### A.1. Registro de experimentos (455)",
+        f"### A.1. Registro de experimentos ({len(filas_a1)})",
         "",
         "| id | familia | fecha | F1 | decisión |",
         "|---|---|---|---|---|",
@@ -493,7 +503,7 @@ def construir_anexo(registro: list[dict], inventario: list[dict]) -> str:
         lineas.append(f"| {identificador} | {familia} | {fecha} | {f1} | {decision} |")
     lineas += [
         "",
-        "### A.2. Ayudantes del inventario sin fila propia (33)",
+        f"### A.2. Ayudantes del inventario sin fila propia ({len(filas_a2)})",
         "",
         "| id | familia | estado | nota |",
         "|---|---|---|---|",
@@ -508,7 +518,7 @@ def construir_verificacion_anexo() -> str:
     """Devuelve el markdown de la seccion 129."""
     return """## 129. Anexo B. Verificación de completitud
 
-La celda siguiente comprueba que este notebook lista los 488 identificadores de la unión del registro y del inventario, y que el registro conserva sus 455 filas válidas y únicas. Es la puerta que cierra el requisito de completitud del anexo A."""
+La celda siguiente comprueba que este notebook lista los identificadores de la unión del registro y del inventario, y que el registro conserva sus filas válidas y únicas. Es la puerta que cierra el requisito de completitud del anexo A."""
 
 
 def validar_caracteres(cells: list[dict]) -> None:
@@ -580,9 +590,29 @@ def main() -> None:
                 "Verificación de las métricas OOF del modelo final con src.evaluation.",
                 "Verificación de las métricas OOF del modelo final con las funciones embebidas.",
             )
+            asignar_texto(celda, fuente)
+        if "(411 filas de registro, 23 sondas, 39 scripts)" in fuente:
             fuente = fuente.replace(
                 "(411 filas de registro, 23 sondas, 39 scripts)",
                 "(455 filas de registro, 23 sondas, 39 scripts)",
+            )
+            asignar_texto(celda, fuente)
+        if "(455 filas de registro, 23 sondas, 39 scripts)" in fuente:
+            fuente = fuente.replace(
+                "(455 filas de registro, 23 sondas, 39 scripts)",
+                "(457 filas de registro, 23 sondas, 39 scripts)",
+            )
+            asignar_texto(celda, fuente)
+        if "(457 filas de registro, 23 sondas, 39 scripts)" in fuente:
+            fuente = fuente.replace(
+                "(457 filas de registro, 23 sondas, 39 scripts)",
+                "(458 filas de registro, 23 sondas, 39 scripts)",
+            )
+            asignar_texto(celda, fuente)
+        if "(458 filas de registro, 23 sondas, 39 scripts)" in fuente:
+            fuente = fuente.replace(
+                "(458 filas de registro, 23 sondas, 39 scripts)",
+                "(459 filas de registro, 23 sondas, 39 scripts)",
             )
             asignar_texto(celda, fuente)
         if "from src.embedding_utils import sha256_de" in fuente:
@@ -597,15 +627,23 @@ def main() -> None:
     reemplazar_en(
         cells,
         "| **Fecha del notebook** |",
-        "| **Fecha del notebook** | 2026-09-25 (trabajo experimental: 2026-09-22 a 2026-09-25) |",
-        "| **Fecha del notebook** | 2026-10-03 (trabajo experimental: 2026-09-22 a 2026-10-02) |",
+        "| **Fecha del notebook** | 2026-10-08 (trabajo experimental: 2026-09-22 a 2026-10-08) |",
+        "| **Fecha del notebook** | 2026-10-09 (trabajo experimental: 2026-09-22 a 2026-10-09) |",
     )
     reemplazar_en(
         cells,
         "14. **Reproducibilidad**",
-        "14. **Reproducibilidad**: 39 scripts de experimento (00-38), 411 filas en `experiments.csv`, 23 sondeos en `submissions/leaderboard_log.csv` y las figuras del proyecto.",
-        "14. **Reproducibilidad**: 39 scripts de experimento (00-38), 455 filas en `experiments.csv`, 23 sondeos en `submissions/leaderboard_log.csv` y las figuras del proyecto.\n"
-        "15. **Actualización del 2026-10-03**: el notebook es autocontenido (las funciones que antes se importaban de `src/` están embebidas), documenta la fase P84 en la sección 127 y lista los 488 identificadores de experimentos en el anexo A (sección 128); la verificación de completitud está en la sección 129.",
+        "14. **Reproducibilidad**: 39 scripts de experimento (00-38), 458 filas en `experiments.csv`, 23 sondeos en `submissions/leaderboard_log.csv` y las figuras del proyecto.\n"
+        "15. **Actualización del 2026-10-03**: el notebook es autocontenido (las funciones que antes se importaban de `src/` están embebidas), documenta la fase P84 en la sección 127 y lista los 491 identificadores de experimentos en el anexo A (sección 128); la verificación de completitud está en la sección 129.\n"
+        "16. **Actualización del 2026-10-08**: la comprobación documental final explicita la hipótesis Twitter/X (sección 130, D-289) y la reapertura autorizada P85-01 (sección 131) mide SGNS corregido sobre el corpus de Twitter/X frente al control general; entregables en `reports/toxic_twitter_sgns_corrected.md`.\n"
+        "17. **Actualización del 2026-10-09**: la auditoría de novedad P86-00 (sección 132) clasifica como DUPLICATE la Factorization Machine dispersa propuesta sobre la representación de V03: el precedente V25-01/V25-02 ya la ejecutó (control que reproduce V03 bit a bit, k agotado en 4, lambda_v óptimo en 1, mejor +0.005487 con neto -40) y la familia está cerrada; no se ejecuta nada.\n"
+        "18. **Actualización del 2026-10-09 (segunda)**: la auditoría de gobernanza P87-00 (sección 133) clasifica la revisión humana de anotaciones en TR como LOW_EXPECTED_VALUE: la contradicción demostrable es escasa y no explica el error, el detector de ruido es marginal y el techo de cualquier intervención queda bajo la banda de detección; no se solicita autorización, no se revisa ni corrige nada y TOXIC permanece cerrado.",
+        "14. **Reproducibilidad**: 39 scripts de experimento (00-38), 459 filas en `experiments.csv`, 23 sondeos en `submissions/leaderboard_log.csv` y las figuras del proyecto.\n"
+        "15. **Actualización del 2026-10-03**: el notebook es autocontenido (las funciones que antes se importaban de `src/` están embebidas), documenta la fase P84 en la sección 127 y lista los 492 identificadores de experimentos en el anexo A (sección 128); la verificación de completitud está en la sección 129.\n"
+        "16. **Actualización del 2026-10-08**: la comprobación documental final explicita la hipótesis Twitter/X (sección 130, D-289) y la reapertura autorizada P85-01 (sección 131) mide SGNS corregido sobre el corpus de Twitter/X frente al control general; entregables en `reports/toxic_twitter_sgns_corrected.md`.\n"
+        "17. **Actualización del 2026-10-09**: la auditoría de novedad P86-00 (sección 132) clasifica como DUPLICATE la Factorization Machine dispersa propuesta sobre la representación de V03: el precedente V25-01/V25-02 ya la ejecutó (control que reproduce V03 bit a bit, k agotado en 4, lambda_v óptimo en 1, mejor +0.005487 con neto -40) y la familia está cerrada; no se ejecuta nada.\n"
+        "18. **Actualización del 2026-10-09 (segunda)**: la auditoría de gobernanza P87-00 (sección 133) clasifica la revisión humana de anotaciones en TR como LOW_EXPECTED_VALUE: la contradicción demostrable es escasa y no explica el error, el detector de ruido es marginal y el techo de cualquier intervención queda bajo la banda de detección; no se solicita autorización, no se revisa ni corrige nada y TOXIC permanece cerrado.\n"
+        "19. **Actualización del 2026-10-09 (tercera)**: la auditoría de novedad P88-00 (sección 134) clasifica como DUPLICATE la propuesta de LightGBM sobre la matriz TF-IDF de V03: el precedente P61-01 ya la ejecutó (mismos vectorizadores, pliegues y umbrales; brazos -0.0302 y -0.0258; 2/5 pliegues; neto -28) y la familia está cerrada; no se ejecuta nada.",
     )
     reemplazar_en(
         cells,
@@ -616,26 +654,26 @@ def main() -> None:
     reemplazar_en(
         cells,
         "### F2. Inventario unificado",
-        "(450 filas de registro más 33 ayudantes sin fila tras la corrección)",
-        "(450 filas de registro más 33 ayudantes sin fila tras la corrección; 455 filas de registro y 488 identificadores en total tras P84-01 a P84-05, ver anexo A)",
+        "(450 filas de registro más 33 ayudantes sin fila tras la corrección; 458 filas de registro y 491 identificadores en total tras P84-01 a P84-05, P85-01, P86-00 y P87-00, ver anexo A)",
+        "(450 filas de registro más 33 ayudantes sin fila tras la corrección; 459 filas de registro y 492 identificadores en total tras P84-01 a P84-05, P85-01, P86-00, P87-00 y P88-00, ver anexo A)",
     )
     reemplazar_en(
         cells,
         "## 124. Inventario y trazabilidad",
-        "el registro tiene ahora 450 filas, todas de 23 columnas y sin identificadores duplicados",
-        "el registro tiene 455 filas (450 tras la corrección del 2026-10-02 y 5 más con P84-01 a P84-05), todas de 23 columnas y sin identificadores duplicados",
+        "el registro tiene 458 filas (450 tras la corrección del 2026-10-02, 5 más con P84-01 a P84-05, 1 más con P85-01, 1 más con P86-00 y 1 más con P87-00), todas de 23 columnas y sin identificadores duplicados",
+        "el registro tiene 459 filas (450 tras la corrección del 2026-10-02, 5 más con P84-01 a P84-05, 1 más con P85-01, 1 más con P86-00, 1 más con P87-00 y 1 más con P88-00), todas de 23 columnas y sin identificadores duplicados",
     )
     reemplazar_en(
         cells,
         "## 124. Inventario y trazabilidad",
-        "**267 experimentos no aparecen mencionados en este notebook.** No se borran ni se reescriben: el puntero para auditarlos es el inventario (`en_notebook != SI` y la columna `nota`). Muchos son variantes históricas o scripts auxiliares y su estado no se declara aquí.",
-        "**Cobertura completa.** En el momento del inventario, 267 experimentos no aparecían mencionados en este notebook. El anexo A (sección 128) cierra ese hueco: lista los 488 identificadores de la unión (455 del registro y 33 ayudantes sin fila propia), y la verificación de la sección 129 comprueba que no falta ninguno. La columna `en_notebook` del inventario conserva el estado previo al anexo.",
+        "**Cobertura completa.** En el momento del inventario, 267 experimentos no aparecían mencionados en este notebook. El anexo A (sección 128) cierra ese hueco: lista los 491 identificadores de la unión (458 del registro y 33 ayudantes sin fila propia), y la verificación de la sección 129 comprueba que no falta ninguno. La columna `en_notebook` del inventario conserva el estado previo al anexo.",
+        "**Cobertura completa.** En el momento del inventario, 267 experimentos no aparecían mencionados en este notebook. El anexo A (sección 128) cierra ese hueco: lista los 492 identificadores de la unión (459 del registro y 33 ayudantes sin fila propia), y la verificación de la sección 129 comprueba que no falta ninguno. La columna `en_notebook` del inventario conserva el estado previo al anexo.",
     )
     reemplazar_en(
         cells,
         "## 125. Correcciones aplicadas",
-        "el registro pasa de 411 a 450 filas, sin malformadas y sin identificadores duplicados.",
-        "el registro pasa de 411 a 450 filas (455 tras añadir P84-01 a P84-05), sin malformadas y sin identificadores duplicados.",
+        "el registro pasa de 411 a 450 filas (455 tras añadir P84-01 a P84-05, 456 tras P85-01, 457 tras P86-00 y 458 tras P87-00), sin malformadas y sin identificadores duplicados.",
+        "el registro pasa de 411 a 450 filas (455 tras añadir P84-01 a P84-05, 456 tras P85-01, 457 tras P86-00, 458 tras P87-00 y 459 tras P88-00), sin malformadas y sin identificadores duplicados.",
     )
     reemplazar_en(
         cells,
@@ -645,7 +683,7 @@ def main() -> None:
     )
     reemplazar_en(
         cells,
-        "Carga con `src.data`",
+        "Carga con las funciones embebidas",
         "Carga con `src.data` (módulo congelado en la Fase 0), validación de filas, nulos, ids y dominios;",
         "Carga con las funciones embebidas (replican `src.data`, módulo congelado en la Fase 0), validación de filas, nulos, ids y dominios;",
     )
@@ -673,17 +711,25 @@ def main() -> None:
         asignar_texto(celda, limpiar_texto(texto_de(celda)))
 
     # 7. Secciones nuevas: 127 (P84), 128 (anexo) y 129 (verificacion).
-    for marca in (MARCA_P84, MARCA_ANEXO, MARCA_VERIF_ANEXO):
-        while any(texto_de(c).startswith(marca) for c in cells):
-            cells.pop(next(i for i, c in enumerate(cells) if texto_de(c).startswith(marca)))
-    while any(MARCA_CODIGO_ANEXO in texto_de(c) for c in cells):
-        cells.pop(next(i for i, c in enumerate(cells) if MARCA_CODIGO_ANEXO in texto_de(c)))
+    def es_gestionada(celda: dict) -> bool:
+        fuente = texto_de(celda)
+        return any(fuente.startswith(marca) for marca in (MARCA_P84, MARCA_ANEXO, MARCA_VERIF_ANEXO)) or (
+            MARCA_CODIGO_ANEXO in fuente
+        )
+
+    posiciones = [i for i, c in enumerate(cells) if es_gestionada(c)]
+    indice_insercion = min(posiciones) if posiciones else len(cells)
+    while any(es_gestionada(c) for c in cells):
+        cells.pop(next(i for i, c in enumerate(cells) if es_gestionada(c)))
 
     registro, inventario = cargar_filas()
-    cells.append(nueva_celda_markdown(construir_seccion_p84()))
-    cells.append(nueva_celda_markdown(construir_anexo(registro, inventario)))
-    cells.append(nueva_celda_markdown(construir_verificacion_anexo()))
-    cells.append(nueva_celda_codigo(CODIGO_VERIF_ANEXO))
+    nuevas = [
+        nueva_celda_markdown(construir_seccion_p84()),
+        nueva_celda_markdown(construir_anexo(registro, inventario)),
+        nueva_celda_markdown(construir_verificacion_anexo()),
+        nueva_celda_codigo(CODIGO_VERIF_ANEXO),
+    ]
+    cells[indice_insercion:indice_insercion] = nuevas
 
     # 8. Validaciones y guardado.
     validar_codigo(cells)

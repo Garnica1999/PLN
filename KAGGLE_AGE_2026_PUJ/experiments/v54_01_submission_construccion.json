@@ -1,0 +1,48 @@
+{
+  "fase": "V54-01",
+  "fecha": "2026-10-18",
+  "duracion_seg": 0.42,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v54_hierarchical_poe_consensus.csv",
+  "sha256": "0646653f8a3d6b2adf9a70715cfcfcfd11e0b8245350159cee69989048cec90d",
+  "filas": 112892,
+  "distribucion": {
+    "18-24": 22035,
+    "50-64": 20405,
+    "25-34": 20068,
+    "35-49": 17604,
+    "65-xx": 17228,
+    "13-17": 15552
+  },
+  "pesos_geometricos": [
+    0.551544,
+    0.06522880000000002,
+    0.016307200000000004,
+    0.16895200000000002,
+    0.07389200000000001,
+    0.050274000000000006,
+    0.053802,
+    0.02
+  ],
+  "pesos_plug_in": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "cambios_vs_v48": 180,
+  "pct_cambios_vs_v48": 0.15944442475994755,
+  "cambios_vs_v53": 38,
+  "pct_cambios_vs_v53": 0.03366048967154449
+}

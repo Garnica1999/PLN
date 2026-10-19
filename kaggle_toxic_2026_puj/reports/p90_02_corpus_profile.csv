@@ -1,0 +1,26 @@
+metrica,valor,alcance,definicion
+filas_autorizadas,1483,desarrollo (ids del OOF),filas con prediccion OOF
+ids_unicos,1483,desarrollo,ids distintos
+textos_vacios,0,desarrollo,texto vacio o solo espacios
+duplicados_exactos_de_texto,0,desarrollo,texto identico repetido (no implica id repetido)
+caracteres_min_media_mediana_max,10 / 104.7 / 92 / 306,desarrollo,longitud en caracteres del texto original
+caracteres_p10_p90,41 / 193,desarrollo,percentiles 10 y 90
+tokens_min_media_mediana_max,1 / 17.2 / 15 / 57,desarrollo,tokens por split de espacios
+tweets_cortos_menos_25_tokens,1182,desarrollo,umbral historico de texto largo
+tweets_largos_25_o_mas,301,desarrollo,umbral historico de texto largo
+vocabulario_tipos,8888,desarrollo,tipos por split de espacios (texto original)
+vocabulario_tokens,25519,desarrollo,tokens totales por split
+hapax,7045,desarrollo,tipos con frecuencia 1
+top20_tokens,de:994; que:667; la:627; y:523; a:523; en:408; puta:362; el:302; no:285; un:236; es:229; los:226; te:226; una:212; perra:166; lo:164; me:163; se:161; eres:160; tu:157,desarrollo,20 tipos mas frecuentes (texto original)
+con_url,458,desarrollo,URL_PATTERN (06)
+con_hashtag,144,desarrollo,HASHTAG_PATTERN (06)
+con_mencion,702,desarrollo,MENTION_PATTERN (06)
+con_mencion_inicial,605,desarrollo,INITIAL_MENTION_PATTERN (06)
+con_elongacion,76,desarrollo,ELONGATION_PATTERN (06)
+con_mayusculas_sostenidas,864,desarrollo,UPPER_WORD_PATTERN o >=4 mayusculas (06)
+con_puntuacion_repetida,84,desarrollo,dos o mas signos ! o ? seguidos
+con_simbolo_no_alfanumerico,1291,desarrollo,contiene algun caracter no alfanumerico
+caracteres_no_ascii,0,desarrollo,textos con algun byte > 127
+grupos_near_dup_dev,1479,desarrollo,grupos del archivo historico (data/processed/grupos_near_duplicados.csv)
+filas_en_grupos_no_unitarios,6,desarrollo,filas con tamano de grupo > 1
+grupos_de_5_o_mas,1,desarrollo,grupos con 5 o mas filas

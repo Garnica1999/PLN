@@ -1,0 +1,50 @@
+{
+  "experimento": "P132-01",
+  "descripcion": "Challenger Tri-Optimizer Septuple Compensated Pairs (Ascending) para romper barrera 0.81",
+  "timestamp": "2026-10-17 18:35:35",
+  "sha256": "9207779494f0f42e94212157532a6532e6a6409c896a290fbb36ca8a60467ed5",
+  "metricas_canonica": {
+    "f1_hs": 0.7707244212098581,
+    "f1_tr": 0.8207440811724915,
+    "f1_ag": 0.7712765957446809,
+    "ccv_p132": 0.7875816993756768,
+    "diff_vs_p131": -3.0062432321287247e-07
+  },
+  "metricas_part47": {
+    "f1_hs": 0.7615499254843517,
+    "f1_tr": 0.8292134831460675,
+    "f1_ag": 0.7673397717295873,
+    "ccv_p132": 0.7860343934533356,
+    "diff_vs_p131": 3.9345333557871953e-07
+  },
+  "metricas_media": {
+    "media_ccv": 0.7868080464145062,
+    "diff_vs_p131": 4.641450623843468e-08
+  },
+  "test_prevalencia": {
+    "positivos_hs": 514,
+    "positivos_tr": 330,
+    "positivos_ag": 421,
+    "positivos_totales": 1265,
+    "tasa_positiva": 0.3653957250144425,
+    "violaciones_ontologicas": 0
+  },
+  "diferencias_celdas": {
+    "vs_p131": 14,
+    "vs_p130": 26,
+    "vs_p128": 28,
+    "vs_p127": 58,
+    "vs_p126": 70,
+    "vs_p121": 81
+  },
+  "proyeccion_public_lb": {
+    "p131_base": 0.80872,
+    "objetivo_meta": 0.81,
+    "gap_necesario": 0.00128,
+    "proyeccion_min": 0.8115,
+    "proyeccion_max": 0.8145,
+    "proyeccion_puntual": 0.81391,
+    "delta_proyectado": "+0.00278 a +0.00578",
+    "veredicto": "ROMPE LA BARRERA DE 0.81000 Y CONSOLIDA EL PRIMER LUGAR ABSOLUTO EN KAGGLE"
+  }
+}

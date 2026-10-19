@@ -1,0 +1,148 @@
+{
+  "experiment_id": "P104-01",
+  "fase": "P104 RONDA 3 (R4): stemming Snowball",
+  "fecha": "2026-10-14",
+  "control": {
+    "diff_max_proba": 0.0,
+    "ccv": 0.7772114525165721,
+    "reproduce_v03": true,
+    "particion_47": {
+      "celdas_distintas": 0,
+      "diff_max_proba": 0.0
+    }
+  },
+  "v03_referencia": {
+    "corrected_cv": 0.7772114525165721,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    }
+  },
+  "variantes": {
+    "S1_word_stem": {
+      "canonica": {
+        "corrected_cv": 0.765319,
+        "delta_vs_v03": -0.011893,
+        "folds": [
+          0.765122,
+          0.775796,
+          0.777876,
+          0.74471,
+          0.762663
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 202,
+        "bootstrap": {
+          "ic95": [
+            -0.021755,
+            -0.002301
+          ],
+          "pct_mejora": 0.008
+        },
+        "deteccion": {
+          "se_bootstrap": 0.004963,
+          "delta_min_detectable_95": 0.009727
+        }
+      },
+      "particion_47": {
+        "corrected_cv": 0.765953,
+        "delta_vs_v03": -0.009679,
+        "folds": [
+          0.769911,
+          0.746017,
+          0.752033,
+          0.774903,
+          0.786822
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 198,
+        "bootstrap": {
+          "ic95": [
+            -0.019559,
+            0.000297
+          ],
+          "pct_mejora": 0.0285
+        },
+        "deteccion": {
+          "se_bootstrap": 0.005065,
+          "delta_min_detectable_95": 0.009928
+        }
+      },
+      "gate": {
+        "condiciones": {
+          "delta_can_ge_0003": false,
+          "pliegues_ge_4": false,
+          "ic95_excluye_cero": false,
+          "delta_47_positivo": false,
+          "celdas_ge_200": true
+        },
+        "veredicto": "GATE_FAILED"
+      }
+    },
+    "S2_stem_mas_raw": {
+      "canonica": {
+        "corrected_cv": 0.769493,
+        "delta_vs_v03": -0.007719,
+        "folds": [
+          0.777262,
+          0.792676,
+          0.766734,
+          0.750258,
+          0.759739
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 119,
+        "bootstrap": {
+          "ic95": [
+            -0.014381,
+            -0.000603
+          ],
+          "pct_mejora": 0.0155
+        },
+        "deteccion": {
+          "se_bootstrap": 0.003515,
+          "delta_min_detectable_95": 0.006889
+        }
+      },
+      "particion_47": {
+        "corrected_cv": 0.768482,
+        "delta_vs_v03": -0.00715,
+        "folds": [
+          0.760592,
+          0.757539,
+          0.776555,
+          0.783626,
+          0.764039
+        ],
+        "pliegues_mejorados": 1,
+        "celdas_cambiadas": 122,
+        "bootstrap": {
+          "ic95": [
+            -0.01429,
+            0.000532
+          ],
+          "pct_mejora": 0.033
+        },
+        "deteccion": {
+          "se_bootstrap": 0.003781,
+          "delta_min_detectable_95": 0.007411
+        }
+      },
+      "gate": {
+        "condiciones": {
+          "delta_can_ge_0003": false,
+          "pliegues_ge_4": false,
+          "ic95_excluye_cero": false,
+          "delta_47_positivo": false,
+          "celdas_ge_200": false
+        },
+        "veredicto": "GATE_FAILED"
+      }
+    }
+  },
+  "mejor_variante": "S2_stem_mas_raw",
+  "conclusion": "S2_stem_mas_raw: efecto NEGATIVO detectable (IC95 [-0.014381,-0.000603] excluye cero por abajo): la variante perjudica; no es candidata.",
+  "sha_oof_final": "559265816ce4f631",
+  "tiempo_s": 163.7
+}

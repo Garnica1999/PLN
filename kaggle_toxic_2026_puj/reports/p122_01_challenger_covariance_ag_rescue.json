@@ -1,0 +1,206 @@
+{
+  "experimento": "P122-01",
+  "descripcion": "Challenger Audited Covariance AG Rescue (Stage 2 con TR blindado y rescate AG por covarianza)",
+  "duracion_segundos": 697.68,
+  "features_total": 86275,
+  "parametros": {
+    "gamma_hs": 0.02,
+    "beta_tr": 0.0,
+    "beta_ag": 0.6,
+    "tr_th": 0.58,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "temperatura": 1.04
+  },
+  "canonica": {
+    "ccv_p122": 0.7875816993756768,
+    "ccv_p121": 0.7875816993756768,
+    "ccv_p114": 0.7872182792620254,
+    "ccv_v03": 0.7772114525165721,
+    "delta_vs_p114": 0.0003634201136514248,
+    "delta_vs_p121": 0.0,
+    "delta_vs_v03": 0.010370246859104704,
+    "f1_por_etiqueta_p122": {
+      "HS": 0.7707244212098581,
+      "TR": 0.8207440811724915,
+      "AG": 0.7712765957446809
+    },
+    "f1_por_etiqueta_p121": {
+      "HS": 0.7707244212098581,
+      "TR": 0.8207440811724915,
+      "AG": 0.7712765957446809
+    },
+    "f1_por_etiqueta_p114": {
+      "HS": 0.7707244212098581,
+      "TR": 0.8207440811724915,
+      "AG": 0.7701863354037267
+    },
+    "pliegues_ganados_vs_p114": "1/5",
+    "pliegues_empatados_vs_p114": "4/5",
+    "pliegues_ganados_vs_p121": "0/5",
+    "pliegues_empatados_vs_p121": "5/5",
+    "deltas_por_pliegue_vs_p114": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0019340360823220104
+    ],
+    "deltas_por_pliegue_vs_p121": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bootstrap_ci95_vs_p114": [
+      0.0,
+      0.001135376732500176
+    ],
+    "bootstrap_win_rate_vs_p114": 0.634,
+    "bootstrap_ci95_vs_p121": [
+      0.0,
+      0.0
+    ],
+    "bootstrap_win_rate_vs_p121": 0.0,
+    "celdas_distintas_vs_p114": 1,
+    "celdas_distintas_vs_p121": 0,
+    "n_violaciones_ascendentes_corregidas": 25
+  },
+  "particion_47": {
+    "ccv_p122": 0.7860343934533356,
+    "ccv_p121": 0.7856733330466952,
+    "ccv_p114": 0.7856733330466952,
+    "ccv_v03": 0.7756319868803105,
+    "delta_vs_p114": 0.00036106040664041217,
+    "delta_vs_p121": 0.00036106040664041217,
+    "delta_vs_v03": 0.010402406573025047,
+    "f1_por_etiqueta_p122": {
+      "HS": 0.7615499254843517,
+      "TR": 0.8292134831460675,
+      "AG": 0.7673397717295873
+    },
+    "f1_por_etiqueta_p121": {
+      "HS": 0.7615499254843517,
+      "TR": 0.8292134831460675,
+      "AG": 0.7662565905096661
+    },
+    "f1_por_etiqueta_p114": {
+      "HS": 0.7615499254843517,
+      "TR": 0.8292134831460675,
+      "AG": 0.7662565905096661
+    },
+    "pliegues_ganados_vs_p114": "1/5",
+    "pliegues_empatados_vs_p114": "4/5",
+    "pliegues_ganados_vs_p121": "1/5",
+    "pliegues_empatados_vs_p121": "4/5",
+    "deltas_por_pliegue_vs_p114": [
+      0.0018711686425648688,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "deltas_por_pliegue_vs_p121": [
+      0.0018711686425648688,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bootstrap_ci95_vs_p114": [
+      0.0,
+      0.0011791000165279587
+    ],
+    "bootstrap_win_rate_vs_p114": 0.6575,
+    "bootstrap_ci95_vs_p121": [
+      0.0,
+      0.0011791000165279587
+    ],
+    "bootstrap_win_rate_vs_p121": 0.6575,
+    "celdas_distintas_vs_p114": 1,
+    "celdas_distintas_vs_p121": 1,
+    "n_violaciones_ascendentes_corregidas": 22
+  },
+  "media_ccv": {
+    "p122": 0.7868080464145062,
+    "p121": 0.786627516211186,
+    "p114": 0.7864457009619534,
+    "delta_vs_p121": 0.00018053020332020608,
+    "delta_vs_p114": 0.0003623454525527592
+  },
+  "test_eval": {
+    "celdas_distintas_vs_p121": 1,
+    "celdas_distintas_vs_p114": 2,
+    "cambios_0_a_1_vs_p121": 1,
+    "cambios_1_a_0_vs_p121": 0,
+    "balance_neto_vs_p121": 1,
+    "cambios_0_a_1_vs_p114": 1,
+    "cambios_1_a_0_vs_p114": 1,
+    "balance_neto_vs_p114": 0,
+    "positivos_p122": {
+      "HS": 514,
+      "TR": 330,
+      "AG": 421
+    },
+    "positivos_p121": {
+      "HS": 514,
+      "TR": 330,
+      "AG": 420
+    },
+    "positivos_p114": {
+      "HS": 515,
+      "TR": 330,
+      "AG": 420
+    },
+    "total_positivos": 1265,
+    "tasa_positiva_pct": 36.54,
+    "violaciones_ascendentes_corregidas": 10,
+    "sha256": "daa97f5d9b68b26003083ba5588aefa99e433e77e30fac85dc26ab3c07916048",
+    "proyeccion_public_lb": 0.79155,
+    "fila_917_rescate_ag": {
+      "id": 24539,
+      "prob_cal_p114": [
+        0.567049121000738,
+        0.6699731614008411,
+        0.44905549478422224
+      ],
+      "prob_p122": [
+        0.567049121000738,
+        0.6699731614008411,
+        0.46244493415831084
+      ],
+      "pred_p121": [
+        1,
+        1,
+        0
+      ],
+      "pred_p122": [
+        1,
+        1,
+        1
+      ]
+    },
+    "fila_300_exclusion_perra": {
+      "id": 20051,
+      "prob_cal_p114": [
+        0.4780072959036833,
+        0.537829906715001,
+        0.45641480748713625
+      ],
+      "prob_p122": [
+        0.4780072959036833,
+        0.537829906715001,
+        0.45641480748713625
+      ],
+      "pred_p122": [
+        1,
+        1,
+        0
+      ]
+    }
+  }
+}

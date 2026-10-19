@@ -1,0 +1,23 @@
+artifact_id,path,type,purpose,source_of_truth,git_tracked,sha256,date_or_version,related_experiments,status
+oof_canonico,features/oof_v03_final.npz,datos,predicciones OOF canonicas de V03,SI,SI,559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab,,,OK
+train_raw,data/raw/toxic_train.csv,datos,fuente autorizada de textos y etiquetas,SI,NO,3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f,,,OK
+particion,data/processed/holdout_v2_ids.csv,datos,asignacion dev/holdout (solo metadatos),NO,NO,e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd,,,OK
+grupos,data/processed/grupos_near_duplicados.csv,datos,grupos near-dup (metadatos),NO,NO,afabf9ae1c295ea8f203120bf28578cb4bdb4e8f16b89178d820baeaac62e622,,,OK
+pipeline_v03,experiments/baseline_v03_frozen/pipeline_v03.json,config,configuracion congelada de V03,SI,SI,89ee399ae849296f7a9a76c21d49e15e616a202b6ef8a5b1d87afbf8c528a90b,,,OK
+hashes_v03,experiments/baseline_v03_frozen/hashes.txt,config,hashes del baseline congelado,NO,SI,3e3b9039015a592dbf248ecca0c1a8b5bbd621b19c76d446c394a5b0230684a1,,,OK
+submission_v03,submissions/toxic_submission_v03_lr_union_thr.csv,submission,submission historica (LB 0.78306),NO,SI,7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e,,,OK
+modelo_v03,experiments/baseline_v03_frozen/model_v03.joblib,modelo,joblib congelado de V03,NO,SI,263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca,,,OK
+casebook_md,reports/v03_error_casebook.md,informe,casebook P90-00,NO,SI,3fb2d120acd7f2985a22c967db8587a694386dc61606331ef2c8d4d79103489b,,,OK
+casebook_csv,reports/v03_error_casebook.csv,tabla,441 tweets con error,NO,SI,b14d6ed21f011dc163c61cc5ec258889d052fd1226f3936a53918f0491b8c42b,,,OK
+cells_csv,reports/v03_error_cells.csv,tabla,757 celdas tweet-etiqueta,NO,SI,6a582e67d6450bcfc4e634036823e581080c56a1042dbdd95e9b39843810e26d,,,OK
+fold_csv,reports/v03_error_fold_summary.csv,tabla,resumen por fold,NO,SI,ad16825ae8b9931d019a119a99a96757aa1ba8ef0c2d5868c54fa351e754c9e1,,,OK
+slice_csv,reports/v03_error_slice_summary.csv,tabla,"slices dentro/fuera (mixto, ver P90.02)",NO,SI,0d19379e00e3c1f24906ecccbe6b4dd9d17fd8909d36a810c67ae9a1809a2992,,,OK
+confidence_csv,reports/v03_error_confidence_summary.csv,tabla,distancias y alta confianza,NO,SI,c729ff05b93d961bc3c586f011c77f0ace00d49e5bba2013bb5f1e1557cc1a71,,,OK
+sample_csv,reports/v03_error_review_sample.csv,tabla,muestra de revision,NO,SI,33272bbc92a65e813bb80e4041ffe1d55c28a4d8b2c09321b0c4768878a52ab1,,,OK
+controls_csv,reports/v03_error_controls.csv,tabla,controles emparejados,NO,SI,75bc065a15e5a0b5cc5ffb5081ddcc80aa7bf24c5f7d7d20ea054e552997df40,,,OK
+provenance_json,reports/v03_error_provenance.json,metadata,provenance P90-00,NO,SI,76438dec77a4ac55a4b29b27c7777a0837d696cb47870295d898629e0fc56c18,,,OK
+lexico_fase2,reports/eda/fase2_lexico_inducido_agresividad.csv,datos,lexico inducido in-sample,NO,SI,abcb61f0d6f93f33c337a6705f6770498ee89d1071a1dc5ea30369d871d09da9,,,OK
+familias_p57,reports/p57_family_status.csv,informe,estado de familias historico,NO,SI,e5de8a4de973ef22fd31e5696a8e4aee565ab517f1c93bdf81b4d9703feba947,,,OK
+oportunidades_csv,reports/toxic_remaining_legal_opportunities.csv,informe,auditoria de oportunidades,NO,SI,282a1603dd7bc21a371d2aebe1e08c5c34e681806854b7a7da79657c6fd46a8a,,,OK
+experiments_csv,experiments.csv,registro,registro experimental (459 filas),NO,SI,5b2994fee24e3174a2f24a4fcd6e89c6e5a67692d6668d52a617642d474d8e03,,,OK
+decisions,DECISIONS.md,registro,decisiones del proyecto,NO,SI,be31c9b70783f16a404133019414a6e1e987b7871db766acf09be0bfa09d7f1e,,,OK

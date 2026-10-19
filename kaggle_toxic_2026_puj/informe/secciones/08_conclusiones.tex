@@ -1,0 +1,59 @@
+\section{Conclusiones y trabajo futuro}
+\label{sec:conclusiones}
+
+La pregunta que abrió este artículo tenía una respuesta afirmativa, aunque
+con matices. Un pipeline clásico, sin transformers ni representaciones
+preentrenadas, puede competir en un corpus pequeño y ruidoso de tuits en
+español si se cuidan tres cosas: la representación, la validación y la
+decisión. El sistema alcanzó un $F_1$ público de 0.81447 y el primer lugar
+del leaderboard al cierre de este informe. La estimación limpia de su
+capacidad de generalización es, sin embargo, la del modelo base: 0.787582
+out-of-fold, con una mejora de $+0.010370$ sobre V03 e IC95
+$[+0.003924, +0.017386]$. Las dos cifras miden cosas distintas y ambas deben
+reportarse.
+
+La primera lección es que la representación sigue importando. La unión
+multiescala de palabras y n-gramas de caracteres aportó $+0.00516$ local y
+$+0.00549$ en el leaderboard, y lo hizo en las dos particiones congeladas.
+En un corpus normalizado a ASCII, corto y con ruido ortográfico, los
+n-gramas de caracteres no son un adorno: son el mecanismo que recupera la
+morfología y la jerga que el vocabulario de palabras pierde.
+
+La segunda lección es que la validación puede inducir a error si se diseña mal. P109
+obtuvo la mejor métrica local de toda la serie y el peor resultado público.
+La causa fue la poda por frecuencia: el vocabulario se hizo más pequeño,
+la validación compartió esa estrechez y el test no. La validación agrupada,
+la réplica en dos particiones y los controles de determinismo no eliminan el
+problema, pero lo hacen visible. Sin ellos, P109 habría parecido el mejor
+modelo del proyecto.
+
+La tercera lección es que la capa de decisión tiene una economía propia. La
+Proposición~\ref{prop:par} demuestra que un par compensado incrementa la
+$F_1$ en $F_1/TP$ por columna y preserva el número de positivos. Esa fórmula
+predice por qué los pares funcionan, por qué TR es la columna más sensible y
+por qué P129 falló al saturar la probabilidad. También explica por qué la
+capa no se puede validar con la OOF: sus reglas se diseñaron para textos del
+test. El 76\,\% de la ganancia del leaderboard proviene de ahí, y esa es
+precisamente la parte que exige más cautela.
+
+El trabajo futuro tiene cuatro frentes. Primero, repetir el pipeline con
+transformers o modelos de lenguaje, si las reglas lo permiten, para medir
+cuánto de la brecha es representación y cuánto es arquitectura. Segundo,
+atacar el error residual con mejor etiquetado y con modelos que manejen
+ironía, discurso citado y odio implícito; el análisis por longitud muestra
+que los textos largos son el frente principal. Tercero, diseñar una capa de
+decisión que no dependa del leaderboard: calibración con validación
+prospectiva, abstención cuando la probabilidad está cerca del umbral y
+auditoría de subgrupos. Cuarto, evaluar el sistema con criterios de equidad
+y robustez antes de pensar en un despliegue real; la literatura sobre sesgos
+en corpus de odio es una advertencia que este trabajo no resuelve
+\cite{davidson2019racial,wiegand2019biased}.
+
+El resultado que queda es moderado pero significativo. Moderado porque
+0.81447 es el puntaje de una competencia, con una capa adaptada al test y un
+leaderboard privado que aún no se conoce. Significativo porque demuestra que
+una representación construida desde cero, un ensamble lineal bien calibrado
+y una capa de decisión auditable pueden llevar a un sistema clásico hasta el
+primer lugar. En un momento en que la alternativa por defecto son los transformers, este
+caso recuerda que la ingeniería de datos, la validación y
+la teoría de la decisión siguen siendo fuentes reales de mejora.

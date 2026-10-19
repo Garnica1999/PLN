@@ -1,0 +1,88 @@
+\section{Trabajos relacionados}
+\label{sec:trabajos}
+
+\subsection{Detección de discurso de odio y la herencia de HatEval}
+
+La detección de discurso de odio es una tarea consolidada en el procesamiento
+del lenguaje natural, con revisiones sistemáticas que cubren definiciones,
+corpus y enfoques \cite{schmidt2017survey,fortuna2018survey,jahan2023systematic}.
+Un hito para el español y el multilingüismo fue la tarea 5 de SemEval-2019
+(HatEval), que introdujo la anotación conjunta de odio y carácter dirigido
+contra inmigrantes y mujeres \cite{basile2019hateval}. Los sistemas
+participantes combinaron rasgos lingüísticos, n-gramas de caracteres y modelos
+lineales o neuronales \cite{argotavega2019mineriaunam,ninaalcocer2019haterecognizer,plazadelarco2019sinai}.
+La lección que heredamos es doble: la estructura de las etiquetas importa y
+los corpus son pequeños, ruidosos y sensibles al dominio.
+
+En español, HaterNet mostró que un clasificador lineal sobre representaciones
+dispersas podía competir con alternativas más complejas en un corpus de
+Twitter \cite{pereirakohatsu2019haternet}; MexA3T exploró la agresividad y el
+odio en variantes del español de México \cite{alvarezcarmona2018mexa3t,aragon2019mexa3t};
+otros trabajos abordaron la misoginia y la combinación de rasgos lingüísticos
+\cite{garcia2021misogyny,garcia2022featurecombination,frenda2018misogyny,arango2019hate}.
+Los transformers han elevado el techo en corpus grandes
+\cite{plazadelarco2021comparing,plazadelarco2021multitask}, pero su ventaja se
+reduce cuando el corpus es pequeño, el dominio está normalizado y el
+presupuesto de cómputo es limitado. La restricción de esta competencia
+---sin modelos preentrenados--- vuelve relevante la pregunta inversa: cuánto
+se puede extraer de una representación construida desde cero.
+
+\subsection{Representaciones subléxicas y modelos lineales}
+
+Los n-gramas de caracteres son una representación clásica para texto corto y
+ruidoso. Cavnar y Trenkle los usaron para categorización de texto
+\cite{cavnar1994ngram} y McNamee y Mayfield mostraron su eficacia en
+recuperación multilingüe \cite{mcnamee2004character}. La representación
+TF-IDF \cite{salton1988term} combinada con regresión logística o máquinas
+de vectores sigue siendo una línea base difícil de superar en corpus
+pequeños. Los optimizadores importan: \textsc{liblinear} resuelve el problema
+primal con coordenadas \cite{fan2008liblinear}, el descenso estocástico
+escala a matrices dispersas \cite{bottou2010large} y SAGA acelera la
+regularización ElasticNet \cite{defazio2014saga,zou2005regularization}. Los
+ensambles de modelos diversos ---bagging, stacking o mezclas de
+probabilidades--- reducen varianza y suavizan los errores de frontera
+\cite{breiman1996bagging,wolpert1992stacked}. Nuestra propuesta se sitúa en
+esa tradición, pero añade una capa de decisión explícita y auditable.
+
+\subsection{Umbrales, calibración y estructura de etiquetas}
+
+En clasificación desbalanceada, el umbral de 0.5 no es óptimo para la $F_1$
+\cite{japkowicz2002class,lipton2014thresholding}. La literatura ofrece
+soluciones analíticas y numéricas para maximizar la $F_1$ por clase
+\cite{nan2012optimizing,dembczynski2013optimizing,parambath2014optimizing,berger2020threshold}
+y advierte que la métrica tiene una geometría propia: no todas las celdas de
+la matriz de confusión pesan igual \cite{flach2003geometry,saito2015precision}.
+La calibración de probabilidades es el paso previo: la temperatura y el
+escalado de Platt corrigen el exceso de confianza de los modelos
+\cite{guo2017calibration,platt1999probabilistic}. Finalmente, la estructura
+jerárquica de las etiquetas ---TR solo tiene sentido si HS está activo---
+puede explotarse con reglas ontológicas o con clasificadores jerárquicos
+\cite{silla2011survey,fortuna2019hierarchically}. Nuestro pipeline combina
+las tres ideas: calibración, umbrales desacoplados y una regla ascendente.
+
+\subsection{Calidad de datos, fuga y comparación estadística}
+
+Los corpus de odio contienen near-duplicados, retuits, hilos de un mismo
+usuario y etiquetas ambiguas \cite{founta2018crowdsourcing,davidson2017automated,davidson2019racial,wiegand2019biased}.
+Si la validación reparte copias casi idénticas entre entrenamiento y
+validación, la métrica local se infla: es la fuga por agrupamiento descrita
+por Kaufman et al. \cite{kaufman2012leakage}. La respuesta metodológica es
+agrupar antes de partir y verificar que ningún grupo cruce la frontera
+\cite{kohavi1995study,kaufman2012leakage}. La comparación entre modelos
+tampoco debería apoyarse en una única diferencia de medias: el bootstrap
+agrupado, las pruebas pareadas de McNemar y los tests de Dietterich y Demšar
+son el estándar para decidir si una mejora es distinguishable del ruido
+\cite{efron1979bootstrap,mcnemar1947note,dietterich1998approximate,demsar2006statistical}.
+Ese es el marco que adoptamos.
+
+\subsection{Posicionamiento}
+
+Este trabajo no propone una arquitectura nueva. Propone una \emph{disciplina}
+de construcción y evaluación: representación subléxica multiescala,
+validación agrupada, umbrales por etiqueta, calibración y una capa de
+decisión que preserva la prevalencia. La contribución diferencial es el
+análisis formal de esa capa y la separación explícita entre lo que se valida
+localmente y lo que se ajusta contra el leaderboard. Frente a los sistemas
+basados en transformers, el nuestro es más simple y más barato; frente a las
+líneas base clásicas, incorpora una ingeniería de decisión que resulta
+decisiva en la competencia.

@@ -1,0 +1,49 @@
+{
+  "experimento": "P130-01",
+  "descripcion": "Challenger Tri-Optimizer Hexuple Compensated Pairs (Ascending)",
+  "timestamp": "2026-10-17 16:51:21",
+  "sha256_submission": "ff9995f87382a1a05feb18a88cdb5977a597247e678e49a158c2bea2fdbbbb23",
+  "metricas_canonica": {
+    "ccv_p130": 0.7875816993756768,
+    "diff_vs_p128": 0.0,
+    "f1_hs": 0.7707244212098581,
+    "f1_tr": 0.8207440811724915,
+    "f1_ag": 0.7712765957446809
+  },
+  "metricas_particion47": {
+    "ccv_p130": 0.7860343934533356,
+    "diff_vs_p128": 0.0,
+    "f1_hs": 0.7615499254843517,
+    "f1_tr": 0.8292134831460675,
+    "f1_ag": 0.7673397717295873
+  },
+  "media_ccv": 0.7868080464145062,
+  "bootstrap_ci_vs_p114": {
+    "ci_low": 0.0,
+    "ci_high": 0.0011203240682687214,
+    "pct_mejora": 0.632
+  },
+  "test_positivos": {
+    "HS": 514,
+    "TR": 330,
+    "AG": 421,
+    "total": 1265,
+    "tasa_positivos": 0.3653957250144425
+  },
+  "violaciones_ontologicas": 0,
+  "celdas_distintas_test": {
+    "vs_p128": 8,
+    "vs_p127": 38,
+    "vs_p126": 50,
+    "vs_p125": 54,
+    "vs_p121": 61
+  },
+  "proyeccion_kaggle_lb": {
+    "base_p128": 0.80516,
+    "primer_lugar_actual": 0.80706,
+    "delta_proyectado": 0.0035,
+    "proyeccion_min": 0.80796,
+    "proyeccion_max": 0.80959,
+    "supera_primer_lugar": true
+  }
+}

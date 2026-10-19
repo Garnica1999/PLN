@@ -1,0 +1,2 @@
+hypothesis_id,hypothesis,mechanism,evidence_from_v03,compatible_errors,counterexamples,folds,channel,historical_family,why_not_duplicate,why_could_improve,overfitting_risk,minimal_future_experiment,success_criteria,stop_criteria,compliance,final_decision
+NO_CANDIDATE,"Sin candidatos: ninguna hipotesis genuinamente nueva, concreta, falsable y no duplicada",n/a,"18 mecanismos evaluados: 15 CLOSED, 2 DUPLICATE, 1 UNRESOLVED; 0 POTENTIALLY_NEW",n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,ninguno propuesto en esta fase,n/a,n/a,n/a,NO_CANDIDATE

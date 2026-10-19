@@ -1,0 +1,12 @@
+propuesta_o_precedente,tecnica,representacion,protocolo,resultado,clasificacion,fuente
+Propuesta de la directiva,FM dispersa con interacciones de bajo rango entre caracteristicas lexicas,"word(1,2) + char_wb(3,5) TF-IDF de V03","pliegues agrupados D-016; umbrales [0.44,0.51,0.46]; control lineal",no ejecutada,DUPLICATE,este informe
+V25-01,"FM desde cero (interaccion de segundo orden de bajo rango, O(nnz*k))","word(1,2)+char_wb(3,5), min_df=2, sublinear_tf=True (la de V03)","StratifiedGroupKFold(42) sobre grupos (D-016); umbrales [0.44,0.51,0.46]; control reproduce V03","k=8 y k=16 identicos a k=4; modo conjunto memoriza (train F1 1.0000, OOF -0.0284)",DUPLICATE (precedente directo),reports/v25_01_factorization_machine.json; experiments/v25_01_factorization_machine.py
+V25-02,FM con barrido de lambda_v y reparto paralelo,identica a V25-01,identico a V25-01; control reproduce V03 bit a bit (0.0 de diferencia),mejor k=4 lambda_v=1: 0.782699 (+0.005487); neto -40; dLB esperado -0.0079; 0 sin converger,DUPLICATE (precedente directo),reports/v25_02_fm_paralela_lambda.json y .md
+V23 (RBF-SVC),no linealidad por kernel,V03 completa,el de V03,corrected_cv 0.790409; LB 0.77938 (-0.00368),CERRADO EN CONTRA,reports/v25_04_cierre.md; notebook
+V26-01..V26-03,Tsetlin Machine,binaria,el de V03,V26-02 invalidada; V26-03 0.583397,REJECTED,experiments.csv
+V27-01,kernel de espectro de caracteres,V03 completa,el de V03,0.762122 (-0.015089); neto -45,"CHALLENGER, sin submission",experiments.csv
+V43-01/V43-02,PLS (proyeccion supervisada de bajo rango),V03 completa,el de V03,-0.0137423671 (PLS correcto),cerrado,experiments.csv; D-190
+V4-D01-D04,interacciones como tokens (manuales),explicita,el de V03,0.7758; TRACK D NO_SIGNAL,cerrado,experiments.csv
+E2-10-ORT-*,forma x token (manuales),explicita,el de V03,-0.0238 a -0.0286 (0/5 pliegues),cerrado,experiments.csv
+V6-05,skip-grams con hueco 1-2,explicita,el de V03,-0.0001 (IC95 incluye 0),cerrado,experiments.csv
+P65 (D-162),pares lejanos 3-5 y 6-10 tokens,explicita,el de V03,-0.0066 / -0.0074,cerrado,DECISIONS.md D-162/D-163

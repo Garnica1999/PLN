@@ -1,0 +1,89 @@
+{
+ "audit_id": "P90-03",
+ "git_commit": "e43c594917fc643d0e300b73646aefb7dbd6b61d",
+ "branch": "main",
+ "input_artifacts": [
+  "features/oof_v03_final.npz",
+  "features/v2_oof_base_corrected.npz",
+  "experiments/baseline_v03_frozen/model_v03.joblib",
+  "data/raw/toxic_train.csv",
+  "reports/v03_error_casebook.csv",
+  "reports/v03_error_cells.csv",
+  "reports/v03_error_controls.csv",
+  "reports/v03_error_review_sample.csv",
+  "reports/eda/fase2_lexico_inducido_agresividad.csv"
+ ],
+ "input_hashes": {
+  "oof": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+  "modelo": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+  "v2base": "27dfa83736b979518a94bc93e32bb9cae07bc82eaff92234fe9e15d1f9822774",
+  "train": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+  "casebook": "b14d6ed21f011dc163c61cc5ec258889d052fd1226f3936a53918f0491b8c42b",
+  "cells": "6a582e67d6450bcfc4e634036823e581080c56a1042dbdd95e9b39843810e26d",
+  "controls": "75bc065a15e5a0b5cc5ffb5081ddcc80aa7bf24c5f7d7d20ea054e552997df40",
+  "sample": "33272bbc92a65e813bb80e4041ffe1d55c28a4d8b2c09321b0c4768878a52ab1",
+  "lexico": "abcb61f0d6f93f33c337a6705f6770498ee89d1071a1dc5ea30369d871d09da9"
+ },
+ "folds": "5 (StratifiedGroupKFold, grupos fusionados, D-004/D-016); asignacion en el OOF canonico",
+ "thresholds": {
+  "HS": 0.44,
+  "TR": 0.51,
+  "AG": 0.46
+ },
+ "attribution_method": "descomposicion lineal z = intercepto + sum(x_k*coef_k); contribucion_k = x_k*coef_k",
+ "feature_names_source": "FeatureUnion.get_feature_names_out() del joblib final (bloques word/char)",
+ "model_artifacts": "experiments/baseline_v03_frozen/model_v03.joblib (hash completo en input_hashes)",
+ "vectorizer_artifacts": "incluido en el mismo joblib (FeatureUnion word + char_wb)",
+ "reconstruction_tolerance": "1e-9 para z; 1e-12 para sigmoid vs predict_proba",
+ "validation_results": {
+  "sigmoid_vs_predict_proba_max": 0.0,
+  "reconstruccion_z_max_residuo": 9.325873406851315e-15,
+  "estratos_verificados": {
+   "HS": [
+    40,
+    87,
+    189
+   ],
+   "TR": [
+    13,
+    40,
+    111
+   ],
+   "AG": [
+    31,
+    80,
+    166
+   ]
+  },
+  "acuerdo_auxiliar_vs_oof": {
+   "HS|FP": "38/173 (22.0%)",
+   "HS|FN": "3/143 (2.1%)",
+   "TR|FP": "27/82 (32.9%)",
+   "TR|FN": "5/82 (6.1%)",
+   "AG|FP": "38/135 (28.1%)",
+   "AG|FN": "2/142 (1.4%)"
+  }
+ },
+ "output_artifacts": [
+  "reports/p90_03_feature_contribution_diagnostic.md",
+  "reports/p90_03_chatgpt_handoff.md",
+  "reports/p90_03_artifact_manifest.json",
+  "reports/p90_03_audit_results.json",
+  "reports/p90_03_error_contribution_by_cell.csv",
+  "reports/p90_03_feature_contribution_summary.csv",
+  "reports/p90_03_error_signature_profiles.csv",
+  "reports/p90_03_error_control_comparison.csv",
+  "reports/p90_03_slice_contribution_summary.csv",
+  "reports/p90_03_hypothesis_gap_analysis.csv",
+  "reports/p90_03_hypothesis_candidates.csv",
+  "reports/p90_03_key_feature_associations.csv",
+  "experiments/p90_03_diagnostico_contribuciones.py",
+  "experiments/p90_03b_informe_handoff.py",
+  "notebooks/10_final_pipeline.ipynb"
+ ],
+ "unresolved_issues": [
+  "EXACT_OOF_ATTRIBUTION_BLOCKED: faltan modelos y vectorizadores por pliegue",
+  "X2: mecanismo especifico de los 466 errores lejanos no demostrado",
+  "evidencia auxiliar in-sample: no causal sobre las decisiones OOF"
+ ]
+}

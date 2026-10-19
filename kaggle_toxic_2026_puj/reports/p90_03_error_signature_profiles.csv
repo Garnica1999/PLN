@@ -1,0 +1,27 @@
+label,error_type,signature,n,share_within_label_type
+HS,FP,acumulacion de muchas features,70,0.4046
+HS,FP,conflicto positivas-negativas,27,0.1561
+HS,FP,conflicto word-char,75,0.4335
+HS,FP,no interpretable con los artefactos disponibles,1,0.0058
+HS,FN,acumulacion de muchas features,96,0.6713
+HS,FN,conflicto positivas-negativas,20,0.1399
+HS,FN,conflicto word-char,25,0.1748
+HS,FN,sin evidencia hostil activada,2,0.0140
+TR,FP,acumulacion de muchas features,30,0.3659
+TR,FP,conflicto positivas-negativas,25,0.3049
+TR,FP,conflicto word-char,26,0.3171
+TR,FP,no interpretable con los artefactos disponibles,1,0.0122
+TR,FN,acumulacion de muchas features,66,0.8049
+TR,FN,conflicto positivas-negativas,6,0.0732
+TR,FN,no interpretable con los artefactos disponibles,4,0.0488
+TR,FN,pocas features dominantes,2,0.0244
+TR,FN,sin evidencia hostil activada,4,0.0488
+AG,FP,acumulacion de muchas features,45,0.3333
+AG,FP,conflicto positivas-negativas,22,0.1630
+AG,FP,conflicto word-char,68,0.5037
+AG,FN,acumulacion de muchas features,119,0.8380
+AG,FN,conflicto positivas-negativas,14,0.0986
+AG,FN,conflicto word-char,4,0.0282
+AG,FN,no interpretable con los artefactos disponibles,2,0.0141
+AG,FN,pocas features dominantes,1,0.0070
+AG,FN,sin evidencia hostil activada,2,0.0141

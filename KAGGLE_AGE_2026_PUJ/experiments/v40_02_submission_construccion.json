@@ -1,0 +1,26 @@
+{
+  "fase": "V40-02",
+  "fecha": "2026-10-16",
+  "duracion_seg": 0.37,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v40_se_tabular_blend.csv",
+  "sha256": "badba0b5c02d40a802d291074218b1ff6fe7b78943746a1d8a9842a5343a0792",
+  "filas": 112892,
+  "pesos_blend": {
+    "v30": 0.72,
+    "se_tabularnet": 0.12,
+    "tabnet_ordinal": 0.08,
+    "tabnet_v38": 0.06,
+    "hgb": 0.02
+  },
+  "distribucion": {
+    "18-24": 22319,
+    "50-64": 20277,
+    "25-34": 20031,
+    "35-49": 17541,
+    "65-xx": 17242,
+    "13-17": 15482
+  },
+  "cambios_vs_v39": 1854,
+  "cambios_vs_v30": 3564,
+  "checks_ok": true
+}

@@ -1,0 +1,48 @@
+{
+  "experiment_id": "P98-14",
+  "fase": "D98-1b (replica de robustez, pre-registro)",
+  "fecha": "2026-10-13",
+  "particion": {
+    "tipo": "StratifiedGroupKFold(5, shuffle, seed 43)",
+    "semilla": 43,
+    "grupos": "near-duplicate UNION pseudo-autor (mismos que el protocolo canonico)",
+    "estratificacion": "HS x TR x AG",
+    "n": 1483,
+    "tamanos": [
+      297,
+      297,
+      297,
+      296,
+      296
+    ],
+    "sha256_pliegues": "71f70cc2fc881800d447fab994e051fef80ac1d66f9a5717626dec014c29c1ca",
+    "sin_fuga_de_grupos": true
+  },
+  "congelado": {
+    "reps": {
+      "ruta": "features/p98_13_reps_dev.npz",
+      "sha256": "8f1aeeecaf346a802aa3fe76a8ca2ce426c5fb925ac61a52369fed0c28638727"
+    },
+    "umbrales_v03": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "fusion_LR": {
+      "C": 2.0,
+      "balanced": true,
+      "solver": "liblinear"
+    },
+    "checkpoints_ltr_rtl": "models/p98_c98_1_ltr.pt / models/p98_c98_1_rtl.pt (no se recargan; las reps ya estan congeladas)"
+  },
+  "brazos": [
+    "v03_equivalente (TF-IDF+LR C=2)",
+    "fusion_contextual (TF-IDF fold + denso reps C98-1)"
+  ],
+  "criterios": {
+    "robusta": "delta >= +0.003, >=4/5 pliegues, IC95 sin cero, neto > 0",
+    "marginal": "positivo sin todos los criterios",
+    "falsificada": "delta <= 0 o < 4/5 pliegues o neto <= 0"
+  },
+  "sin_leakage": "cada clasificador se ajusta SOLO con el train de su fold; ninguna etiqueta de validacion participa"
+}

@@ -1,0 +1,58 @@
+{
+  "phase": "P93-R blind adjudication preparation",
+  "date": "2026-10-13",
+  "package_dir": "artifacts/p93_adjudication_v1/independent_review",
+  "counts": {
+    "unique_tweets_to_review": 127,
+    "candidate_label_cells": 176,
+    "HS_candidate_cells": 23,
+    "TR_candidate_cells": 87,
+    "AG_candidate_cells": 66
+  },
+  "guide": {
+    "file": "reports/p92_annotation_guidelines_v2_1_holdout_safe.md",
+    "sha256": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "sha256_interno": "ff699f54a48da7797f7305cf71a2718cfc12b3d99eab6f0eb80e0560cd3ed38a"
+  },
+  "seeds": {
+    "asignacion_ids": 20261026,
+    "orden_filas": 20261027
+  },
+  "hashes": {
+    "artifacts/p93_adjudication_v1/independent_review/adjudicator_C.csv": "84ca2179378fa0d88e1e8b99921402219b79493dcd9b8792b7cac7864f7f937d",
+    "artifacts/p93_adjudication_v1/independent_review/annotation_guidelines_v2_1.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "artifacts/p93_adjudication_v1/independent_review/README_adjudicator.md": "c043a2d72cffdb6a912104d729444c998578ad7d2f372e46eeb08aeba12a306d",
+    "artifacts/p93_adjudication_v1/independent_review/manifest.json": "1771f928f738483783eb51b08bc030dabc5350d0576e4921713f9fe770c26ae9",
+    "reports/p93r_internal_adjudication_key.csv": "5f3f8eaeff229bcf72913a3d59e69b68581481edfef546ee6cdda61c49cf51e9",
+    "reports/p93r_round2_comparison_template.csv": "14919ccdf6ba5befef5e328b71f8291ec3250fc6c67f6c110772c932f152fba8"
+  },
+  "inputs_hashes": {
+    "reports/p93_gold_discrepancy_candidates.csv": "a54730bf49aac8bf8d9183d2a9093bc0630703bbd8371aa05d4395d3868344cb",
+    "reports/p92w_internal_sampling_key.csv": "13191b56b7b6b61d347a6fbb023dc13e32c0472f9cb22e2504ad2ff062b40129"
+  },
+  "checks": {
+    "entrada_candidatos_176": true,
+    "entrada_recuentos_23_87_66": true,
+    "entrada_manifiesto_p93": true,
+    "entrada_hash_candidatos": true,
+    "entrada_hash_clave": true,
+    "entrada_hashes_respuestas": true,
+    "candidatos_en_clave": true,
+    "unicos_menor_o_igual_176": true,
+    "todos_en_dev2": true,
+    "sin_reservados": true,
+    "componentes_validos": true,
+    "blinding_sin_fugas": true,
+    "blinding_anotaciones_vacias": true,
+    "paquete_sin_clave_ni_labels": true,
+    "verificador_ascii_oficial": true
+  },
+  "distribution": "NOT_DISTRIBUTED",
+  "calibration": "PENDING_HUMAN_RESPONSES",
+  "status": "ADJUDICATION_PACKAGE_READY",
+  "limitations": [
+    "candidatos NO son errores confirmados",
+    "gold oculto a C en ambas rondas",
+    "sin estimacion poblacional con esta muestra"
+  ]
+}

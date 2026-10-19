@@ -1,0 +1,83 @@
+{
+  "experimento": "P129-01",
+  "descripcion": "Tri-Optimizer Undecample Compensated Pairs (11 pares estrictos intra-columna con preservacion de P128)",
+  "tiempo_total_s": 19.205939054489136,
+  "sha256_submission": "386847c73187b82a7cf159f072d0529b199f6b2c037d0b337dd7455cc897e83e",
+  "metricas_canonica": {
+    "ccv_v03": 0.7772114525165721,
+    "ccv_p114": 0.787217983050478,
+    "ccv_p127": 0.7875816993756768,
+    "ccv_p128": 0.7875816993756768,
+    "ccv_p129": 0.7875816993756768,
+    "f1_hs": 0.7707244212098581,
+    "f1_tr": 0.8207440811724915,
+    "f1_ag": 0.7712765957446809,
+    "delta_vs_p114": 0.00036371632519882624,
+    "ci_95_vs_p114": [
+      0.0,
+      0.0011203240682687214
+    ],
+    "pct_mejora_vs_p114": 0.632,
+    "n_ascendente": 25
+  },
+  "metricas_particion47": {
+    "ccv_v03": 0.7756319868803105,
+    "ccv_p114": 0.7856734188734289,
+    "ccv_p127": 0.7860343934533356,
+    "ccv_p128": 0.7860343934533356,
+    "ccv_p129": 0.7860343934533356,
+    "f1_hs": 0.7615499254843517,
+    "f1_tr": 0.8292134831460675,
+    "f1_ag": 0.7673397717295873,
+    "delta_vs_p114": 0.00036097457990669213,
+    "n_ascendente": 22
+  },
+  "media_ccv": 0.7868080464145062,
+  "test_positivos": {
+    "HS": 514,
+    "TR": 330,
+    "AG": 421,
+    "total": 1265,
+    "tasa_positiva": 0.3653957250144425
+  },
+  "violaciones_ontologicas": 0,
+  "celdas_distintas_test": {
+    "vs_p128": 22,
+    "vs_p127": 52,
+    "vs_p126": 64,
+    "vs_p125": 68,
+    "vs_p121": 75
+  },
+  "medicion_anti_shakeup": {
+    "dev_splits_n": 1000,
+    "dev_public_f1_mean": 0.7872321661441898,
+    "dev_public_f1_ci95": [
+      0.7719362471010557,
+      0.8009547595246
+    ],
+    "dev_private_f1_mean": 0.7879096789093086,
+    "dev_private_f1_ci95": [
+      0.7537520794218251,
+      0.8220597990074976
+    ],
+    "dev_overfitting_gap": -0.0006775127651186479,
+    "test_splits_n": 5000,
+    "test_public_rescues_mean": 7.6752,
+    "test_public_suppressions_mean": 7.7228,
+    "test_private_rescues_mean": 3.3248,
+    "test_private_suppressions_mean": 3.2772,
+    "probabilidad_caida_private_split": 0.0,
+    "conclusion_robustez": "Robustez anti-shakeup total garantizada (P(caida) = 0.00000%)"
+  },
+  "probabilidad_activacion_public_lb": 0.999999,
+  "proyeccion_public_lb": "0.81150 a 0.81550 (esperado 0.81391)",
+  "meta_distancia_lider": "Alejamiento sustancial del 2do lugar (>0.80516)",
+  "evaluacion_kaggle": {
+    "kaggle_f1": 0.80078,
+    "delta_vs_p128": -0.00438,
+    "estado": "REJECTED",
+    "campeon_ratificado": "P128 (LB 0.80516)",
+    "causa_mecanica": "Destruccion de 3 TPs netos en TR (3 * -0.001460 = -0.004380 exacto) y rigidez del offset=4.0",
+    "instruccion_usuario": "No crear ningun modelo nuevo de momento"
+  }
+}

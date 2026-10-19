@@ -1,0 +1,103 @@
+{
+  "phase": "P93 human agreement analysis and gold-discrepancy audit",
+  "date": "2026-10-13",
+  "guide_classification": "GUIDE_V2_1_CONFIRMED",
+  "guide_hashes": {
+    "v2_1_interno": "ff699f54a48da7797f7305cf71a2718cfc12b3d99eab6f0eb80e0560cd3ed38a",
+    "v2_1_completo": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204"
+  },
+  "inputs_hashes": {
+    "artifacts/human_annotation_v2_1_holdout_safe/responses/response_A.csv": "599832fc398940078aa28fc074286db74a123fbee778eec4b2c6885605ff8a3a",
+    "artifacts/human_annotation_v2_1_holdout_safe/responses/response_B.csv": "fc213a143e72517f2cf04ded265cc457a1e413e067bda3466b789351653f8480",
+    "artifacts/human_annotation_v2_1_holdout_safe/responses/response_B_sin_texto.csv": "770a87353eb1db9d64a4e361173b5f52997cef2905c3e4099943407f016d763f",
+    "reports/p92w_internal_sampling_key.csv": "13191b56b7b6b61d347a6fbb023dc13e32c0472f9cb22e2504ad2ff062b40129"
+  },
+  "outputs_hashes": {
+    "reports/p93_interannotator_agreement.md": "d5707a7fce85dba6730d2149ef5f3a217905116d4b076d9da7a19b7b7248bd2e",
+    "reports/p93_interannotator_agreement.csv": "b7324ecc12f386ef9e7cd70a9c74c7742b3da57b1fef19bd692cbc7066f65036",
+    "reports/p93_human_disagreement_cells.csv": "d7f3ddd5f757d86dde5eac29a7d935c2846f13eeb01cd23d30bd1ce344ee491f",
+    "reports/p93_gold_comparison_cells.csv": "18c160be246bdf5a33f1c98c379353e6397381dee8d383f5c4bc88c90384ec71",
+    "reports/p93_gold_discrepancy_candidates.csv": "a54730bf49aac8bf8d9183d2a9093bc0630703bbd8371aa05d4395d3868344cb",
+    "reports/p93_adjudication_protocol.md": "d428ba5bc1831aaf30a8463691be63d8003141607b0d1a3988e60e00aea945ce",
+    "reports/p93_provenance_audit.md": "1ee1a1315a2230ba1463b16fac5c4b7c5608ea1e3fa94491cce2653fd97d4555",
+    "reports/p93_adjudication_blind_candidates.csv": "e744a3c25cd05b621066e3a61485e17599b660c90ca85f493036fc9b6a605f3e"
+  },
+  "eligible_population": "dev2 = 1236 (P92-W); muestra principal = 100 SRS (componente A) + 150 enriquecidos (B)",
+  "seeds": "no aplican (analisis determinista sobre respuestas existentes)",
+  "agreement_summary": {
+    "HS": {
+      "raw_3cat": "199/250",
+      "binario_condicional": "119/120",
+      "kappa_3cat": 0.6665,
+      "kappa_bin": 0.9785,
+      "alpha_cat": 0.6671,
+      "alpha_miss": 0.9786
+    },
+    "TR": {
+      "raw_3cat": "201/250",
+      "binario_condicional": "192/213",
+      "kappa_3cat": 0.6314,
+      "kappa_bin": 0.773,
+      "alpha_cat": 0.6287,
+      "alpha_miss": 0.7728
+    },
+    "AG": {
+      "raw_3cat": "172/250",
+      "binario_condicional": "170/207",
+      "kappa_3cat": 0.4623,
+      "kappa_bin": 0.6392,
+      "alpha_cat": 0.4499,
+      "alpha_miss": 0.6346
+    }
+  },
+  "joint": {
+    "triple_exacto": 131,
+    "tweets_con_desacuerdo": 119,
+    "celdas_con_desacuerdo": 178,
+    "tweets_con_utd": 150,
+    "celdas_con_utd": 210
+  },
+  "disagreement_counts": {
+    "UTD_VS_BINARY": 119,
+    "BINARY_DISAGREEMENT": 59,
+    "UTD_BOTH": 91
+  },
+  "candidates_total": 176,
+  "candidates_by_label": {
+    "HS": 23,
+    "TR": 87,
+    "AG": 66
+  },
+  "calibration": "PENDING_HUMAN_RESPONSES (no mezclada en estas metricas)",
+  "main_annotation": "COMPLETED_WITH_DOCUMENTED_SEQUENCE_DEVIATION",
+  "limitations": [
+    "sin acuse de recibo firmado de la guia (confirmacion a nivel de paquete)",
+    "componente B no representativo; no estimar prevalencia poblacional",
+    "candidatos NO son errores confirmados; requieren adjudicacion humana",
+    "notas humanas verbatim con posibles caracteres no ASCII en CSV internos"
+  ],
+  "checks": {
+    "P0_v21_presente_en_ambos": true,
+    "P0_v2_ausente_en_ambos": true,
+    "P0_hash_interno_v21": true,
+    "P0_hash_full_v21": true,
+    "P0_guias_identicas_en_paquetes": true,
+    "P0_columna_define_v2_como_politica": true,
+    "P0_gate_x_registra_v21": true,
+    "P0_audit_x_registra_v21": true,
+    "P0_orden_B_identico_al_paquete": true,
+    "P0_orden_A_casi_identico": true,
+    "P0_version_columna_v2": true,
+    "P1_A_250": true,
+    "P1_B2_250": true,
+    "P1_membresia_igual": true,
+    "P1_A_tokens": true,
+    "P1_B_tokens": true,
+    "P1_B_vs_B_principal_identicos": true,
+    "P1_ids_en_clave": true,
+    "P1_componentes_100_150": true,
+    "P1_hashes_vs_manifiesto": true,
+    "verificador_ascii_oficial": true
+  },
+  "avisos": []
+}

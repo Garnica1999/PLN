@@ -1,0 +1,114 @@
+{
+  "fase": "P109",
+  "experimento": "P109-01",
+  "descripcion": "Challenger V2_triple min_df=5 + Umbrales Calibrados (0.45/0.46/0.43) + Regla Ascendente",
+  "duracion_segundos": 20.53,
+  "submission_archivo": "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/submissions/toxic_submission_p109_mdf5_v2_asc.csv",
+  "submission_sha256": "c4895e6d87873cc968ec40cc262fcd8eac10f253bcdcd33e6d223708a3b8e92b",
+  "metricas_dev_canonica": {
+    "v03_ccv": 0.777211,
+    "p108_ccv": 0.782372,
+    "p109_ccv": 0.792215,
+    "delta_vs_p108": 0.009843,
+    "delta_vs_v03": 0.015004,
+    "f1_por_etiqueta": {
+      "HS": 0.778187,
+      "TR": 0.833152,
+      "AG": 0.765306
+    },
+    "folds_ganados_vs_p108": "5/5",
+    "folds_p109": [
+      0.8092,
+      0.8093,
+      0.788,
+      0.7729,
+      0.7822
+    ],
+    "folds_p108": [
+      0.8029,
+      0.7947,
+      0.7867,
+      0.753,
+      0.7742
+    ],
+    "celdas_distintas_vs_p108": 174,
+    "bootstrap_clusters_vs_p108": {
+      "ic95": [
+        0.000683,
+        0.019669
+      ],
+      "pct_mejora": 0.984
+    }
+  },
+  "metricas_dev_particion47": {
+    "p108_part47": 0.781185,
+    "p109_part47": 0.789294,
+    "delta_vs_p108": 0.008108,
+    "f1_por_etiqueta": {
+      "HS": 0.767647,
+      "TR": 0.834423,
+      "AG": 0.765812
+    },
+    "folds_ganados_vs_p108": "5/5",
+    "folds_p109": [
+      0.7767,
+      0.7858,
+      0.7856,
+      0.8068,
+      0.7904
+    ],
+    "folds_p108": [
+      0.7754,
+      0.7723,
+      0.78,
+      0.7957,
+      0.7819
+    ],
+    "bootstrap_clusters_vs_p108": {
+      "ic95": [
+        -0.000314,
+        0.017283
+      ],
+      "pct_mejora": 0.968
+    }
+  },
+  "simulacion_test": {
+    "filas": 1154,
+    "celdas_totales": 3462,
+    "celdas_distintas_vs_p108": 125,
+    "pct_distintas_vs_p108": 3.61,
+    "diferencias_por_columna_vs_p108": {
+      "HS": 47,
+      "TR": 28,
+      "AG": 50
+    },
+    "positivos_p108": {
+      "HS": 506,
+      "TR": 328,
+      "AG": 414
+    },
+    "positivos_p109": {
+      "HS": 513,
+      "TR": 356,
+      "AG": 448
+    },
+    "violaciones_ascendentes_corregidas": 19
+  },
+  "hiperparametros": {
+    "representacion": "TF-IDF word(1,2) + char_wb(3,5) + char(1,6) con min_df=5 y sublinear_tf=True",
+    "num_features_train_completo": 31603,
+    "modelo": "LogisticRegression(class_weight='balanced', solver='liblinear')",
+    "C_por_etiqueta": {
+      "HS": 2.0,
+      "TR": 2.0,
+      "AG": 2.5
+    },
+    "umbrales": {
+      "HS": 0.45,
+      "TR": 0.46,
+      "AG": 0.43
+    },
+    "regla_postproceso": "TR=1 => HS=1"
+  },
+  "estado": "SUCCESS"
+}

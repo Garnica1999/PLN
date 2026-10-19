@@ -28,3 +28,19 @@ PROYECTO/SEGUNDA ENTREGA/data/
 PROYECTO/SEGUNDA ENTREGA/modelos/
 PROYECTO/SEGUNDA ENTREGA/resultados/lematizacion/
 PROYECTO/SEGUNDA ENTREGA/experimentos/evidencia_crash_chunks_epoch1/
+
+# Entregas empaquetadas (ZIPs y copias de artefactos; fuera del control de versiones)
+entrega/
+
+# AGE — artefactos binarios pesados (regenerables)
+KAGGLE_AGE_2026_PUJ/features/
+KAGGLE_AGE_2026_PUJ/data/
+KAGGLE_AGE_2026_PUJ/artifacts/
+KAGGLE_AGE_2026_PUJ/checkpoints/
+KAGGLE_AGE_2026_PUJ/modelos/
+
+# TÓXIC — datos, modelos y artefactos binarios pesados (regenerables)
+kaggle_toxic_2026_puj/data/
+kaggle_toxic_2026_puj/models/
+kaggle_toxic_2026_puj/modelos/
+kaggle_toxic_2026_puj/features/

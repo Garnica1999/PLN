@@ -1,0 +1,40 @@
+{
+  "fase": "V46-01",
+  "fecha": "2026-10-16",
+  "duracion_seg": 196.01,
+  "f1_v30_baseline": 0.6159732487657944,
+  "f1_rankgauss_cramer_standalone": 0.6055513777631654,
+  "fold_scores_standalone": [
+    0.6128517366894721,
+    0.5900745247226765,
+    0.6113924807855893,
+    0.608258608734357,
+    0.5991889606231934
+  ],
+  "v30_fold_scores": [
+    0.6179513056079525,
+    0.618989749556428,
+    0.616749609745851,
+    0.6157068735135643,
+    0.6104846950407401
+  ],
+  "hyperparameters": {
+    "batch_size": 256,
+    "epochs": 16,
+    "swa_start": 6,
+    "lr": 0.001,
+    "lr_min": 0.0001,
+    "smoothing": 0.1,
+    "lambda_cramer": 0.5,
+    "weight_decay": 0.0001,
+    "transformer": "QuantileTransformer(normal, 2000 quantiles)"
+  },
+  "oof_shape": [
+    169336,
+    6
+  ],
+  "test_shape": [
+    112892,
+    6
+  ]
+}

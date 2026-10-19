@@ -1,0 +1,85 @@
+{
+  "fase": "P108",
+  "experimento": "P108-01",
+  "descripcion": "Challenger V2_triple (word(1,2) + char_wb(3,5) + char(1,6)) con regla ascendente",
+  "duracion_segundos": 99.77,
+  "submission_archivo": "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/submissions/toxic_submission_p108_v2_triple_asc.csv",
+  "submission_sha256": "d3c19d2bcaf1e0dff1ee1a8106e88348c2c6c15bf4b7d4a0f3d7e834f6ec861b",
+  "control_canonica": {
+    "ccv": 0.777211,
+    "diff_max": 0.0,
+    "ok": true
+  },
+  "metricas_dev_canonica": {
+    "v03_ccv": 0.777211,
+    "v2_triple_asc_ccv": 0.782372,
+    "delta": 0.00516,
+    "pliegues_ganados": 4,
+    "pliegues_f1_v03": [
+      0.79601,
+      0.794034,
+      0.77886,
+      0.738598,
+      0.779056
+    ],
+    "pliegues_f1_v2": [
+      0.802894,
+      0.794735,
+      0.786694,
+      0.752994,
+      0.77424
+    ],
+    "celdas_cambiadas": 103,
+    "bootstrap_ic95": [
+      -0.001117,
+      0.012266
+    ],
+    "bootstrap_pct_mejora": 0.9425
+  },
+  "metricas_dev_part47": {
+    "v03_ccv": 0.775632,
+    "v2_triple_asc_ccv": 0.781185,
+    "delta": 0.005553,
+    "pliegues_ganados": 5,
+    "pliegues_f1_v03": [
+      0.77264,
+      0.764466,
+      0.774757,
+      0.791096,
+      0.774547
+    ],
+    "pliegues_f1_v2": [
+      0.775404,
+      0.772325,
+      0.780042,
+      0.795706,
+      0.781931
+    ],
+    "celdas_cambiadas": 107,
+    "bootstrap_ic95": [
+      -0.000417,
+      0.011628
+    ],
+    "bootstrap_pct_mejora": 0.959
+  },
+  "comparacion_test_vs_v03": {
+    "total_celdas_distintas": 66,
+    "pct_celdas_distintas": 1.91,
+    "distribucion_diferencias": {
+      "HS": 34,
+      "TR": 10,
+      "AG": 22
+    },
+    "violaciones_corregidas_test": 10,
+    "positivos_v03": {
+      "HS": 506,
+      "TR": 334,
+      "AG": 422
+    },
+    "positivos_v2_asc": {
+      "HS": 506,
+      "TR": 328,
+      "AG": 414
+    }
+  }
+}

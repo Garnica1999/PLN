@@ -1,0 +1,65 @@
+{
+ "audit_id": "P92-S",
+ "date": "2026-10-09",
+ "guideline_version": "v1",
+ "git_head": "e43c594917fc643d0e300b73646aefb7dbd6b61d",
+ "source_artifact_hashes": {
+  "artifacts/human_annotation_v1/calibration_sample.csv": "42b13e52ec11d20838d90525ed34e65eaa4e87ac40388b1123a43f9d0803c1f9",
+  "reports/p92_annotation_guidelines_v1.md": "731a244fc1361d856e0939aa823d9ad22c1f4051890efec690e7bc7f0503d92a",
+  "reports/p92_internal_sampling_key.csv": "ae358ad827285e8129754be61e2bd1d8c741488e9eb7eebf047e9fcf5e132758",
+  "artifacts/human_annotation_v1/README_annotators.md": "24f3f7b733e0593b8733c76cb344cdba7ebc27b885832a52d697ee308dcc7931",
+  "artifacts/human_annotation_v1/manifest.json": "57e44b0535dbd3893adeea2f966270ddd608785d5705bd3d12e0cfd8da0defdd",
+  "reports/p92_sampling_manifest.json": "e84bb372aed67932f55fcecc8ea6249d8dad8b706d361a63c621a4e8c929bfdf"
+ },
+ "sample_size": {
+  "tweets": 15,
+  "anotaciones_esperadas_por_anotador": 45,
+  "respuestas_posibles_por_anotacion": [
+   "POSITIVE",
+   "NEGATIVE",
+   "UNABLE_TO_DETERMINE"
+  ]
+ },
+ "seeds": {
+  "seleccion_calibracion": 20261012
+ },
+ "handoff_files": {
+  "artifacts/human_annotation_v1/calibration_handoff/annotator_A/README_annotator.md": "4c97a25ccbeef6085467f666ce87b74e12f24808f89d5ab3d3f58a64360b739f",
+  "artifacts/human_annotation_v1/calibration_handoff/annotator_A/annotation_guidelines_v1.md": "731a244fc1361d856e0939aa823d9ad22c1f4051890efec690e7bc7f0503d92a",
+  "artifacts/human_annotation_v1/calibration_handoff/annotator_A/calibration_sample.csv": "42b13e52ec11d20838d90525ed34e65eaa4e87ac40388b1123a43f9d0803c1f9",
+  "artifacts/human_annotation_v1/calibration_handoff/annotator_B/README_annotator.md": "10983a64d62f7c0daec6aa1357daa417367e909d742888d2260a89295305ebc2",
+  "artifacts/human_annotation_v1/calibration_handoff/annotator_B/annotation_guidelines_v1.md": "731a244fc1361d856e0939aa823d9ad22c1f4051890efec690e7bc7f0503d92a",
+  "artifacts/human_annotation_v1/calibration_handoff/annotator_B/calibration_sample.csv": "42b13e52ec11d20838d90525ed34e65eaa4e87ac40388b1123a43f9d0803c1f9"
+ },
+ "checks": {
+  "cada_paquete_con_exactamente_3_archivos": true,
+  "mismos_15_ejemplos_en_A_y_B": true,
+  "textos_identicos_a_la_fuente": true,
+  "review_ids_opacos": true,
+  "columnas_de_anotacion_vacias": true,
+  "guia_version_v1_declarada": true,
+  "sin_tokens_sensibles_en_los_paquetes": true,
+  "clave_interna_ausente_de_los_paquetes": true,
+  "readmes_distintos_por_anotador": true,
+  "csv_parseables": true,
+  "sin_respuestas_simuladas": true
+ },
+ "reception_protocol": [
+  "verify_schema",
+  "verify_15_rows",
+  "verify_review_ids",
+  "verify_text_unchanged",
+  "verify_allowed_responses",
+  "verify_guideline_version",
+  "store_original_responses_unchanged"
+ ],
+ "expected_response_filenames": {
+  "annotator_A": "calibration_response_A.csv",
+  "annotator_B": "calibration_response_B.csv"
+ },
+ "limitations": [
+  "guia provisional v1; la calibracion no entra en estimaciones poblacionales",
+  "sin respuestas humanas aun; ningun calculo de acuerdo",
+  "el acuerdo no se calcula hasta recibir y validar ambos archivos reales"
+ ]
+}

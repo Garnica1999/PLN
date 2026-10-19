@@ -1,0 +1,92 @@
+{
+  "phase": "P93-R3 round1 blinding audit and round2 preparation",
+  "date": "2026-10-13",
+  "round1_blinding": "ROUND1_BLINDING_NOT_FULLY_VERIFIABLE",
+  "mapping_integrity": "VERIFIED (176 celdas, sin errores de union/orden/etiqueta)",
+  "round2_seeds": {
+    "C1_ids": 20261028,
+    "C1_orden": 20261029,
+    "C2_ids": 20261030,
+    "C2_orden": 20261031
+  },
+  "counts": {
+    "cells": 176,
+    "unique_tweets": 127,
+    "HS": 23,
+    "TR": 87,
+    "AG": 66
+  },
+  "reproduction": {
+    "C1": {
+      "coincide": 174,
+      "UTD": 2
+    },
+    "C2": {
+      "coincide": 159,
+      "difiere": 9,
+      "UTD": 8
+    }
+  },
+  "firma_copia": {
+    "C1": {
+      "cand_utd": 2,
+      "no_cand_coincide": 109,
+      "cand_coincide": 174
+    },
+    "C2": {
+      "cand_coincide": 159,
+      "no_cand_coincide": 96,
+      "cand_utd": 8,
+      "no_cand_utd": 8,
+      "cand_difiere": 9,
+      "no_cand_difiere": 5
+    }
+  },
+  "inputs_hashes": {
+    "responses/response_C1.csv": "f89f74cdabd9649d9894faef7064f9c73413d1d06129733cf829b7e3338c3fe1",
+    "responses/response_C2.csv": "e0449a811fa8b64b6e6e1eb2cbbfbcc00bca36685f53c00eaf2de46e67830daf",
+    "reports/p93_gold_discrepancy_candidates.csv": "a54730bf49aac8bf8d9183d2a9093bc0630703bbd8371aa05d4395d3868344cb",
+    "reports/p92w_internal_sampling_key.csv": "13191b56b7b6b61d347a6fbb023dc13e32c0472f9cb22e2504ad2ff062b40129",
+    "reports/p92_annotation_guidelines_v2_1_holdout_safe.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204"
+  },
+  "outputs_hashes": {
+    "reports/p93r3_round2_id_assignment.csv": "e0ce88b1c5c3906ca71cf7d82b53bcf1139e30839767944206969e24a3426217",
+    "reports/p93r3_final_reconciliation_template.csv": "b134be3c74acf8904cee51d3865ddd4658fa426c4a7fee0d3ddb8bb2f4c896f6",
+    "artifacts/p93_adjudication_v2/annotator_C1/README_adjudicator.md": "b03e4fc43bb4bfd624768b86966f0a613183c56540512e355e7a7f46dec9ab3b",
+    "artifacts/p93_adjudication_v2/annotator_C1/adjudication_round2_C1.csv": "1615e72585fee3907adf03962a52c699ce87db634b559c162f1a114ae6f57d32",
+    "artifacts/p93_adjudication_v2/annotator_C1/annotation_guidelines_v2_1.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "artifacts/p93_adjudication_v2/annotator_C2/README_adjudicator.md": "3c0da3d21fa99611fb0abc293fa5154dddb38c1fc057cb84e09624152b2de516",
+    "artifacts/p93_adjudication_v2/annotator_C2/adjudication_round2_C2.csv": "91062d38ea8758c347804d7bb6f44b287d15a0d3cd19513b3722a4938499167b",
+    "artifacts/p93_adjudication_v2/annotator_C2/annotation_guidelines_v2_1.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "artifacts/p93_adjudication_v2/annotator_C1/manifest.json": "0bc323400b021bc0dcda1898c0d1e8d0be76a9be7824580e9c350a2dbafbb196",
+    "artifacts/p93_adjudication_v2/annotator_C2/manifest.json": "19a1a3340b59b198a24d9e020aafc12ddf9f0fad733fb96eeed4ba101f182a85"
+  },
+  "checks": {
+    "P0_hashes_C1": true,
+    "P0_hashes_C2": true,
+    "P0_template_intacto": true,
+    "P0_c1_127": true,
+    "P0_c2_127": true,
+    "P0_candidatas_recomputadas_iguales": true,
+    "P0_candidatas_176": true,
+    "P0_recuentos_23_87_66": true,
+    "P0_archivo_candidatos_coherente": true,
+    "P0_reproduccion_C1_174_2_0": true,
+    "P0_reproduccion_C2_159_8_9": true,
+    "P0_etiquetas_sin_intercambio": true,
+    "P0_notas_sin_referencias_sensibles": true,
+    "R2_ordenes_distintos": true,
+    "R2_176_por_paquete": true,
+    "R2_mismas_celdas": true,
+    "R2_ids_opacos_nuevos": true,
+    "R2_final_vacios": true,
+    "R2_tokens_validos": true,
+    "R2_c1_no_ve_c2": true,
+    "R2_c2_no_ve_c1": true,
+    "R2_blinding_sin_fugas": true,
+    "verificador_ascii_oficial": true
+  },
+  "avisos": [],
+  "gold_comparison": "NOT_YET_AUTHORIZED",
+  "status": "ROUND2_PACKAGES_READY"
+}

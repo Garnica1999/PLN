@@ -1,0 +1,13 @@
+{
+  "fase": "V40-03",
+  "fecha": "2026-10-16",
+  "duracion_seg": 95.4,
+  "archivo": "submissions/age_submission_v40_se_tabular_blend.csv",
+  "sha256": "badba0b5c02d40a802d291074218b1ff6fe7b78943746a1d8a9842a5343a0792",
+  "filas": 112892,
+  "mensaje": "V40 SE-Tabular Blend (0.72 V30 + 0.12 SE-TabNet + 0.08 TabOrd + 0.06 TabV38 + 0.02 HGB) + Plug-in",
+  "competencia": "tweet-age-2026-puj",
+  "kaggle_ref": "57274929",
+  "public_score": 0.63685,
+  "status": "SubmissionStatus.COMPLETE"
+}

@@ -1,0 +1,53 @@
+{
+  "experiment_id": "P102-03",
+  "fase": "P102 sprint (triage): B2-corner regla dura TR",
+  "fecha": "2026-10-14",
+  "invariantes_train": {
+    "TR1_HS0": 0,
+    "AG1_HS0": 26,
+    "filas": 1731
+  },
+  "canonica": {
+    "violaciones_en_v03": 20,
+    "corrected_cv_dura": 0.7765657079731135,
+    "delta_vs_v03": -0.000646,
+    "folds_canonicos": [
+      0.789154,
+      0.794291,
+      0.783364,
+      0.7352,
+      0.780716
+    ],
+    "pliegues_mejorados": 3,
+    "celdas_cambiadas": 20,
+    "bootstrap_vs_v03": {
+      "ic95": [
+        -0.003901,
+        0.002672
+      ],
+      "pct_mejora": 0.373
+    }
+  },
+  "particion_47": {
+    "violaciones_en_v03": 21,
+    "corrected_cv_dura": 0.771535,
+    "v03_equivalente": 0.775632,
+    "delta_vs_v03": -0.004097,
+    "celdas_cambiadas": 21
+  },
+  "submission_v03_contexto": {
+    "celdas_que_cambiaria": 15
+  },
+  "gate": {
+    "condiciones": {
+      "delta_can_ge_0003": false,
+      "pliegues_ge_4": false,
+      "ic95_excluye_cero": false,
+      "delta_47_positivo": false,
+      "celdas_ge_200": false
+    },
+    "veredicto": "GATE_FAILED"
+  },
+  "sha_submission_v03": "7d7478f271e6edfd",
+  "tiempo_s": 36.7
+}

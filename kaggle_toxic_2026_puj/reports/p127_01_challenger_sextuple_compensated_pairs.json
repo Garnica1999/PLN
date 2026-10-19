@@ -1,0 +1,52 @@
+{
+  "experimento": "P127-01",
+  "descripcion": "Tri-Optimizer Sextuple Compensated Pairs (6 pares estrictos intra-columna con preservacion de P126)",
+  "tiempo_total_s": 554.9396908283234,
+  "sha256_submission": "f3d0b45e60d82437af7d7cc48c02e5d18d305dd4dda9f1db12b4eabeaa521e71",
+  "metricas_canonica": {
+    "ccv_v03": 0.7772114525165721,
+    "ccv_p114": 0.7872182792620254,
+    "ccv_p127": 0.7875816993756768,
+    "f1_hs": 0.7707244212098581,
+    "f1_tr": 0.8207440811724915,
+    "f1_ag": 0.7712765957446809,
+    "delta_vs_p114": 0.0003634201136514248,
+    "ci_95_vs_p114": [
+      0.0,
+      0.0011203240682687214
+    ],
+    "pct_mejora_vs_p114": 0.632,
+    "n_ascendente": 25
+  },
+  "metricas_particion47": {
+    "ccv_v03": 0.7756319868803105,
+    "ccv_p114": 0.7856733330466952,
+    "ccv_p127": 0.7860343934533356,
+    "f1_hs": 0.7615499254843517,
+    "f1_tr": 0.8292134831460675,
+    "f1_ag": 0.7673397717295873,
+    "delta_vs_p114": 0.00036106040664041217,
+    "ci_95_vs_p114": [
+      0.0,
+      0.0011586322184274846
+    ],
+    "pct_mejora_vs_p114": 0.662,
+    "n_ascendente": 22
+  },
+  "media_ccv": 0.7868080464145062,
+  "test_positivos": {
+    "HS": 514,
+    "TR": 330,
+    "AG": 421,
+    "total": 1265,
+    "tasa_positiva": 0.3653957250144425
+  },
+  "violaciones_ontologicas": 0,
+  "celdas_distintas_test": {
+    "vs_p126": 12,
+    "vs_p125": 16,
+    "vs_p121": 23
+  },
+  "probabilidad_activacion_public_lb": 0.999994,
+  "proyeccion_public_lb": "0.79650 a 0.80020 (esperado 0.79860)"
+}

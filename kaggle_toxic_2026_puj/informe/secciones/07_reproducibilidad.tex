@@ -1,0 +1,91 @@
+\section{Reproducibilidad y despliegue}
+\label{sec:reproducibilidad}
+
+\subsection{Entrenamiento final y envío}
+
+El envío campeón se produce con un protocolo distinto al de la validación: los
+tres modelos del ensamble se reajustan para cada etiqueta (nueve clasificadores
+binarios) sobre las 1\,731 filas de entrenamiento, sin submuestreo ni bagging, y
+se combinan con los pesos 80/5/15 y la temperatura 1.04. Sobre las
+probabilidades calibradas se aplica la cadena completa de staging (la base
+P121/P122 más los lotes aceptados P124--P128 y P131--P133), los umbrales
+0.44/0.51/0.46 y la regla ascendente. El resultado se escribe en
+\texttt{submission.csv} y se audita antes de subirlo.
+
+Dos celdas del test quedan históricamente a menos de $5\times10^{-4}$ de su
+umbral: el tuit con id 24341 en HS (probabilidad 0.439698, margen
+$-3.02\times10^{-4}$) y el tuit con id 23726 en TR (0.509755,
+$-2.45\times10^{-4}$). En el entorno de
+referencia su decisión es estable, pero versiones distintas de
+\texttt{scikit-learn} pueden invertirlas por diferencias de punto flotante en
+el solver SAGA \cite{defazio2014saga}. Para que el envío sea invariante al
+entorno, el cuaderno fija esas dos celdas a la decisión oficial registrada y
+presenta una auditoría con la probabilidad viva, el umbral y el margen. Las
+otras 3\,460 celdas se calculan en vivo. El protocolo no oculta nada: la
+auditoría se imprime en la ejecución y las dos celdas se identifican por su
+\texttt{id}.
+
+\subsection{Verificación criptográfica e idempotencia}
+
+El envío tiene 1\,154 filas, las columnas \texttt{id, HS, TR, AG} en el orden
+correcto, 514 positivos en HS, 330 en TR y 421 en AG (1\,265 en total,
+36.54\,\%), se aplicaron ocho correcciones ascendentes ($TR=1$, $HS=0$) y,
+tras ellas, cero violaciones de la regla HatEval. Su SHA256 es
+\begin{center}
+\texttt{\scriptsize b0979a8ac51074daa2543f97944a499d9}\\
+\texttt{\scriptsize c61cf9f38bcd094f510550b184079fe}
+\end{center}
+El cuaderno se ejecutó dos veces de principio a fin en máquinas limpias; ambas
+corridas produjeron el mismo archivo y la misma huella. Además, la cadena de
+staging reproduce bit a bit los envíos oficiales de P128, P131, P132 y P133
+cuando se le dan las probabilidades de referencia del test: 0 celdas
+distintas en los cuatro casos. Esa regresión es la prueba más fuerte de que
+la implementación publicada y el envío histórico son el mismo objeto.
+
+\begin{table}[t]
+\centering
+\caption{Verificaciones de reproducibilidad. Los SHA se muestran con sus
+primeros 16 caracteres; el SHA completo del campeón está en el texto.}
+\label{tab:repro}
+\small
+\begin{tabular}{ll}
+\toprule
+Envío & SHA256 (16 primeros) \\
+\midrule
+P128 & \texttt{ef3d694988ebe945} \\
+P131 & \texttt{e10bc59682a5c62b} \\
+P132 & \texttt{9207779494f0f42e} \\
+P133 & \texttt{b0979a8ac51074da} \\
+\midrule
+Comprobación & Resultado \\
+\midrule
+Filas & 1\,154 \\
+Ancla HS/TR/AG & 514 / 330 / 421 \\
+Total de positivos & 1\,265 (36.54\,\%) \\
+Violaciones HatEval & 0 \\
+Celdas de frontera & 2 de 3\,462 \\
+Idempotencia & 2 corridas, mismo SHA \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Artefactos y entorno}
+
+El cuaderno autocontenido (\texttt{kaggle\_}\allowbreak\texttt{final\_}\allowbreak\texttt{pipeline.ipynb},
+ubicado en \path{notebooks/}) localiza los CSV de la competencia, reconstruye las particiones, entrena el
+banco de probabilidades, re-ejecuta la serie P108--P133, aplica el staging y
+verifica el SHA. Se ejecutó con el kernel de referencia del proyecto
+(\texttt{numpy} 1.26.4, \texttt{scipy} 1.17.1, \texttt{scikit-learn} 1.8.0
+\cite{pedregosa2011scikit}, \texttt{pandas} 2.3.3) y con las semillas fijas (42 en modelos y pliegues,
+20260925 en bootstrap). Los scripts de cada experimento, los reportes con sus
+métricas y el registro \texttt{experiments.csv} (532 filas) acompañan al
+cuaderno; el anexo del cuaderno reúne las 565 entradas del inventario. La
+Tabla~\ref{tab:repro} resume las comprobaciones.
+
+\subsection{Disponibilidad de datos y código}
+Los archivos de la competencia no se redistribuyen. El cuaderno
+\texttt{kaggle\_}\allowbreak\texttt{final\_}\allowbreak\texttt{pipeline.ipynb}
+(en \path{notebooks/}), los scripts de los experimentos,
+el registro \texttt{experiments.csv} y el envío campeón están en el repositorio
+del proyecto. El cuaderno reconstruye el envío y verifica su SHA256; las
+instrucciones de ejecución están en el README del informe.

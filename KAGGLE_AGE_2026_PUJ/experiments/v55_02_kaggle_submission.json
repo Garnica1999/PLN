@@ -1,0 +1,12 @@
+{
+  "fase": "V55-02",
+  "fecha": "2026-10-18",
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v55_clean_octa_consensus.csv",
+  "sha256": "656cbc2aba2d9123c24f6100acc89c6cf4cb95bab9f1e5560c631f8332dafdcc",
+  "filas": 112892,
+  "ref": 57349772,
+  "status": "SubmissionStatus.COMPLETE",
+  "public_score": 0.63707,
+  "mensaje": "V55 Clean Octa-Model PoE Consensus (8-model Bayes consensus w=[0.5283, 0.0772, 0.0290, 0.1793, 0.0789, 0.0506, 0.0487, 0.0081]) + Plug-in",
+  "duracion_seg": 28.5
+}

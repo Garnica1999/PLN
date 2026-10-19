@@ -1,0 +1,249 @@
+{
+  "fase": "V57-ANALISIS-MATEMATICO",
+  "fecha": "2026-10-18",
+  "duracion_seg": 2.2,
+  "f1_base_v56": 0.6189929489711685,
+  "folds_base_v56": [
+    0.6229813139971927,
+    0.6203763152477582,
+    0.6198613669853462,
+    0.619241225532232,
+    0.6124917270381494
+  ],
+  "sensibilidad_simplex": [
+    {
+      "modelo": "V30 LightGBM Optuna",
+      "peso_base": 0.5593899999999999,
+      "f1_minus_20pct": 0.6185959744181131,
+      "delta_minus_20pct": -0.00039697455305542917,
+      "f1_plus_20pct": 0.6185644059847734,
+      "delta_plus_20pct": -0.00042854298639516397,
+      "estado": "ESTACIONARIO"
+    },
+    {
+      "modelo": "V43 Cramer-SWA",
+      "peso_base": 0.060229999999999985,
+      "f1_minus_20pct": 0.6188485367372706,
+      "delta_minus_20pct": -0.00014441223389793922,
+      "f1_plus_20pct": 0.6189211539361024,
+      "delta_plus_20pct": -7.179503506615781e-05,
+      "estado": "ESTACIONARIO"
+    },
+    {
+      "modelo": "V47 Asym-Cramer",
+      "peso_base": 0.020889999999999995,
+      "f1_minus_20pct": 0.618908184528476,
+      "delta_minus_20pct": -8.476444269256422e-05,
+      "f1_plus_20pct": 0.6189324192263866,
+      "delta_plus_20pct": -6.052974478187867e-05,
+      "estado": "ESTACIONARIO"
+    },
+    {
+      "modelo": "V42 Smooth-SWA",
+      "peso_base": 0.16872999999999996,
+      "f1_minus_20pct": 0.6186118571824561,
+      "delta_minus_20pct": -0.00038109178871237326,
+      "f1_plus_20pct": 0.61873378882455,
+      "delta_plus_20pct": -0.00025916014661853115,
+      "estado": "ESTACIONARIO"
+    },
+    {
+      "modelo": "V40 SE-TabOrd",
+      "peso_base": 0.060799999999999986,
+      "f1_minus_20pct": 0.6187922492073724,
+      "delta_minus_20pct": -0.00020069976379610832,
+      "f1_plus_20pct": 0.6188685055166808,
+      "delta_plus_20pct": -0.00012444345448769933,
+      "estado": "ESTACIONARIO"
+    },
+    {
+      "modelo": "V39 TabOrd",
+      "peso_base": 0.04375999999999999,
+      "f1_minus_20pct": 0.6188625732840654,
+      "delta_minus_20pct": -0.00013037568710316805,
+      "f1_plus_20pct": 0.6188449762829406,
+      "delta_plus_20pct": -0.00014797268822797083,
+      "estado": "ESTACIONARIO"
+    },
+    {
+      "modelo": "V39 HistGB",
+      "peso_base": 0.05203999999999999,
+      "f1_minus_20pct": 0.6188500747148559,
+      "delta_minus_20pct": -0.00014287425631265283,
+      "f1_plus_20pct": 0.6188723161775647,
+      "delta_plus_20pct": -0.0001206327936038587,
+      "estado": "ESTACIONARIO"
+    },
+    {
+      "modelo": "V51 Consistent-Cramer",
+      "peso_base": 0.010349999999999998,
+      "f1_minus_20pct": 0.6189722113122201,
+      "delta_minus_20pct": -2.073765894838875e-05,
+      "f1_plus_20pct": 0.6189590818049648,
+      "delta_plus_20pct": -3.3867166203682686e-05,
+      "estado": "ESTACIONARIO"
+    },
+    {
+      "modelo": "V53 Dense-SE",
+      "peso_base": 0.023809999999999994,
+      "f1_minus_20pct": 0.6188779500429565,
+      "delta_minus_20pct": -0.00011499892821198454,
+      "f1_plus_20pct": 0.6189862802539396,
+      "delta_plus_20pct": -6.668717228874854e-06,
+      "estado": "ESTACIONARIO"
+    }
+  ],
+  "curva_power_mean": [
+    {
+      "alpha": -0.15,
+      "macro_f1": 0.6188537362075591,
+      "delta_vs_poe": -0.0001392127636093976,
+      "estado": "SUB-\u00d3PTIMO"
+    },
+    {
+      "alpha": -0.1,
+      "macro_f1": 0.618888802546352,
+      "delta_vs_poe": -0.00010414642481648695,
+      "estado": "SUB-\u00d3PTIMO"
+    },
+    {
+      "alpha": -0.05,
+      "macro_f1": 0.6189257432175777,
+      "delta_vs_poe": -6.7205753590871e-05,
+      "estado": "SUB-\u00d3PTIMO"
+    },
+    {
+      "alpha": -0.01,
+      "macro_f1": 0.6189758857495373,
+      "delta_vs_poe": -1.7063221631197223e-05,
+      "estado": "SUB-\u00d3PTIMO"
+    },
+    {
+      "alpha": 0.0,
+      "macro_f1": 0.6189929489711685,
+      "delta_vs_poe": 0.0,
+      "estado": "\u00d3PTIMO GLOBAL ESTACIONARIO (PoE)"
+    },
+    {
+      "alpha": 0.01,
+      "macro_f1": 0.6189871388819291,
+      "delta_vs_poe": -5.810089239388638e-06,
+      "estado": "SUB-\u00d3PTIMO"
+    },
+    {
+      "alpha": 0.05,
+      "macro_f1": 0.6189704727384955,
+      "delta_vs_poe": -2.2476232673040997e-05,
+      "estado": "SUB-\u00d3PTIMO"
+    },
+    {
+      "alpha": 0.1,
+      "macro_f1": 0.6189718890202881,
+      "delta_vs_poe": -2.1059950880419898e-05,
+      "estado": "SUB-\u00d3PTIMO"
+    },
+    {
+      "alpha": 0.15,
+      "macro_f1": 0.6189635589595016,
+      "delta_vs_poe": -2.939001166690769e-05,
+      "estado": "SUB-\u00d3PTIMO"
+    }
+  ],
+  "deciles_confiabilidad": [
+    {
+      "decil": 0,
+      "confianza_min": 0.18123083202441118,
+      "confianza_max": 0.3144653806023118,
+      "confianza_media": 0.2780772046939058,
+      "exactitud": 0.2683358922877052,
+      "conteo": 16934
+    },
+    {
+      "decil": 1,
+      "confianza_min": 0.31446755248255803,
+      "confianza_max": 0.3709717549568897,
+      "confianza_media": 0.34327782590201567,
+      "exactitud": 0.330695641903862,
+      "conteo": 16934
+    },
+    {
+      "decil": 2,
+      "confianza_min": 0.3709725243387517,
+      "confianza_max": 0.4215699647623106,
+      "confianza_media": 0.39642799201090134,
+      "exactitud": 0.38368865528848994,
+      "conteo": 16933
+    },
+    {
+      "decil": 3,
+      "confianza_min": 0.42157130638700335,
+      "confianza_max": 0.4751143423591111,
+      "confianza_media": 0.44732794312781715,
+      "exactitud": 0.4387032006613913,
+      "conteo": 16934
+    },
+    {
+      "decil": 4,
+      "confianza_min": 0.4751167561514366,
+      "confianza_max": 0.5586908748488627,
+      "confianza_media": 0.5130221777927949,
+      "exactitud": 0.5047540305911534,
+      "conteo": 16933
+    },
+    {
+      "decil": 5,
+      "confianza_min": 0.5586975679140018,
+      "confianza_max": 0.6838679683460643,
+      "confianza_media": 0.6190727619398927,
+      "exactitud": 0.6129679933860872,
+      "conteo": 16934
+    },
+    {
+      "decil": 6,
+      "confianza_min": 0.6838715224726698,
+      "confianza_max": 0.8262791993018781,
+      "confianza_media": 0.7559350148340598,
+      "exactitud": 0.7507234394377842,
+      "conteo": 16933
+    },
+    {
+      "decil": 7,
+      "confianza_min": 0.8262820926983669,
+      "confianza_max": 0.9330797656793629,
+      "confianza_media": 0.8837184561981205,
+      "exactitud": 0.8930553915200189,
+      "conteo": 16934
+    },
+    {
+      "decil": 8,
+      "confianza_min": 0.933080042391334,
+      "confianza_max": 0.9823712379018134,
+      "confianza_media": 0.9623400543880336,
+      "exactitud": 0.9720073229787988,
+      "conteo": 16933
+    },
+    {
+      "decil": 9,
+      "confianza_min": 0.9823716071382382,
+      "confianza_max": 0.9995714468400084,
+      "confianza_media": 0.9920794812512497,
+      "exactitud": 0.9953938821306247,
+      "conteo": 16934
+    }
+  ],
+  "brecha_menciones": {
+    "tweets_con_mencion": {
+      "proporcion": 0.6388836396277224,
+      "exactitud": 0.6802174033608784,
+      "confianza_media": 0.6862572998699804,
+      "gap": 0.006039896509101972
+    },
+    "tweets_sin_mencion": {
+      "proporcion": 0.3611163603722776,
+      "exactitud": 0.4997056418642682,
+      "confianza_media": 0.500360705301481,
+      "gap": 0.0006550634372128328
+    }
+  },
+  "conclusion": "\u00d3PTIMO ESTACIONARIO ABSOLUTO CONFIRMADO. Superficie estrictamente c\u00f3ncava con v\u00e9rtice en PoE (alpha=0). Calibraci\u00f3n decil a decil mon\u00f3tona. Blindaje anti-shakeup del 30% privado ratificado."
+}

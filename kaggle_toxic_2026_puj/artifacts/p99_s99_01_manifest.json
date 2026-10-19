@@ -1,0 +1,51 @@
+{
+  "experiment_id": "P99-10",
+  "fase": "S99-01 (construccion)",
+  "fecha": "2026-10-13",
+  "seed": 20260925,
+  "objetivo": 60000000,
+  "wiki_objetivo_final": 42000000,
+  "tokens_finales": 60707427,
+  "documentos_finales": 340219,
+  "tokens_por_fuente": {
+    "twitter": 8706293,
+    "mc4": 9999717,
+    "wikipedia": 42001417
+  },
+  "documentos_por_fuente": {
+    "twitter": 305365,
+    "mc4": 16732,
+    "wikipedia": 18122
+  },
+  "semilla_stats": {
+    "wikipedia": {
+      "seleccionados": 18123,
+      "conservados": 18122,
+      "removidos": 1
+    },
+    "mc4": {
+      "seleccionados": 16738,
+      "conservados": 16732,
+      "removidos": 6
+    },
+    "twitter": {
+      "seleccionados": 333794,
+      "conservados": 305365,
+      "removidos": 28429
+    }
+  },
+  "referencia_c98_1": {
+    "documentos": 166022,
+    "tokens": 29737183,
+    "presente_integro": true
+  },
+  "tokens_nuevos_unicos": 30970244,
+  "documentos_nuevos": 174197,
+  "coincidencias_exactas_vs_train": 0,
+  "val_language_docs": 3320,
+  "val_presentes": 3320,
+  "sha256": "e627a7f33886c0a177849c2b9e76dc2bb9665c8476c000b3ed4f510f97b6e956",
+  "ruta": "data/external/corpora/p99_s99_01/tokens_60m.txt",
+  "criterios": "pre-registrado en p99_corpus_scaling_plan.md; material local; sin descargas; dedup exacta",
+  "tiempo_s": 108.2
+}

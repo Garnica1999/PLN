@@ -1,0 +1,80 @@
+{
+  "pilot": "P92-Y calibration handoff (holdout-safe, guide v2.1)",
+  "date": "2026-10-13",
+  "policy_id": "PROJECT_OPERATIONAL_ANNOTATION_POLICY_V2",
+  "guide": {
+    "source": "reports/p92_annotation_guidelines_v2_1_holdout_safe.md",
+    "sha256_completo": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "sha256_interno": "ff699f54a48da7797f7305cf71a2718cfc12b3d99eab6f0eb80e0560cd3ed38a",
+    "copias_en_handoff": "annotation_guidelines_v2_1.md"
+  },
+  "calibration_sample": {
+    "source": "artifacts/human_annotation_v2_1_holdout_safe/calibration/calibration_sample.csv",
+    "reuse": "reutilizada sin regenerar; los handoffs son copias reordenadas",
+    "tweets": 15,
+    "review_ids": [
+      "P92W-C01",
+      "P92W-C02",
+      "P92W-C03",
+      "P92W-C04",
+      "P92W-C05",
+      "P92W-C06",
+      "P92W-C07",
+      "P92W-C08",
+      "P92W-C09",
+      "P92W-C10",
+      "P92W-C11",
+      "P92W-C12",
+      "P92W-C13",
+      "P92W-C14",
+      "P92W-C15"
+    ],
+    "orders_seeds": {
+      "A": 20261024,
+      "B": 20261025
+    }
+  },
+  "files": {
+    "artifacts/human_annotation_v2_1_holdout_safe/calibration_handoff/annotator_A/calibration_sample.csv": "b9db5a97912e5cc742ef8d2c2e77bc9a9320948f72caa20f3c74f8d762c73af5",
+    "artifacts/human_annotation_v2_1_holdout_safe/calibration_handoff/annotator_A/annotation_guidelines_v2_1.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "artifacts/human_annotation_v2_1_holdout_safe/calibration_handoff/annotator_A/README_annotator.md": "3f71a0a8f7a07d489e42e1dbcce1712b729843e61d3534cb521d6e4e3859cad7",
+    "artifacts/human_annotation_v2_1_holdout_safe/calibration_handoff/annotator_B/calibration_sample.csv": "d6885144da7a2efa125eeef0ad50e75789378155671adad15c26788768adc799",
+    "artifacts/human_annotation_v2_1_holdout_safe/calibration_handoff/annotator_B/annotation_guidelines_v2_1.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "artifacts/human_annotation_v2_1_holdout_safe/calibration_handoff/annotator_B/README_annotator.md": "1f03754760c49f0e623d4f101280d031ab94852077b90e2346cfae7f52fd8e98",
+    "artifacts/human_annotation_v2_1_holdout_safe/calibration_handoff/README.md": "24415943c6bf58df583f6ce194b0c063e34bfe1065c3501833e4b35227326a46"
+  },
+  "checks": {
+    "cal_15_filas": true,
+    "cal_ids_coinciden_con_clave": true,
+    "cal_anotaciones_vacias": true,
+    "cal_version_v2": true,
+    "cal_sin_reservados": true,
+    "cal_en_dev2": true,
+    "cal_sin_solape_principal": true,
+    "cal_textos_identicos_fuente": true,
+    "guia_hash_interno": true,
+    "guia_hash_completo": true,
+    "manifiesto_paquete_intacto": true,
+    "gate_x_registra_manifiesto": true,
+    "ordenes_distintos": true,
+    "handoff_15_y_15": true,
+    "handoff_misma_membresia": true,
+    "handoff_orden_distinto": true,
+    "handoff_anotaciones_vacias": true,
+    "handoff_textos_30": true,
+    "handoff_guia_v21_identica": true,
+    "handoff_blinding_sin_fugas": true,
+    "clave_interna_fuera": true,
+    "verificador_ascii": true
+  },
+  "distribution": "NOT_DISTRIBUTED",
+  "package_manifest": {
+    "path": "artifacts/human_annotation_v2_1_holdout_safe/manifest.json",
+    "sha256_prefix": "00998e6006035c9f",
+    "status": "sin cambios (por instruccion de la fase)"
+  },
+  "limitations": [
+    "politica operativa interna; no definicion oficial",
+    "la calibracion evalua claridad de la guia; no estima prevalencia"
+  ]
+}

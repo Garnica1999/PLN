@@ -1,0 +1,178 @@
+{
+  "experiment_id": "P97-03",
+  "hipotesis": "H97-C",
+  "fecha": "2026-10-13",
+  "pre_registro": {
+    "modo": "nnPU/PNU no negativo con P, N y U",
+    "P": "TR=1",
+    "N": "TR=0 y HS=1",
+    "U": "HS=0",
+    "pi_p": "tasa observada de TR en el train del pliegue",
+    "optimizacion": {
+      "pasos": 400,
+      "adam_lr": 0.05,
+      "l2": "wd = 1/(C*n) con C=2 (equivalencia liblinear; la corrida previa con wd=0.5 quedo como *_l2_escala_invalida)"
+    },
+    "umbrales_propios": "split interno agrupado de 4 pliegues"
+  },
+  "reglas": {
+    "propia_control": {
+      "regla": "propios_control",
+      "corrected_cv": 0.7748502494181877,
+      "f1_por_etiqueta": {
+        "HS": 0.764490095377843,
+        "TR": 0.8131147540983606,
+        "AG": 0.7469458987783595
+      },
+      "f1_pliegues": [
+        0.7845257322311978,
+        0.7904493680746012,
+        0.7803423508390502,
+        0.7405688484100738,
+        0.7769484887186037
+      ],
+      "std_pliegues": 0.019661678721967023
+    },
+    "propia_nnpu": {
+      "regla": "propios_nnpu",
+      "corrected_cv": 0.6576847504725377,
+      "f1_por_etiqueta": {
+        "HS": 0.764490095377843,
+        "TR": 0.4616182572614108,
+        "AG": 0.7469458987783595
+      },
+      "f1_pliegues": [
+        0.6619537655914346,
+        0.6740104645342831,
+        0.6622035960510807,
+        0.6339737675133168,
+        0.6547997185441055
+      ],
+      "std_pliegues": 0.01479246422547305
+    },
+    "frozen_control": {
+      "regla": "frozen_control",
+      "corrected_cv": 0.7772114525165721,
+      "f1_por_etiqueta": {
+        "HS": 0.7616892911010558,
+        "TR": 0.8157303370786517,
+        "AG": 0.7542147293700089
+      },
+      "f1_pliegues": [
+        0.7960101143044023,
+        0.7940339497874405,
+        0.7788600288600289,
+        0.738598013128522,
+        0.7790564997088775
+      ],
+      "std_pliegues": 0.023094672193582515
+    },
+    "frozen_nnpu": {
+      "regla": "frozen_nnpu",
+      "corrected_cv": 0.6591740925774919,
+      "f1_por_etiqueta": {
+        "HS": 0.7616892911010558,
+        "TR": 0.4616182572614108,
+        "AG": 0.7542147293700089
+      },
+      "f1_pliegues": [
+        0.6725289977198373,
+        0.6730870463949256,
+        0.6612334525378004,
+        0.6320029322317652,
+        0.6573206967034891
+      ],
+      "std_pliegues": 0.016717157717373286
+    }
+  },
+  "umbrales_propios_por_pliegue": {
+    "control": {
+      "1": [
+        0.4,
+        0.47,
+        0.4
+      ],
+      "2": [
+        0.41,
+        0.46,
+        0.48
+      ],
+      "3": [
+        0.41,
+        0.46,
+        0.43
+      ],
+      "4": [
+        0.41,
+        0.51,
+        0.51
+      ],
+      "5": [
+        0.45,
+        0.46,
+        0.45
+      ]
+    },
+    "nnpu": {
+      "1": [
+        0.4,
+        0.2,
+        0.4
+      ],
+      "2": [
+        0.41,
+        0.2,
+        0.48
+      ],
+      "3": [
+        0.41,
+        0.2,
+        0.43
+      ],
+      "4": [
+        0.41,
+        0.2,
+        0.51
+      ],
+      "5": [
+        0.45,
+        0.2,
+        0.45
+      ]
+    }
+  },
+  "comparacion": {
+    "delta_pooled": -0.11716549894564998,
+    "pliegues_mejorados": 0,
+    "delta_F1_TR": -0.35149649683694983,
+    "pliegues_TR_mejorados": 0,
+    "tr_por_pliegue_nnpu": [
+      0.45714285714285713,
+      0.46511627906976744,
+      0.4623376623376623,
+      0.4623376623376623,
+      0.46113989637305697
+    ],
+    "tr_por_pliegue_control": [
+      0.8248587570621468,
+      0.8144329896907216,
+      0.8167539267015707,
+      0.7821229050279329,
+      0.8275862068965517
+    ],
+    "bootstrap_clusters": {
+      "ic95": [
+        -0.128232,
+        -0.106364
+      ],
+      "pct_mejora": 0.0
+    }
+  },
+  "zona_no_definida_HS0": {
+    "tasa_TR1_v03": 0.09341317365269461,
+    "tasa_TR1_control": 0.1125748502994012,
+    "tasa_TR1_nnpu": 1.0
+  },
+  "veredicto_pre_registrado": "FALSIFICADA",
+  "tiempo_total_s": 189.2
+}

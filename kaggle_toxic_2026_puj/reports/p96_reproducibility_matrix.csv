@@ -1,0 +1,201 @@
+artifact,variant,sha16,n_rows,population,recompute_mode,recomputed_value,stored_claim,delta,status
+features/oof_v03_final.npz,canonico,559265816ce4f631,1483,dev(1483),proba + umbrales guardados,0.7772114525165721,corrected_cv=0.7772114525165721,0.0,RECOMPUTED_EXACTLY
+features/v2_oof_base_corrected.npz,M2_union_lr_c2,27dfa83736b97951,1483,dev(1483),proba M2 + umbrales V03 congelados,0.7772114525165721,pipeline_v03.json: corrected_cv_m2_con_umbrales=0.7772,1.1452516572085791e-05,RECOMPUTED_WITHIN_TOLERANCE
+features/hardness_v4.npz,hardness_por_etiqueta,f9613389d15420d8,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.517557563479028,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/hardness_v4.npz,p_true,f9613389d15420d8,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.4603540968877646,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/hardness_v4.npz,error,f9613389d15420d8,1483,dev(1483),pred guardada,0.3008224377956367,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/hardness_v4.npz,nn_disagreement,f9613389d15420d8,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.4721258319160697,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/hardness_v4.npz,knn_disagreement,f9613389d15420d8,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.4597963644461975,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/hardness_v4.npz,model_disagreement,f9613389d15420d8,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.3694192202213477,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/hardness_v4.npz,cluster_contradictorio,f9613389d15420d8,1483,dev(1483),pred guardada,0.12465039795269385,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/label_consistency_v4.npz,,8c90b9dd7f68fb8f,1731,fuera_de_dev (cubre holdout por diseno de fase),no recomputado (politica P96),,ids; cluster_id; discrepancia_etiqueta; en_cluster; vecino_ids; vecino_sim,,EXCLUDED_BY_POLICY
+features/oof_bases.npz,,a782a52c1b5e01b9,1731,fuera_de_dev (cubre holdout por diseno de fase),no recomputado (politica P96),,ids; y_true; etiquetas; modelos; proba_M1; proba_M2,,EXCLUDED_BY_POLICY
+features/oof_candidates_v4.npz,A_cost_sensitive_downweight,c5d7992cd853936f,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7726834746845718,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_candidates_v4.npz,B_meta36,c5d7992cd853936f,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7744108711336057,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_candidates_v4.npz,C_meta36_downweight,c5d7992cd853936f,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7807075936467586,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_candidates_v4.npz,D_svd300_rbf,c5d7992cd853936f,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7790886649978201,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_ens04_v04.npz,,cefb65d628c54c50,1731,fuera_de_dev (cubre holdout por diseno de fase),no recomputado (politica P96),,ids; y_true; etiquetas; proba_ens; pred_mediana; umbrales_finales,,EXCLUDED_BY_POLICY
+features/oof_joint_label_v4.npz,joint__lr6_bal_C0.5,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7231117320052513,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr6_bal_C1.0,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7575394667842152,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr6_bal_C2.0,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7736729013053711,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr4_mapeo_bal_C0.5,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7449966526001409,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr4_mapeo_bal_C1.0,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7681602186024241,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr4_mapeo_bal_C2.0,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7771994205084368,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr4_excluir_bal_C0.5,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7424211736805103,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr4_excluir_bal_C1.0,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7623980037203921,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr4_excluir_bal_C2.0,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7739900181282168,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr6_unb_C0.5,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7175214052497939,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr6_unb_C1.0,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7396138676331631,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_joint_label_v4.npz,joint__lr6_unb_C2.0,3bbd11c62cb034f6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7543787991910781,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_meta_shift_v4.npz,meta_control,106d9c0fd43c7057,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7641399669779831,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_meta_shift_v4.npz,meta_shift,106d9c0fd43c7057,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7744108711336057,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_meta_shift_v4.npz,meta_shift_cuantil,106d9c0fd43c7057,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7725402121064969,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_meta_shift_v4.npz,meta_shift_platt,106d9c0fd43c7057,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7694538114559406,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_mod03b.npz,,cfb393f03b753dd3,,holdout-incluido,no abierto,,cubre filas del holdout historico (fase 13a sobre train completo); contenido no consultado (P96),,EXCLUDED_BY_POLICY
+features/oof_reweight_v4.npz,lr__none,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,lr__mild_up,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7751300483039731,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,lr__medium_up,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7675806360892711,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,lr__medium_down,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7589937001849374,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,lr__down_violacion,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7784063081821424,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,lr__clipped_extremos,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7735856751689648,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,lr__medium_up_por_etiqueta,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7685584186113271,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,svc__none,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7715076419495347,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,svc__mild_up,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7678486410951022,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,svc__medium_up,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7667472148856294,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,svc__medium_down,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7750381695509548,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,svc__down_violacion,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7801426744761878,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_reweight_v4.npz,svc__clipped_extremos,a7d0ffbcfae94021,1483,dev(1483),proba con umbrales guardados,0.7703689830822467,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_tracks_g_v4.npz,lm__standalone,ae276a4a533e7bb5,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.526984148910599,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_tracks_g_v4.npz,meta_v03_9feat,ae276a4a533e7bb5,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7610821764246429,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_tracks_g_v4.npz,meta_v03_lm_36feat,ae276a4a533e7bb5,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.762830104950285,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_tracks_g_v4.npz,alt__ridge,ae276a4a533e7bb5,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7689927095182013,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_tracks_g_v4.npz,alt__sgd,ae276a4a533e7bb5,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7439132446399889,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_tracks_g_v4.npz,alt__passive_aggressive,ae276a4a533e7bb5,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7565630302911428,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_tracks_g_v4.npz,svd__rbf_svc,ae276a4a533e7bb5,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7790886649978201,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_tracks_g_v4.npz,svd__hist_gb,ae276a4a533e7bb5,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7246670372217373,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_tracks_g_v4.npz,svd__extra_trees,ae276a4a533e7bb5,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.6665392980791004,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_v03_final.npz,proba,559265816ce4f631,1483,dev(1483),proba con umbrales guardados,0.7772114525165721,"corrected_cv=[0.7772114525]; f1_por_etiqueta=[0.7616892911, 0.8157303371, 0.7542147294]; f1_pliegues=[0.7960101143, 0.7940339498, 0.7788600289, 0.7385980131, 0.7790564997]",,RECOMPUTED_EXACTLY
+features/oof_v03_final.npz,pred,559265816ce4f631,1483,dev(1483),pred guardada,0.7772114525165721,"corrected_cv=[0.7772114525]; f1_por_etiqueta=[0.7616892911, 0.8157303371, 0.7542147294]; f1_pliegues=[0.7960101143, 0.7940339498, 0.7788600289, 0.7385980131, 0.7790564997]",,RECOMPUTED_EXACTLY
+features/oof_weighting_v4.npz,geo__v03_sublinear (control),92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,geo__binario,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7658117457977857,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,geo__bm25_k0.6_b0.3,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7678901470284497,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,geo__bm25_k1.2_b0.0,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.767643987831562,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,geo__bm25_k1.2_b0.75,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7692824065962486,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,geo__bm25_k2.0_b0.3,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7692700779540153,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,peso__log_odds_por_etiqueta,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7416234329032059,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,peso__chi2_por_etiqueta,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.6522498663552917,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,peso__mi_por_etiqueta,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7013282276313841,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,clase__barrio_anidado_por_etiqueta,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7743882642049629,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,combo__downweight_violacion_x_clase,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7726834746845718,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,peso__log_odds_C2,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7416234329032059,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,peso__log_odds_C10,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7503292024177833,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/oof_weighting_v4.npz,peso__log_odds_C50,92f2ef7ee9563eaa,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7428977179373208,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p50_celda_features.npz,v03_pred,5aed0e9ff3200f08,1483,dev(1483),pred guardada,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p50_celda_features.npz,v03_proba,5aed0e9ff3200f08,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p50_celda_features.npz,v03_margen,5aed0e9ff3200f08,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.0,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p51_utility_targets.npz,v03,4ac08a407b376f69,1483,,pred guardada,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_confident_cells.npz,pred,e14d5fe955340190,1483,dev(1483),pred guardada,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_confident_cells.npz,proba,e14d5fe955340190,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_fusion_cells.npz,pred_v03,123fe2501b30ad35,1483,dev(1483),pred guardada,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_fusion_cells.npz,pred_u,123fe2501b30ad35,1483,dev(1483),pred guardada,0.7786914599722236,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_fusion_cells.npz,proba_v03,123fe2501b30ad35,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_fusion_cells.npz,proba_b1,123fe2501b30ad35,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7728427581214842,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_fusion_cells.npz,proba_fusion,123fe2501b30ad35,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7736057597232273,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_grafo_cells.npz,pred_control,7dbc4ad76aae1aef,1483,dev(1483),pred guardada,0.7772647318762402,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_grafo_cells.npz,pred_grafo,7dbc4ad76aae1aef,1483,dev(1483),pred guardada,0.7773636094411688,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_grafo_cells.npz,proba_control,7dbc4ad76aae1aef,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7718304994352249,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_grafo_cells.npz,proba_grafo,7dbc4ad76aae1aef,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7723933355022448,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_grafo_cells.npz,proba_v03,7dbc4ad76aae1aef,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_influence_cells.npz,pred,28cce75f152dcff9,1483,dev(1483),pred guardada,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_influence_cells.npz,proba,28cce75f152dcff9,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_influence_cells.npz,influencia,28cce75f152dcff9,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.5271797948693392,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_influence_cells.npz,auto_influencia,28cce75f152dcff9,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.09529931138002863,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_local_window_cells.npz,pred_v03,46f5b956a6fb7521,1483,dev(1483),pred guardada,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_local_window_cells.npz,pred_b1,46f5b956a6fb7521,1483,dev(1483),pred guardada,0.7765868373082134,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_local_window_cells.npz,proba_v03,46f5b956a6fb7521,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_local_window_cells.npz,proba_b1,46f5b956a6fb7521,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7728427581214842,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_robust_cells.npz,pred_v03,506362ed355976c6,1483,dev(1483),pred guardada,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_robust_cells.npz,pred_robusto,506362ed355976c6,1483,dev(1483),pred guardada,0.7785171129078273,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_robust_cells.npz,proba_v03,506362ed355976c6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_robust_cells.npz,proba_robusto,506362ed355976c6,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7710887257524733,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_voronoi_celfeatures.npz,pred_v03,37fc801009645747,1483,dev(1483),pred guardada,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_voronoi_celfeatures.npz,proba_v03,37fc801009645747,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_voronoi_celfeatures.npz,d_same,37fc801009645747,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.5357269406108461,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_voronoi_celfeatures.npz,d_opp,37fc801009645747,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.5409847232116939,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_voronoi_celfeatures.npz,pureza,37fc801009645747,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.4987982954798033,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_voronoi_celfeatures.npz,cuota_opuesta,37fc801009645747,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.2355142770492995,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_voronoi_celfeatures.npz,cuota_densa,37fc801009645747,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.49357570505150666,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_voronoi_celfeatures.npz,soporte_celda,37fc801009645747,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.470868218428064,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p59_voronoi_celfeatures.npz,inconsistencia,37fc801009645747,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.3623904441500316,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p66_scores_candidatos.npz,pred_v03,6913afe9262980f4,1483,dev(1483),pred guardada,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p66_scores_candidatos.npz,proba_v03,6913afe9262980f4,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p66_scores_candidatos.npz,proba_MI_arbol,6913afe9262980f4,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7668743740172311,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p66_scores_candidatos.npz,proba_negacion,6913afe9262980f4,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7687161056299338,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p66_scores_candidatos.npz,proba_word_1_3,6913afe9262980f4,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7669006843720125,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p66_scores_candidatos.npz,proba_cohesion,6913afe9262980f4,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7647668568159255,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p66_scores_candidatos.npz,proba_huecos_1_2,6913afe9262980f4,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7672114453311584,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p66_scores_candidatos.npz,proba_contraste,6913afe9262980f4,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7720888347246158,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p66_scores_candidatos.npz,proba_huecos_6_10,6913afe9262980f4,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7594747480341847,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_01_oof_mlp.npz,proba:42,4dc390b11799553b,1483,dev(1483),multimodelo: proba a 0.5,0.7583010519636179,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_01_oof_mlp.npz,proba:43,4dc390b11799553b,1483,dev(1483),multimodelo: proba a 0.5,0.754898633533234,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_01_oof_mlp.npz,proba:44,4dc390b11799553b,1483,dev(1483),multimodelo: proba a 0.5,0.7617709497793959,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_01_oof_mlp_previo_fix.npz,proba:42,4dc390b11799553b,1483,dev(1483),multimodelo: proba a 0.5,0.7583010519636179,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_01_oof_mlp_previo_fix.npz,proba:43,4dc390b11799553b,1483,dev(1483),multimodelo: proba a 0.5,0.754898633533234,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_01_oof_mlp_previo_fix.npz,proba:44,4dc390b11799553b,1483,dev(1483),multimodelo: proba a 0.5,0.7617709497793959,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_02_oof_fasttext.npz,proba_principal,57304a44e7a017ea,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.5845291448216422,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_02_oof_fasttext.npz,proba_control,57304a44e7a017ea,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.717475876986915,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_02_oof_fasttext.npz,pred_principal_anidada,57304a44e7a017ea,1483,dev(1483),pred guardada,0.5833980658333541,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_02_oof_fasttext.npz,pred_control_anidada,57304a44e7a017ea,1483,dev(1483),pred guardada,0.7377707965720631,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_03_oof_ros.npz,proba_A,4c26a946be7ae5e1,1483,dev(1483),proba con umbrales guardados,0.7772114525165721,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_03_oof_ros.npz,proba_B1,4c26a946be7ae5e1,1483,dev(1483),proba con umbrales guardados,0.7774770969691841,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_03_oof_ros.npz,proba_B2,4c26a946be7ae5e1,1483,dev(1483),proba con umbrales guardados,0.732219172199522,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_03_oof_ros.npz,proba_B3,4c26a946be7ae5e1,1483,dev(1483),proba con umbrales guardados,0.7774216355309992,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_04_oof_emb.npz,proba_promedio_S,b8f592c423f85f9b,1483,dev(1483),proba con umbrales guardados,0.6260910106709842,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_04_oof_emb.npz,proba_promedio_M,b8f592c423f85f9b,1483,dev(1483),proba con umbrales guardados,0.6228875098814801,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p84_04_oof_emb.npz,proba_promedio_R,b8f592c423f85f9b,1483,dev(1483),proba con umbrales guardados,0.651824805765515,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p85_01_oof_emb.npz,proba_twitter,d5047096dbec0511,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.6195366280056529,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/p85_01_oof_emb.npz,proba_general,d5047096dbec0511,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.621912904076503,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_meta_oof.npz,proba,b7c221995e1a8fb2,1483,dev(1483),proba a 0.5 (sin umbrales guardados),0.7873574608549214,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_base_corrected.npz,proba:M1_word_lr,27dfa83736b97951,1483,dev(1483),multimodelo: proba a 0.5,0.7485975239219459,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_base_corrected.npz,proba:M2_union_lr_c2,27dfa83736b97951,1483,dev(1483),multimodelo: proba a 0.5,0.771778476256122,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_base_corrected.npz,proba:M3_union_svc,27dfa83736b97951,1483,dev(1483),multimodelo: proba a 0.5,0.767715133632097,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_base_corrected.npz,proba:M4_char_lr,27dfa83736b97951,1483,dev(1483),multimodelo: proba a 0.5,0.7377317061121538,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_cita_negacion.npz,proba:CITA,923e945e8de9678e,1483,dev(1483),multimodelo: proba a 0.5,0.7437040219583779,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_cita_negacion.npz,proba:NEG,923e945e8de9678e,1483,dev(1483),multimodelo: proba a 0.5,0.5266809201397912,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_cita_negacion.npz,proba:TXT+CITA,923e945e8de9678e,1483,dev(1483),multimodelo: proba a 0.5,0.7554273219646062,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_cita_negacion.npz,proba:TXT+NEG,923e945e8de9678e,1483,dev(1483),multimodelo: proba a 0.5,0.7656536604336582,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_cita_negacion.npz,proba:TXT+CITA+NEG,923e945e8de9678e,1483,dev(1483),multimodelo: proba a 0.5,0.7551673493582106,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:EMO-EST@C=2.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.5897142445450401,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:EMO-LEX@C=1.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.6204572277754135,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:EMO-ALL@C=1.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.6230127453276714,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:TXT+EMO@C=2.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.6329936331048837,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:NB-WORD-LR@C=1.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.753785076513431,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:NB-CHAR-LR@C=1.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.7379624642680204,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:NB-UNION-LR@C=1.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.7612031137197423,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:NB-UNION-SVC@C=1.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.7428776801965365,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:ORT-A@C=1.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.7485975239219459,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:ORT-ABCD@C=2.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.7533643122467216,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_emocion_nbsvm_ortografia.npz,proba:ORT-AE@C=2.0,d1c4443d721237a7,1483,dev(1483),multimodelo: proba a 0.5,0.7496147795087748,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_syntax.npz,proba:SYN-POS,eaadde24ff8fff6a,1483,dev(1483),multimodelo: proba a 0.5,0.5637100546249322,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_syntax.npz,proba:SYN-DEPS,eaadde24ff8fff6a,1483,dev(1483),multimodelo: proba a 0.5,0.551442280206795,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_syntax.npz,proba:SYN-MORPH,eaadde24ff8fff6a,1483,dev(1483),multimodelo: proba a 0.5,0.5477274407416667,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_syntax.npz,proba:SYN-3,eaadde24ff8fff6a,1483,dev(1483),multimodelo: proba a 0.5,0.5864928976396498,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_syntax.npz,proba:TXT+POS,eaadde24ff8fff6a,1483,dev(1483),multimodelo: proba a 0.5,0.7655792800080858,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_syntax.npz,proba:TXT+DEPS,eaadde24ff8fff6a,1483,dev(1483),multimodelo: proba a 0.5,0.7653080620612109,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_syntax.npz,proba:TXT+MORPH,eaadde24ff8fff6a,1483,dev(1483),multimodelo: proba a 0.5,0.7566839046742958,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_syntax.npz,proba:TXT+SYN3,eaadde24ff8fff6a,1483,dev(1483),multimodelo: proba a 0.5,0.7376044800043519,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_targeting.npz,proba:CH-TGT+DIST,3be774da7320c3fb,1483,dev(1483),multimodelo: proba a 0.5,0.648429050442194,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+features/v2_oof_targeting.npz,proba:TXT+CH,3be774da7320c3fb,1483,dev(1483),multimodelo: proba a 0.5,0.7355698990214002,,,RECOMPUTED_NO_CLAIM_COMPARABLE
+experiments/baseline_v03_frozen/oof_v03_historical.npz,,cfb393f03b753dd3,,holdout-incluido,no abierto,,cubre filas del holdout historico; contenido no consultado (P96),,EXCLUDED_BY_POLICY
+reports/p84_04_parciales/p84_04_parcial_20261016_M.npz,,7457a4260ae6d9b9,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261016_M_humo.npz,,ab521acdedadcdf1,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261016_R.npz,,4a524a58569f50a0,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261016_R_humo.npz,,e44e739400de6ce3,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261016_S.npz,,07b037ab281a24f9,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261016_S_humo.npz,,0e0b933637d520fa,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261017_M.npz,,c19bd2f4eab10dd0,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261017_R.npz,,8bda31a0efa8353c,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261017_S.npz,,4c899db9a6d4ea7f,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261018_M.npz,,842becd10a131ee7,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261018_R.npz,,c00b88ebac30bb60,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+reports/p84_04_parciales/p84_04_parcial_20261018_S.npz,,ce905211ba148d09,,,sin y_true/pred/proba utilizables,,proba; d_pool; umbrales_anidados,,NOT_RECOMPUTABLE_FROM_SAVED_ARTIFACTS
+features/oof_candidates_v4.npz,A_cost_sensitive_downweight,c5d7992cd853936f,1483,dev(1483),umbrales V03,0.785416038667608,D-196/D-199 (reproduccion exacta documentada): 0.7854160387,-3.239197798876603e-11,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_candidates_v4.npz,B_meta36,c5d7992cd853936f,1483,dev(1483),umbrales V03,0.782773622960184,meta_shift_v4.json (B = meta_shift): 0.782774,-3.77039815924185e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_candidates_v4.npz,C_meta36_downweight,c5d7992cd853936f,1483,dev(1483),umbrales V03,0.7881730927493978,DECISIONS D-187..D-190 (0.7882): 0.7882,-2.6907250602170585e-05,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_candidates_v4.npz,D_svd300_rbf,c5d7992cd853936f,1483,dev(1483),umbrales V03,0.7904096156415222,DECISIONS D-187..D-190 (0.7904): 0.7904,9.61564152224259e-06,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_meta_shift_v4.npz,meta_control,106d9c0fd43c7057,1483,dev(1483),umbrales V03,0.7791347281187507,meta_shift_v4.json: 0.779135,-2.718812492918943e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_meta_shift_v4.npz,meta_shift,106d9c0fd43c7057,1483,dev(1483),umbrales V03,0.782773622960184,meta_shift_v4.json: 0.782774,-3.77039815924185e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_meta_shift_v4.npz,meta_shift_cuantil,106d9c0fd43c7057,1483,dev(1483),umbrales V03,0.782825280015912,meta_shift_v4.json: 0.782825,2.800159120130985e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_meta_shift_v4.npz,meta_shift_platt,106d9c0fd43c7057,1483,dev(1483),umbrales V03,0.765624571677232,meta_shift_v4.json: 0.765625,-4.283227680312862e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_meta_shift_v4.npz,meta_control,106d9c0fd43c7057,1483,dev(1483),0.5 o pred guardada,0.7641399669779831,meta_shift_v4.json (0.5): 0.76414,-3.3022016898698325e-08,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_meta_shift_v4.npz,meta_shift,106d9c0fd43c7057,1483,dev(1483),0.5 o pred guardada,0.7744108711336057,meta_shift_v4.json (0.5): 0.774411,-1.288663942222712e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_meta_shift_v4.npz,meta_shift_cuantil,106d9c0fd43c7057,1483,dev(1483),0.5 o pred guardada,0.7725402121064969,meta_shift_v4.json (0.5): 0.77254,2.121064969218267e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/oof_meta_shift_v4.npz,meta_shift_platt,106d9c0fd43c7057,1483,dev(1483),0.5 o pred guardada,0.7694538114559406,meta_shift_v4.json (0.5): 0.769454,-1.8854405936519214e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/p84_02_oof_fasttext.npz,pred_control_anidada,57304a44e7a017ea,1483,dev(1483),0.5 o pred guardada,0.7377707965720631,p84_02_fasttext.md (control anidada): 0.737771,-2.0342793682903704e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/p84_02_oof_fasttext.npz,proba_control,57304a44e7a017ea,1483,dev(1483),0.5 o pred guardada,0.717475876986915,p84_02_fasttext.md (control 0.5): 0.717476,-1.2301308505158204e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/p84_03_oof_ros.npz,proba_A,4c26a946be7ae5e1,1483,dev(1483),umbrales V03,0.7772114525165721,p84_03_ros_equivalencia.md (control = V03): 0.777211452517,-4.2787995369053533e-13,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/p59_robust_cells.npz,pred_v03,506362ed355976c6,1483,dev(1483),0.5 o pred guardada,0.7772114525165721,canonico V03: 0.7772114525165721,0.0,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/p66_scores_candidatos.npz,proba_v03,6913afe9262980f4,1483,dev(1483),proba a 0.5,0.771778476256122,p84_02_fasttext.md: V03@0.5 0.771778476256,1.219024881038422e-13,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/p84_01_oof_mlp.npz,proba seed 42,4dc390b11799553b,1483,dev(1483),proba a 0.5,0.7583010519636179,p84_01_dl01.md: 0.758301,5.196361785309023e-08,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/p84_01_oof_mlp.npz,proba seed 43,4dc390b11799553b,1483,dev(1483),proba a 0.5,0.754898633533234,p84_01_dl01.md: 0.754899,-3.6646676593310445e-07,COMPARED_WITH_DOCUMENTED_EXACTLY
+features/p84_01_oof_mlp.npz,proba seed 44,4dc390b11799553b,1483,dev(1483),proba a 0.5,0.7617709497793959,p84_01_dl01.md: 0.761771,-5.022060411974394e-08,COMPARED_WITH_DOCUMENTED_EXACTLY

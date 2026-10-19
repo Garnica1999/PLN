@@ -1,0 +1,92 @@
+{
+  "experiment_id": "P98-10",
+  "etapa": "C98-0 (piloto real)",
+  "fecha": "2026-10-13",
+  "corpus": {
+    "ruta": "data/external/corpora/wikipedia_es_5M/emb_normal/tokens_5M.txt",
+    "sha256": "62aaa19af45c31f8fe9e48340cac91ab74ba0a6d19b45a1ef6b853a80b310b59",
+    "tokens": 5011404,
+    "documentos": 1694,
+    "val_fraccion": 0.02
+  },
+  "vocab": {
+    "top": 50000,
+    "tipos": 173942,
+    "cobertura_top50k": 0.9639,
+    "chars": 254
+  },
+  "config_piloto": {
+    "vocab_size": 50002,
+    "char_vocab_size": 256,
+    "char_dim": 32,
+    "nn_char": 128,
+    "word_dim": 200,
+    "enc_dim": 512,
+    "hidden": 512,
+    "capas": 2,
+    "dropout": 0.2,
+    "max_char": 24,
+    "seq_len": 96,
+    "batch": 8192,
+    "epocas": 3,
+    "lr": 0.001
+  },
+  "n_params": 14580696,
+  "historial": [
+    {
+      "epoca": 1,
+      "tokens": 4871520,
+      "loss_primera": 10.907451629638672,
+      "loss_ultima": 6.487327575683594,
+      "loss_media": 7.167896324266341,
+      "val_loss": 6.478948817533605,
+      "val_perplexity": 651.2859659265915,
+      "segundos": 206.9,
+      "tokens_por_segundo": 23546.3
+    },
+    {
+      "epoca": 2,
+      "tokens": 4871520,
+      "loss_primera": 6.483616828918457,
+      "loss_ultima": 6.094078540802002,
+      "loss_media": 6.255384043433159,
+      "val_loss": 6.106781931484447,
+      "val_perplexity": 448.8918236736492,
+      "segundos": 179.1,
+      "tokens_por_segundo": 27204.6
+    },
+    {
+      "epoca": 3,
+      "tokens": 4871520,
+      "loss_primera": 6.111369609832764,
+      "loss_ultima": 5.827719211578369,
+      "loss_media": 5.9293160166972045,
+      "val_loss": 5.861012010013356,
+      "val_perplexity": 351.0792600257561,
+      "segundos": 177.8,
+      "tokens_por_segundo": 27405.7
+    }
+  ],
+  "vram_pico_gb": 9.81,
+  "probes": {
+    "hidden1024_capas2": {
+      "tokens_por_segundo": 17133.2,
+      "segundos": 14.29,
+      "vram_gb": 9.81
+    }
+  },
+  "mediciones_tok_s": {
+    "h512_c2": 27405.7,
+    "h1024_c2": 17133.2
+  },
+  "requerido_tok_s": 13333.3,
+  "eleccion_c98_1": {
+    "hidden": 1024,
+    "capas": 2,
+    "tok_s": 17133.2
+  },
+  "veredicto": "PILOTO_OK",
+  "hallazgo_entorno": "el dropout nativo de nn.LSTM no compila en MIOpen gfx1201 (rocrand header ausente); se usa nn.Dropout entre capas (misma semantica); consecuencia: C98-1 usara la variante LMReal",
+  "tiempo_total_s": 588.3,
+  "gpu_horas_estimadas": 0.163
+}

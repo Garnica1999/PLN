@@ -1,0 +1,54 @@
+{
+  "package": "p93_adjudication_v1_independent_review",
+  "date": "2026-10-13",
+  "policy_id": "PROJECT_OPERATIONAL_ANNOTATION_POLICY_V2",
+  "guide_file": "annotation_guidelines_v2_1.md",
+  "guide_sha256": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+  "counts": {
+    "unique_tweets": 127,
+    "candidate_cells": 176,
+    "HS_candidate_cells": 23,
+    "TR_candidate_cells": 87,
+    "AG_candidate_cells": 66
+  },
+  "seeds": {
+    "asignacion_ids": 20261026,
+    "orden_filas": 20261027
+  },
+  "blinding": {
+    "hidden": [
+      "original_example_id",
+      "gold_labels",
+      "v03_predictions",
+      "oof_probabilities",
+      "threshold_distances",
+      "fold",
+      "annotator_A_responses",
+      "annotator_B_responses",
+      "annotator_AB_notes",
+      "candidate_labels",
+      "selection_reason",
+      "sampling_component",
+      "group_metadata"
+    ],
+    "visible": [
+      "adjudication_review_id",
+      "text",
+      "empty annotation columns",
+      "uncertainty_notes",
+      "tweet_note",
+      "guideline_version"
+    ]
+  },
+  "files": {
+    "artifacts/p93_adjudication_v1/independent_review/adjudicator_C.csv": "84ca2179378fa0d88e1e8b99921402219b79493dcd9b8792b7cac7864f7f937d",
+    "artifacts/p93_adjudication_v1/independent_review/annotation_guidelines_v2_1.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "artifacts/p93_adjudication_v1/independent_review/README_adjudicator.md": "c043a2d72cffdb6a912104d729444c998578ad7d2f372e46eeb08aeba12a306d"
+  },
+  "distribution": "NOT_DISTRIBUTED",
+  "limitations": [
+    "politica operativa interna; no definicion oficial",
+    "la ronda 1 es independiente; la ronda 2 (comparacion) es posterior",
+    "candidatos NO son errores confirmados"
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "phase": "P93-R5 gold comparison, correction candidates and future-experiment recommendation",
+  "date": "2026-10-13",
+  "status": "GOLD_COMPARISON_COMPLETED",
+  "decisions": {
+    "gold_comparison": "AUTHORIZED_AND_COMPLETED",
+    "third_review": "NOT_REQUIRED_FOR_THIS_PHASE",
+    "final_human_decisions": "LOCKED",
+    "five_unresolved_cases": "KEEP_UNRESOLVED",
+    "source_label_modification": "NOT_AUTHORIZED",
+    "model_retraining": "NOT_AUTHORIZED",
+    "submissions": "NOT_AUTHORIZED",
+    "v03": "FROZEN"
+  },
+  "guide": {
+    "version": "v2.1",
+    "path": "reports/p92_annotation_guidelines_v2_1_holdout_safe.md",
+    "sha256": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204"
+  },
+  "eligible_population": {
+    "train_rows": 1731,
+    "sample_dev_ids": 265,
+    "candidate_tweets": 127,
+    "in_train": true,
+    "holdout_history_intersection": 0,
+    "holdout2_intersection": 0,
+    "test_intersection": 0,
+    "reserved_partitions_read": "solo columna id (sin contenido, labels ni scores)"
+  },
+  "units": {
+    "cells": 176,
+    "tweets": 127,
+    "HS": 23,
+    "TR": 87,
+    "AG": 66,
+    "binary_agreement_cells": 171,
+    "unresolved_cases": 5
+  },
+  "comparison": {
+    "HUMAN_FINAL_MATCHES_GOLD": 0,
+    "HUMAN_FINAL_DIFFERS_FROM_GOLD": 157,
+    "POSSIBLE_LABEL_ISSUE": 14,
+    "CONFIRMED_ANNOTATION_ERROR": 0,
+    "UNRESOLVED_NO_THIRD_REVIEW": 5
+  },
+  "candidates": {
+    "eligible_total": 14,
+    "eligible_by_label": {
+      "HS": 2,
+      "TR": 4,
+      "AG": 8
+    },
+    "eligible_by_component": {
+      "B": 14
+    },
+    "direction": {
+      "remove": 10,
+      "add": 4
+    },
+    "tweets_with_documented_justification": 14
+  },
+  "components_of_compared_cells": {
+    "B": 133,
+    "A": 43
+  },
+  "hashes": {
+    "reports/p93r4_final_decisions.csv": "98e4264b0fb98b7a4714f5237ea541ecaa06371dbb076b203677bcc5700f66af",
+    "reports/p93r4_final_human_agreement.md": "5b20ac7af7f4d50d6d057d2d24264bf6ea0dc376e4fcb07841d295146ad6ca26",
+    "reports/p93r4_pending_cases.csv": "e1fb6bc9ccade41b329705232b3196d9ed6aa5228b55e8c407b8bf85730149e9",
+    "reports/p93r4_manifest.json": "3feecb6d5b2bf9a2d4d896e73f2a20b8c8f83479423ee72ffe8b975c77842580",
+    "reports/p93_manifest.json": "45d8d342999c6d9913362f255df46d39127eb0d1256fbfb299743074a35c2789",
+    "reports/p92w_internal_sampling_key.csv": "13191b56b7b6b61d347a6fbb023dc13e32c0472f9cb22e2504ad2ff062b40129",
+    "reports/p93_gold_discrepancy_candidates.csv": "a54730bf49aac8bf8d9183d2a9093bc0630703bbd8371aa05d4395d3868344cb",
+    "reports/p93_gold_comparison_cells.csv": "18c160be246bdf5a33f1c98c379353e6397381dee8d383f5c4bc88c90384ec71",
+    "reports/p93_adjudication_blind_candidates.csv": "e744a3c25cd05b621066e3a61485e17599b660c90ca85f493036fc9b6a605f3e",
+    "reports/p93r3_round2_id_assignment.csv": "e0ce88b1c5c3906ca71cf7d82b53bcf1139e30839767944206969e24a3426217",
+    "reports/p93r_internal_adjudication_key.csv": "5f3f8eaeff229bcf72913a3d59e69b68581481edfef546ee6cdda61c49cf51e9",
+    "artifacts/p93_adjudication_v1/responses/response_C1.csv": "f89f74cdabd9649d9894faef7064f9c73413d1d06129733cf829b7e3338c3fe1",
+    "artifacts/p93_adjudication_v1/responses/response_C2.csv": "e0449a811fa8b64b6e6e1eb2cbbfbcc00bca36685f53c00eaf2de46e67830daf",
+    "artifacts/p93_adjudication_v2/responses/response_C1_round2.csv": "91911ab70f6d70cc9036de596ceba72ee847e3c6e900e2bee505d5e9ce7debba",
+    "artifacts/p93_adjudication_v2/responses/response_C2_round2_correcciones.csv": "5da8fc1b3313548982182c8a8dfaa61d4c5c25e5c54628910d5e94fe9832fff7",
+    "artifacts/p93_adjudication_v2/responses/PROVENANCE.md": "90af64f92f8a9d3606a90c2c71aa1e9523dda7092631903c2d1621444560f7c0",
+    "artifacts/p93_adjudication_v2/annotator_C1/adjudication_round2_C1.csv": "1615e72585fee3907adf03962a52c699ce87db634b559c162f1a114ae6f57d32",
+    "artifacts/p93_adjudication_v2/annotator_C2/adjudication_round2_C2.csv": "91062d38ea8758c347804d7bb6f44b287d15a0d3cd19513b3722a4938499167b",
+    "reports/p92_annotation_guidelines_v2_1_holdout_safe.md": "fd8d4c65ccd194fbce866321c7dbbbdc6870653f606e3111f147e41bc7fc9204",
+    "data/raw/toxic_train.csv": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+    "features/oof_v03_final.npz": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+    "experiments/baseline_v03_frozen/submission_v03.csv": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "experiments/baseline_v03_frozen/model_v03.joblib": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+    "data/processed/holdout_v2_ids.csv": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd",
+    "data/processed/holdout2_ids.csv": "f6c6ed958abf728b8210d15c26ec43fbd71659a0918d36089a9c6d6cef1639dc",
+    "reports/p93r5_gold_comparison.csv": "cc7ab96b90155980a154c799398fd9031e4c7e07d8ca38b3ecef7897166d608d",
+    "reports/p93r5_gold_comparison.md": "6493d8bfc6cf918cf46a02b800fcb92e59f5d5c8b0cf2049df30d30fcec87a21",
+    "reports/p93r5_label_correction_candidates.csv": "a884cf91467aa3eab2f0ab06a3f1a6f24f6d160f4d5bb3dce20fab082489ea4e",
+    "reports/p93r5_future_experiment_recommendation.md": "b3ccf541e0bf2a8d9e88b70de7894fba4fce2ba10e84d8a624576f751a24dca6",
+    "experiments/p93r5_01_comparacion_gold.py": "a126046735ee103687cb10c97d859dd463ad9466acc6fcc679a2814e2558b03e"
+  },
+  "checks": {
+    "celdas_176": true,
+    "claves_dec_cand_assign_iguales": true,
+    "tweets_127": true,
+    "distribucion_23_87_66": true,
+    "guia_v21": true,
+    "tokens_validos": true,
+    "acuerdo_binario_171": true,
+    "pendientes_5_y_coinciden": true,
+    "manifiesto_r4_ok": true,
+    "hash_ronda1_C1": true,
+    "hash_ronda1_C2": true,
+    "hash_ronda2_C1": true,
+    "hash_ronda2_C2": true,
+    "hash_r4_decisiones": true,
+    "hash_r4_acuerdo": true,
+    "hash_r4_pendientes": true,
+    "hash_r4_manifiesto": true,
+    "candidatos_gold_AB_ok": true,
+    "gold_consistente_con_clave": true,
+    "componentes_A43_B133": true,
+    "grid_cruzada": true,
+    "sample_265_en_train": true,
+    "tweets_176_en_train": true,
+    "sample_particion_dev": true,
+    "sin_holdout_historico": true,
+    "sin_holdout2": true,
+    "sin_test": true,
+    "canonicos_intactos": true,
+    "guia_v21_hash": true,
+    "suma_clasificacion": true,
+    "elegibles_solo_possible": true,
+    "verificador_ascii_oficial": true
+  },
+  "avisos": [],
+  "limitations": [
+    "muestra enriquecida por discrepancia A/B vs gold; sin estimacion de prevalencia",
+    "decisiones finales vieron A/B en ronda 2; no son independientes",
+    "cegamiento de ronda 1 no verificable por completo (P93-R3)",
+    "0 errores confirmados: las candidatas son POSSIBLE_LABEL_ISSUE, no CONFIRMED",
+    "la coincidencia C1/C2 (o con A/B) no se usa como justificacion suficiente"
+  ]
+}

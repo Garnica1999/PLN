@@ -1,0 +1,12 @@
+{
+  "fase": "V39 03 Kaggle Submission",
+  "fecha": "2026-10-16 10:37:00",
+  "archivo": "age_submission_v39_trio_blend.csv",
+  "sha256": "b389ecf82278e92b9dd8912853c256ccaf6ab04de26e647cdcc36c1ad3355bbe",
+  "competition": "tweet-age-2026-puj",
+  "message": "V39 Trimodal Blend (0.84 V30 + 0.12 TabNet Ordinal + 0.04 HGB) + Plug-in",
+  "ref": "57274330",
+  "status": "SubmissionStatus.COMPLETE",
+  "public_score": 0.63588,
+  "duracion_seg": 24.2
+}

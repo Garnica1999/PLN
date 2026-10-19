@@ -1,0 +1,39 @@
+{
+  "fase": "V38 02 Construccion Submission",
+  "archivo": "age_submission_v38_tabular_blend.csv",
+  "sha256": "bc5802091d81d5c962a84bee0a0b3375171d5225162bb4de7c667b29cd87b1d5",
+  "filas": 112892,
+  "cambios_vs_champion": 1705,
+  "pct_cambio": 1.51,
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "distribucion": {
+    "18-24": 0.19539028451971796,
+    "50-64": 0.18002161357757857,
+    "25-34": 0.17815257059844808,
+    "35-49": 0.1533412465010807,
+    "65-xx": 0.1529780675335719,
+    "13-17": 0.1401162172696028
+  },
+  "pesos_blend": {
+    "v30": 0.88,
+    "tabnet": 0.12
+  },
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "duracion_seg": 0.27
+}
