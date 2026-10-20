@@ -203,8 +203,11 @@ validación contiene un texto cuyo near-duplicado esté en el fold de entrenamie
 Los clústeres se construyen con un procedimiento determinista (normalización del texto, comparación por
 similitud de Jaccard (Jaccard, «The Distribution of the Flora in the Alpine Zone», New Phytologist, 1912) de tokens con *blocking* por tokens raros, unión de pares similares). La partición de
 5 folds agrupados es el **protocolo congelado** del proyecto: todos los experimentos de este notebook se
-evalúan con exactamente esos folds (embebidos como constante para inmunizar el protocolo frente a cambios
-de versión de las librerías).
+evalúan con exactamente esos folds, que se **generan en la propia ejecución** con la regla documentada
+(`StratifiedGroupKFold` con `shuffle=True` y semilla 42 sobre los clústeres) y se verifican por
+propiedades: tamaños equilibrados, proporciones de clase estables y cero clústeres compartidos entre
+folds. En versiones de scikit-learn distintas de la 1.8.0 la asignación puede variar y, con ella, los
+valores absolutos (véase 6.2).
 
 ```python
 # Figura 2.4: reconstruccion de los clusteres de near-duplicados (protocolo congelado).
@@ -242,28 +245,39 @@ print(f"test que comparte cluster con train: {compartidos_test * 100:.2f}%")
 ```
 
 ```python
-# Verificacion del protocolo de folds: la asignacion embebida se regenera con la particion canonica.
+# Folds canonicos: se generan con la regla documentada (StratifiedGroupKFold con shuffle y semilla 42
+# sobre los clusters de near-duplicados) y se verifican por propiedades, sin constantes opacas.
 from sklearn.model_selection import StratifiedGroupKFold
 
-def folds_desde_clusters(y_etiquetas, grupos):
-    """Reproduce el fold_idx canonico: StratifiedGroupKFold(shuffle=True, random_state=42)."""
-    divisor = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
-    indice = np.zeros(len(y_etiquetas), dtype=np.int64)
+
+def generar_folds(etiquetas, grupos, semilla=42, n_folds=5):
+    """Asigna cada fila a un fold agrupado por cluster: ningun cluster cae en dos folds."""
+    divisor = StratifiedGroupKFold(n_splits=n_folds, shuffle=True, random_state=semilla)
+    asignacion = np.zeros(len(etiquetas), dtype=np.int64)
     for numero, (_, validacion) in enumerate(
-            divisor.split(np.zeros(len(y_etiquetas)), y_etiquetas, groups=grupos)):
-        indice[validacion] = numero
-    return indice
+            divisor.split(np.zeros(len(etiquetas)), etiquetas, groups=grupos)):
+        asignacion[validacion] = numero
+    return asignacion
 
 
-regenerado = folds_desde_clusters(y, cluster_de[:n_train])
-coincidencia = float((regenerado == fold_idx).mean())
-print(f"coincidencia folds regenerados vs embebidos: {coincidencia:.8f}")
-if coincidencia == 1.0:
-    print("Protocolo verificado: la particion embebida es exactamente la canonica del proyecto.")
-else:
-    print("Aviso: la version local de scikit-learn genera una particion distinta; "
-          "se conserva la particion embebida (protocolo congelado).")
-print("conteo por fold:", np.bincount(fold_idx).tolist())
+fold_idx = generar_folds(y, cluster_de[:n_train], semilla=42)
+print("folds canonicos (semilla 42):", np.bincount(fold_idx).tolist())
+for numero in range(5):
+    en_fold = fold_idx == numero
+    proporcion = np.bincount(clase[en_fold], minlength=len(CLASSES)) / en_fold.sum()
+    print(f"  fold {numero}: {en_fold.sum():,} filas | clases "
+          f"{np.round(proporcion * 100, 1).tolist()} %")
+
+# Verificacion por propiedades: cobertura completa, tamano equilibrado y cero fuga entre folds.
+assert sorted(np.unique(fold_idx).tolist()) == list(range(5))
+assert np.bincount(fold_idx).max() - np.bincount(fold_idx).min() <= 3
+grupos = cluster_de[:n_train]
+fugados = set()
+for numero in range(5):
+    fugados |= set(grupos[fold_idx == numero]) & set(grupos[fold_idx != numero])
+print(f"clusters compartidos entre folds (debe ser 0): {len(fugados)}")
+assert not fugados, "fuga de near-duplicados entre folds"
+print("protocolo verificado: 5 folds agrupados sin fuga de near-duplicados.")
 ```
 
 ```python

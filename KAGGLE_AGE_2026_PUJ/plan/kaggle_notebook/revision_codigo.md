@@ -56,3 +56,10 @@ No hay hallazgos criticos. No hay leakage: todos los ajustes son in-fold y el te
 ## Conclusion
 
 La cadena es apta para el notebook final: fidelidad, anti-leakage y determinismo verificados, generador con 17/17 comprobaciones en verde y sin hallazgos criticos. Antes de sellar la ejecucion final conviene decidir el hallazgo importante 1 (portar el early stopping del OOF de V29/V30, recomendado, o actualizar los valores/tolerancias del checklist) y, opcionalmente, limpiar los avisos de ruff de `repro/`.
+
+**Actualizacion posterior (misma fecha).** Los payloads comprimidos (`FOLD_IDX_B85`,
+`FOLD_IDX2_B85` y `SUBMISSION_SELLADA_B85`) se retiraron del notebook: las dos particiones se generan
+en la seccion 2.4 con la regla documentada (`StratifiedGroupKFold`, semilla 42 y 987654) y se verifican
+por propiedades (tamanos, proporciones de clase y cero clusters compartidos entre folds), y la
+comparacion con la submission sellada queda registrada en el control de calidad de la entrega. El
+notebook pasa de 182 a 178 celdas (53 de codigo) y el generador a 17 comprobaciones, todas en verde.

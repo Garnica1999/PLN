@@ -25,9 +25,6 @@ RAIZ = Path(__file__).resolve().parents[1]
 SECCIONES = RAIZ / "plan" / "kaggle_notebook" / "secciones"
 CADENA = RAIZ / "repro" / "cadena"
 SALIDA = RAIZ / "notebooks" / "kaggle_final_pipeline.ipynb"
-FOLD_PAYLOAD = RAIZ / "plan" / "kaggle_notebook" / "fold_idx_b85.txt"
-FOLD2_PAYLOAD = RAIZ / "plan" / "kaggle_notebook" / "fold_idx2_b85.txt"
-SUBMISSION_PAYLOAD = RAIZ / "plan" / "kaggle_notebook" / "submission_sellada_b85.txt"
 
 #: Orden de ensamblaje: ("md", fichero) o ("cadena", modulo). Los modulos de la cadena se
 #: insertan juntos tras la portada; el resto de secciones va en orden CRISP-ML.
@@ -165,34 +162,6 @@ def transforma_modulo(nombre: str) -> str:
     return texto_final
 
 
-def celda_folds() -> str:
-    """Celda del protocolo congelado de folds (payload comprimido + reconstruccion)."""
-    payload = FOLD_PAYLOAD.read_text(encoding="ascii").strip()
-    return (
-        "# Protocolo congelado de folds (169.336 valores 0-4): asignacion canonica del proyecto.\n"
-        "# Se embebe comprimida para inmunizar el notebook frente a la version de scikit-learn\n"
-        "# (StratifiedGroupKFold cambia su salida entre versiones; se verifico contra la 1.8.0).\n"
-        "import base64\n"
-        "import zlib\n"
-        "\n"
-        "FOLD_IDX_B85 = (\n"
-        f"    \"{payload}\"\n"
-        ")\n"
-        "\n"
-        "\n"
-        "def cargar_folds_embebidos() -> np.ndarray:\n"
-        "    \"\"\"Decodifica el fold_idx canonico embebido (zlib + base85).\"\"\"\n"
-        "    crudo = zlib.decompress(base64.b85decode(FOLD_IDX_B85.encode(\"ascii\")))\n"
-        "    return np.frombuffer(crudo, dtype=np.uint8).astype(np.int64)\n"
-        "\n"
-        "\n"
-        "fold_idx = cargar_folds_embebidos()\n"
-        "assert fold_idx.shape == (169336,), fold_idx.shape\n"
-        "assert sorted(np.unique(fold_idx).tolist()) == [0, 1, 2, 3, 4]\n"
-        "print(\"folds canonicos cargados:\", np.bincount(fold_idx).tolist())"
-    )
-
-
 def construir(parcial: bool) -> list[dict]:
     """Ensambla la lista completa de celdas del notebook (cadena insertada tras la portada)."""
     celdas: list[dict] = []
@@ -209,7 +178,6 @@ def construir(parcial: bool) -> list[dict]:
         celdas.extend(parte_md(nombre))
         if nombre == "00_portada.md":
             celdas.extend(bloque_cadena())
-            celdas.extend(bloque_folds())
     if faltantes and parcial:
         print(f"[generador] AVISO: secciones ausentes (modo parcial): {faltantes}")
     return celdas
@@ -227,51 +195,6 @@ def bloque_cadena() -> list[dict]:
         bloque.append(celda_markdown(f"### Módulo `{modulo}.py`"))
         bloque.append(celda_codigo(transforma_modulo(modulo)))
     return bloque
-
-
-def bloque_folds() -> list[dict]:
-    """Celdas del protocolo congelado de folds (canonica y segunda particion)."""
-    return [celda_markdown("### Protocolo congelado de folds (asignación canónica embebida)"),
-            celda_codigo(celda_folds()),
-            celda_markdown("### Segunda partición (semilla 987654)"),
-            celda_codigo(celda_folds2())]
-
-
-def celda_folds2() -> str:
-    """Celda del protocolo de la segunda particion (semilla 987654), embebida."""
-    payload = FOLD2_PAYLOAD.read_text(encoding="ascii").strip()
-    return (
-        "# Segunda particion del proyecto (semilla 987654): particion agrupada alternativa del\n"
-        "# linaje V30, embebida por la misma razon que la canonica (inmunidad a la version de\n"
-        "# scikit-learn).\n"
-        "FOLD_IDX2_B85 = (\n"
-        f"    \"{payload}\"\n"
-        ")\n"
-        "\n"
-        "\n"
-        "def cargar_folds2_embebidos() -> np.ndarray:\n"
-        "    \"\"\"Decodifica el fold_idx de la segunda particion (zlib + base85).\"\"\"\n"
-        "    crudo = zlib.decompress(base64.b85decode(FOLD_IDX2_B85.encode(\"ascii\")))\n"
-        "    return np.frombuffer(crudo, dtype=np.uint8).astype(np.int64)\n"
-        "\n"
-        "\n"
-        "fold_idx2 = cargar_folds2_embebidos()\n"
-        "assert fold_idx2.shape == (169336,), fold_idx2.shape\n"
-        "assert sorted(np.unique(fold_idx2).tolist()) == [0, 1, 2, 3, 4]\n"
-        "print(\"folds de la segunda particion cargados:\", np.bincount(fold_idx2).tolist())"
-    )
-
-
-def insertar_payload_submission(celdas: list[dict]) -> list[dict]:
-    """Reemplaza el marcador __PAYLOAD_SUBMISSION__ por el payload de la submission sellada."""
-    payload = SUBMISSION_PAYLOAD.read_text(encoding="ascii").strip()
-    for celda in celdas:
-        if celda["cell_type"] != "code":
-            continue
-        texto = "".join(celda["source"])
-        if "__PAYLOAD_SUBMISSION__" in texto:
-            celda["source"] = texto.replace("__PAYLOAD_SUBMISSION__", payload).splitlines(keepends=True)
-    return celdas
 
 
 def verificar(celdas: list[dict]) -> int:
@@ -305,10 +228,10 @@ def verificar(celdas: list[dict]) -> int:
     todos = "\n".join("".join(c["source"]) for c in celdas)
     for fase in ["FASE 1", "FASE 2", "FASE 3", "FASE 4", "FASE 5", "FASE 6"]:
         check(fase in todos, f"fase presente: {fase}")
-    check("FOLD_IDX_B85" in todos, "payload de folds embebido")
-    check("FOLD_IDX2_B85" in todos, "payload de la segunda particion embebido")
-    check("SUBMISSION_SELLADA_B85" in todos and "__PAYLOAD_SUBMISSION__" not in todos,
-          "payload de la submission sellada inyectado")
+    check("FOLD_IDX_B85" not in todos and "b85decode" not in todos,
+          "sin payloads base85 (particiones generadas por regla)")
+    check("def generar_folds(" in todos, "generacion legible de folds presente")
+    check("__PAYLOAD_SUBMISSION__" not in todos, "sin marcadores de payload pendientes")
     check("plt.show()" in todos, "figuras mostradas con plt.show()")
 
     codigo_total = "\n".join("".join(c["source"]) for c in codigos)
@@ -351,7 +274,6 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     celdas = construir(parcial=args.parcial)
-    celdas = insertar_payload_submission(celdas)
 
     if args.verificar:
         print("=== verificacion del notebook generado (en memoria) ===")

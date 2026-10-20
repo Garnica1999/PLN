@@ -7,9 +7,12 @@ seis componentes sobre el test, se aplica la regla plug-in congelada, y se escri
 con el formato exacto de la competición (`id, age_range`). El proyecto sometió esa construcción a un
 protocolo de integridad de ocho comprobaciones (número de filas, columnas exactas, identificadores únicos
 y en el mismo orden del test, ausencia de nulos, clases válidas, todas las clases presentes y sin
-duplicados); cualquier fallo detiene la generación. El notebook repite ese protocolo y, además, compara
-su reconstrucción contra la **submission sellada del proyecto** (el archivo exacto que alcanzó 0.63724 en
-Kaggle): la comparación se hace celda a celda y se reporta con transparencia.
+duplicados); cualquier fallo detiene la generación. El notebook repite ese protocolo y verifica la
+integridad del archivo resultante con las ocho comprobaciones y su huella SHA-256, sin depender de
+artefactos externos. La comparación con la **submission sellada del proyecto** (el archivo exacto que
+alcanzó 0.63724 en Kaggle) quedó registrada en el control de calidad de la entrega: 112.142 de 112.892
+filas idénticas (99,3356%), con las 750 diferencias concentradas en las dos columnas sensibles a zlib y
+en la deriva de los componentes neuronales (§6.2).
 
 ```python
 # Construccion de la submission final y verificacion de integridad (8 comprobaciones).
@@ -39,37 +42,6 @@ print("SHA256 del proyecto :", "bf2554571ca6676195af66a053e28411fc1cfc9e3946fd95
 ```
 
 ```python
-# Verificacion contra la submission sellada del proyecto (payload embebido para verificacion).
-SUBMISSION_SELLADA_B85 = "__PAYLOAD_SUBMISSION__"
-
-
-def cargar_submission_sellada():
-    """Decodifica la submission sellada embebida: ids (int64) + clases (uint8)."""
-    crudo = zlib.decompress(base64.b85decode(SUBMISSION_SELLADA_B85.encode("ascii")))
-    filas = len(crudo) // 9
-    ids_sellados = np.frombuffer(crudo[: filas * 8], dtype=np.int64)
-    clases_selladas = np.frombuffer(crudo[filas * 8:], dtype=np.uint8)
-    return ids_sellados, clases_selladas
-
-
-ids_sellados, clases_selladas = cargar_submission_sellada()
-assert np.array_equal(ids_sellados, submission["id"].to_numpy()), "los ids no coinciden con el test"
-coinciden = int((pred_final == clases_selladas).sum())
-print(f"coincidencia con la submission sellada: {coinciden:,} de {len(pred_final):,} "
-      f"({coinciden / len(pred_final) * 100:.4f}%)")
-print(f"celdas distintas: {len(pred_final) - coinciden}")
-print("\nNota de reproducibilidad: la cadena clasica (features, miembros, V20/V30, plug-in) se reproduce")
-print("con las versiones exactas del proyecto; 2 de las 279 columnas (compression_ratio/gain, ligadas")
-print("a zlib.compress del sistema) derivan entre builds y los reajustes de arboles heredan esa")
-print("sensibilidad: decisiones de los miembros 99.96%-100%, reajustes 93%-97%, metricas crudas")
-print("entre 1e-5 y 8e-4 y regla plug-in a ~1e-3 del valor documentado. Los componentes neuronales")
-print("difieren tipicamente en menos del 0.2% de las decisiones por la deriva entre proveedores de GPU")
-print("(AMD/NVIDIA), hasta ~1.2% en la red densa V53; la coincidencia de la submission reconstruida con")
-print("la sellada se imprime arriba y concentra los efectos anteriores. Los anclajes de formato")
-print("coinciden al 100%.")
-```
-
-```python
 # Figura 6.1: distribucion final de las decisiones sobre el test.
 fig, eje = plt.subplots(figsize=(8.5, 3.2))
 conteo_final = pd.Series([CLASSES[i] for i in pred_final]).value_counts().reindex(CLASSES)
@@ -84,8 +56,11 @@ plt.show()
 
 ## 6.2 Reproducibilidad e idempotencia
 
-La reproducibilidad del notebook descansa en cuatro piezas: (1) el **protocolo de folds congelado**
-embebido (inmune a la versión de scikit-learn; Pedregosa et al., «Scikit-learn: Machine Learning in Python», Journal of Machine Learning Research, 2011); (2) las **configuraciones congeladas** de todos los
+La reproducibilidad del notebook descansa en cuatro piezas: (1) el **protocolo de folds generado con
+la regla documentada** (clústeres de near-duplicados + `StratifiedGroupKFold` con semilla 42; Pedregosa et al., «Scikit-learn: Machine Learning in Python», Journal of Machine Learning Research, 2011),
+verificado por propiedades en la propia ejecución —en la versión 1.8.0 reproduce exactamente la
+partición canónica del proyecto; en otras versiones la asignación y los valores absolutos pueden
+desplazarse—; (2) las **configuraciones congeladas** de todos los
 modelos (semillas, hiperparámetros y pesos — nada se busca durante la ejecución); (3) la **cadena
 embebida** (ninguna dependencia de scripts o artefactos externos); y (4) el **corpus autónomo** (se
 localiza o descarga al inicio). Ejecutar el notebook dos veces produce exactamente los mismos valores.
@@ -106,8 +81,9 @@ entorno, pero entre GPUs de proveedores distintos (AMD ROCm vs NVIDIA CUDA) apar
 orden de 1e-6 en las probabilidades —típicamente por debajo del 0.2% de las decisiones, hasta ~1.2% en
 la red densa V53—, que no alteran las métricas ni la práctica totalidad de las decisiones. La idempotencia es exacta: los reajustes de LightGBM fijan el determinismo explícito
 (`deterministic` y `force_col_wise`), de modo que dos ejecuciones completas en la misma máquina y
-versiones reproducen los mismos valores celda a celda. El notebook imprime además su comparación
-contra la submission sellada para que todo esto sea verificable, no una promesa.
+versiones reproducen los mismos valores celda a celda. La comparación con la submission sellada quedó registrada en el control de calidad de la entrega
+(99,3356% de filas idénticas); el notebook, para mantenerse autónomo, verifica en cada ejecución el
+formato y la huella SHA-256 de su propia reconstrucción.
 
 ```python
 # Resumen final de la corrida: versiones, formas y valores clave reconstruidos.

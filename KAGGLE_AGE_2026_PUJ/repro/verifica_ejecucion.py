@@ -22,7 +22,8 @@ from pathlib import Path
 
 #: (etiqueta, patron regex con un grupo numerico, valor esperado, tolerancia)
 CHECKLIST = [
-    ("folds embebidos == regenerados", r"coincidencia folds regenerados vs embebidos: ([0-9.]+)", 1.0, 0.0),
+    ("folds canonicos: filas del primer fold (doc 33868)", r"folds canonicos \(semilla 42\): \[(\d+),", 33868, 0),
+    ("folds sin fuga de near-duplicados", r"clusters compartidos entre folds \(debe ser 0\): (\d+)", 0, 0),
     ("V20 OOF (doc 0.6097782)", r"V20 \(cuartos\)\s+macro-F1 ([0-9.]+)", 0.6097782, 1e-3),
     ("V29 individual (doc 0.6121698)", r"V29 individual\s+: ([0-9.]+)", 0.6121698, 1e-3),
     ("V30 individual (doc 0.6122387)", r"V30 individual\s+: ([0-9.]+)", 0.6122387, 1e-3),
@@ -34,12 +35,11 @@ CHECKLIST = [
     ("V53 consenso (doc 0.6188259)", r"V53 CV ([0-9.]+)", 0.6188259, 2e-3),
     ("V54 consenso (doc 0.6188887)", r"V54 CV ([0-9.]+)", 0.6188887, 2e-3),
     ("V56 consenso (doc 0.6189929)", r"V56 CV ([0-9.]+)", 0.6189929, 2e-3),
-    ("coincidencia con la submission sellada", r"coincidencia con la submission sellada: [0-9,]+ de [0-9,]+ \(([0-9.]+)%\)", None, None),
 ]
 
 #: Valores clave que se extraen en ambos modos para comparar idempotencia.
 CLAVES = [
-    ("folds", r"coincidencia folds regenerados vs embebidos: ([0-9.]+)"),
+    ("folds_fold0", r"folds canonicos \(semilla 42\): \[(\d+),"),
     ("v20_oof", r"V20 \(cuartos\)\s+macro-F1 ([0-9.]+)"),
     ("v30_oof", r"V30 mezcla\s+: ([0-9.]+)"),
     ("plugin_oof", r"V30 \+ plug-in\s+: ([0-9.]+)"),
@@ -49,7 +49,6 @@ CLAVES = [
     ("v53_cv", r"V53 CV ([0-9.]+)"),
     ("v54_cv", r"V54 CV ([0-9.]+)"),
     ("v56_cv", r"V56 CV ([0-9.]+)"),
-    ("coincidencia_sub", r"coincidencia con la submission sellada: [0-9,]+ de [0-9,]+ \(([0-9.]+)%\)"),
     ("sha_reconstruida", r"SHA256 reconstruida : ([0-9a-f]{64})"),
 ]
 

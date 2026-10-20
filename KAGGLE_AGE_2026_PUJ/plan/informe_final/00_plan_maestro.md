@@ -177,3 +177,30 @@ estadística y reproducibilidad · X. Discusión y limitaciones · XI. Conclusio
   auxiliares: notebooks/01..09 + _smoke_arranque + experimentos/ejecutado_r1..r7.
 - Quedan en el repo unicamente notebooks/99_entrega_consolidado.ipynb y
   notebooks/kaggle_final_pipeline.ipynb (mas sus copias identicas en entrega/notebooks).
+
+## Git: rama, PR, merge y limpieza (2026-10-19)
+- Rama `entrega-age-toxic-2026` con commit 9e6501c (1003 archivos, AGE + TOXIC; maximo 4.8 MB por
+  archivo). PR #34 creado con gh, MERGED a main (merge commit 65faa33) y rama remota eliminada
+  (verificado con ls-remote y fetch --prune); rama local borrada; main actualizado.
+- `.gitignore` ampliado: paquetes `entrega/` (ZIPs y copias de artefactos) + binarios pesados
+  (KAGGLE_AGE_2026_PUJ/{data,features,artifacts,checkpoints,modelos} y TOXIC/{data,models,modelos,features}).
+  Motivo: GitHub rechaza archivos >100 MB (ZIPs de 285/826 MB; matriz de 370 MB).
+
+## Entrega: registro completo de experimentos + verificador (2026-10-19)
+- `entrega/experiments/` pasa de 99 a **298 JSON** (registro completo de resultados; 27 MB).
+- Nuevo `validacion/verifica_experimentos.py` (tambien en `repro/`): cobertura experimento -> script
+  y artefactos. Ejecutado dentro de la entrega: 220 experimentos, 339 scripts, 298 JSON; 169 con
+  script + 49 registros sin ejecucion (26 documental, 12 preregistro, 10 enmienda, 1 bloqueado) +
+  1 decision + 1 falsacion documentada (V50) = 220; 0 por revisar; JSON citados 95 presentes,
+  0 ausentes; EXIT=0.
+- ZIP regenerado: 285 MB, 859 entradas, 623.9 MB descomprimidos; contiene los 298 JSON y el
+  verificador. README actualizado.
+- Refactor de legibilidad del cuaderno de Kaggle (peticion de Carlos): retirados los tres payloads
+  base85 (folds canonicos, segunda particion y submission sellada; ~406 KB de blobs opacos). Las dos
+  particiones se generan ahora en la seccion 2.4 con la regla documentada (StratifiedGroupKFold,
+  semilla 42 y 987654) y se verifican por propiedades (tamanos, proporciones de clase y cero
+  clusters compartidos); la comparacion con la submission sellada queda registrada en el control
+  de calidad de la entrega (112.142/112.892 filas, 99.3356%). Verificado que la generacion legible
+  reproduce el 100% de ambas particiones en el entorno exacto (sklearn 1.8.0), luego las salidas
+  ejecutadas siguen siendo validas. Cuaderno: 178 celdas (53 de codigo), checklist 13/13, empalme
+  con dos celdas nuevas ejecutadas en el servidor. Entrega y ZIP regenerados: 285 MB, 855 entradas.
