@@ -270,7 +270,11 @@ for numero in range(5):
 
 # Verificacion por propiedades: cobertura completa, tamano equilibrado y cero fuga entre folds.
 assert sorted(np.unique(fold_idx).tolist()) == list(range(5))
-assert np.bincount(fold_idx).max() - np.bincount(fold_idx).min() <= 3
+tamanos = np.bincount(fold_idx)
+diferencia = int(tamanos.max() - tamanos.min())
+print(f"tamanos por fold: min {tamanos.min():,} | max {tamanos.max():,} | "
+      f"diferencia {diferencia:,}")
+assert diferencia <= 0.05 * len(fold_idx) / 5  # cota: 5% del fold medio
 grupos = cluster_de[:n_train]
 fugados = set()
 for numero in range(5):

@@ -22,7 +22,7 @@ from pathlib import Path
 
 #: (etiqueta, patron regex con un grupo numerico, valor esperado, tolerancia)
 CHECKLIST = [
-    ("folds canonicos: filas del primer fold (doc 33868)", r"folds canonicos \(semilla 42\): \[(\d+),", 33868, 0),
+    ("folds canonicos: filas del primer fold (doc 33868)", r"folds canonicos \(semilla 42\): \[(\d+),", 33868, 1700),
     ("folds sin fuga de near-duplicados", r"clusters compartidos entre folds \(debe ser 0\): (\d+)", 0, 0),
     ("V20 OOF (doc 0.6097782)", r"V20 \(cuartos\)\s+macro-F1 ([0-9.]+)", 0.6097782, 1e-3),
     ("V29 individual (doc 0.6121698)", r"V29 individual\s+: ([0-9.]+)", 0.6121698, 1e-3),

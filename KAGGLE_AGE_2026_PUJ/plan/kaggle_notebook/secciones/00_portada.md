@@ -72,6 +72,15 @@ decisión se tomó, enlazando siempre con lo aprendido antes (el EDA y los exper
 ## 0.1 Entorno de ejecución
 
 ```python
+# Versiones exactas del protocolo experimental: la particion canonica y los reajustes de
+# arboles se generaron con scikit-learn 1.8.0 y LightGBM 4.6.0. Se fijan al arranque para
+# que la ejecucion en Kaggle reproduzca las cifras documentadas (no las del entorno local).
+import subprocess as _subprocess
+import sys as _sys
+
+_subprocess.run([_sys.executable, "-m", "pip", "install", "-q",
+                 "scikit-learn==1.8.0", "lightgbm==4.6.0"], check=True)
+
 # Entorno: semillas fijas, estilo de figuras y utilidades basicas del notebook.
 import hashlib
 import json
@@ -162,6 +171,10 @@ def resolver_corpus():
     bases = []
     if Path("/kaggle/input").exists():
         bases.extend(sorted(p for p in Path("/kaggle/input").iterdir() if p.is_dir()))
+    # Kaggle monta las competiciones en /kaggle/input/competitions/<slug>/
+    if Path("/kaggle/input/competitions").exists():
+        bases.extend(sorted(p for p in Path("/kaggle/input/competitions").iterdir()
+                             if p.is_dir()))
     bases.extend([Path("data/raw"), Path("../data/raw"), Path.cwd()])
     for base in bases:
         train = _buscar_en(base, ("age_train.csv", "Age_train.csv"))

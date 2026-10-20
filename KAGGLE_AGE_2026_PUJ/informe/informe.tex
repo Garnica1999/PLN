@@ -384,7 +384,7 @@ Promedio de pesos & SWA (Izmailov et al.) & V41 & 0.6181 & Adoptado \\
 Suavizado de etiquetas & Szegedy et al.; M\"uller et al. & V42 & 0.6184 & Adoptado \\
 Cram\'er sobre la CDF & Cram\'er; von Mises; Sz\'ekely y Rizzo & V43 & 0.6185 & Adoptada \\
 Producto de expertos & Hinton; Heskes & V48 & 0.6186 & Campe\'on \\
-\textit{Plug-in} por clase & Lipton et al.; Parambath et al. & V30, V48 & $+0.0027$ sobre el consenso & Congelado \\
+\textit{Plug-in} por clase & Lipton et al.; Parambath et al. & V30, V48 & $+0.0027$ sobre V30 + \textit{plug-in} & Congelado \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -632,7 +632,7 @@ Modelos cl\'asicos y miembros & B3 & 12 & 0.3381--0.5851; \texttt{E-020} 0.5851 
 Features avanzadas & B4 & 7 & 0.5641--0.5966; \texttt{ADV-03} 0.5966 & \texttt{ADV-07} entra en la matriz \\
 Fases PH y meta-modelo & B5 & 30 & 0.5906--0.6108; V12 0.6005 & El meta-modelo supera a sus miembros \\
 Canales l\'exicos & B6 & 5 & 0.2033--0.6004 & Sin adopci\'on \\
-V13--V15, ling\"u\'istica & B7--8 & 19 & mejor bloque aislado 0.2409 & Falsado: sin adopci\'on \\
+V13--V15, ling\"u\'istica & B7--B8 & 19 & mejor bloque aislado 0.2409 & Falsado: sin adopci\'on \\
 V16--V18, meta-arquitectura & B9--11 & 16 & 0.5990--0.6011; \texttt{V16} 0.6011 & La se\~nal restante no est\'a en features nuevas \\
 V19--V22, ordinalidad & B12--17 & 19 & V19 0.6079; V20 0.6098 & V20 entra en el linaje; V21--V22 sin adopci\'on \\
 V23--V29, selecci\'on y Optuna & B18--23 & 12 & \texttt{V29} 0.6122; CORAL 0.4837 & Optuna fija el espacio del troncal \\
