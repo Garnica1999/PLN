@@ -101,7 +101,12 @@ def matriz_279() -> np.ndarray:
     `build_features()[0]` (diferencia maxima 0,0), de modo que anadirle las 6 de ADV07 reproduce
     exactamente la matriz que usan V16 y V18 sin reconstructions ni mezclas.
     """
-    base = np.load(cfg.FEATURES / "meta_features_train_v11.npy")
+    ruta_npy = cfg.FEATURES / "meta_features_train_v11.npy"
+    if ruta_npy.exists():
+        base = np.load(ruta_npy)
+    else:
+        # Version comprimida del repositorio (float32, la misma que usa la matriz).
+        base = np.load(cfg.FEATURES / "meta_features_train_v11.npz")["x"]
     extra = np.load(cfg.FEATURES / "oof_ADV07_nbsvm_word.npy")
     matriz = np.concatenate([base.astype(np.float32), extra.astype(np.float32)], axis=1)
     assert matriz.shape[1] == 279, f"se esperaban 279 columnas y hay {matriz.shape[1]}"
