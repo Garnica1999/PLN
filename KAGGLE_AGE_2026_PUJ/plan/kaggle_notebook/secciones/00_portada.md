@@ -39,9 +39,10 @@ Este notebook es **independiente y determinista**:
 2. **Cadena embebida.** Todo el código de reconstrucción (representaciones, 14 miembros, features,
    meta-modelo, V20/V30, regla plug-in y redes neuronales) viaja dentro del notebook; cada módulo es un
    porte fiel del script original del proyecto, con su referencia en el docstring.
-3. **Protocolo congelado.** La partición canónica de validación (5 folds agrupados por clústeres de
-   near-duplicados) y los pesos de las reglas de decisión están embebidos como constantes del protocolo:
-   ejecutar dos veces produce exactamente los mismos valores.
+3. **Protocolo reproducible.** La partición canónica de validación (5 folds agrupados por clústeres de
+   near-duplicados) se genera en la propia ejecución con la regla documentada —`StratifiedGroupKFold`,
+   `shuffle=True`, semilla 42— y se verifica por propiedades; los pesos de las reglas de decisión son
+   constantes legibles del protocolo. Ejecutar dos veces produce exactamente los mismos valores.
 4. **Trazabilidad.** Cada experimento reporta su resultado con la fuente documental del proyecto
    (registro de corridas, actas de decisión e informes), y el notebook verifica que lo reconstruido
    coincide con lo documentado.

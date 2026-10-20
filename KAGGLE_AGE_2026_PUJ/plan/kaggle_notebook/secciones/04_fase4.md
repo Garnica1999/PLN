@@ -137,7 +137,15 @@ proyecto usa como miembro V30 en la **evaluación publicada del campeón V48 y d
 arco 2026 (secciones 5.2 y 4.6)**: su OOF es el que entró en los consensos geométricos de los
 récords. La receta es idéntica (cuartos + dos LightGBM con configuraciones y pesos congelados); la
 única diferencia es que los reajustes de esta partición usan el techo completo de árboles, sin early
-stopping (Ke et al., 2017), tal como los ejecutó el script original de la confirmación.
+stopping (Ke et al., 2017), tal como los ejecutó el script original de la confirmación. La partición se
+genera aquí mismo con la misma función de la sección 2.4 y la semilla 987654, de modo que el código
+queda legible y verificable en el punto donde se usa.
+
+```python
+# Segunda particion (semilla 987654): la misma regla sobre los mismos clusters, generada junto a su uso.
+fold_idx2 = generar_folds(y, cluster_de[:n_train], semilla=987654)
+print("segunda particion (semilla 987654):", np.bincount(fold_idx2).tolist())
+```
 
 ```python
 # La segunda particion del campeon (semilla 987654): validacion del linaje V30.

@@ -198,7 +198,7 @@ probabilidades. V12 alcanzó **CV 0.6005** (0.6077 en el holdout congelado) y **
 leaderboard**, el primer salto grande del proyecto.
 
 ```python
-# Reconstruccion de los 14 miembros (OOF con los folds canonicos embebidos).
+# Reconstruccion de los 14 miembros (OOF con los folds canonicos de la seccion 2.4).
 t0 = time.time()
 oofs_miembros = construir_miembros_oof(train["text"], y, fold_idx, dense)
 print(f"14 miembros reconstruidos en {time.time() - t0:.0f}s")

@@ -4,7 +4,7 @@
 
 Toda la evaluación del proyecto se apoya en el mismo protocolo, definido en la Fase 2 y usado sin
 excepciones: **validación cruzada de 5 folds agrupados por clústeres de near-duplicados** (folds
-embebidos como constante; Kaufman, Rosset, Perlich y Stitelman, «Leakage in Data Mining: Formulation, Detection, and Avoidance», ACM Transactions on Knowledge Discovery from Data, 2012), con la métrica **macro-F1 sin ponderar** calculada de dos maneras
+generados con la regla documentada de la sección 2.4; Kaufman, Rosset, Perlich y Stitelman, «Leakage in Data Mining: Formulation, Detection, and Avoidance», ACM Transactions on Knowledge Discovery from Data, 2012), con la métrica **macro-F1 sin ponderar** calculada de dos maneras
 complementarias — *pooled* (todas las predicciones juntas) y media por folds — más pruebas de
 significancia cuando una decisión estaba en juego (bootstrap (Efron, «Bootstrap Methods: Another Look at the Jackknife», The Annals of Statistics, 1979) pareado con re-muestreo de clústeres, B=1000,
 intervalo de confianza al 95 % y fracción de folds positivos). Las decisiones importantes se confirmaron
