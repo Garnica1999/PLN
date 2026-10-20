@@ -311,7 +311,8 @@ def oof_memorizacion(particiones):
     return prediccion, cubiertas / len(etiquetas)
 
 
-def macro_f1(etiquetas_reales, prediccion):
+def macro_f1_etiquetas(etiquetas_reales, prediccion):
+    """Macro-F1 sobre etiquetas de texto (no sombrea la version canonica por indices)."""
     return f1_score(etiquetas_reales, prediccion, average="macro", labels=CLASSES, zero_division=0)
 
 
@@ -321,9 +322,9 @@ agrupadas = [(np.flatnonzero(fold_idx != k), np.flatnonzero(fold_idx == k)) for 
 pred_agrupada, cobertura_agrupada = oof_memorizacion(agrupadas)
 
 print("SUELO DE MEMORIZACION PURA (etiqueta del gemelo; sin gemelo = centinela)")
-print(f"  particion estratificada ingenua : macro-F1 {macro_f1(etiquetas, pred_ingenua):.4f}"
+print(f"  particion estratificada ingenua : macro-F1 {macro_f1_etiquetas(etiquetas, pred_ingenua):.4f}"
       f" | cobertura {cobertura_ingenua * 100:.2f}%  (documentado: 0.0608 y 3.99%)")
-print(f"  particion agrupada (usada)      : macro-F1 {macro_f1(etiquetas, pred_agrupada):.4f}"
+print(f"  particion agrupada (usada)      : macro-F1 {macro_f1_etiquetas(etiquetas, pred_agrupada):.4f}"
       f" | cobertura {cobertura_agrupada * 100:.2f}%  (documentado: 0.0000 y 0.00%)")
 print("  lectura: la validacion agrupada elimina por completo la ventaja de memorizar near-duplicados.")
 

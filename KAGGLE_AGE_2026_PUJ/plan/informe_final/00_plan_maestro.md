@@ -212,3 +212,10 @@ estadística y reproducibilidad · X. Discusión y limitaciones · XI. Conclusio
   identificadores con su macro-F1 (220/220, sin faltantes; 88 dagas). Correcciones: E-008 es canal
   de menciones, receta de los expertos precisada, V42 = ordinal suavizada. 19 paginas, 0 errores,
   11 tablas, 13 figuras; md5 01a968c1... Entrega y ZIP regenerados (285 MB, 855 entradas).
+- Cierre de la ejecucion en Kaggle (2026-10-20): el consolidado quedo COMPLETE con las cifras
+  exactas (V56 0.6189929, V48 0.63724, folds y pesos identicos). El pipeline se relanzo con GPU
+  tras corregir el sombreado de macro_f1 (la celda de memorizacion redefinia la funcion con
+  etiquetas de texto) y fijo sklearn 1.8.0 + LightGBM 4.6.0: reconstruyo EDA, 14 miembros,
+  V12, V19/V20 (0.6103 vs 0.6098), V29 0.6113 (doc 0.6122), V30 0.6128 (doc 0.6122), mezcla
+  0.6138 (doc 0.6134) y plug-in 0.6156 (doc 0.6160), dentro de 1e-3. Se cancelo al aceptar el
+  corte por cuota de GPU (6 h) antes de la segunda particion; no hubo fallo del cuaderno.
