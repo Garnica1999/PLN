@@ -48,11 +48,15 @@ def main() -> int:
     with api.build_kaggle_client() as kaggle:
         request = ApiSaveKernelRequest()
         request.slug = args.slug
+        if meta.get("title"):
+            request.new_title = meta["title"]
         request.text = json.dumps(nb, ensure_ascii=False)
         request.language = meta.get("language", "python")
         request.kernel_type = meta.get("kernel_type", "notebook")
         request.is_private = bool(meta.get("is_private", True))
         request.enable_internet = bool(meta.get("enable_internet", True))
+        if meta.get("enable_gpu"):
+            request.enable_gpu = True
         request.dataset_data_sources = meta.get("dataset_sources", [])
         request.competition_data_sources = meta.get("competition_sources", [])
         request.kernel_data_sources = meta.get("kernel_sources", [])
