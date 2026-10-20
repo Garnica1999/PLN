@@ -42,3 +42,20 @@ fuentes primarias del proyecto. **Método**: extracción de cifras del .tex y co
 
 **GO** — ninguna cifra clave presenta contradicción con las fuentes; la única discrepancia menor
 detectada quedó corregida y recompilada.
+
+## Actualización — ampliación editorial (2026-10-19)
+
+**Alcance**: informe ampliado a **19 páginas** (859 líneas, 11 tablas, 13 figuras) con dos encargos:
+nombrar todas las experimentaciones agrupadas con resultados y explicar la génesis del campeón V48.
+
+| Verificación | Resultado |
+|---|---|
+| Apéndice A: identificadores listados | **220/220**, sin faltantes, sobrantes ni duplicados (conjunto idéntico a `experiments.csv`) |
+| Dagas en el apéndice (sin métrica única) | 88 |
+| Tabla de líneas (`tab:lineas`) | 16 líneas + total; suma 18+12+7+30+5+19+16+19+12+9+6+42+6+9+5+5 = **220** |
+| Tabla de génesis (`tab:genesis`) | 10 piezas SOTA → experimento → resultado → decisión |
+| Tabla de expertos (`tab:expertos`) | 6 expertos con arquitectura, pérdida, receta y peso (suma 1.0000) |
+| Cifras contrastadas | V12 0.6005; V19 0.6079; V20 0.6098; V30 0.6134471; V38-V43 0.6167-0.6185; V48 0.6186451; V56 0.6189929 (CHAMPION/informe previo) |
+| Correcciones aplicadas | E-008 es canal de menciones (no NB-SVM); receta de los seis expertos precisada (V30/HGB no son redes); V42 usa pérdida ordinal suavizada (no Cramér); rangos de bloque compactados en `tab:lineas` |
+| Compilación (TinyTeX, pdflatex → bibtex → pdflatex ×2) | **0 errores**, 0 referencias indefinidas, overfull ≤ 6.43 pt (preexistentes) |
+| md5 del PDF | `01a968c1c7c0c4be1f1ae497dc5ebd1e` |

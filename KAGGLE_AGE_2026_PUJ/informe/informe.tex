@@ -335,6 +335,80 @@ La l\'inea V1-V20 muestra c\'omo se acumul\'o la mejora antes de la fase neurona
 
 El modelo entregado combina seis componentes de la fase neuronal mediante un \emph{producto de expertos} (PoE). La media aritm\'etica de probabilidades, usada hasta la versi\'on V43, se comporta como un modelo de mezcla con l\'ogica de OR: una confianza espuria de un solo miembro puede desplazar la predicci\'on. El producto de expertos act\'ua como un consenso estricto con l\'ogica de AND, porque penaliza con m\'as fuerza las clases en las que alg\'un experto discrepa \cite{hinton2002,heskes1998}. En un problema con fronteras ordinales tan delicadas, ese comportamiento es el adecuado: el consenso resulta m\'as exigente con el desacuerdo y m\'as estable con el acuerdo. En el relato del proyecto, V48 ocupa el papel de \textbf{ancla p\'ublica} ---el mejor puntaje observado en el \textit{leaderboard}---, mientras que V56, presentado en la Secci\'on~VIII, cumple el papel de \textbf{candidata regularizada} por la mejor validaci\'on local; la selecci\'on conjunta se detalla en esa misma secci\'on.
 
+\subsection{G\'enesis de la arquitectura}
+
+La arquitectura del campe\'on no se dise\~n\'o de una vez. Es el resultado de una cadena de
+decisiones, cada una motivada por una pieza del estado del arte y validada por un experimento
+sometido a la compuerta pre-registrada del proyecto: una mejora solo se adopta si es positiva en al
+menos cuatro de los cinco folds can\'onicos y si el intervalo de confianza pareado excluye el cero.
+Esa disciplina explica tanto la forma final del sistema como la ausencia de componentes que, siendo
+razonables en teor\'ia, no superaron la medici\'on. La Tabla~\ref{tab:genesis} resume la cadena
+completa, con la pieza, su motivaci\'on en la literatura, el experimento que la evalu\'o y la
+decisi\'on que se tom\'o.
+
+El punto de partida fue la representaci\'on. El primer experimento (E-001) combin\'o TF-IDF de
+n-gramas de car\'acter con un LinearSVC y rindi\'o 0.5344; la incorporaci\'on del canal de
+menciones (E-008) elev\'o la l\'inea base hasta 0.5557, y el NB-SVM \cite{wang2012} se consolid\'o
+despu\'es como uno de los miembros del meta-modelo. Sobre esa base, el meta-modelo V12 reuni\'o catorce
+miembros cl\'asicos y alcanz\'o 0.6005 de validaci\'on local y 0.62182 de \textit{leaderboard}. Ese
+resultado fij\'o la hip\'otesis que gui\'o el resto del proyecto: la ganancia no vendr\'ia de una
+representaci\'on nueva, sino de la combinaci\'on de miembros diversos y de la decisi\'on sobre el
+consenso.
+
+La escalera de validaci\'on local permite seguir la acumulaci\'on de esa ganancia. V19 incorpor\'o
+LightGBM \cite{ke2017} como tercer miembro del consenso (0.6079388); V20 a\~nadi\'o la cadena de
+umbrales y el \textit{blend} de cuartos ordinales \cite{frank2001} (0.6097782); V30 refin\'o el
+\'arbol troncal con Optuna (0.6134471). A partir de ah\'i, el arco neuronal aport\'o incrementos
+sucesivos y decrecientes: V38 0.6166579, V39 0.6168017, V40 0.6175912, V41 0.6181119, V42
+0.6184162 y V43 0.6184783. El consenso geom\'etrico V48 cerr\'o la escalera con 0.6186451. La
+distancia entre el mejor modelo individual con la regla de decisi\'on (V30 con \textit{plug-in},
+0.6159732) y el consenso es de $+0.0027$: ese margen, peque\~no en absoluto pero sistem\'atico, es
+el valor medido de combinar expertos con sesgos complementarios.
+
+\begin{table*}[htbp]
+\centering
+\caption{G\'enesis de la arquitectura del campe\'on: cada pieza se adopt\'o despu\'es de un experimento motivado por el estado del arte y validado con la compuerta pre-registrada. La columna de resultado es la macro-F1 de validaci\'on local. Las falsaciones V44--V52 (Secci\'on~\ref{sec:funciono}) descartaron las alternativas y confirmaron que el PoE es el \'optimo de su familia de operadores.}
+\label{tab:genesis}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.15\textwidth}p{0.33\textwidth}p{0.13\textwidth}p{0.20\textwidth}p{0.14\textwidth}}
+\toprule
+Pieza & Motivaci\'on en el estado del arte & Experimento & Resultado & Decisi\'on \\
+\midrule
+Representaci\'on de car\'acter & TF-IDF \textit{char\_wb} (Sapkota); NB-SVM (Wang y Manning) & E-001, E-008 & 0.5344 $\to$ 0.5557 & Base adoptada \\
+\'Arbol troncal & LightGBM (Ke et al.) & V19, V20, V29, V30 & 0.6079 $\to$ 0.6134 & Troncal del consenso \\
+Red residual tabular & Tabular ResNet (Gorishniy et al.) & V38 & 0.6167 & Adoptada \\
+P\'erdida ordinal & Frank--Hall; Wasserstein (Frogner et al.) & V39, V40 & 0.6168, 0.6176 & Adoptada \\
+Compuertas SE & Squeeze-and-Excitation (Hu et al.) & V40 & 0.6176 & Adoptadas \\
+Promedio de pesos & SWA (Izmailov et al.) & V41 & 0.6181 & Adoptado \\
+Suavizado de etiquetas & Szegedy et al.; M\"uller et al. & V42 & 0.6184 & Adoptado \\
+Cram\'er sobre la CDF & Cram\'er; von Mises; Sz\'ekely y Rizzo & V43 & 0.6185 & Adoptada \\
+Producto de expertos & Hinton; Heskes & V48 & 0.6186 & Campe\'on \\
+\textit{Plug-in} por clase & Lipton et al.; Parambath et al. & V30, V48 & $+0.0027$ sobre el consenso & Congelado \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+La tabla muestra tambi\'en qu\'e se descart\'o. Las falsaciones V44--V52 acotaron el espacio por
+exclusi\'on: la distancia $L_1$ de Wasserstein no mejor\'o a Cram\'er (V44); la normalizaci\'on
+RankGauss destruy\'o la se\~nal discreta de la matriz (V46); los \'arboles \textit{oblivious} de
+CatBoost \cite{prokhorenkova2018} no aportaron al consenso (V49); la atenci\'on multi-cabeza y una
+matriz de pesos por clase a\~nadieron varianza sin separaci\'on defendible (V50); la variante
+consistente de Cram\'er qued\'o indistinguible de su l\'inea base (V51); y los operadores
+intermedios de la familia Power-Mean, las redes autonormalizantes \cite{klambauer2017} y las reglas
+por segmento no superaron la compuerta (V52). Ninguna de esas piezas forma parte de V48. Dos de
+ellas, V47 y V51, s\'i fueron adoptadas despu\'es como miembros del consenso 2026 (V56), lo que se
+declara de forma expl\'icita en la Secci\'on~VIII: una t\'ecnica puede ser insuficiente como modelo
+y valiosa como componente.
+
+La lectura conjunta es que la arquitectura final es el \'optimo local de su familia de operadores.
+La curva Power-Mean, que interpola entre el producto de expertos y la media aritm\'etica, es
+c\'oncava con v\'ertice en $\alpha \to 0$; ning\'un punto intermedio ni la media mejoran al PoE, y
+la falsaci\'on V52 lo verific\'o con la compuerta habitual. Cada pieza del campe\'on tiene, por
+tanto, trazabilidad completa: una motivaci\'on en el estado del arte, un experimento que la
+contrast\'o y un resultado que sostiene la decisi\'on. La especificaci\'on formal que sigue describe
+esa arquitectura ya fijada.
+
 \subsection{Formulaci\'on y pesos de los seis expertos}
 
 El consenso se calcula en espacio logar\'itmico como
@@ -349,7 +423,59 @@ donde $P_m$ son las probabilidades de cada experto y $w_m$ son pesos no negativo
 \end{equation}
 para los expertos V30, V43, V42, V40, V39-ordinal y V39-HGB, respectivamente. La concentraci\'on del peso en el \'arbol troncal (56.3\%) y en el par de redes con p\'erdida de Cram\'er y suavizado (25.6\% conjunto) refleja sesgos complementarios: los \'arboles de gradiente capturan interacciones discretas de la matriz de features, mientras que las redes ordinales modelan la vecindad entre cohortes.
 
-Los seis expertos son los siguientes. V30 es el LightGBM refinado con Optuna sobre la matriz de 279 columnas \cite{ke2017}, y es el mejor modelo individual del proyecto (0.6134471 de validaci\'on). V43 y V42 son redes residuales tabulares con compuertas Squeeze-and-Excitation \cite{hu2018} entrenadas con p\'erdida de Cram\'er $L_2$ sobre la CDF y suavizado de etiquetas \cite{cramer1928,vonmises1931,szekely2013,frogner2015,szegedy2016,muller2019}, con promedio de pesos estoc\'astico (SWA) \cite{izmailov2018}; V42 usa un suavizado m\'as agresivo. V40 es la variante SE-TabNet con compuertas de atenci\'on por canal, V39-ordinal a\~nade la p\'erdida ordinal \cite{frank2001,diaz2019} y V39-HGB es un \textit{HistGradientBoosting} sobre la misma matriz. Todos los componentes siguieron la misma receta de entrenamiento ---AdamW con enfriamiento cosenoidal \cite{loshchilov2017}, 16 \'epocas y SWA desde la \'epoca seis--- y la familia completa se evalu\'o antes de combinarse, en el marco de la revisi\'on de redes tabulares de Gorishniy et al.\ \cite{gorishniy2021}. La Fig.~\ref{fig:arquitectura} resume la arquitectura completa del campe\'on.
+Los seis expertos son los siguientes. V30 es el LightGBM refinado con Optuna sobre la matriz de 279 columnas \cite{ke2017}, y es el mejor modelo individual del proyecto (0.6134471 de validaci\'on). V43 es una red residual tabular con compuertas Squeeze-and-Excitation \cite{hu2018} entrenada con p\'erdida de Cram\'er $L_2$ sobre la CDF \cite{cramer1928,vonmises1931,szekely2013,frogner2015}, con suavizado de etiquetas \cite{szegedy2016,muller2019} y promedio de pesos estoc\'astico (SWA) \cite{izmailov2018}; V42 usa la misma arquitectura con p\'erdida ordinal suavizada ($\epsilon=0{,}10$). V40 es la variante SE-TabNet con compuertas de excitaci\'on por canal y distancia ordinal esperada, V39-ordinal a\~nade la p\'erdida de entrop\'ia ordinal \cite{frank2001,diaz2019} y V39-HGB es un \textit{HistGradientBoosting} sobre la misma matriz. Las redes comparten la receta general ---AdamW con enfriamiento cosenoidal \cite{loshchilov2017}, entre doce y diecis\'eis \'epocas y SWA en V42/V43---, mientras que V30 y el HGB son ensembles de \'arboles con su propio r\'egimen; la familia completa se evalu\'o antes de combinarse, en el marco de la revisi\'on de redes tabulares de Gorishniy et al.\ \cite{gorishniy2021}. La Tabla~\ref{tab:expertos} detalla la instanciaci\'on de cada experto y la Fig.~\ref{fig:arquitectura} resume la arquitectura completa del campe\'on.
+
+\begin{table*}[htbp]
+\centering
+\caption{Especificaci\'on de los seis expertos del campe\'on V48. La matriz de 279 columnas es la misma para todos; las redes comparten la receta de entrenamiento (AdamW, lote 256, semillas por fold, promedio de los cinco modelos en test) y solo cambian la p\'erdida y los detalles indicados. Los pesos son los de la ecuaci\'on~(\ref{eq:pesos48}).}
+\label{tab:expertos}
+\footnotesize
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{p{0.075\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}p{0.235\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}p{0.055\textwidth}}
+\toprule
+Experto & Arquitectura & P\'erdida & Receta & Peso \\
+\midrule
+V30 & LightGBM: 1.500 \'arboles, 56 hojas, profundidad 7 & Entrop\'ia cruzada multiclase & Optuna anidada (75 pruebas), \textit{early stopping} 60 & 0.5628 \\
+V43 & SETabularResNet 279$\to$256$\to$256$\to$256$\to$6; SE $r=4$ & Cram\'er $L_2$ sobre la CDF & AdamW $10^{-3}$, 16 \'epocas, coseno, SWA desde 6 & 0.0832 \\
+V42 & SETabularResNet 279$\to$256$\to$256$\to$256$\to$6; SE $r=4$ & Ordinal suavizada ($\epsilon=0{,}10$) & AdamW $10^{-3}$, 16 \'epocas, coseno, SWA desde 6 & 0.1724 \\
+V40 & SETabularResNet 279$\to$256$\to$256$\to$256$\to$6; SE $r=4$ & Distancia ordinal esperada & AdamW $10^{-3}$, 12 \'epocas, sin \textit{scheduler} & 0.0754 \\
+V39-ord & TabularResNet 279$\to$256$\to$256$\to$256$\to$6 & Entrop\'ia ordinal & AdamW $10^{-3}$, 14 \'epocas, coseno & 0.0513 \\
+V39-HGB & HistGradientBoosting & Entrop\'ia cruzada & 300 iteraciones, $\ell_2=1{,}0$ & 0.0549 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+El flujo completo del campe\'on es una cadena de cinco etapas sobre una \'unica matriz de 279
+columnas: 78 provienen de las probabilidades fuera de fold de los miembros, 35 son densas, 87
+estructuradas, 73 supervisadas y 6 son m\'argenes NB-SVM. Esa matriz alimenta a los seis expertos;
+cada uno devuelve una distribuci\'on sobre las seis clases; el producto de expertos las combina en
+espacio logar\'itmico con los pesos congelados de la ecuaci\'on~(\ref{eq:pesos48}); la regla
+\textit{plug-in} por clase reescala el consenso con el vector de la ecuaci\'on~(\ref{eq:plugin}); y
+el \textit{argmax} produce la etiqueta final y la \textit{submission} de 112.892 filas. Ninguna
+etapa se reajusta sobre el test: los pesos, el vector \textit{plug-in} y la composici\'on del
+consenso quedaron congelados antes de generar el env\'io. Los pesos se optimizan por validaci\'on
+cruzada anidada sobre el s\'implejo con los cinco folds can\'onicos; el miembro V30 de la
+evaluaci\'on publicada usa su predicci\'on fuera de fold de la segunda partici\'on, mientras que la
+variante can\'onica rinde 0.6177 y se declara junto al resultado.
+
+La Tabla~\ref{tab:expertos} concreta la instanciaci\'on de esa receta experto por experto. Las
+cuatro redes comparten la misma arquitectura interna: \texttt{TabularResNet} proyecta las 279
+columnas a 256 dimensiones y encadena dos bloques residuales de 256 unidades con normalizaci\'on por
+lotes y activaci\'on SiLU, de modo que cada bloque calcula
+$h \leftarrow h + \mathrm{dropout}(\mathrm{SiLU}(\mathrm{BN}(Wh)))$ con una tasa de descarte de
+$0{,}2$; la conexi\'on residual preserva la se\~nal de entrada y evita la atenuaci\'on del
+gradiente. \texttt{SETabularResNet} intercala una compuerta Squeeze-and-Excitation \cite{hu2018} con
+factor de reducci\'on cuatro, que re-pondera las 256 dimensiones de cada bloque antes de la suma
+residual, y la cabeza es una capa lineal de 256 a 6. El entrenamiento usa AdamW
+\cite{loshchilov2017} con tasa $10^{-3}$ y decaimiento de peso $10^{-4}$, lotes de 256 y entre doce
+y diecis\'eis \'epocas seg\'un el experto; V42 y V43 a\~naden enfriamiento cosenoidal hasta
+$\eta_{\min}=10^{-4}$ y promedio de pesos estoc\'astico \cite{izmailov2018} desde la \'epoca seis.
+Cada red se entrena con la semilla $42+100\cdot\text{fold}$ y, en test, promedia sus cinco modelos;
+V39-ordinal y el \textit{HistGradientBoosting} usan un modelo final entrenado sobre todo el
+\textit{train}. El \'arbol troncal V30 es un LightGBM \cite{ke2017} de 1.500 \'arboles, 56 hojas,
+profundidad 7, tasa $0{,}03$, \texttt{min\_child\_samples} 54, \textit{subsample} $0{,}78$,
+\textit{colsample} $0{,}6$, $\alpha=0{,}015$, $\lambda=0{,}0005$ y parada temprana de 60
+iteraciones, con el espacio de b\'usqueda fijado por la Optuna anidada de 75 pruebas.
 
 \begin{figure*}[htbp]
 \centering
@@ -427,6 +553,7 @@ Por \'ultimo, la calibraci\'on entre validaci\'on local y \textit{leaderboard} c
 
 % ===========================================================================
 \section{Qu\'e funcion\'o y qu\'e no}
+\label{sec:funciono}
 % ===========================================================================
 
 \subsection{Lo que funcion\'o}
@@ -482,36 +609,70 @@ El l\'imite se estableci\'o por medici\'on. La Decisi\'on 5 fij\'o el techo alca
 % ===========================================================================
 \subsection{Inventario del espacio experimental}
 
-El espacio completo de experimentaci\'on queda contabilizado en siete familias que suman las 220
-filas del cat\'alogo del proyecto, y el detalle fila a fila ---con su pregunta, hip\'otesis,
-medici\'on y decisi\'on--- vive en ese cat\'alogo (\texttt{experiments.csv}, \texttt{RUNLOG.md} y
-\texttt{DECISIONS.md}), reproducible de extremo a extremo. La Tabla~\ref{tab:taxonomia} resume la
-distribuci\'on: las dos familias finales (V38-V57) operan en la banda 0.6167-0.6190 de
-validaci\'on local y de ellas provienen las adopciones del sistema entregado, junto con la familia
-del campe\'on (V30-V37).
+El espacio completo de experimentaci\'on queda contabilizado en \textbf{220 filas}: 171 ejecutadas,
+26 documentales, 12 pre-registros, 10 enmiendas y 1 bloqueada. La Tabla~\ref{tab:lineas} las agrupa
+en diecis\'eis l\'ineas de trabajo, con el rango de resultados de cada una y su veredicto; el
+Ap\'endice~\ref{ap:catalogo} lista los 220 identificadores con su macro-F1 de validaci\'on local. El
+detalle fila a fila ---pregunta, hip\'otesis, medici\'on y decisi\'on--- vive en el cat\'alogo del
+proyecto (\texttt{experiments.csv}, \texttt{RUNLOG.md} y \texttt{DECISIONS.md}), reproducible de
+extremo a extremo.
 
 \begin{table*}[htbp]
 \centering
-\caption{Taxonom\'ia del espacio experimental: las siete familias del cat\'alogo (220 filas).}
-\label{tab:taxonomia}
+\caption{L\'ineas de experimentaci\'on del cat\'alogo (220 experimentos) con su resultado agregado. Los identificadores de cada l\'inea y su macro-F1 individual est\'an en el Ap\'endice~\ref{ap:catalogo}.}
+\label{tab:lineas}
 \footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{p{0.21\textwidth}p{0.05\textwidth}p{0.32\textwidth}p{0.36\textwidth}}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.175\textwidth}p{0.065\textwidth}p{0.04\textwidth}p{0.345\textwidth}p{0.315\textwidth}}
 \toprule
-Familia & Filas & Composici\'on & Aporte principal \\
+L\'inea & Bloque & $n$ & Resultado (macro-F1) & Veredicto \\
 \midrule
-V1-V12: fundacional y fases PH & 113 & 37 de baselines y representaci\'on (E-*, B*, ADV-*) + 76 de fases PH & Representaci\'on TF-IDF con NB-SVM; meta-modelo de 14 miembros (V12) \\
-V13-V17: b\'usqueda residual & 13 & 10 ejecutadas + 3 documentales & Falsaci\'on de bloques ling\"u\'isticos; la se\~nal restante no est\'a en features nuevas \\
-V18-V29: frontera, ordinal y selecci\'on & 25 & 12 de V18-V23 + 15 de V24-V29 (-2 de auditor\'ia) & Cuartos ordinales V19/V20 y selecci\'on de features \\
-V30-V37: campe\'on, reapertura y diagn\'osticos & 42 & Optuna, \textit{plug-in}, canales POS/NER, challengers FTRL y diagn\'osticos & Ensemble V30 + regla \textit{plug-in}; techo del dato (0.642) \\
-V38-V52: arco neuronal y falsaciones & 15 & una fila por bloque, todas ejecutadas & Redes ordinales con SWA; PoE geom\'etrico (campe\'on V48); falsaciones avanzadas \\
-V53-V57: frontera 2026 & 5 & una fila por bloque, todas ejecutadas & Dense-SE, consensos V53-V56 y auditor\'ia matem\'atica V57 \\
-Auditor\'ia transversal & 7 & AUD-*, G14-AUDIT, documentales & Verificaci\'on independiente del historial \\
+Representaci\'on y l\'inea base & B2 & 18 & 0.4971--0.5557; \texttt{E-008} 0.5557 & TF-IDF de car\'acter y NB-SVM adoptados \\
+Modelos cl\'asicos y miembros & B3 & 12 & 0.3381--0.5851; \texttt{E-020} 0.5851 & Catorce miembros para el meta-modelo \\
+Features avanzadas & B4 & 7 & 0.5641--0.5966; \texttt{ADV-03} 0.5966 & \texttt{ADV-07} entra en la matriz \\
+Fases PH y meta-modelo & B5 & 30 & 0.5906--0.6108; V12 0.6005 & El meta-modelo supera a sus miembros \\
+Canales l\'exicos & B6 & 5 & 0.2033--0.6004 & Sin adopci\'on \\
+V13--V15, ling\"u\'istica & B7--8 & 19 & mejor bloque aislado 0.2409 & Falsado: sin adopci\'on \\
+V16--V18, meta-arquitectura & B9--11 & 16 & 0.5990--0.6011; \texttt{V16} 0.6011 & La se\~nal restante no est\'a en features nuevas \\
+V19--V22, ordinalidad & B12--17 & 19 & V19 0.6079; V20 0.6098 & V20 entra en el linaje; V21--V22 sin adopci\'on \\
+V23--V29, selecci\'on y Optuna & B18--23 & 12 & \texttt{V29} 0.6122; CORAL 0.4837 & Optuna fija el espacio del troncal \\
+V30--V31, campe\'on y canales & B24 & 9 & V30 0.6134; \texttt{V31-ENS-N1} 0.6139 & Troncal definitivo; canales sin adopci\'on \\
+Auditor\'ia y \textit{plug-in} & B25--29 & 6 & 0.6155 can\'onica; 0.6165 alterna & Regla \textit{plug-in} congelada y adoptada \\
+V32--V37, \textit{challengers} & B30--37 & 42 & 0.1721--0.6149; ninguna supera el troncal & FTRL, CatBoost, MLP-surrogate y canales ling\"u\'isticos cerrados \\
+V38--V43, arco neuronal & B38--43 & 6 & 0.6167--0.6185; \texttt{V43} 0.6185 & Cinco componentes adoptados \\
+V44--V52, falsaciones & B44--52 & 9 & 0.6183--0.6187 & Solo V48: el PoE es el \'optimo de su familia \\
+V53--V57, frontera 2026 & B53--57 & 5 & 0.6182--0.6190; \texttt{V56} 0.6190 & R\'ecord local y auditor\'ia del s\'implejo \\
+Auditor\'ia final & B99 & 5 & cinco acciones, sin modelo & Cierre verificable del historial \\
 \midrule
-\textbf{Total} & \textbf{220} & 171 ejecutadas + 26 documentales + 12 pre-registros + 10 enmiendas + 1 bloqueada & Trazabilidad completa en el cat\'alogo \\
+\textbf{Total} & & \textbf{220} & & \\
 \bottomrule
 \end{tabular}
 \end{table*}
+
+El recorrido de la tabla reproduce la historia del sistema. La l\'inea de representaci\'on (B2) se
+mueve entre 0.4971 y 0.5557 y entrega la base de TF-IDF de car\'acter y el canal de menciones; los modelos
+cl\'asicos (B3) llegan a 0.5851 y aportan catorce miembros al meta-modelo; las features avanzadas
+(B4) suben a 0.5966 con \texttt{ADV-03} y dejan \texttt{ADV-07} en la matriz; y las fases PH con
+el meta-modelo (B5) cierran en 0.6108, con V12 en 0.6005. La b\'usqueda ling\"u\'istica
+(B6--B8) es el primer l\'imite claro: el mejor bloque aislado rindi\'o 0.2409 ---por encima del
+azar de 0.1667, pero muy por debajo de la representaci\'on vigente--- y ninguna de sus variantes se
+adopt\'o. La meta-arquitectura V16--V18 (B9--B11) se qued\'o en 0.5990--0.6011 y confirm\'o que la
+se\~nal restante no estaba en features nuevas.
+
+La ordinalidad y la selecci\'on movieron la aguja. V19 y V20 (B12--B17) llevaron la validaci\'on a
+0.6079 y 0.6098; V25--V29 (B18--B23) se movieron entre 0.6092 y 0.6122 y fijaron con Optuna el
+espacio del \'arbol troncal; V30 (B24) alcanz\'o 0.6134 y, con la regla \textit{plug-in} congelada,
+0.6160. Los \textit{challengers} V32--V37 (B30--B37) exploraron FTRL, CatBoost, sustitutos de MLP
+y canales ling\"u\'isticos hasta 0.6149, sin superar al troncal. El arco neuronal V38--V43
+(B38--B43) escal\'o de 0.6167 a 0.6185 y aport\'o los cinco componentes que el consenso adopt\'o.
+
+Las falsaciones V44--V52 (B44--B52) se concentraron en una banda estrecha, 0.6183--0.6187, y solo
+V48 se adopt\'o; la frontera 2026 V53--V57 (B53--B57) lleg\'o a 0.6182--0.6190, con V56 como
+r\'ecord local, y las auditor\'ias de cierre (B99) no produjeron modelo sino verificaci\'on del
+historial. La lectura es que la mejora se concentra en cuatro mecanismos ---representaci\'on,
+ordinalidad, combinaci\'on y decisi\'on--- y que las 220 filas delimitan emp\'iricamente el espacio:
+fuera de esas cuatro palancas, ninguna de las familias restantes movi\'o la m\'etrica m\'as all\'a
+de las mil\'esimas.
 
 \section{La frontera 2026 y la auditor\'ia matem\'atica}
 % ===========================================================================
@@ -640,6 +801,57 @@ Las limitaciones del trabajo se declaran sin matices. El corpus est\'a translite
 La pregunta de investigaci\'on admite ahora una respuesta directa. \textbf{El PLN cl\'asico alcanza 0.63724 de macro-F1 en el \textit{leaderboard} p\'ublico}: un consenso geom\'etrico de seis expertos cl\'asicos ---\'arboles de gradiente, redes tabulares con comprensi\'on ordinal del problema y una regla de decisi\'on calibrada por clase--- logra ese puntaje, $+0.08489$ sobre el baseline inicial. \textbf{Y el techo del dato est\'a medido}: 0.642 en el \textit{leaderboard} como m\'aximo alcanzable bajo las restricciones vigentes, con el objetivo de 0.70 refutado mediante el argumento de informaci\'on disponible y con la b\'usqueda residual saturada tras 220 experimentos. Entre ambos extremos queda un sistema que sube a lo largo de la escalera completa ---representaci\'on, ordinalidad, optimizaci\'on, combinaci\'on y decisi\'on--- y que establece su mejor validaci\'on local en 0.6189929 con nueve modelos, 5/5 folds positivos y $p = 0.0010$ frente al campe\'on.
 
 Tres pr\'acticas quedan como recomendaci\'on general. La primera es la \textbf{validaci\'on agrupada por \textit{near-duplicados}}: sin ella, el baseline de memorizaci\'on pasa de 0.0000 a 0.0608 de macro-F1 y cada decisi\'on de modelo se toma sobre se\~nal inflada; en corpus sociales con contenido replicado, agrupar es un requisito del protocolo. La segunda es la \textbf{separaci\'on estricta entre ajuste, validaci\'on y \textit{leaderboard}}, con calibraci\'on expl\'icita de la brecha entre ellos: el proyecto midi\'o $+0.0177 \pm 0.0023$ y la us\'o para leer cada env\'io contra una expectativa cuantificada. La tercera es la \textbf{selecci\'on en portafolio}: la plataforma permite elegir hasta diez env\'ios para la evaluaci\'on final, y el proyecto la aprovech\'o con criterio ---una candidata anclada en el mejor puntaje observado, otra regularizada por la mejor validaci\'on local y las soluciones intermedias de la frontera---, todas decididas con el mismo protocolo estad\'istico. En conjunto, cuando el modelo se acerca al techo del dato, la ventaja competitiva se traslada de la arquitectura al protocolo: c\'omo se valida, c\'omo se decide y c\'omo se verifica.
+
+% ===========================================================================
+\section*{Ap\'endice A. Cat\'alogo completo de experimentos}
+\addcontentsline{toc}{section}{Ap\'endice A. Cat\'alogo completo de experimentos}
+\phantomsection
+\newcounter{apendicecatalogo}
+\renewcommand{\theapendicecatalogo}{A}
+\refstepcounter{apendicecatalogo}
+\label{ap:catalogo}
+\begingroup\raggedright
+
+El cat\'alogo del proyecto contiene las 220 filas de experimentaci\'on que sostienen este art\'iculo.
+Se listan aqu\'i todas, agrupadas por bloque de trabajo y en orden cronol\'ogico, con su macro-F1 de
+validaci\'on local cuando existe. La daga ($^{\dagger}$) marca los experimentos sin una \'unica m\'etrica
+agregada ---pre-registros, enmiendas, auditor\'ias, estudios multi-brazo y documentales--- cuyo
+resultado, cuando procede, se discute en el cuerpo del art\'iculo. Los bloques de trabajo se corresponden con
+las l\'ineas de la Tabla~\ref{tab:lineas}; el bloque B99 re\'une las auditor\'ias de cierre.
+
+\par\medskip\noindent\textbf{B2 · representaci\'on y l\'inea base (18).} \texttt{E-001} 0.5344; \texttt{E-002a} 0.5025; \texttt{E-002b} 0.4971; \texttt{E-002c} 0.4941; \texttt{E-003a} 0.5262; \texttt{E-003b} 0.5408; \texttt{E-003c} 0.5413; \texttt{E-005a} 0.3902; \texttt{E-007a} 0.5339; \texttt{E-005b} 0.4107; \texttt{E-005c} 0.5277; \texttt{E-005d} 0.4094; \texttt{E-005e} 0.5264; \texttt{E-004b} 0.5354; \texttt{E-008} 0.5557; \texttt{B0} 0.0485; \texttt{B1} 0.5015; \texttt{B5} 0.3568.
+
+\par\medskip\noindent\textbf{B3 · modelos cl\'asicos y miembros (12).} \texttt{E-009} 0.5603; \texttt{E-010} 0.5370; \texttt{E-011} 0.5579; \texttt{E-012} 0.5624; \texttt{E-014} 0.5644; \texttt{E-015} 0.3973; \texttt{E-016} 0.5658; \texttt{E-017} 0.5015; \texttt{E-018} 0.5784; \texttt{E-019a} 0.3381; \texttt{E-019b} 0.4071; \texttt{E-020} 0.5851.
+
+\par\medskip\noindent\textbf{B4 · features avanzadas (7).} \texttt{ADV-01}$^{\dagger}$; \texttt{ADV-02} 0.5897; \texttt{ADV-03} 0.5966; \texttt{ADV-04} 0.5899; \texttt{ADV-05} 0.5641; \texttt{ADV-06} 0.5904; \texttt{ADV-07} 0.5867.
+
+\par\medskip\noindent\textbf{B5 · fases PH y meta-modelo V12 (30).} \texttt{PH1-L1} 0.5906; \texttt{PH2-L6} 0.5967; \texttt{PH3-V11} 0.6024; \texttt{PH5-L2} 0.5948; \texttt{PH6-L3} 0.5975; \texttt{PH7-L7} 0.6005; \texttt{PH8-V12} 0.6077; \texttt{PH9-COMB} 0.6005; \texttt{PH10-A} 0.5987; \texttt{PH10-B} 0.5944; \texttt{PH11-RUIDO} 0.6020; \texttt{PH12-AUD} 0.6004; \texttt{PH13-ERR} 0.6005; \texttt{PH14-CONS} 0.6002; \texttt{PH15-CALIB} 0.6007; \texttt{PH15B-SUBSETS} 0.6004; \texttt{PH18-LIMPIEZA} 0.6013; \texttt{PH16-ORD-GREEDY} 0.6001; \texttt{PH21-VISTA} 0.6022; \texttt{PH22-VISTA2} 0.6010; \texttt{PH19-HOLDOUT-VISTA} 0.6108; \texttt{PH24-DIAG}$^{\dagger}$; \texttt{PH25-FRESCA}$^{\dagger}$; \texttt{PH26-ESTABILIDAD}$^{\dagger}$; \texttt{PH27-V12REPRO}$^{\dagger}$; \texttt{PH30-COBERTURA}$^{\dagger}$; \texttt{PH31-DECISION} 0.6015; \texttt{PH32-CORRECCION} 0.6006; \texttt{PH33-CORRECTOR} 0.6000; \texttt{PH34-INFORME-DEC} 0.6005.
+
+\par\medskip\noindent\textbf{B6 · canales l\'exicos (5).} \texttt{PH36-COBERTURA-LEX}$^{\dagger}$; \texttt{PH37-CATALOGO-LEX}$^{\dagger}$; \texttt{PH38-BLOQUES-LEX} 0.2033; \texttt{PH39-FUSION-LEX} 0.6004; \texttt{PH40-ANALISIS-ERROR-LEX}$^{\dagger}$.
+
+\par\medskip\noindent\textbf{B7--B8 · V13--V15, b\'usqueda ling\"u\'istica (19).} \texttt{V13-P0A-IDIOMA}$^{\dagger}$; \texttt{V13-P0B-COLINEALIDAD}$^{\dagger}$; \texttt{V13-P1C-IDENTIDADES} 0.3997; \texttt{V13-P1A-TOKENS} 0.3997; \texttt{V13-P17A-PRONOMBRES} 0.1918; \texttt{V13-P17B-PRONOMBRES} 0.1922; \texttt{V13-P20-MODALIDAD} 0.1270; \texttt{V13-P1B-FUSION} 0.6003; \texttt{V13-P16-SUFIENCIA} 0.0485; \texttt{V13-P16B-ACTIVACION}$^{\dagger}$; \texttt{V13-P16C-RECONSTRUCCION} 0.0485; \texttt{V13-P16D-PUERTA} 0.6005; \texttt{V13-P3A-ESPECIALISTAS} 0.5993; \texttt{V13-P19-CONJUNCIONES} 0.1539; \texttt{V13-CIERRE}$^{\dagger}$; \texttt{V14A-LINGUISTICO} 0.2409; \texttt{V14B-FUSION-LINGUISTICO} 0.5990; \texttt{V15A-CORRELACION}$^{\dagger}$; \texttt{V15B-PODA} 0.5965.
+
+\par\medskip\noindent\textbf{B9--B11 · V16--V18, meta-arquitectura y frontera (16).} \texttt{V16-ARQUITECTURA} 0.6011; \texttt{V17-P0-AUDITORIA}$^{\dagger}$; \texttt{V17-P0-REPRODUCCION} 0.6011; \texttt{V17-P1-FRONTERAS}$^{\dagger}$; \texttt{V17-P1B-CURVA} 0.6007; \texttt{V17-P8-CONFIANZA}$^{\dagger}$; \texttt{V17-P1C-CONJUNTA} 0.6005; \texttt{V17-P9-ARBITRO} 0.6004; \texttt{V17-P5-COMBINADOR} 0.6003; \texttt{V18-P0-AUDITORIA}$^{\dagger}$; \texttt{V18-P0-REPRODUCCION} 0.6005; \texttt{V18-P1-PESO-CLASES} 0.6001; \texttt{V18-P3-MARGEN} 0.5990; \texttt{V18-P4-MULTIOBJETIVO} 0.5993; \texttt{V18-P5-DESTILACION}$^{\dagger}$; \texttt{V18-CIERRE}$^{\dagger}$.
+
+\par\medskip\noindent\textbf{B12--B17 · V19--V22, ordinalidad (19).} \texttt{AGE-CIERRE-AUDITORIA}$^{\dagger}$; \texttt{AGE-DECISION-EJECUTIVA}$^{\dagger}$; \texttt{V19-B1-BOOSTING}$^{\dagger}$; \texttt{V19-B1-VERIFICACION}$^{\dagger}$; \texttt{V19-B1-CONFIRMACION}$^{\dagger}$; \texttt{V19-B1-CHALLENGER}$^{\dagger}$; \texttt{V19-P0-AUDITORIA}$^{\dagger}$; \texttt{V19-X1-EXPLOTACION}$^{\dagger}$; \texttt{V20-AUDIT}$^{\dagger}$; \texttt{V20-F1-CLASECOND}$^{\dagger}$; \texttt{V20-F2-CLASEFUNC}$^{\dagger}$; \texttt{V20-F3-UMBRALES}$^{\dagger}$; \texttt{V20-F3C-CANDIDATO}$^{\dagger}$; \texttt{V20-P2-PESOS}$^{\dagger}$; \texttt{V21-B1-ESPECIALISTA}$^{\dagger}$; \texttt{V22-ORDINAL-COMPARTIDO}$^{\dagger}$; \texttt{V22-B1-SPECIALIST}$^{\dagger}$; \texttt{V22-00-FRONTIER}$^{\dagger}$; \texttt{V22-01-COSTE-ORDINAL}$^{\dagger}$.
+
+\par\medskip\noindent\textbf{B18--B23 · V23--V29, selecci\'on y Optuna (12).} \texttt{V23-00-TESTS-CORAL} 0.9781; \texttt{V23-01-CORAL} 0.4837; \texttt{V25-00-INVENTARIO}$^{\dagger}$; \texttt{V25-01-SELECCION-MI} 0.6092; \texttt{V26-00-GAP-ANALYSIS}$^{\dagger}$; \texttt{V26-01-REPRESENTACION} 0.6098; \texttt{V27-01} 0.6098; \texttt{V27-02} 0.6094; \texttt{V27-05} 0.6101; \texttt{V28-02} 0.6095; \texttt{V28-03} 0.5422; \texttt{V29-01} 0.6122.
+
+\par\medskip\noindent\textbf{B24 · V30--V31, campe\'on y canales (9).} \texttt{V30-01} 0.6122; \texttt{V31-00} 0.6134; \texttt{V31-01}$^{\dagger}$; \texttt{V31-02} 0.4987; \texttt{V31-03} 0.5048; \texttt{V31-04} 0.5048; \texttt{V31-ENS-N1} 0.6139; \texttt{V31-ENS-N2} 0.6117; \texttt{V31-J}$^{\dagger}$.
+
+\par\medskip\noindent\textbf{B25--B29 · auditor\'ia y regla \textit{plug-in} (6).} \texttt{G14-AUDIT}$^{\dagger}$; \texttt{AUDIT-COVERAGE}$^{\dagger}$; \texttt{AGE-CLOSURE}$^{\dagger}$; \texttt{AGE-PLUGIN-CANON} 0.6155; \texttt{AGE-PLUGIN-ALT} 0.6165; \texttt{AGE-PLUGIN-SUBMISSION}$^{\dagger}$.
+
+\par\medskip\noindent\textbf{B30--B37 · V32--V37, \textit{challengers} y canales ling\"u\'isticos (42).} \texttt{AGE-PLUGIN-ADOPTED}$^{\dagger}$; \texttt{AGE-LING-P0-GAP}$^{\dagger}$; \texttt{AGE-LING-P1-LEGALITY}$^{\dagger}$; \texttt{AGE-LING-RESOLUTION}$^{\dagger}$; \texttt{AGE-LING-P2-PREREG}$^{\dagger}$; \texttt{AGE-LING-P2-POS-SEQ} 0.6073; \texttt{AGE-LING-P6-PREREG}$^{\dagger}$; \texttt{AGE-LING-P6-NER}$^{\dagger}$; \texttt{AGE-LING-P7-PREREG}$^{\dagger}$; \texttt{AGE-LING-P7-TYPED}$^{\dagger}$; \texttt{AGE-LING-REMAINING-PREREG}$^{\dagger}$; \texttt{AGE-LING-P3-LEMMA-POS}$^{\dagger}$; \texttt{AGE-LING-P4-MORFOLOGIA}$^{\dagger}$; \texttt{AGE-LING-P5-DEPENDENCIAS}$^{\dagger}$; \texttt{V32-E1-PREREG}$^{\dagger}$; \texttt{V32-E1} 0.6126; \texttt{V32-E2-PREREG}$^{\dagger}$; \texttt{V32-E2-PREREG-ENMIENDA}$^{\dagger}$; \texttt{V32-E2} 0.6149; \texttt{V32-E3-PREREG}$^{\dagger}$; \texttt{V32-E3} 0.6148; \texttt{V33-E1-PREREG}$^{\dagger}$; \texttt{V33-E1-PREREG-ENMIENDA}$^{\dagger}$; \texttt{V33-E1}$^{\dagger}$; \texttt{V34-E1-PREREG}$^{\dagger}$; \texttt{V34-E1-PREREG-ENMIENDA-2}$^{\dagger}$; \texttt{V34-E1-PREREG-ENMIENDA-3}$^{\dagger}$; \texttt{V34-E1}$^{\dagger}$; \texttt{V35-E1-PREREG}$^{\dagger}$; \texttt{V35-E1-PREREG-ENMIENDA-1}$^{\dagger}$; \texttt{V35-E1-PREREG-ENMIENDA-2}$^{\dagger}$; \texttt{V35-E1-PREREG-ENMIENDA-3}$^{\dagger}$; \texttt{V35-E1-PREREG-ENMIENDA-4}$^{\dagger}$; \texttt{V35-E1-PREREG-ENMIENDA-5}$^{\dagger}$; \texttt{V35-E1-INTENTO-1}$^{\dagger}$; \texttt{V35-E1}$^{\dagger}$; \texttt{D-087} 0.6134; \texttt{V36-E1-PREREG}$^{\dagger}$; \texttt{V36-E1-PREREG-ENMIENDA-1}$^{\dagger}$; \texttt{V36-E1} 0.5440; \texttt{V37-PREREG}$^{\dagger}$; \texttt{V37-DIAG-POS} 0.1721.
+
+\par\medskip\noindent\textbf{B38--B43 · V38--V43, arco neuronal (6).} \texttt{V38-TABULAR-BLEND} 0.6167; \texttt{V39-TRIO-BLEND} 0.6168; \texttt{V40-SE-TABULAR-BLEND} 0.6176; \texttt{V41-SWA-SE-BLEND} 0.6181; \texttt{V42-SMOOTH-SWA-BLEND} 0.6184; \texttt{V43-CRAMER-SMOOTH-BLEND} 0.6185.
+
+\par\medskip\noindent\textbf{B44--B52 · V44--V52, falsaciones (9).} \texttt{V44-BOUNDARY-EMD-ABLATIONS} 0.6183; \texttt{V45-ORACLE-FALSIFICATIONS} 0.6185; \texttt{V46-RANKGAUSS-SWA-TABULARNET} 0.6184; \texttt{V47-WEIGHTED-CRAMER-CLIPPED-TABNET} 0.6185; \texttt{V48-GEOMETRIC-POE-BLEND} 0.6186; \texttt{V49-CATBOOST-OBLIVIOUS-TREES} 0.6186; \texttt{V50-TRANSFORMER-DECOUPLED-POE} 0.6187; \texttt{V51-CONSISTENT-SMOOTHED-CRAMER} 0.6186; \texttt{V52-POWER-MEAN-DUAL-TRANSPORT-SNN} 0.6186.
+
+\par\medskip\noindent\textbf{B53--B57 · V53--V57, frontera 2026 (5).} \texttt{V53-DENSE-SE-TABULARNET-POE} 0.6188; \texttt{V54-HIERARCHICAL-POE-CONSENSUS} 0.6189; \texttt{V55-CLEAN-OCTA-CONSENSUS} 0.6182; \texttt{V56-NONLINEAR-POE-CONSENSUS} 0.6190; \texttt{V57-MATHEMATICAL-SIMPLEX-CONCAVITY} 0.6190.
+
+\par\medskip\noindent\textbf{B99 · auditor\'ia final (5).} \texttt{AUD-INV}$^{\dagger}$; \texttt{AUD-REV}$^{\dagger}$; \texttt{AUD-ENV-LG}$^{\dagger}$; \texttt{AUD-IC95-TECHO}$^{\dagger}$; \texttt{AUD-INNER-SPLIT}$^{\dagger}$.
+
+\endgroup
 
 \bibliographystyle{ieeetr}
 \bibliography{references}

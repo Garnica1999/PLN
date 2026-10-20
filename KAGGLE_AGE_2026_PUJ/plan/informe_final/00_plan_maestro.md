@@ -204,3 +204,11 @@ estadística y reproducibilidad · X. Discusión y limitaciones · XI. Conclusio
   reproduce el 100% de ambas particiones en el entorno exacto (sklearn 1.8.0), luego las salidas
   ejecutadas siguen siendo validas. Cuaderno: 178 celdas (53 de codigo), checklist 13/13, empalme
   con dos celdas nuevas ejecutadas en el servidor. Entrega y ZIP regenerados: 285 MB, 855 entradas.
+- Ampliacion del informe por peticion de Carlos (19 paginas): nueva subseccion 5.1 "Genesis de la
+  arquitectura" (tabla SOTA -> experimento -> resultado -> decision, 10 piezas), tabla de
+  especificacion de los 6 expertos (arquitectura, perdida, receta, peso) y dos parrafos de
+  arquitectura interna (TabularResNet/SETabularResNet, SWA, semillas, V30). El inventario
+  experimental pasa a 16 lineas con resultados (tabla IX) y un Apendice A que lista los 220
+  identificadores con su macro-F1 (220/220, sin faltantes; 88 dagas). Correcciones: E-008 es canal
+  de menciones, receta de los expertos precisada, V42 = ordinal suavizada. 19 paginas, 0 errores,
+  11 tablas, 13 figuras; md5 01a968c1... Entrega y ZIP regenerados (285 MB, 855 entradas).
