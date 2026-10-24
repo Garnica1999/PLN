@@ -44,3 +44,6 @@ kaggle_toxic_2026_puj/data/
 kaggle_toxic_2026_puj/models/
 kaggle_toxic_2026_puj/modelos/
 kaggle_toxic_2026_puj/features/
+
+# artefactos binarios de Kaggle (no versionar)
+kaggle_toxic_2026_puj/.kaggle_artifacts/

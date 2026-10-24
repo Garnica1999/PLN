@@ -1,6 +1,6 @@
 # P59-F - Modelo generativo de n-gramas: CLOSED_BY_DUPLICATION
 
-Generado por `experiments/p59_11_generativo_ngram.py`. Fecha 2026-09-28T14:35:17+00:00. Sin entrenar.
+Generado por `experiments/p59_11_generativo_ngram.py`. Fecha 2026-10-20T02:50:24+00:00. Sin entrenar.
 
 ## Que proponia F
 

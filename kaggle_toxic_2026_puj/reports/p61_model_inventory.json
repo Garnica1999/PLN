@@ -1,7 +1,7 @@
 {
   "familia": "P61_MODEL_INVENTORY",
   "naturaleza": "AUDITORIA. 0 experimentos, 0 modelos nuevos, 0 submissions, 0 Kaggle, 0 holdout, 0 test. No se reentrena nada",
-  "fecha": "2026-09-28T19:05:15+00:00",
+  "fecha": "2026-10-20T02:48:47+00:00",
   "pool": {
     "artefacto": "features/p50_celda_features.npz",
     "canales": 20,

@@ -1,0 +1,6 @@
+{
+  "experimento": "P59-05",
+  "veredicto": "PARADA_POR_GUARDIA",
+  "razon": "V20 ya existe; el hallazgo 1 de este script es erroneo",
+  "fuente": "auditoria/logs_ejecucion/p59_05_nmf_gap_analysis.py.log"
+}

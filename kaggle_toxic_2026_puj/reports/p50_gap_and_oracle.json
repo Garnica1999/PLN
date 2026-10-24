@@ -1,7 +1,7 @@
 {
   "familia": "P50_CONTEXTUAL_CHANNEL_SELECTION",
   "experimento": "V50-00 (auditoria de brecha y techo del oracle)",
-  "fecha": "2026-09-28T01:21:40+00:00",
+  "fecha": "2026-10-20T02:50:51+00:00",
   "estado": "AUDIT_ONLY",
   "pregunta": "?existe margen teorico explotable seleccionando canal por label-cell, o el techo del oracle es pequeno?",
   "gap_audit": {

@@ -1,0 +1,205 @@
+\section{Síntesis: la arquitectura final y su genealogía}
+\label{sec:arquitectura}
+
+\subsection{La receta final}
+
+La arquitectura final es una tubería clásica de dos capas. La primera produce
+probabilidades calibradas por etiqueta a partir de una representación
+subléxica; la segunda convierte esas probabilidades en un envío multietiqueta
+y aplica un lote pequeño de pares compensados. La
+Figura~\ref{fig:arquitectura} muestra el flujo y la
+Tabla~\ref{tab:receta} fija la configuración exacta que reconstruye el envío.
+
+\begin{table*}[t]
+\centering
+\caption{Receta final del sistema P133. Cada fila es un componente que se
+puede reconstruir desde los artefactos públicos; la columna de evidencia
+señala el experimento o la sección que lo justifica.}
+\label{tab:receta}
+\scriptsize
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\toprule
+Componente & Configuración exacta & Evidencia \\
+\midrule
+Corpus y particiones & 1\,731 tuits; 1\,645 grupos fusionados; desarrollo de 1\,483 filas y holdout de 248; dos particiones de cinco pliegues (semillas 42 y 43), estratificadas por HS$\cdot$TR$\cdot$AG. & Sección IV-B; cero fugas verificadas. \\
+Representación & V2\_triple: \texttt{word(1,2)} + \texttt{char\_wb(3,5)} + \texttt{char(1,6)}; 86\,275 características; \texttt{min\_df}=2; \texttt{sublinear\_tf}; normalización $L_2$. & P108: $+0.00516$ local y $+0.00549$ público. \\
+Modelos base & Tres clasificadores binarios por etiqueta: regresión logística \textsc{liblinear} ($C=2.0/1.8/1.5$), SGD logarítmico ($\alpha=5\times10^{-6}$) y SAGA con ElasticNet ($\ell_1$-ratio 0.05); pesos de clase balanceados. & P110 y P114; Tabla~\ref{tab:decisiones}. \\
+Ensamble & $p=0.80\,p^{\mathrm{LR}}+0.05\,p^{\mathrm{SGD}}+0.15\,p^{\mathrm{SAGA}}$. & P114: $+0.00222$ local y $+0.00090$ público sobre P110. \\
+Calibración & Escalado de temperatura en log-odds con $T=1.04$; se congela antes de la serie final. & P114; meseta de calibración. \\
+Umbrales & $\tau=(0.44,0.51,0.46)$, fijados con el criterio de $F_1$ por columna; no se usan etiquetas del test. & V03 y P121; $+0.00313$ público. \\
+Regla HatEval & Si $TR=1$ y $HS=0$, se fuerza $HS=1$; la regla se aplica después de los umbrales. & P121; cero violaciones en el envío. \\
+Capa de decisión & Nueve pares compensados (cuatro HS, dos TR y tres AG), con desplazamientos de $\pm2.05$ en log-odds; ancla de prevalencia $(514,330,421)$, 1\,265 positivos (36.54\,\%). & P133: 0.81447 público; 0.787582 OOF. \\
+Entrenamiento final & 100\,\% de \emph{train}; tres clasificadores por etiqueta; 1\,154 filas de test; sin etiquetas del test. & Sección~\ref{sec:reproducibilidad}; auditoría del envío. \\
+Verificación & 1\,154 filas; ancla $(514,330,421)$; cero violaciones de HatEval; SHA256 \texttt{b0979a8a\ldots}; dos ejecuciones independientes. & Sección~\ref{sec:reproducibilidad}; reconstrucción bit a bit. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+La receta se puede leer en una frase: V2\_triple alimenta un Tri-Optimizer de
+tres modelos lineales, calibrado a $T=1.04$, con umbrales 0.44/0.51/0.46 y la
+regla ascendente de HatEval; sobre esa base, P133 aplica nueve pares
+compensados y conserva el ancla. Nada de eso usa etiquetas del test: los pares
+se definen por firmas léxicas con cero coincidencias en entrenamiento y se
+aceptan con el leaderboard público.
+
+\subsection{Dos capas, dos evidencias}
+
+La distinción central del artículo es que la arquitectura tiene dos capas con
+estatus epistémico distinto. La Tabla~\ref{tab:capas} lo resume. El modelo base
+---representación, ensamble, calibración, umbrales y regla HatEval--- se valida
+con la CCV agrupada, bootstrap y McNemar; su OOF es 0.787582 y su mejora sobre
+V03 es $+0.010370$ con IC95 $[+0.003924,+0.017386]$. La capa de decisión ---los
+nueve pares y el ancla--- se valida con el leaderboard; su OOF es idéntica a la
+del modelo base porque las reglas no disparan en entrenamiento, y su
+contribución es el 76\,\% de la ganancia pública.
+
+\begin{table*}[t]
+\centering
+\caption{Las dos capas de la arquitectura final y su fuente de evidencia. La
+capa base generaliza; la capa de decisión es específica del test y se valida
+con sondas del leaderboard. Las cifras OOF son sobre las 1\,483 filas de
+desarrollo.}
+\label{tab:capas}
+\scriptsize
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{2.7cm}@{}}
+\toprule
+Capa & Componentes y métrica & Evidencia & Estatus \\
+\midrule
+Base & V2\_triple + Tri-Optimizer + $T=1.04$ + umbrales + HatEval. OOF 0.787582; P114, antes del staging, 0.787218. & CCV agrupada, bootstrap, McNemar; $+0.010370$ sobre V03 con IC95 $[+0.003924,+0.017386]$. & Generalizable; es la estimación limpia. \\
+Decisión & Nueve pares compensados ($\pm2.05$) y ancla $(514,330,421)$. LB 0.81447; mismo OOF que la base. & 47 envíos al leaderboard; 25 de la serie final; deltas pareados y auditados. & Específica del test; 76\,\% de la ganancia pública. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Esta separación explica por qué el artículo reporta dos cifras: 0.787582 es la
+estimación limpia de generalización; 0.81447 es el resultado de la competencia.
+Confundirlas sería el error más costoso de la narrativa. La capa de decisión no
+es un modelo que hayamos entrenado con el test: es una adaptación controlada,
+con pares contables, ancla de prevalencia y auditoría previa a cada envío. Aun
+así, su validez externa es limitada y se discute en la
+Sección~\ref{sec:discusion}.
+
+\subsection{La ruta desde el estado del arte}
+
+La Tabla~\ref{tab:sota} traduce cada idea del estado del arte en la decisión
+experimental que la puso a prueba. La arquitectura final no se eligió por
+preferencia: es el superviviente de una eliminación empírica. Cada fila tiene
+una hipótesis, un experimento y un criterio de muerte; las que se adoptaron
+pasaron la barrera de $+0.005$ o se sostuvieron en las dos particiones y en el
+leaderboard.
+
+\begin{table*}[t]
+\centering
+\caption{Del estado del arte a la decisión experimental. La tabla no repite
+los 25 candidatos de la serie final; fija las ideas que estructuraron la
+búsqueda y el experimento que las evaluó.}
+\label{tab:sota}
+\scriptsize
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.1cm}@{}}
+\toprule
+Idea del estado del arte & Experimento & Evidencia & Decisión \\
+\midrule
+TF-IDF y clasificador lineal \cite{salton1988term,joachims1998text} & V03 & 0.777211 OOF; 0.78306 LB; referencia del proyecto. & Adoptado como base. \\
+N-gramas de carácter para ruido ortográfico \cite{cavnar1994ngram,mcnamee2004character} & P108 & $+0.00516$ local; $+0.00549$ LB; replicado en la partición 47. & Adoptado. \\
+Ensamble de optimizadores lineales \cite{breiman1996bagging,wolpert1992stacked,bottou2010large,defazio2014saga,zou2005regularization} & P110 y P114 & P110: $+0.00112$ LB; P114: $+0.00222$ local y $+0.00090$ LB sobre P110. & Adoptado (Tri-Optimizer). \\
+Calibración de probabilidades \cite{platt1999probabilistic,guo2017calibration} & P114 & $T=1.04$; meseta estable; no se ajusta con el test. & Adoptado. \\
+Umbrales por etiqueta \cite{lipton2014thresholding,nan2012optimizing} & V03 y P121 & $+0.00313$ LB frente al umbral único; 0.44/0.51/0.46. & Adoptado. \\
+Jerarquía de etiquetas \cite{silla2011survey,basile2019hateval} & P121 & Regla $TR=1\Rightarrow HS=1$; cero violaciones. & Adoptado. \\
+Pares compensados y economía de la $F_1$ \cite{flach2003geometry,saito2015precision} & P124--P133 & P128: 0.80516; P133: 0.81447; P129: $-0.00438$. & Adoptado con límites. \\
+Embeddings entrenados desde cero \cite{bojanowski2017enriching} & v5, P98--P100 & 0.6522--0.6530 OOF; fusión $+0.0046$ con IC95 $[-0.003,+0.012]$; sin transferencia al LB. & Rechazado. \\
+Redes neuronales desde cero & DL-01, CharCNN, BiLSTM & MLP 0.7949 OOF; CharCNN 0.7410; BiLSTM 0.7364; sin sonda de LB. & Rechazado: no pasa $+0.005$ con evidencia externa. \\
+Modelos no lineales y Optuna & v23--v44, P45--P107 & Mejor OOF 0.8039; LB 0.77602; SVC-RBF 0.7904 con intervalo frágil. & Rechazado: el mejor OOF fue el peor LB. \\
+Rasgos densos y post-proceso jerárquico & v4, v5, P87--P93 & Entre $-0.0091$ y $-0.0316$; el post-proceso, $-0.0056$. & Rechazado. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+La tabla se lee en tres bloques. El primero es la representación y el modelo:
+TF-IDF, n-gramas de carácter, ensambles y optimizadores lineales se adoptaron
+porque cada uno superó la barrera o porque su contribución se sostuvo en las
+dos particiones. El segundo es la decisión: calibración, umbrales, jerarquía y
+pares compensados explican el salto del leaderboard. El tercero es el banco de
+alternativas: embeddings, redes, modelos no lineales, Optuna, rasgos densos y
+post-proceso jerárquico. Ninguna pasó las dos pruebas: la mejora local y la
+transferencia externa. La consecuencia es una arquitectura deliberadamente
+pequeña: tres modelos lineales, una representación y una capa de decisión
+auditable.
+
+\subsection{La genealogía en cinco hitos}
+
+La Tabla~\ref{tab:ruta} reconstruye la ruta con los hitos que cambiaron la
+métrica. No es una línea recta: es una secuencia de bifurcaciones con criterios
+de muerte explícitos. Los hitos se eligieron por su efecto sobre el
+leaderboard, no por su novedad.
+
+\begin{table*}[t]
+\centering
+\caption{Genealogía de la arquitectura final. Cada fila muestra el cambio
+acumulado respecto del hito anterior; las cifras OOF son la partición
+canónica y las de LB, el registro público. El total V03--P133 es $+0.03141$.}
+\label{tab:ruta}
+\scriptsize
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}p{3.0cm}rrr>{\raggedright\arraybackslash}X@{}}
+\toprule
+Hito & Cambio & OOF & LB & $\Delta$LB & Lectura \\
+\midrule
+V03 & Línea base: TF-IDF de dos bloques + LR + umbrales. & 0.777211 & 0.78306 & --- & Punto de partida. \\
+P108 & V2\_triple: tercer bloque \texttt{char(1,6)}. & 0.782372 & 0.78855 & $+0.00549$ & La representación abre la brecha. \\
+P110 & Mezcla 95/5 LR + SGD. & 0.784998 & 0.78967 & $+0.00112$ & El ensamble reduce varianza. \\
+P114 & Tri-Optimizer + SAGA + $T=1.04$. & 0.787218 & 0.79057 & $+0.00090$ & El modelo base se estabiliza. \\
+P121 & Staging asimétrico + ancla. & 0.787582 & 0.79095 & $+0.00038$ & La decisión se separa del modelo. \\
+P128 & Lote de quince pares compensados. & 0.787582 & 0.80516 & $+0.01421$ & La capa de pares abre la brecha. \\
+P131 & Recupera la fila 114 y suma siete pares. & 0.787582 & 0.80872 & $+0.00356$ & Refinamiento fino. \\
+P132 & Suma otros siete pares. & 0.787582 & 0.81279 & $+0.00407$ & Primer registro $>0.81$. \\
+P133 & Lote final de nueve pares. & 0.787582 & 0.81447 & $+0.00168$ & Envío final. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+La lectura es la siguiente. V03 fijó la línea base. P108 abrió la
+representación: el tercer bloque de caracteres aportó $+0.00516$ local y
+$+0.00549$ público, y se replicó en la partición 47. P110 sumó $+0.00112$
+público con la mezcla 95/5; P114 sumó $+0.00090$ con el Tri-Optimizer y la
+temperatura, y $+0.00222$ local sobre P110. P121 separó la decisión del modelo:
+el staging asimétrico y el ancla añadieron $+0.00038$. P128 abrió la capa de
+pares ($+0.01421$ desde P121); P131, P132 y P133 la refinaron ($+0.00356$,
+$+0.00407$ y $+0.00168$). El total es $+0.03141$; el 76\,\% proviene de la capa
+de decisión.
+
+Los controles negativos son parte de la genealogía. P109 (\texttt{min\_df}=5)
+tuvo la mejor OOF de la serie (0.792215) y el peor LB (0.77447): la poda
+compartida entre entrenamiento y validación sobreestimó la transferencia. P115
+(\emph{gating} ontológico) mejoró la OOF y cayó en el LB. P129 (desplazamiento
+$+4.0$) saturó la probabilidad y perdió 0.00438. P130 (supresión de la fila
+114) empató con P128. Estos casos fijaron los límites: los lotes deben ser
+pequeños, compensados y con desplazamientos moderados.
+
+\subsection{Por qué esta arquitectura y no otra}
+
+La respuesta tiene tres partes. Primera, las restricciones: sin transformers ni
+representaciones preentrenadas, con 1\,731 filas y un test pequeño, el sesgo
+inductivo de un modelo lineal sobre n-gramas es el que mejor se adapta al
+tamaño y al ruido. Segunda, la evidencia: las alternativas se probaron y se
+rechazaron con el mismo protocolo (Tabla~\ref{tab:familias}); el modelo final
+es el que sobrevivió, no el que se prefirió. Tercera, la economía de la
+métrica: la $F_1$ columnar premia la precisión y el recall de cada columna por
+separado; los umbrales, la regla HatEval y los pares compensados explotan esa
+estructura, y la Proposición~\ref{prop:par} demuestra por qué un par compensado
+incrementa la $F_1$ sin cambiar el número de positivos.
+
+El costo de la elección es explícito: la capa de decisión es específica del
+test y no se puede validar con la OOF; el 0.81447 no es una estimación
+insesgada de la $F_1$ poblacional. La parte generalizable es el modelo base
+(0.787582 OOF, IC95 de la mejora sobre V03). La arquitectura es, a la vez, un
+sistema de competencia y un experimento controlado sobre representación,
+validación y decisión.
+
+\subsection{Verificación de la arquitectura final}
+
+El reentrenamiento final usa el 100\,\% de \emph{train}, tres clasificadores por
+etiqueta, 1\,154 filas de test y el ancla $(514,330,421)$. La verificación
+comprueba 1\,154 filas, 1\,265 positivos (36.54\,\%), cero violaciones de
+HatEval y la huella SHA256 \texttt{b0979a8a\ldots}; dos ejecuciones
+independientes producen el mismo archivo. El protocolo completo, con los
+controles de determinismo y la reconstrucción bit a bit, está en la
+Sección~\ref{sec:reproducibilidad}.

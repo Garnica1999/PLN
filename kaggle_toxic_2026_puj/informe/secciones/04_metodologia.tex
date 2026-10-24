@@ -28,9 +28,9 @@ Fase & Qué se hizo & Evidencia principal \\
 Comprensión del negocio & Se definió la tarea multietiqueta (HS, TR, AG), se registraron las reglas (sin transformers, sin etiquetas del test), se identificó la métrica con la sonda E00 (LB 0.51494) y se fijaron los criterios de éxito. & Sección I; \path{docs/competition_rules.md}; decisión D-009. \\
 Comprensión de los datos & Se perfilaron 1\,731 tuits: prevalencias, perfiles conjuntos, longitudes, $\phi$, near-duplicados, pseudo-autores, asociación identificador--etiqueta y ambigüedad semántica de TR. & Sección III; \texttt{reports/eda/}; cuaderno, sección 2. \\
 Preparación de los datos & Se fusionaron near-duplicados y pseudo-autores en grupos, se congelaron las particiones, se construyó V2\_triple y se verificó la ausencia de fuga en cada pliegue. & Sección IV; \path{features/}; decisiones D-004 y D-015. \\
-Modelado & 134 ciclos experimentales: preprocesamiento, representación, modelos lineales, umbrales, ensembles, aprendizaje profundo desde cero, staging y pares compensados. & Sección V; \texttt{experiments.csv}; \texttt{reports/}. \\
-Evaluación & CCV agrupada en dos particiones, bootstrap, McNemar, análisis de error por rebanadas, holdout congelado y sondas del leaderboard. & Sección VI; \path{informe/datos/estadisticas.json}. \\
-Despliegue & Reentrenamiento sobre el 100\,\% de \emph{train}, staging, envío, verificación SHA e idempotencia; publicación del cuaderno y de los artefactos. & Sección VII; \texttt{submissions/}; cuaderno. \\
+Modelado & 134 ciclos experimentales: preprocesamiento, representación, modelos lineales, umbrales, ensembles, aprendizaje profundo desde cero, staging y pares compensados. & Secciones~\ref{sec:resultados} y~\ref{sec:arquitectura}; \texttt{experiments.csv}; \texttt{reports/}. \\
+Evaluación & CCV agrupada en dos particiones, bootstrap, McNemar, análisis de error por rebanadas, holdout congelado y sondas del leaderboard. & Sección~\ref{sec:discusion}; \path{informe/datos/estadisticas.json}. \\
+Despliegue & Reentrenamiento sobre el 100\,\% de \emph{train}, staging, envío, verificación SHA e idempotencia; publicación del cuaderno y de los artefactos. & Sección~\ref{sec:reproducibilidad}; \texttt{submissions/}; cuaderno. \\
 \bottomrule
 \end{tabularx}
 \end{table*}

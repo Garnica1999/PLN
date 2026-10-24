@@ -3,7 +3,7 @@
 ## Objetivo
 
 Producir el informe final de la competencia como artículo científico en
-formato IEEE Transactions, en español, con extensión de 12 a 15 páginas, que
+formato IEEE Transactions, en español, con 15 páginas de cuerpo principal y apéndice/bibliografía (20 páginas en total), que
 documente el problema, los datos, el EDA, la metodología, la experimentación
 completa (P108--P133), los análisis estadísticos, las decisiones y su
 justificación, y la reproducibilidad del envío campeón.
@@ -33,18 +33,21 @@ justificación, y la reproducibilidad del envío campeón.
 3. Datos y análisis exploratorio.
 4. Metodología (validación, representación, modelos, decisión, estadística).
 5. Experimentación y resultados (P108--P133, qué funcionó y qué no).
-6. Análisis estadístico y discusión (bootstrap, McNemar, umbrales, error,
+6. Síntesis: la arquitectura final y su genealogía.
+7. Análisis estadístico y discusión (bootstrap, McNemar, umbrales, error,
    validez externa, límites).
-7. Reproducibilidad y despliegue (SHA, idempotencia, protocolo de frontera).
-8. Conclusiones y trabajo futuro.
-9. Referencias (50 entradas IEEE).
+8. Reproducibilidad y despliegue (SHA, idempotencia, protocolo de frontera).
+9. Conclusiones y trabajo futuro.
+10. Apéndice A: inventario completo de las 565 experimentaciones.
+11. Referencias (54 entradas IEEE).
 
 ## Figuras y tablas
 
 - 8 figuras: EDA, $\phi$, arquitectura, escalera CCV/LB, descomposición de la
   ganancia, curvas umbral--F1, matrices de confusión y bootstrap/longitud.
-- 6 tablas: corpus y prevalencias, decisiones de diseño, serie completa
-  P108--P133, inferencia estadística, análisis de error y reproducibilidad.
+- 14 tablas: corpus y prevalencias, decisiones de diseño, serie completa
+  P108--P133, inferencia estadística, análisis de error, reproducibilidad,
+  receta final, capas, SOTA, genealogía e inventario de 565 entradas.
 
 ## Estado
 
@@ -68,9 +71,11 @@ justificación, y la reproducibilidad del envío campeón.
 - [x] E6c. Auditoría editorial externa aplicada: oración ternaria reformulada, prefijos RAE unificados (subléxica, multiescala), anglicismo features sustituido por rasgos lingüísticos, nota de Wilson en la Tabla I, notación χ²(9), aclaración de tf en la ecuación (1), caveat de optimalidad en la Proposición 1, nota de P123 en la Tabla IV, conexión de la Figura 7 y rutas largas divididas en LaTeX.
 - [x] E6d. Segunda auditoría editorial aplicada: corregida la duplicación «El cuaderno el cuaderno», añadido el párrafo de embeddings desde cero (FastText 200d y LM recurrente sobre 29.7M de tokens; OOF 0.652, fusión +0.0046 con IC95 que cruza el cero) y las filas correspondientes en la tabla de familias (embeddings y complejidad no lineal), más el ajuste de espaciado de flotantes en main.tex.
 - [x] E6e. Tercera auditoría (maquetación final): aplicado \IEEEtriggeratref{48} para balancear la bibliografía de la última página (columna izquierda [41]-[47], derecha [48]-[54]); verificado que el informe sigue en 15 páginas. No se aplicó el ootnotesize de la bibliografía porque IEEEtran ya la compone en ootnotesize.
-- [x] E7. Cierre: PDF final
-  `Informe_Final_TOXIC_2026_PUJ.pdf`, 15 páginas, SHA256
+- [x] E7. Cierre previo: PDF de 15 páginas, SHA256
   `eb2790036514cbdd5cb4d171cfe2c722291a0ae461c2b312c9f548351f01df0a`.
+- [x] E8. Integración de la síntesis arquitectónica y del apéndice de 565
+  experimentos: PDF de 20 páginas, 54 citas resueltas, 0 desbordes; SHA256
+  `26690456701fa8a355a42257e791626bd4b7b43e304d3481eb8f9b16e02447e3`.
 
 ## Verificación rápida
 
@@ -84,4 +89,4 @@ pdflatex -interaction=nonstopmode main.tex
 pdfinfo main.pdf | grep Pages
 ```
 
-Resultado esperado: 13 páginas, sin errores, sin `??`, sin `Cuadro`.
+Resultado esperado: 20 páginas (15 de cuerpo + apéndice/bibliografía), sin errores, sin `??`, sin desbordes.

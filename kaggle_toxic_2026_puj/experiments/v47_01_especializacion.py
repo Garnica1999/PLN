@@ -111,6 +111,26 @@ def construir_bloque(
     return sparse.hstack([word, char]).tocsr()
 
 
+def construir_bloques(
+    textos_train: list[str],
+    textos_val: list[str],
+    word_range: tuple[int, int],
+    char_range: tuple[int, int],
+) -> tuple[Any, Any]:
+    """Ajusta TF-IDF en train y transforma train/validacion con el mismo vocabulario."""
+    from scipy import sparse
+
+    word = TfidfVectorizer(
+        analyzer="word", ngram_range=word_range, min_df=2, sublinear_tf=True
+    ).fit(textos_train)
+    char = TfidfVectorizer(
+        analyzer="char_wb", ngram_range=char_range, min_df=2, sublinear_tf=True
+    ).fit(textos_train)
+    x_train = sparse.hstack([word.transform(textos_train), char.transform(textos_train)]).tocsr()
+    x_val = sparse.hstack([word.transform(textos_val), char.transform(textos_val)]).tocsr()
+    return x_train, x_val
+
+
 def predecir_etiqueta(
     x_train: Any,
     y_train: np.ndarray,
@@ -162,8 +182,9 @@ def evaluar_config(
         textos_va = desarrollo["text"].iloc[idx_va].astype(str).tolist()
         for j, etiqueta in enumerate(ETIQUETAS):
             cfg = config[etiqueta]
-            x_tr = construir_bloque(textos_tr, cfg["word_range"], cfg["char_range"])
-            x_va = construir_bloque(textos_va, cfg["word_range"], cfg["char_range"])
+            x_tr, x_va = construir_bloques(
+                textos_tr, textos_va, cfg["word_range"], cfg["char_range"]
+            )
             pred[idx_va, j] = predecir_etiqueta(
                 x_tr, y_true[idx_tr, j], x_va, cfg["C"], cfg["threshold"]
             )
@@ -212,8 +233,7 @@ def seleccionar_anidada(
             for idx_tr, idx_va in pliegues:
                 textos_tr = desarrollo["text"].iloc[idx_tr].astype(str).tolist()
                 textos_va = desarrollo["text"].iloc[idx_va].astype(str).tolist()
-                x_tr = construir_bloque(textos_tr, wr, cr)
-                x_va = construir_bloque(textos_va, wr, cr)
+                x_tr, x_va = construir_bloques(textos_tr, textos_va, wr, cr)
                 pred[idx_va] = predecir_etiqueta(
                     x_tr, y_true[idx_tr, j], x_va, c, thr
                 )
@@ -245,8 +265,13 @@ def main() -> None:
 
     # Fase 1: control de identidad — la configuración por defecto debe reproducir V03
     log("1/4 control: configuración por defecto (C=2.0, word(1,2), char(3,5), thr=0.5)")
-    config_default = {et: {"C": 2.0, "word_range": (1, 2), "char_range": (3, 5), "threshold": 0.5} for et in ETIQUETAS}
-    resultado_default = evaluar_config("sin_especializacion", desarrollo, config_default)
+    UMBRALES_V03 = {"HS": 0.44, "TR": 0.51, "AG": 0.46}
+    config_default = {
+        et: {"C": 2.0, "word_range": (1, 2), "char_range": (3, 5), "threshold": UMBRALES_V03[et]}
+        for et in ETIQUETAS
+    }
+    pliegues = pliegues_corregidos(desarrollo, grupos_fusionados(desarrollo))
+    resultado_default = evaluar_config(desarrollo, pliegues, config_default)
     log(f"   corrected_cv = {resultado_default['corrected_cv']:.10f}")
     if abs(resultado_default["corrected_cv"] - CORRECTED_CV_V03) > 1e-9:
         raise SystemExit("PARADA: el control no reproduce V03. No se puede continuar.")
@@ -260,11 +285,11 @@ def main() -> None:
         "char_range": REJILLA_CHAR,
         "threshold": REJILLA_THRESHOLD,
     }
-    config_optima = seleccionar_anidada(desarrollo, pliegues_corregidos(desarrollo, grupos_fusionados(desarrollo)), espacio)
+    config_optima = seleccionar_anidada(desarrollo, pliegues, espacio)
     for et in ETIQUETAS:
         c = config_optima[et]
         log(f"   {et}: C={c['C']}, word={c['word_range']}, char={c['char_range']}, thr={c['threshold']}")
-    resultado_optimo = evaluar_config("con_especializacion", desarrollo, config_optima)
+    resultado_optimo = evaluar_config(desarrollo, pliegues, config_optima)
     log(f"   corrected_cv = {resultado_optimo['corrected_cv']:.10f}")
     delta = resultado_optimo["corrected_cv"] - resultado_default["corrected_cv"]
     log(f"   delta vs control = {delta:+.10f}")

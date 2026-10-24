@@ -1,7 +1,7 @@
 {
   "familia": "P60_C_LABEL_DEPENDENT_NOISE",
   "naturaleza": "AUDITORIA DE DETECCION (C1 + C2). 0 experimentos, 0 modelos, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
-  "fecha": "2026-09-28T15:37:09+00:00",
+  "fecha": "2026-10-20T02:50:25+00:00",
   "experiment_id": "NINGUNO",
   "track": "P60-C",
   "script": "experiments/p60_05_ruido_por_etiqueta.py",
@@ -243,6 +243,6 @@
     "consultas_kaggle": 0,
     "uso_holdout": 0,
     "uso_test": 0,
-    "segundos": 9.4
+    "segundos": 1.3
   }
 }
