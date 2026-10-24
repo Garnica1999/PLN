@@ -2,7 +2,7 @@
   "familia": "P72_TWITTER_WORD2VEC_DIM",
   "experiment_id": "P72-02",
   "fase": "P1 downstream de las dimensiones",
-  "fecha": "2026-09-30T05:36:37+00:00",
+  "fecha": "2026-10-20T02:50:30+00:00",
   "naturaleza": "EXPERIMENTO. 3 dimensiones, mean pooling en las tres",
   "v03_referencia": 0.7772114525,
   "v03_reproducido": true,

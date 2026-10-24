@@ -2,7 +2,7 @@
 
 Generado por `experiments/v54_00_atlas_no_rescatable.py` (V54-00 (atlas semantico de los errores no rescatables)).
 
-Fecha 2026-09-28T02:35:28+00:00. **0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout o test.**
+Fecha 2026-10-20T02:50:53+00:00. **0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout o test.**
 
 ## 1. Poblaciones, recalculadas desde cero
 

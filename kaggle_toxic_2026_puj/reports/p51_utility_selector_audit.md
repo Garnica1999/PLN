@@ -2,7 +2,7 @@
 
 Generado por `experiments/v51_00_utilidad_y_asimetria.py` (V51-00 (brecha utilitaria, utilidad exacta y asimetria)).
 
-Fecha 2026-09-28T01:35:27+00:00. **0 modelos, 0 submissions, 0 consultas a Kaggle.**
+Fecha 2026-10-20T02:50:52+00:00. **0 modelos, 0 submissions, 0 consultas a Kaggle.**
 
 ## 1. La diferencia entre el objetivo de P50 y el de P51
 

@@ -2,7 +2,7 @@
 
 Generado por `experiments/v50_00_brecha_y_oracle.py` (V50-00 (auditoria de brecha y techo del oracle)).
 
-Fecha 2026-09-28T01:21:40+00:00. **0 modelos, 0 submissions, 0 consultas a Kaggle.**
+Fecha 2026-10-20T02:50:51+00:00. **0 modelos, 0 submissions, 0 consultas a Kaggle.**
 
 ## 1. Las cinco categorias, y donde esta cada una
 

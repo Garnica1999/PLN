@@ -1,7 +1,7 @@
 {
   "familia": "P59_A_VORONOI_LOCAL_GEOMETRY",
   "naturaleza": "DIAGNOSTIC_ONLY. 0 modelos nuevos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout, 0 uso de test. V03 no se modifica",
-  "fecha": "2026-09-28T04:09:08+00:00",
+  "fecha": "2026-10-20T02:49:01+00:00",
   "novelty": {
     "veredicto": "PARTIALLY_DUPLICATE",
     "ya_hecho": [
@@ -234,6 +234,6 @@
     "consultas_kaggle": 0,
     "uso_holdout": 0,
     "uso_test": 0,
-    "segundos": 90.0
+    "segundos": 82.1
   }
 }

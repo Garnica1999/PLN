@@ -12,6 +12,7 @@
 \usepackage{tabularx}
 \usepackage{array}
 \usepackage{multirow}
+\usepackage{multicol}
 \usepackage{xcolor}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -35,6 +36,7 @@
 
 \renewcommand{\abstractname}{Resumen}
 \renewcommand{\IEEEkeywordsname}{Palabras clave}
+\renewcommand{\appendixname}{Apéndice}
 \addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
 
 \newtheorem{proposicion}{Proposición}
@@ -101,12 +103,18 @@ reproducibilidad.
 \input{secciones/03_datos}
 \input{secciones/04_metodologia}
 \input{secciones/05_resultados}
+\input{secciones/05b_arquitectura}
 \input{secciones/06_discusion}
 \input{secciones/07_reproducibilidad}
 \input{secciones/08_conclusiones}
 
+\clearpage
+\appendix[Inventario completo de la experimentación]
+\input{secciones/09_anexo_inventario}
+
+\clearpage
 \bibliographystyle{IEEEtran}
-\IEEEtriggeratref{48}
+% \IEEEtriggeratref{48}
 \bibliography{referencias}
 
 \end{document}

@@ -1,7 +1,7 @@
 {
   "familia": "P54_NONRESCUABLE_SEMANTIC_AUDIT",
   "experimento": "V54-00 (atlas semantico de los errores no rescatables)",
-  "fecha": "2026-09-28T02:35:28+00:00",
+  "fecha": "2026-10-20T02:50:53+00:00",
   "estado": "AUDIT_ONLY",
   "poblaciones": {
     "A_correcto": 3692,

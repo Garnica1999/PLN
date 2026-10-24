@@ -1,6 +1,6 @@
 # P60-C - Ruido dependiente de etiqueta (C1 y C2)
 
-Generado por `experiments/p60_05_ruido_por_etiqueta.py`. Fecha 2026-09-28T15:37:09+00:00.
+Generado por `experiments/p60_05_ruido_por_etiqueta.py`. Fecha 2026-10-20T02:50:25+00:00.
 
 ## Motivacion
 

@@ -1,6 +1,6 @@
 # P61 - EDA de las probabilidades OOF canonicas de V03
 
-Generado por `experiments/p61_01_eda_probabilidades.py`. Fecha 2026-09-28T19:03:17+00:00.
+Generado por `experiments/p61_01_eda_probabilidades.py`. Fecha 2026-10-20T02:50:27+00:00.
 
 > **Esta EDA es DIAGNOSTICA.** No se usa para ajustar thresholds, seleccionar modelos ni
 > optimizar hiperparametros sobre este mismo OOF. Si de ella saliera una hipotesis
@@ -149,5 +149,11 @@ comportamiento esperado de un modelo correctamente ponderado para decision.
 * `reports/figuras/p61/06_joint_probability_geometry_3d.png`
 * `reports/figuras/p61/07_pairwise_probability_geometry.png`
 * `reports/figuras/p61/08_reliability_curves.png`
+* `reports/figuras/p61/09_error_correlation_heatmap.png`
+* `reports/figuras/p61/10_unique_rescue_vs_damage.png`
+* `reports/figuras/p61/11_ensemble_cv_vs_v03.png`
+* `reports/figuras/p61/12_ensemble_weights.png`
+* `reports/figuras/p61/13_v03_vs_candidate_probability_shift.png`
+* `reports/figuras/p61/14_error_breakdown_v03_vs_candidate.png`
 
 *Generado por `experiments/p61_01_eda_probabilidades.py`. Sin push.*

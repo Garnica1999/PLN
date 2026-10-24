@@ -1,7 +1,7 @@
 {
   "familia": "P61_PROBABILITY_EDA",
   "naturaleza": "DIAGNOSTICO. 0 experimentos, 0 modelos, 0 submissions, 0 Kaggle, 0 holdout, 0 test. No se usa para optimizar nada",
-  "fecha": "2026-09-28T19:03:17+00:00",
+  "fecha": "2026-10-20T02:50:27+00:00",
   "probabilidad_que_usa_la_decision": {
     "es": "probabilidad sigmoid OUT-OF-FOLD",
     "recalcula_la_decision_almacenada": true,
@@ -1363,7 +1363,13 @@
     "05_high_confidence_errors.png",
     "06_joint_probability_geometry_3d.png",
     "07_pairwise_probability_geometry.png",
-    "08_reliability_curves.png"
+    "08_reliability_curves.png",
+    "09_error_correlation_heatmap.png",
+    "10_unique_rescue_vs_damage.png",
+    "11_ensemble_cv_vs_v03.png",
+    "12_ensemble_weights.png",
+    "13_v03_vs_candidate_probability_shift.png",
+    "14_error_breakdown_v03_vs_candidate.png"
   ],
   "artefactos": {
     "informe": "reports/p61_probability_eda.md",

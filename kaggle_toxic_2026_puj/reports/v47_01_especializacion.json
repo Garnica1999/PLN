@@ -1,0 +1,67 @@
+{
+  "familia": "LABEL_SPECIALIZATION",
+  "experimento": "V47-01 (especializacion por etiqueta con seleccion anidada)",
+  "fecha": "2026-10-20T03:33:50+00:00",
+  "estado": "OOF_EVALUATED",
+  "pregunta": "¿Puede una estrategia OOF de entrenamiento robusto reducir el impacto de ejemplos potencialmente inconsistentes y mejorar V03?",
+  "alcance": "especialización por etiqueta con selección anidada de C, word_range, char_range y threshold",
+  "control": {
+    "corrected_cv": 0.7772114525165721,
+    "reproduce_v03": true
+  },
+  "especializacion": {
+    "configuracion_por_etiqueta": {
+      "HS": {
+        "C": 4.0,
+        "word_range": [
+          1,
+          2
+        ],
+        "char_range": [
+          3,
+          5
+        ],
+        "threshold": 0.46
+      },
+      "TR": {
+        "C": 4.0,
+        "word_range": [
+          1,
+          2
+        ],
+        "char_range": [
+          3,
+          6
+        ],
+        "threshold": 0.46
+      },
+      "AG": {
+        "C": 1.0,
+        "word_range": [
+          1,
+          2
+        ],
+        "char_range": [
+          2,
+          5
+        ],
+        "threshold": 0.46
+      }
+    },
+    "corrected_cv": 0.7818097533679379,
+    "delta_vs_control": 0.004598300851365811
+  },
+  "complementariedad": {
+    "celdas_modificadas": 107,
+    "rescates": 62,
+    "danios": 45,
+    "neto": 17
+  },
+  "decision": "NEW_SIGNAL",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 2,
+    "memoria_pico_mb": 238.8,
+    "segundos": 400.3
+  }
+}

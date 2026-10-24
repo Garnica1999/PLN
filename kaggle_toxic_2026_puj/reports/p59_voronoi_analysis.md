@@ -1,6 +1,6 @@
 # P59-A - Voronoi y geometria local sobre la representacion de V03
 
-Generado por `experiments/p59_01_voronoi_local.py`. Fecha 2026-09-28T04:09:08+00:00.
+Generado por `experiments/p59_01_voronoi_local.py`. Fecha 2026-10-20T02:49:01+00:00.
 
 **Diagnostico. 0 modelos nuevos, 0 submissions, 0 consultas a Kaggle, 0 holdout, 0 test. V03 no se modifica.** No se registro ninguna fila en `experiments.csv`: el parrafo 50 no registra gap analysis, oracle ni visualizaciones, y este paso no entrena clasificador ni evalua `corrected_cv`.
 
@@ -110,31 +110,3 @@ decision  MARGINAL. La geometria local predice los errores de V03, pero no disti
 Lo que el diagnostico SOSTIENE y lo que NO SOSTIENE estan separados en el JSON maestro y en la conclusion de la fase. Ningun resultado de este paso se ha registrado como experimento, porque no lo es.
 
 *Seccion generada por `experiments/p59_01_voronoi_local.py`. Sin push.*
-
-## 10. Segundo objetivo: el bloque de geometria sobre V03
-
-La puerta del parrafo 15 se supero, luego el parrafo 14 queda autorizado y se ejecuta.
-Tres brazos, porque el coste de envolver la puntuacion de V03 en un ajuste nuevo hay
-que separarlo del aporte de la geometria:
-
-```text
-brazo                                      corrected_cv      delta vs V03
-A  V03 crudo                            0.7772114525        0
-B  LR([p_v03])                          0.7743581357  -0.0028533168
-C  LR([p_v03, 8 rasgos])                0.7796406441  +0.0024291916
-```
-
-| gate del parrafo 41 | resultado |
-|---|---|
-| H0 el envoltorio de un rasgo no rompe V03 | True |
-| H1 delta >= +0,003 frente a V03 | False |
-| H2 al menos 4 de 5 pliegues | False (3/5) |
-| H3 supera al brazo B, luego es geometria y no envoltorio | True |
-
-Complementariedad: rescate 55, damage 73, neto -18, 128 celdas cambian.
-
-De las 42 celdas no rescatables de P54, el candidato rescata **1**. Ese es el control del parrafo 44: una mejora que solo mueve ejemplos faciles no cuenta.
-
-```text
-decision  CLOSED. No supera los gates del parrafo 41. La geometria local predice los errores de V03 con AUC 0,725 y aun asi no aporta nada accionable: ese es el mismo resultado que V6-07 obtuvo con sus senales de sospecha, y confirma que predecir la dificultad de un ejemplo no es lo mismo que mejorar la decision. No se reintenta con mas prototipos, mas vecinos ni otra constante
-```

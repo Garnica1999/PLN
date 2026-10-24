@@ -1,6 +1,6 @@
 # P59-T - Calibracion del score local: CLOSED_BY_DUPLICATION
 
-Generado por `experiments/p59_08_calibracion_local.py`. Fecha 2026-09-28T14:25:43+00:00. Sin entrenar.
+Generado por `experiments/p59_08_calibracion_local.py`. Fecha 2026-10-20T02:48:46+00:00. Sin entrenar.
 
 ## Que proponia T
 
