@@ -1,0 +1,14 @@
+\section{Reflexión del equipo}
+\label{sec:reflexion}
+
+La lectura del artículo nos dejó tres aprendizajes. El primero es que la destilación de conocimiento es una técnica de eficiencia de datos, no una técnica de equidad. El artículo la presenta dentro de un marco de inclusión lingüística, pero su experimento mide exactitud temática en tres lenguas europeas. Confundir el marco con la medición lleva a atribuirle propiedades que el diseño no prueba.
+
+El segundo es que la evidencia es más estrecha que la cifra principal. La ganancia de 12,89 puntos existe, pero corresponde a una celda: francés, 10\,\% de los datos y profesor $mB_{ft}$. El promedio cae de 7,95 a 0,45 puntos cuando se pasa del 10 al 100\,\%, y siete de las 36 celdas son negativas. Un lector que solo retenga el máximo se queda con la parte más favorable de una distribución heterogénea.
+
+El tercero es que las métricas son aproximaciones. El F1 mide aciertos sobre una prueba filtrada; BLEU mide solapamiento léxico; la correlación de RSA mide cercanía geométrica. Ninguna de las tres mide comprensión clínica, equidad o equivalencia semántica. Cada una acota un tipo de afirmación y ninguna cubre las demás.
+
+La discusión de clase confirmó que el sesgo viaja por la geometría, que mitigarlo exige medir y auditar, y que la equivalencia semántica se audita par a par.
+
+Nuestro análisis tiene límites. No replicamos los experimentos, no tuvimos acceso al código ni a las traducciones, y no anotamos textos colombianos. Trabajamos sobre las cifras reportadas y sobre el texto del artículo. Por eso hablamos de lo que la evidencia permite sostener, no de lo que ocurriría si repitiéramos el entrenamiento.
+
+Quedan preguntas abiertas. ¿Cómo se construiría un benchmark biomédico colombiano con anotación clínica y gobernanza de datos? ¿Qué método de mitigación de sesgo resiste la evaluación en español médico sin borrar señal útil? ¿Un estudiante BETO o MarIA superaría a mBERT en este corpus? ¿Cuánto cuesta un error de traducción en una decisión clínica y cómo se detecta antes del despliegue? El artículo no las responde; su aporte es haber abierto un camino viable para plantearlas.

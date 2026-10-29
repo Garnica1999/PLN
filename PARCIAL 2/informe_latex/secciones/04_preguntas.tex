@@ -1,0 +1,18 @@
+\section{Preguntas y diseño experimental}
+\label{sec:preguntas}
+
+El artículo organiza su indagación en cinco preguntas que cubren la transferencia de dominio, la transferencia de tarea, el valor del preentrenamiento especializado, el efecto del tamaño de los datos y el cambio en las representaciones internas \cite{piperno2025}.
+
+\begin{itemize}
+  \item \textbf{Pregunta 1.} ¿Puede transferirse el conocimiento de dominio de un modelo preentrenado en ese dominio cuando no se dispone de datos etiquetados en inglés para la tarea?
+  \item \textbf{Pregunta 2.} ¿Puede transferirse el conocimiento de tarea desde un modelo ajustado en inglés cuando ese tipo de datos sí existe?
+  \item \textbf{Pregunta 3.} Si no hay un modelo adaptado al dominio disponible en inglés, ¿qué beneficios tiene destilar el conocimiento de tarea desde un modelo ajustado a partir del mismo punto de partida que el estudiante?
+  \item \textbf{Pregunta 4.} ¿Cómo influye la cantidad de datos usada en el ajuste sobre el desempeño final?
+  \item \textbf{Pregunta 5.} ¿Qué diferencias aparecen en las representaciones internas del profesor y del estudiante después de la destilación?
+\end{itemize}
+
+Las tres primeras se responden contrastando un profesor con otro. La pregunta 4 es de escala y se responde con la curva de desempeño. La pregunta 5 es de mecanismo y se responde con análisis de representaciones.
+
+El diseño se detalla en la sección~\ref{sec:metodo}: el estudiante es mBERT, los profesores son $B_p$, $B_{ft}$ y $mB_{ft}$, y el baseline es el mismo mBERT ajustado sin destilación en la misma fracción de datos.
+
+La condición que el artículo describe como ausencia de datos en inglés merece una aclaración. En la pregunta 1 significa que no hay etiquetas inglesas de la tarea en el ajuste final, no que el inglés desaparezca. El profesor se entrenó con texto inglés, la destilación usa oraciones inglesas y sus traducciones, y los autores reconocen que todos los modelos se entrenaron parcialmente en inglés. El método no sirve para una institución que carece por completo de recursos en inglés; sirve para una que tiene acceso a un modelo preentrenado y a un traductor, pero no tiene anotación local suficiente. La condición realista es la escasez de etiquetas, no la ausencia de inglés.

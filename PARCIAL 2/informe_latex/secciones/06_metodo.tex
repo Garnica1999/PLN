@@ -1,0 +1,33 @@
+\section{Método}
+\label{sec:metodo}
+
+El marco se organiza en tres etapas, como resume la Figura~3 del artículo \cite{piperno2025}. La primera construye el corpus: selección de las 18 clases, límite de 512 tokens, traducción del entrenamiento inglés con mBART \cite{liu2020} y filtro de la prueba por BLEU. La segunda destila: un profesor entrenado en inglés transfiere sus representaciones a un estudiante mBERT mediante alineación de embeddings, sin etiquetas de la lengua destino. La tercera ajusta el estudiante con etiquetas nativas en cuatro fracciones y evalúa el resultado; en paralelo, el análisis de similitud representacional (RSA) compara al estudiante antes y después de la destilación, y la distancia entre matrices de confusión compara los modelos ya ajustados.
+
+La separación entre etapas es la decisión central. La destilación no ocurre durante el ajuste supervisado: el estudiante primero imita al profesor y después aprende la tarea con etiquetas de la lengua destino. Es el mismo orden que emplea \cite{reimers2020} para construir embeddings multilingües a partir de modelos monolingües, y difiere de los esquemas que combinan la señal del profesor con la supervisión en una sola fase. El profesor nunca necesita una muestra en las lenguas destino: produce representaciones en inglés que el estudiante imita en ambas. La alineación sigue la idea de Sentence Transformers \cite{reimers2019}: un encoder BERT convertido en representaciones de oración comparables.
+
+\subsection{Profesor, estudiante y alineaciones}
+
+El estudiante es mBERT en todas las condiciones \cite{devlin2019}. Los profesores son tres: $B_p$, BioBERT preentrenado en PubMed y PMC, que aporta dominio \cite{lee2020}; $B_{ft}$, BioBERT ajustado con etiquetas inglesas, que aporta dominio y tarea; y $mB_{ft}$, mBERT ajustado con etiquetas inglesas, que aporta tarea y comparte arquitectura con el estudiante. La comparación entre $B_{ft}$ y $mB_{ft}$ busca aislar el efecto del preentrenamiento de dominio, aunque también cambia el tokenizador y el vocabulario. La comparación de $B_p$ con el baseline mide la transferencia de dominio sin etiquetas. El diseño no incluye un mBERT preentrenado sin ajuste, de modo que el preentrenamiento de dominio y la cobertura lingüística (tokenizador y vocabulario) quedan confundidos en la pregunta 1.
+
+La destilación es a nivel de características y usa dos alineaciones que comparten los pesos del estudiante. La primera enfrenta al profesor en inglés con el estudiante en inglés sobre el mismo texto; la segunda, al profesor en inglés con el estudiante en la lengua destino sobre la traducción. Nuestra lectura es que la primera fija la geometría de referencia y la segunda proyecta la lengua destino sobre ella. Sin la primera, el estudiante podría deformar su espacio en inglés para acomodar la traducción; sin la segunda, no habría señal entre lenguas. El artículo no separa el efecto de cada término.
+
+\subsection{La pérdida}
+
+La función que se optimiza es Multiple Negatives Ranking Loss:
+
+\begin{equation}
+\mathrm{MNRL} = -\frac{1}{N}\sum_{i=1}^{N}
+\log \frac{\exp\left(\mathrm{sim}(u_i, v_i)\cdot \alpha\right)}
+{\sum_{j=1}^{N}\exp\left(\mathrm{sim}(u_i, v_j)\cdot \alpha\right)}
+\label{eq:mnrl}
+\end{equation}
+
+donde $N$ es el número de pares del lote, $u_i$ la consulta $i$, $v_i$ su par positivo, $v_j$ cada candidato, $\mathrm{sim}$ la similitud (coseno en la implementación habitual de Sentence Transformers; el artículo no la especifica) y $\alpha$ un factor de escala. El denominador recorre todos los pares, así que cada positivo compite con los demás y el número de negativos es $N-1$, fijado por el tamaño de lote, que el artículo no reporta.
+
+MSE obliga a que la representación del estudiante coincida coordenada a coordenada con la del profesor. Con una traducción automática, la referencia contiene ruido: otra elección léxica, un término mal traducido, una omisión. MSE penaliza esas diferencias como errores del estudiante y puede dejarlo por debajo del baseline. MNRL solo exige un orden relativo: el par correcto debe ser más similar que los demás del lote. Es una pérdida contrastiva con negativos dentro del lote; tolera mejor el ruido porque no fija un valor objetivo por dimensión.
+
+\subsection{Ajuste y análisis de representaciones}
+
+Después de la destilación, el estudiante se ajusta con las etiquetas de la lengua destino al 10, 25, 50 y 100\,\% del corpus nativo. La misma fracción se usa para el baseline noKD, el mismo mBERT ajustado sin destilación. El delta compara la destilación con el ajuste directo sobre la misma fracción de etiquetas; no aísla el efecto de la alineación del efecto de haber visto texto traducido adicional durante la destilación.
+
+Para la pregunta 5 se aplica RSA sobre las representaciones del token [CLS] \cite{devlin2019} de $N = 4.300$ muestras de prueba: el profesor las procesa en inglés y el estudiante, en su traducción. Para cada modelo se calcula la matriz $N \times N$ de similitud coseno, se aplana la triangular superior y se correlaciona con Pearson la matriz del profesor con la del estudiante, antes y después de la destilación. En paralelo, se extraen las matrices de confusión por lengua, se calcula la distancia euclidiana entre cada par de modelos y se visualiza en mapas de calor. El RSA mide si el estudiante se acerca al profesor, no si conserva las distinciones que la tarea necesita. La pérdida empuja en esa dirección, así que un aumento de correlación es la comprobación de que el mecanismo funcionó. El artículo no justifica el uso de [CLS] frente al promedio de tokens ni reporta qué correlación se obtendría por azar.
