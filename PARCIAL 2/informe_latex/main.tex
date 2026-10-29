@@ -1,0 +1,80 @@
+\documentclass[11pt]{tg_usta}
+% Informe PARCIAL 2 - NLP
+% Plantilla basada en tg_usta.cls del TALLER-2 (PUJ)
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{makecell}
+\usepackage{anysize}
+\usepackage{cite}
+\marginsize{1in}{1in}{1in}{1in} %% Márgenes NO MODIFICAR
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{subcaption}
+
+\newtheorem{definicion}{Definición}[section]
+\newtheorem{nota}{Nota}[section]
+\allowdisplaybreaks
+\decimalpoint
+
+\begin{document}
+\title[maintitle = Transferencia de conocimiento biomédico entre lenguas: análisis crítico de la destilación con Sentence Transformers,
+       shorttitle = Destilación multilingüe y conocimiento biomédico,
+       secondtitle = Parcial 2 - Procesamiento de Lenguaje Natural]
+
+\begin{authors}[Rivera, Carrillo, Garnica \& Prieto]
+
+\author[affiliation = PUJ,
+        firstname = Erika Valeria,
+        surname = Rivera Jimenez,
+        email = riveraev@javeriana.edu.co]
+
+\author[affiliation = PUJ,
+        firstname = Julian Guillermo,
+        surname = Carrillo Meneses,
+        email = carrillojuliang@javeriana.edu.co]
+
+\author[affiliation = PUJ,
+        firstname = Carlos Andres,
+        surname = Garnica Salazar,
+        email = carlos\_garnicas@javeriana.edu.co]
+
+\author[affiliation = PUJ,
+        firstname = Oscar Andres,
+        surname = Prieto Moreno,
+        email = o-prieto@javeriana.edu.co]
+
+\end{authors}
+
+\begin{mainabstract}
+
+Este informe analiza el artículo de Piperno et al. (2025) sobre destilación de conocimiento multilingüe con Sentence Transformers para clasificación temática en el dominio biomédico. El estudio traduce textos ingleses con mBART, alinea las representaciones de un profesor BioBERT o mBERT con un estudiante mBERT mediante Multiple Negatives Ranking Loss y ajusta el estudiante con etiquetas en español, francés y alemán. El máximo reportado es de 12,89 puntos de F1 con el 10\,\% de los datos; el promedio cae de 7,95 a 0,45 puntos al pasar del 10 al 100\,\%. El informe reconstruye el diseño, verifica las cifras, discute los límites de validez y responde dos preguntas del foro (cuándo justifica la destilación y qué evidencia exigiría su transferencia a Colombia) y tres de clase (transferencia de sesgos, mitigación y equivalencia semántica). La conclusión principal es que la destilación es una técnica de eficiencia de datos, no una garantía de equidad ni de validez clínica, y que su transferencia a textos médicos colombianos exige validación externa, anotación clínica y análisis de equidad. \\\\
+\textit{\textbf{Palabras clave:}} Destilación de conocimiento, Sentence Transformers, modelos multilingües, dominio biomédico, sesgo, evaluación crítica
+
+\end{mainabstract}
+
+\input{secciones/01_introduccion}
+\input{secciones/02_problema}
+\input{secciones/03_antecedentes}
+\input{secciones/04_preguntas}
+\input{secciones/05_datos}
+\input{secciones/06_metodo}
+\input{secciones/07_resultados}
+\input{secciones/08_discusion}
+\input{secciones/09_curso}
+\input{secciones/10_foro}
+\input{secciones/11_clase}
+\input{secciones/12_reflexion}
+\input{secciones/13_conclusiones}
+
+\nocite{*}
+\bibliographystyle{apalike}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,20 @@
+\section{Problema y contexto}
+\label{sec:problema}
+
+El artículo parte de una observación conocida: los corpus anotados, las herramientas y los modelos preentrenados se concentran en inglés, y esa concentración reduce la calidad de los sistemas en otras lenguas \cite{piperno2025}. La consecuencia excede lo técnico. En principio, si un modelo no procesa bien el español médico, una institución queda atada a recursos en inglés o a servicios externos, y los hablantes reciben sistemas menos precisos para decisiones que afectan su salud \cite{piperno2025}.
+
+\subsection{Las dos brechas}
+
+mBERT ilustra la brecha lingüística: comparte un vocabulario de subpalabras entre 104 lenguas y se entrena con las Wikipedias más grandes \cite{devlin2019}. La cobertura no implica exposición equilibrada: el tamaño de las Wikipedias varía y los registros enciclopédicos no son los de una historia clínica. El modelo puede reconocer la lengua y carecer del vocabulario técnico que la tarea exige.
+
+BioBERT ilustra la brecha de dominio: continúa el preentrenamiento de BERT sobre PubMed y PMC y mejora en varias tareas biomédicas, pero su conocimiento está en inglés \cite{lee2020}. mBERT es multilingüe, pero generalista. Cubrir ambas dimensiones con los medios habituales exige construir un modelo de dominio por lengua, con corpus anotado por especialistas. El costo de esa ruta es el argumento económico del artículo: la anotación clínica requiere especialistas, confidencialidad y tiempo, y se multiplica por cada lengua.
+
+El vocabulario agrava el problema. Los términos médicos son largos, composicionales y poco frecuentes, y la tokenización por subpalabras los fragmenta \cite{lee2020}. El corpus separa material para profesionales y para pacientes: el mismo tema se escribe de maneras distintas según el destinatario, y el clasificador debe cubrir ambas.
+
+\subsection{Alcance y pregunta central}
+
+El español es una de las lenguas con más hablantes y cuenta con modelos generales propios, BETO y MarIA, que reducen la brecha lingüística pero no la de dominio \cite{canete2020,gutierrez2022}. La solución del artículo, importar el conocimiento inglés y alinearlo con un estudiante multilingüe, evita entrenar un modelo biomédico en español desde cero. Para América Latina, donde los recursos anotados en salud son escasos, ese ahorro tiene interés práctico.
+
+Conviene precisar el alcance. El artículo no estudia variedades regionales. El corpus de destino combina manuales originales en cada lengua con traducciones automáticas del inglés para la destilación, y la evaluación se hace sobre textos originales de manuales, filtrados por su similitud con el entrenamiento traducido. No hay textos colombianos, mexicanos ni argentinos, ni términos locales, ni variación dialectal. El experimento responde una pregunta sobre transferencia entre lenguas, no sobre adecuación al español de una región.
+
+La pregunta central es si es posible transferir conocimiento de dominio y de tarea desde un modelo entrenado en inglés hacia un estudiante multilingüe, usando pares traducidos y sin etiquetas inglesas en el ajuste final, y cómo cambia esa transferencia según la cantidad de anotación disponible. El diseño busca separar el conocimiento de dominio, que proviene del preentrenamiento, del conocimiento de tarea, que proviene del ajuste supervisado. Nuestra objeción no es a la pregunta sino a la respuesta: el artículo la contesta con promedios de F1 sobre tres lenguas y sin medidas de dispersión, de modo que el resultado dice qué ocurrió en esos experimentos, no cuánto puede esperarse en otro corpus.

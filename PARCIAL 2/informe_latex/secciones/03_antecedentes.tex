@@ -1,0 +1,22 @@
+\section{Antecedentes y aporte}
+\label{sec:antecedentes}
+
+El artículo ordena su campo en dos familias: alineación de vocabulario y destilación de conocimiento \cite{piperno2025}. La primera acerca las lenguas en el espacio de representaciones; la segunda transfiere el comportamiento de un modelo a otro. Piperno et al.\ pertenecen a la segunda, aunque usan traducción automática para construir los pares.
+
+\subsection{Dos familias y un antecedente}
+
+Los trabajos de alineación buscan que palabras equivalentes en dos lenguas ocupen posiciones cercanas en un espacio compartido. Se apoyan en diccionarios bilingües, corpus paralelos o señales no supervisadas. Su límite aparece cuando la tarea depende de estructura y contexto: alinear palabras no transfiere la conducta de un clasificador ni el conocimiento de las capas de un modelo preentrenado. El límite se agrava cuando no hay corpus paralelo ni diccionario bilingüe que sirva de señal.
+
+Sentence-BERT es la infraestructura que hace medible la alineación: ajusta una red siamesa sobre BERT para que dos oraciones produzcan vectores comparables con similitud coseno \cite{reimers2019}. El antecedente directo es Reimers y Gurevych \cite{reimers2020}: un profesor monolingüe en inglés produce vectores, un estudiante multilingüe produce vectores para las oraciones y sus traducciones, y una pérdida de error cuadrático medio acerca ambos espacios. Piperno et al.\ adoptan ese esquema y lo declaran: su comparación principal es una reimplementación con MSE frente a su variante con MNRL. Lo que cambia es la pérdida, el dominio y el diseño experimental.
+
+BERT aporta la arquitectura: un codificador bidireccional preentrenado con enmascaramiento de tokens y predicción de la oración siguiente \cite{devlin2019}. BioBERT continúa ese preentrenamiento con literatura biomédica \cite{lee2020}; mBERT repite la arquitectura y los objetivos sobre 104 lenguas con un vocabulario compartido; mBART es un modelo secuencia a secuencia preentrenado con denoising multilingüe \cite{liu2020}. En el artículo, mBART no se estudia: es la herramienta que produce las traducciones. Esa distinción importa porque la calidad de mBART fija el techo de la alineación y el artículo no la mide con métricas semánticas.
+
+\subsection{Qué toma y qué aporta}
+
+El artículo toma cuatro elementos: el marco de destilación a nivel de características, la asimetría profesor monolingüe y estudiante multilingüe con la traducción como puente, la infraestructura de Sentence Transformers y la pérdida MSE como referencia. Los autores son explícitos en que no proponen un método nuevo ni modifican los fundamentos de la destilación. El aporte es empírico.
+
+El primer aporte es el uso de MNRL en este escenario. La pérdida no es una invención: los autores la presentan como novedad, pero no aportan una comparación que descarte usos previos de MNRL con pares traducidos. Su argumento es que tolera mejor el ruido que MSE; los resultados lo respaldan en 32 de 36 celdas. El segundo aporte es el diseño de profesores: BioBERT preentrenado, BioBERT ajustado y mBERT ajustado permiten contrastar el valor del dominio con el de la tarea.
+
+El tercer aporte es el barrido de 10, 25, 50 y 100\,\% de datos, que muestra que el beneficio se concentra en pocos datos. El cuarto aporte es el RSA y la distancia entre matrices de confusión, que buscan evidencia de mecanismo y no solo de exactitud.
+
+Nuestra valoración es que el aporte está en el diseño experimental y en la delimitación del escenario, no en la pérdida ni en la arquitectura. El artículo no compara su método con la alineación de vocabulario ni con el entrenamiento sobre traducciones, y tampoco incluye un codificador monolingüe en español como alternativa. Esa ausencia deja abierta la pregunta que más interesa a un lector latinoamericano: si el resultado se repetiría con BETO o MarIA.

@@ -1,0 +1,36 @@
+\section{Preguntas del foro}
+\label{sec:foro}
+
+Las dos preguntas finales tienen naturalezas distintas. La primera es de ingeniería: cuándo el costo de traducir y destilar se paga con la mejora. La segunda es de validez: qué evidencia haría falta para llevar el resultado a textos clínicos colombianos. Una respuesta afirmativa a la primera no dice nada sobre la segunda.
+
+\subsection{¿Cuándo justifica la mejora añadir traducción y destilación al entrenamiento?}
+
+La ganancia reportada \cite{piperno2025} depende del déficit de etiquetas: el aumento medio es de 7,95 puntos de F1 con el 10\,\% de los datos, 1,72 con el 25\,\%, 1,05 con el 50\,\% y 0,45 con el 100\,\%. El máximo es de 12,89 puntos en francés con el 10\,\% y el profesor $mB_{ft}$; el mínimo, de $-1{,}77$ en español con el 100\,\% y ese mismo profesor. Siete de las 36 celdas son negativas.
+
+El primer criterio combina la escasez de etiquetas y la calidad del profesor. Con el 10 o el 25\,\% del corpus, la mejora esperada supera los 1,7 puntos en promedio y llega a dos dígitos en algunas combinaciones; con el corpus completo cae por debajo de medio punto y aparecen pérdidas. El BioBERT preentrenado supera en promedio al ajustado en aproximadamente 0,70 puntos, según los autores; la Tabla~3 da 0,78 al promediar las 12 diferencias. No hace falta anotar en inglés para tener profesor. La lectura por celda matiza: con el 100\,\% de los datos, el ajustado supera al preentrenado por 0,30 en alemán y cae 1,71 puntos por debajo del baseline en español. La elección debería validarse con el corpus destino.
+
+El segundo criterio combina la calidad de la traducción y la comparación con translate-train. mBART es general y el artículo no usa léxico especializado, ida y vuelta, COMET ni BERTScore. MNRL rinde mejor que el error cuadrático medio en 32 de 36 casos; los autores lo atribuyen a la sensibilidad de MSE al ruido. Pero tolerar no es corregir: un par que invierte una negación se aprende junto con el conocimiento. Donde el término tiene consecuencia, hace falta control terminológico antes de entrenar. El artículo contrasta contra el ajuste directo y contra el error cuadrático medio, no contra entrenar con traducciones sin destilar, ni contra TF-IDF, ni contra BETO o MarIA. Sin esa comparación, la mejora incluye el efecto de aumentar los datos. Si un clasificador simple sobre traducciones empata, no se justifica mantener dos alineaciones, un traductor y un profesor.
+
+El tercer criterio combina el costo y la significancia. La destilación no reduce el costo de inferencia: el estudiante es mBERT, del mismo tamaño que el baseline, así que en producción se ejecuta el mismo modelo. Lo que se reduce es la anotación. Traducir el conjunto inglés de 11.860 muestras a las tres lenguas y ejecutar la alineación añaden cómputo de entrenamiento, no de despliegue. No se reportan semillas ni repeticiones ni intervalos, y no consta que haya más de una corrida por configuración. Varias diferencias son de 0,11, 0,17, $-0{,}03$ y $-0{,}04$ puntos, inseparables del ruido. Solo un delta sostenido en varias semillas, con un intervalo que excluya el cero, justifica cambiar la arquitectura; mientras no exista, una diferencia menor a un punto es un empate.
+
+El cuarto criterio es el riesgo clínico. El filtro de similitud por BLEU conservó entre el 40,8 y el 53,0\,\% de la prueba original, y las cifras se calculan sobre esa parte. Una mejora que dependa de la selección no se sostiene en una distribución sin filtrar.
+
+Añadiríamos traducción y destilación con hasta el 25\,\% de las etiquetas, sin modelo local disponible, terminología verificada, ventaja medida sobre translate-train y un delta que sobreviva a la variación entre semillas. Si falla la terminología, si el baseline empata o si no hay repeticiones, conviene anotar más datos.
+
+\subsection{¿Qué evidencia exigiríamos para transferir este resultado a textos médicos de Colombia?}
+
+El corpus son manuales MSD en cuatro lenguas, con traducciones automáticas del inglés para la destilación. El texto clínico colombiano es otra cosa: notas de evolución, epicrisis, laboratorio, triage y facturación. Cambian el vocabulario, la longitud, la sintaxis, las abreviaturas y la variedad del español. La transferencia exige una escalera de evidencia.
+
+El primer escalón es la reproducción. No se precisa si el F1 es macro, micro o ponderado, y con 18 clases desbalanceadas eso cambia el número; tampoco se declara código ni se reportan semillas. Pediríamos reejecución con la partición original, varias semillas y la agregación declarada.
+
+El segundo es la validación externa con textos clínicos locales. Antes de entrenar se mide el cambio de distribución: vocabulario, longitud y proporción de términos fuera del vocabulario de mBERT frente al corpus de origen. Si esa proporción es alta, la caída es esperable y debe cuantificarse.
+
+El tercero es la taxonomía y la anotación. Las 18 clases no equivalen a la CIE-10, al CUPS ni a los grupos de la RIAS; el mapeo directo pierde granularidad y algunas categorías mezclan tema y audiencia. Hay que decidir si se conserva la taxonomía del manual o se construye una propia. La anotación debe hacerla al menos dos clínicos, con kappa de Cohen o de Fleiss por clase y adjudicación. Si el desacuerdo entre expertos supera el delta que se quiere detectar, el experimento no resuelve la pregunta.
+
+El cuarto son los baselines y la robustez. BETO \cite{canete2020} y MarIA \cite{gutierrez2022} ajustados con datos colombianos, y TF-IDF con regresión logística. Si un encoder en español con datos locales iguala al estudiante destilado, la premisa del artículo deja de aplicarse. Hay que probar abreviaturas, errores de digitación, siglas institucionales y nombres comerciales. La tolerancia de MNRL se midió contra ruido de traducción, no contra ruido de escritura clínica.
+
+El quinto es la calibración y la equidad. Un clasificador que orienta derivaciones necesita probabilidades calibradas: error de calibración esperado y curvas de fiabilidad por clase. Exigiríamos métricas desagregadas por región, género, régimen de afiliación y edad; diez puntos de diferencia entre contributivo y subsidiado invalidarían el uso aunque el promedio fuera alto.
+
+El sexto es el cumplimiento y la reproducibilidad. La Ley 1581 de 2012 trata los datos de salud como sensibles y exige autorización y finalidad; la Resolución 1995 de 1999 regula la historia clínica y su reserva. Añadiríamos aval de comité de ética y anonimización verificable. La reproducibilidad exige código, semillas, checkpoints, ficha de modelo y lectura de errores por clínicos. La pregunta que decide el despliegue es si los errores son tolerables en el uso previsto, no cuántos puntos sube el F1.
+
+La evidencia que consideraríamos insuficiente es fácil de enumerar: una mejora sobre la prueba de MSD, que no representa el texto colombiano; un BLEU alto, que mide solapamiento léxico; una correlación alta en el análisis de representaciones, que solo confirma la alineación; una corrida única con dos puntos de diferencia; una demostración con veinte ejemplos; un benchmark sin datos locales. En Colombia no faltan manuales traducidos, faltan corpus clínicos anotados y gobernados. La evidencia que pediríamos separa una mejora de benchmark de un instrumento clínico.

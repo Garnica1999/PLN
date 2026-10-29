@@ -1,0 +1,38 @@
+\section{Discusión crítica}
+\label{sec:discusion}
+
+El artículo \cite{piperno2025} plantea una pregunta pertinente y la responde con un diseño legible: un profesor entrenado en inglés, un estudiante multilingüe y una alineación de representaciones evaluada en tres lenguas y cuatro tamaños. La contribución es real en eficiencia de datos. Nuestra lectura es que la evidencia sostiene afirmaciones más estrechas que las que el texto formula.
+
+\subsection{Validez interna}
+
+Los autores no reportan semillas, repeticiones, desviaciones estándar, intervalos de confianza ni pruebas de significancia, y no consta que hayan hecho más de una corrida por configuración.
+
+Con pruebas de 1.842 a 2.317 muestras, una diferencia de 0,1 puntos de F1 equivale a reclasificar un par de ejemplos si el F1 es micro; con macro, depende del tamaño de la clase. El $+0{,}11$ de $B_p$ en español con el 25\,\%, el $+0{,}30$ frente al $+0{,}17$ de $B_{ft}$ en alemán con el 25\,\% y el $+0{,}00$ de $mB_{ft}$ en francés con el 50\,\% caen en ese margen. La ventaja media que reportan los autores es de aproximadamente 0,70 puntos de $B_p$ sobre $B_{ft}$; la Tabla~3 da 0,78 al promediar las 12 diferencias, y ninguna de las dos tiene medida de dispersión. Los asteriscos convierten variación no medida en una decisión categórica. El resultado principal no depende de esas décimas: la caída de $+7{,}95$ a $+0{,}45$ puntos se repite en las tres lenguas y en los tres profesores.
+
+La Tabla~\ref{tab:f1} reporta noKD absoluto y deltas, de modo que el lector debe sumar. Tampoco se define si el F1 es macro, micro o ponderado, y con 18 clases desbalanceadas la distinción pesa. La notación agrava la ambigüedad: el texto presenta los deltas con signo de porcentaje, mientras la tabla son puntos; leído como porcentaje relativo, $+12{,}89$ sobre 63,73 daría 8,21 puntos. Tres semillas y un bootstrap pareado cerrarían la brecha.
+
+\subsection{Validez de constructo}
+
+La Figura~3 describe el preprocesamiento como la creación de un conjunto «unbiased». El término designa la eliminación de muestras de prueba cuyo BLEU frente al entrenamiento traducido supera 0,3: un control de contaminación, no una auditoría de equidad. El filtro descansa en BLEU, que mide n-gramas, no significado: dos paráfrasis con el mismo contenido obtienen BLEU bajo y permanecen. El umbral 0,3 se justifica con una observación informal, sin muestra ni acuerdo interanotador. La calidad de la traducción no se mide: no hay COMET \cite{rei2020}, BERTScore \cite{zhang2020}, ida y vuelta ni revisión terminológica. La fidelidad de mBART en terminología médica queda sin evaluar.
+
+Sin embargo, el filtro tampoco es neutro para la evaluación. Conserva entre el 40,8 y el 53,0\,\% de la prueba original, y el F1 se calcula, según la Tabla~2, sobre ese subconjunto. La Figura~2 del artículo muestra que la proporción por clase se mantiene, lo que atiende la composición pero no la dificultad. El sesgo de selección puede operar en ambas direcciones: si se eliminan duplicados fáciles, el F1 subestima el desempeño esperado; si se eliminan casos atípicos, lo sobreestima. La comparación interna es justa; lo que no se puede es leer ese F1 como desempeño en MSD.
+
+El RSA se presenta como evidencia de transferencia. La pérdida empuja al estudiante hacia el profesor, así que una correlación mayor comprueba el mecanismo, no la comprensión clínica. Hay un confundidor: el profesor procesa inglés y el estudiante texto traducido, de modo que la correlación mezcla alineación con fidelidad de la traducción. Se calcula sobre millones de pares dependientes y se reporta sin intervalo.
+
+La separación entre dominio y tarea se apoya en la identidad de los profesores, pero los tres combinan de forma distinta preentrenamiento y ajuste; el diseño no es factorial. «Sin datos en inglés» designa el escenario sin etiquetas inglesas en el ajuste, pero el inglés está presente en toda la destilación.
+
+\subsection{Validez externa}
+
+El corpus proviene de una sola fuente, MSD Manual Topics, con 18 macroclases. Los textos son educativos, no clínicos: no hay notas de historia clínica, laboratorio, transcripciones ni literatura primaria. La tarea es clasificación temática, no extracción de entidades ni codificación diagnóstica. Las tres lenguas son de altos recursos; «low-resource» describe el régimen de datos, no la lengua. El español se trata como un bloque único, sin variedades ni textos colombianos.
+
+El artículo compara contra noKD, contra MSE y contra las curvas de BioBERT y mBERT de la Figura~4, pero faltan baselines. Falta translate-train: ajustar mBERT sobre el texto traducido con etiquetas inglesas y sin destilación, que separaría el valor de los datos traducidos del valor de la alineación. Faltan TF-IDF con un clasificador lineal, que en 18 clases y unas 12.000 muestras es un competidor serio, y BETO \cite{canete2020} o MarIA \cite{gutierrez2022}. Sin ellos no se sabe si mBERT era el estudiante adecuado.
+
+\subsection{Reproducibilidad y transparencia}
+
+El artículo no declara disponibilidad de código. Faltan el tamaño de lote, que en MNRL define los negativos; el valor de $\alpha$; la tasa de aprendizaje, épocas y criterio de parada; el pooling; y el peso de las dos alineaciones. La receta del baseline tampoco se detalla: para que el delta mida destilación y no presupuesto de ajuste, noKD y los estudiantes deberían compartir hiperparámetros. La comparación con MSE es una reimplementación sin detalle de fidelidad. El RSA usa $N = 4.300$ mientras la Tabla~2 reporta 4.295; no cambia conclusiones, pero es un artefacto. mBART-large-50 es de 2020 y no se compara con otros traductores.
+
+\subsection{Ética y despliegue}
+
+No hay evaluación de sesgo: ni WEAT, ni StereoSet \cite{nadeem2021}, ni CrowS-Pairs \cite{nangia2020}, ni métricas desagregadas. La destilación puede transportar estereotipos del corpus inglés a las tres lenguas. La etiqueta «unbiased» agrava el riesgo. No hay validación clínica: ni adjudicación por médicos, ni análisis de errores por gravedad. La motivación de acceso equitativo es más amplia que la evidencia. El análisis de privacidad está ausente; el corpus es público, pero el despliegue implicaría datos de pacientes.
+
+La evidencia sostiene que la alineación mejora la eficiencia de datos en clasificación temática multilingüe sobre un corpus divulgativo. No sostiene que el estudiante comprenda el dominio clínico, que el resultado sea equitativo ni que sea desplegable en atención en salud.

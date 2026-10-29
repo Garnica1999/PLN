@@ -1,0 +1,38 @@
+\section{Preguntas de clase}
+\label{sec:clase}
+
+Las tres preguntas comparten un supuesto: la calidad de un modelo multilingüe no se agota en su F1. Las respondemos en el orden en que surgieron.
+
+\subsection{¿Puede la destilación transferir sesgos de género y estereotipos a otras lenguas?}
+
+Es posible en principio, y el mecanismo es geométrico. La destilación de características que evalúa \cite{piperno2025} no copia etiquetas: alinea la geometría del estudiante con la del profesor, de modo que las distancias relativas entre representaciones pasan a ser el objetivo de aprendizaje. El sesgo vive en esa geometría, no en las etiquetas. Caliskan et al.\ \cite{caliskan2017} mostraron que los embeddings absorben asociaciones humanas presentes en el corpus, y ese es el material que MNRL empuja a reproducir. Si en el espacio del profesor las oraciones sobre enfermería están más cerca de las de mujeres que de las de hombres, o si cierta enfermedad aparece asociada a un grupo, esa relación forma parte de la estructura que la pérdida aproxima. El estudiante puede aprenderla sin ver una etiqueta de género. Nadeem et al.\ \cite{nadeem2021} y Nangia et al.\ \cite{nangia2020} documentan asociaciones estereotipadas en modelos preentrenados, y la destilación es una vía para que viajen de una lengua a otra.
+
+El español, el francés y el alemán añaden el género gramatical. El inglés \textit{the patient} no marca género; la traducción debe elegir entre \textit{el paciente} y \textit{la paciente}, entre \textit{der Patient} y \textit{die Patientin}. mBART \cite{liu2020} decide con los datos paralelos con los que fue entrenado y puede introducir sus propios estereotipos. El par que recibe el estudiante carga un género que el original no codificaba, y la alineación lo trata como parte del significado. El género impuesto por la traducción puede amplificar la asociación que el profesor ya tenía. En todo el flujo no hay un paso que retire esa asociación.
+
+La formulación defendible es que el estudiante puede heredar y, en algunos casos, amplificar. La destilación es una proyección con pérdida: el estudiante tiene otro tokenizador y otra capacidad; el ajuste posterior puede atenuar o reforzar la asociación; y el ruido de traducción no es sesgo del profesor. Con los datos publicados no se puede afirmar la reproducción exacta ni descartarla.
+
+Lo que el artículo no hace es medir el sesgo. No hay WEAT ni SEAT, no hay StereoSet ni CrowS-Pairs, y no hay métricas desagregadas por género. El término \textit{unbiased} de la Figura~3 se refiere a la dissimilaridad medida con BLEU entre la prueba y el entrenamiento traducido, no a equidad.
+
+\subsection{¿Qué estrategias permiten reducir esos sesgos?}
+
+La primera es medir. Antes de elegir un método hay que establecer una línea base de sesgo en las representaciones del estudiante, antes y después de la destilación, con SEAT sobre las representaciones de oración, con pares contrafactuales que cambien solo el género o el origen y con métricas desagregadas por grupo. Sin esa medición no hay forma de saber si una intervención funcionó.
+
+La segunda es intervenir sobre los datos: aumentar ejemplos contrafactuales, equilibrar plantillas y traducir las dos variantes de una frase para que el traductor no elija una sola. En un corpus de manuales médicos, esto significa incluir descripciones de pacientes y profesionales en ambas formas y revisar que ginecología no quede asociada automáticamente con un género.
+
+La tercera es intervenir sobre las representaciones. INLP \cite{ravfogel2020} proyecta iterativamente sobre el espacio nulo de clasificadores lineales del atributo; SentenceDebias \cite{liang2020} resta una dirección de sesgo estimada en embeddings de oración. Ambos exigen declarar el atributo que se quiere retirar y tienen un costo: es esperable que \textit{Gynecology and obstetrics} y \textit{Women's health issues} correlacionen con el género (el artículo no lo mide), de modo que eliminar la dirección puede borrar señal útil. El compromiso entre equidad y exactitud debe medirse.
+
+La cuarta es calibrar por grupo y evaluar con hablantes nativos y clínicos, porque un estereotipo en español sobre \textit{la enfermera} no coincide con el del inglés ni con el de una región colombiana. La quinta es documentar: fichas de modelo, auditoría de los datos de traducción y reporte de métricas por grupo antes de cualquier despliegue.
+
+BLEU y MNRL no son mecanismos antisesgo. BLEU mide solapamiento de n-gramas y MNRL es una pérdida de ranking; ninguna tiene noción de atributo protegido. El filtro de BLEU retira muestras de prueba semejantes al entrenamiento y cambia la distribución, no la equidad. Ningún método elimina el sesgo por completo; el objetivo es acotarlo, medirlo y documentarlo con un umbral de tolerancia declarado.
+
+\subsection{¿Cómo se garantiza la equivalencia semántica?}
+
+MNRL garantiza un orden relativo dentro del lote, no equivalencia de significado. La pérdida exige que el par positivo esté más cerca que los negativos del lote, y nada en ella afirma que la traducción sea correcta. Si el par es falso, el modelo aprende a acercar un par falso. La composición del lote determina qué contrastes se aprenden, y el artículo no describe cómo muestrea los negativos ni reporta el tamaño de lote o el valor de $\alpha$.
+
+BLEU es léxico: compara n-gramas con una referencia y es insensible a una negación invertida, a un cambio de dosis o a un error de lateralidad. «No presenta dolor» y «presenta dolor» comparten casi todos sus n-gramas. mBART, además, puede mistraducir términos médicos, y el artículo no emplea léxico especializado, ida y vuelta, COMET \cite{rei2020} ni BERTScore \cite{zhang2020}. El umbral de 0,3 se aplica para filtrar la prueba, no para validar los pares.
+
+mBERT \cite{devlin2019} es generalista, entrenado sobre Wikipedia en 104 lenguas, y su cobertura del español clínico es, en principio, limitada; el artículo no la mide. Sin embargo, el artículo ya prueba el conocimiento de dominio en las preguntas 1 y 3: compara BioBERT preentrenado, BioBERT ajustado y mBERT ajustado como profesores. El profesor preentrenado supera en aproximadamente 0,70 puntos en promedio al ajustado, según los autores, y un profesor generalista produce mejoras comparables. La limitación no es que nadie haya comprobado el dominio; la comprobación existe y su resultado es que la ventaja es pequeña. Un estudiante BETO \cite{canete2020} o MarIA \cite{gutierrez2022} tendría mejor cobertura del español, pero trasladaría el problema: la equivalencia y el sesgo seguirían sin medirse.
+
+Un preentrenamiento continuo con corpus médicos multilingües mejoraría la cobertura de dominio, pero no garantiza la equivalencia: un modelo puede mejorar en español médico y aun así invertir una negación. Tampoco eliminaría la validación humana; cambiaría qué debe revisar.
+
+Nuestra propuesta combina controles en la traducción y en la evaluación: léxico especializado y restricciones terminológicas de la CIE-10, el CUPS y nombres de medicamentos; ida y vuelta con comparación; COMET y BERTScore como medidas complementarias, con sus límites; negativos duros que difieran solo en negación, temporalidad, dosis o lateralidad; y anotación experta de una muestra estratificada. La calidad de los pares debería evaluarse por separado del F1, algo que el artículo nunca hace. La equivalencia es una propiedad empírica de cada par y se audita; no se deduce de la pérdida.
