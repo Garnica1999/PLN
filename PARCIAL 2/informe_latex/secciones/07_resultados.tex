@@ -1,7 +1,11 @@
 \section{Resultados}
 \label{sec:resultados}
 
-La Tabla~\ref{tab:f1} reproduce los 12 casos de la Tabla~3 del artículo. La columna \textit{noKD} es el F1 absoluto del mBERT ajustado sin destilación; las tres restantes son diferencias en puntos de F1 frente a ese baseline. El artículo no publica el F1 absoluto de los modelos destilados, así que la comparación se hace sobre deltas.
+La Tabla~\ref{tab:f1} reproduce los 12 casos de la Tabla~3 del artículo. La columna \textit{noKD} es el F1 absoluto del mBERT ajustado sin destilación; las tres restantes son diferencias en puntos de F1 frente a ese baseline.
+
+
+
+De las 36 celdas, 28 son positivas, una es cero (francés, 50\,\%, $mB_{ft}$) y 7 son negativas. El máximo es $+12{,}89$ (francés, 10\,\%, $mB_{ft}$) y el mínimo, $-1{,}77$ (español, 100\,\%, $mB_{ft}$). Los autores reportan un aumento medio de $+3{,}81$ puntos y una disminución media de $-0{,}89$. Nuestra comprobación aritmética indica que $+3{,}81$ es el promedio de las 28 celdas positivas y $-0{,}89$ el de las 7 negativas; el promedio de las 36 celdas es $+2{,}79$. El valor de $+3{,}81$ describe la magnitud típica de una ganancia, no la ganancia esperada de una configuración al azar.
 
 \begin{table}[H]
 \centering
@@ -34,13 +38,11 @@ Alemán & 100\,\% & $87{,}45$ & $+2{,}18$ & $\mathbf{+2{,}48}$ & $-1{,}49$ \\
 {\footnotesize Nota: elaboración propia a partir de la Tabla~3 de \cite{piperno2025}. \textit{noKD} es el F1 absoluto; las otras columnas son diferencias en puntos de F1. En negrita, el mejor profesor de cada fila. El artículo rotula los deltas como porcentajes, pero la unidad correcta es el punto de F1.}
 \end{table}
 
-De las 36 celdas, 28 son positivas, una es cero (francés, 50\,\%, $mB_{ft}$) y 7 son negativas. El máximo es $+12{,}89$ (francés, 10\,\%, $mB_{ft}$) y el mínimo, $-1{,}77$ (español, 100\,\%, $mB_{ft}$). Los autores reportan un aumento medio de $+3{,}81$ puntos y una disminución media de $-0{,}89$. Nuestra comprobación aritmética indica que $+3{,}81$ es el promedio de las 28 celdas positivas y $-0{,}89$ el de las 7 negativas; el promedio de las 36 celdas es $+2{,}79$. El valor de $+3{,}81$ describe la magnitud típica de una ganancia, no la ganancia esperada de una configuración al azar.
-
 Por lengua, el promedio de las 12 configuraciones es $+4{,}84$ en francés, $+2{,}48$ en alemán y $+1{,}06$ en español. Por tamaño, $+7{,}95$, $+1{,}72$, $+1{,}05$ y $+0{,}45$. La Figura~\ref{fig:ganancia} muestra las dos tendencias. El promedio por tamaño cae de forma monótona, pero el francés y el alemán no: el alemán toca fondo en el 25\,\% ($-0{,}18$) y se recupera en el 50\,\% ($+1{,}99$); el francés repunta en el 100\,\% ($+1{,}25$); el español cae de $+4{,}17$ a $+0{,}61$ entre el 10\,\% y el 25\,\% y sigue bajando hasta $-0{,}95$. Las celdas negativas se reparten así: ninguna al 10\,\%, una al 25\,\%, tres al 50\,\% y tres al 100\,\%. El patrón respalda que la destilación ayuda sobre todo cuando faltan etiquetas.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.78\textwidth]{figuras/ganancia_media.png}
+\includegraphics[width=0.68\textwidth]{figuras/ganancia_media.png}
 \caption{Ganancia media en puntos de F1 por lengua y tamaño del conjunto de ajuste. Cada punto promedia los tres profesores ($B_p$, $B_{ft}$, $mB_{ft}$) frente a \textit{noKD}; la línea negra promedia las tres lenguas. Elaboración propia a partir de la Tabla~3 de \cite{piperno2025}.}
 \label{fig:ganancia}
 \end{figure}
