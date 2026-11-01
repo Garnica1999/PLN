@@ -121,3 +121,5 @@ VRAM o si hay menos de 14 GB libres.
 - `contexto_citas` solo resuelve sentencias del corpus 1992-2021.
 - El resumen de evaluacion lee JSON congelados; si falta una clave devuelve
   `null` en lugar de fabricar el valor.
+
+`/v1/ask` acepta `pensar: true` para habilitar el razonamiento nativo del modelo: amplia `num_predict` a 2048 y devuelve el pensamiento en el campo `pensamiento`. Cuesta latencia y contexto; por defecto esta desactivado.

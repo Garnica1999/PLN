@@ -177,6 +177,29 @@ def test_chat_small_talk_uses_router(app: AppTest) -> None:
     assert "asistente de Juris-PLN" in content
 
 
+def test_chat_pensamiento_se_puede_activar(app: AppTest) -> None:
+    """El interruptor de razonamiento existe y el router sigue respondiendo."""
+    app.radio(key="screen").set_value("Consulta asistida")
+    app.run()
+
+    assert any(
+        "Razonamiento del modelo" in str(caja.label) for caja in app.checkbox
+    )
+    app.checkbox(key="chat_pensar").set_value(True)
+    app.run()
+    assert any(
+        "Razonamiento activado" in str(leyenda.value) for leyenda in app.caption
+    )
+
+    app.text_area(key="chat_question").set_value("Hola")
+    app.run()
+    app.button(key="chat_ask").click()
+    app.run(timeout=TIMEOUT)
+
+    assert not app.exception
+    assert "asistente de Juris-PLN" in markdown_text(app)
+
+
 def test_chat_out_of_scope_uses_router(app: AppTest) -> None:
     """Una pregunta ajena al dominio se responde por router, sin LLM."""
     app.radio(key="screen").set_value("Consulta asistida")

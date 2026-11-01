@@ -58,6 +58,14 @@ El backend solo acepta peticiones CORS de los orígenes locales del frontend
 Modelo por defecto del agente: `qwen3.8:diario-8k-q3_k_s` (seleccionable en la
 barra lateral de la interfaz).
 
+En la pantalla de consulta asistida hay un interruptor de razonamiento
+(`thinking`). Activado, el modelo razona antes de responder y el pensamiento se
+muestra en un panel aparte; la respuesta pasa de unos 10 s a unos 40 s en
+caliente y consume más contexto (el modelo por defecto tiene 8k). Desactivado,
+el sistema responde igual que antes. No todos los modelos soportan
+razonamiento: si el elegido no lo soporta, el backend cae al plan determinista
+y lo indica en la respuesta.
+
 ## Endpoints
 
 | Método | Ruta | Uso |
@@ -70,7 +78,7 @@ barra lateral de la interfaz).
 | GET | `/v1/article/{n}` | texto del artículo constitucional |
 | GET | `/v1/article/{n}/jurisprudencia` | sentencias que citan el artículo, con PageRank |
 | GET | `/v1/similar/{id}` | sentencias similares por similitud de texto |
-| POST | `/v1/ask` | agente con tool calling y guardrails |
+| POST | `/v1/ask` | agente con tool calling y guardrails; `pensar=true` habilita el razonamiento del modelo |
 | GET | `/v1/eval/summary` | métricas con procedencia, comparativa de rutas y guardrails |
 
 ## Resultados principales

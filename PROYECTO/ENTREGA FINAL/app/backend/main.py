@@ -210,7 +210,11 @@ def similar(
 def ask(request: AskRequest) -> dict:
     """Consulta conversacional con router, herramientas y grounding."""
     return agent.responder(
-        request.pregunta, modelo=request.model, rerank=request.rerank, k=request.k
+        request.pregunta,
+        modelo=request.model,
+        rerank=request.rerank,
+        k=request.k,
+        pensar=request.pensar,
     )
 
 

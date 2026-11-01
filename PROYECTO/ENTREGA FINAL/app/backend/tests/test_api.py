@@ -268,6 +268,27 @@ def test_agente_sin_tool_calls_usa_plan_determinista(monkeypatch) -> None:
     assert "T-293" in resultado["respuesta"]
 
 
+def test_crear_llm_amplia_salida_con_pensamiento() -> None:
+    """El modo pensamiento activa reasoning y amplia el presupuesto de salida."""
+    normal = agent._crear_llm("modelo-demo", False)
+    pensando = agent._crear_llm("modelo-demo", True)
+    assert normal.reasoning is False
+    assert pensando.reasoning is True
+    assert pensando.num_predict == agent.NUM_PREDICT_PENSANDO
+    assert pensando.num_predict > normal.num_predict
+
+
+def test_ask_acepta_pensar_sin_cargar_modelo(cliente: TestClient) -> None:
+    """El router acepta el flag de pensamiento y no devuelve razonamiento."""
+    respuesta = cliente.post(
+        "/v1/ask", json={"pregunta": "Muy buenas", "pensar": True}
+    )
+    assert respuesta.status_code == 200
+    datos = respuesta.json()
+    assert datos["modo"] == "small_talk"
+    assert datos["pensamiento"] is None
+
+
 def test_grounding_detecta_citas_no_verificadas() -> None:
     """Una cita o un articulo ausente de la evidencia se marca como no verificado."""
     evidencia = {

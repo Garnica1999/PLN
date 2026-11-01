@@ -111,6 +111,14 @@ class AskRequest(BaseModel):
         le=20,
         description="Articulos de la CP que recupera la herramienta de vinculo.",
     )
+    pensar: bool = Field(
+        default=False,
+        description=(
+            "Habilita el razonamiento nativo del modelo. Amplia el presupuesto "
+            "de salida y devuelve el pensamiento en 'pensamiento'; la respuesta "
+            "tarda mas y consume mas contexto."
+        ),
+    )
 
 
 # ===== SECCION 2: respuestas de producto =====
@@ -355,6 +363,7 @@ class AskResponse(BaseModel):
     intencion: str
     tool_calls: list[ToolCallTraza] = Field(default_factory=list)
     grounding: Grounding
+    pensamiento: str | None = None
     modelo: str
     latencia_ms: int
     advertencia: str | None = None

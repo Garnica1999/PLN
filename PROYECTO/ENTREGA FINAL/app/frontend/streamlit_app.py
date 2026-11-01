@@ -1556,6 +1556,11 @@ def render_chat_answer(answer: dict[str, Any]) -> None:
     if warning:
         st.warning(f"Aviso del backend: {warning}")
 
+    pensamiento = answer.get("pensamiento")
+    if pensamiento:
+        with st.expander("Razonamiento del modelo", expanded=False):
+            st.text(str(pensamiento))
+
     grounding = answer.get("grounding") or {}
     verified = grounding.get("citas_verificadas") or []
     unverified = grounding.get("citas_no_verificadas") or []
@@ -1613,6 +1618,20 @@ def page_chat(client: ApiClient, model: str) -> None:
         )
 
     st.caption(f"Modelo seleccionado: {model}.")
+    pensar = st.checkbox(
+        "Razonamiento del modelo (thinking)",
+        key="chat_pensar",
+        help=(
+            "El modelo razona antes de responder y el pensamiento se muestra "
+            "aparte. Cuesta más tiempo: con el modelo por defecto la respuesta "
+            "pasa de unos 10 s a unos 40 s, y consume más contexto."
+        ),
+    )
+    if pensar:
+        st.caption(
+            "Razonamiento activado: la respuesta tarda más y el pensamiento se "
+            "muestra al final, en un panel aparte."
+        )
     if st.button("Consultar", type="primary", key="chat_ask"):
         question = (st.session_state.get("chat_question") or "").strip()
         if len(question) < 2:
@@ -1622,7 +1641,7 @@ def page_chat(client: ApiClient, model: str) -> None:
                 f"Consultando a {model}. La primera respuesta puede tardar."
             ):
                 try:
-                    answer = client.ask(question, model=model)
+                    answer = client.ask(question, model=model, pensar=pensar)
                 except ApiError as exc:
                     st.error(f"Error: {exc}")
                     st.caption(

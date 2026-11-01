@@ -303,6 +303,7 @@ class ApiClient:
         model: str | None = None,
         rerank: bool = False,
         k: int = 6,
+        pensar: bool = False,
     ) -> dict[str, Any]:
         """Formula una consulta al agente conversacional.
 
@@ -311,6 +312,8 @@ class ApiClient:
             model: Modelo de ollama; si se omite se usa el del backend.
             rerank: Activa la ruta de recuperación con rerank.
             k: Artículos que recupera la herramienta de vínculo.
+            pensar: Habilita el razonamiento del modelo; la respuesta tarda
+                más y devuelve el pensamiento aparte.
 
         Returns:
             Respuesta de /v1/ask.
@@ -321,6 +324,7 @@ class ApiClient:
                 "model": model,
                 "rerank": rerank,
                 "k": k,
+                "pensar": pensar,
             }
         )
         return self._request(

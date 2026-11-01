@@ -39,6 +39,9 @@ OLLAMA_URL = "http://127.0.0.1:11434"
 MODELO_DEFECTO = "qwen3.8:diario-8k-q3_k_s"
 NUM_CTX = 8192
 NUM_PREDICT = 512
+# Con razonamiento el modelo gasta salida en el bloque de pensamiento y en la
+# respuesta; si el presupuesto es corto devuelve contenido vacio.
+NUM_PREDICT_PENSANDO = 2048
 TIMEOUT_LLM_S = 180.0
 TIMEOUT_OLLAMA_S = 5.0
 MAX_PASOS = 4
@@ -298,11 +301,15 @@ def listar_modelos() -> dict:
     return {"disponible": True, "defecto": MODELO_DEFECTO, "modelos": modelos}
 
 
-def _crear_llm(modelo: str) -> ChatOllama:
+def _crear_llm(modelo: str, pensar: bool = False) -> ChatOllama:
     """Construye el cliente de ollama con timeout y contexto acotados.
 
     Args:
         modelo: Nombre del modelo en ollama.
+        pensar: Si True habilita el razonamiento nativo del modelo y amplia el
+            presupuesto de salida para que quepan el pensamiento y la
+            respuesta. El pensamiento se devuelve aparte, en
+            `additional_kwargs["reasoning_content"]`.
 
     Returns:
         ChatOllama con temperature=0 y num_ctx de 8192 tokens.
@@ -313,7 +320,8 @@ def _crear_llm(modelo: str) -> ChatOllama:
         temperature=0.0,
         seed=42,
         num_ctx=NUM_CTX,
-        num_predict=NUM_PREDICT,
+        num_predict=NUM_PREDICT_PENSANDO if pensar else NUM_PREDICT,
+        reasoning=pensar,
         sync_client_kwargs={"timeout": TIMEOUT_LLM_S},
     )
 
@@ -655,7 +663,12 @@ def _registrar_llamada(
 
 # ===== SECCION 6: agente con tool calling =====
 def _ejecutar_agente(
-    pregunta: str, modelo: str, rerank: bool, k: int, max_pasos: int
+    pregunta: str,
+    modelo: str,
+    rerank: bool,
+    k: int,
+    max_pasos: int,
+    pensar: bool = False,
 ) -> dict:
     """Ejecuta el bucle de tool calling del agente.
 
@@ -665,15 +678,17 @@ def _ejecutar_agente(
         rerank: Valor por defecto del flag rerank en las herramientas.
         k: Profundidad de recuperacion por defecto.
         max_pasos: Maximo de turnos del modelo.
+        pensar: Si True pide al modelo su razonamiento y lo devuelve aparte.
 
     Returns:
-        Dict con respuesta, modo, tool_calls, grounding y advertencia.
+        Dict con respuesta, pensamiento, modo, tool_calls, grounding y
+        advertencia.
 
     Raises:
         Exception: Si el modelo no soporta tools o la llamada falla; el
             llamador activa el fallback documentado.
     """
-    llm = _crear_llm(modelo).bind_tools(TOOLS)
+    llm = _crear_llm(modelo, pensar).bind_tools(TOOLS)
     mensajes = [
         SystemMessage(content=PROMPT_SISTEMA),
         HumanMessage(content=pregunta),
@@ -681,8 +696,12 @@ def _ejecutar_agente(
     traza: list[dict] = []
     evidencia = _evidencia_vacia()
     respuesta = ""
+    pensamiento = ""
     for _ in range(max_pasos):
         mensaje = llm.invoke(mensajes)
+        razonamiento = (mensaje.additional_kwargs or {}).get("reasoning_content")
+        if razonamiento:
+            pensamiento = str(razonamiento)
         mensajes.append(mensaje)
         llamadas = getattr(mensaje, "tool_calls", None) or []
         if not llamadas:
@@ -744,6 +763,7 @@ def _ejecutar_agente(
         modo = "sin_evidencia"
     return {
         "respuesta": respuesta,
+        "pensamiento": pensamiento or None,
         "modo": modo,
         "tool_calls": traza,
         "grounding": grounding,
@@ -876,6 +896,7 @@ def responder(
     rerank: bool = False,
     k: int = 6,
     max_pasos: int = MAX_PASOS,
+    pensar: bool = False,
 ) -> dict:
     """Responde una consulta aplicando las tres capas de guardrails.
 
@@ -885,6 +906,8 @@ def responder(
         rerank: Activa la ruta de recuperacion B2+B1 en las herramientas.
         k: Articulos a recuperar en la herramienta de vinculo.
         max_pasos: Maximo de turnos del agente.
+        pensar: Si True habilita el razonamiento del modelo y devuelve el
+            pensamiento en la respuesta.
 
     Returns:
         Dict con respuesta, modo, intencion, tool_calls, grounding, modelo,
@@ -906,6 +929,7 @@ def responder(
             }[intencion],
             "intencion": intencion,
             "tool_calls": [],
+            "pensamiento": None,
             "grounding": {
                 "ok": True,
                 "citas_verificadas": [],
@@ -916,7 +940,9 @@ def responder(
             "advertencia": None,
         }
     try:
-        resultado = _ejecutar_agente(pregunta, nombre_modelo, rerank, k, max_pasos)
+        resultado = _ejecutar_agente(
+            pregunta, nombre_modelo, rerank, k, max_pasos, pensar
+        )
     except Exception as exc:  # noqa: BLE001 - fallback documentado
         motivo = (
             "fallback_sin_tools: el modelo no emitio tool calls o la llamada "
@@ -930,6 +956,7 @@ def responder(
             motivo,
             usar_llm=not _es_timeout(exc),
         )
+    resultado.setdefault("pensamiento", None)
     resultado["intencion"] = intencion
     resultado["modelo"] = nombre_modelo
     resultado["latencia_ms"] = int((time.perf_counter() - inicio) * 1000)

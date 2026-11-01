@@ -255,7 +255,12 @@ def test_ask_omits_model_when_none() -> None:
     with make_client(handler) as client:
         client.ask("Hola")
 
-    assert captured == {"pregunta": "Hola", "rerank": False, "k": 6}
+    assert captured == {
+        "pregunta": "Hola",
+        "rerank": False,
+        "k": 6,
+        "pensar": False,
+    }
 
 
 def test_ask_sends_selected_model() -> None:
@@ -270,6 +275,20 @@ def test_ask_sends_selected_model() -> None:
         client.ask("Hola", model="alia-legal:latest")
 
     assert captured["model"] == "alia-legal:latest"
+
+
+def test_ask_envia_pensamiento() -> None:
+    """Con razonamiento activo, el payload lo declara."""
+    captured: dict[str, Any] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.update(json.loads(request.content))
+        return httpx.Response(200, json={"respuesta": "Hola"})
+
+    with make_client(handler) as client:
+        client.ask("Hola", pensar=True)
+
+    assert captured["pensar"] is True
 
 
 def test_eval_summary_returns_provenance() -> None:
