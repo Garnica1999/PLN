@@ -35,7 +35,7 @@ Leyenda: [x] hecho, [~] en curso, [ ] pendiente.
 - [x] Documentación actualizada y Delivery Gate de antislop aplicado (sin guiones largos, sin emojis, sin relleno)
 
 ## F4 — Entrega
-- [~] Ensayo de demo: recorrido completo medido sin el LLM (GPU ocupada por otro proyecto)
+- [x] Ensayo de demo completo, incluido el chat con el LLM: 16,4 s el primero (carga del modelo) y 9,3 s el segundo, con grounding verificado
 - [x] Empaquetado: `Entrega_3_Juris-PLN.zip` (53 MB, 379 archivos, sin caché ni enlaces)
 - [x] Zip verificado (`unzip -t` sin errores) y commit local del trabajo
 - [ ] Subida a la plataforma antes de 2026-11-09 23:59
