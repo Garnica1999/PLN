@@ -164,7 +164,15 @@ def main() -> int:
         elif datos["_paso"] == "Resumen de evaluación":
             detalle = "comparativa y guardrails disponibles"
         elif datos["_paso"].startswith("Chat"):
-            detalle = f"modo={datos.get('modo')} intención={datos.get('intencion')}"
+            herramientas = ",".join(
+                fila["herramienta"] for fila in datos.get("tool_calls") or []
+            )
+            grounding = (datos.get("grounding") or {}).get("ok")
+            detalle = (
+                f"modo={datos.get('modo')} intención={datos.get('intencion')}"
+                + (f" tools={herramientas}" if herramientas else "")
+                + f" grounding={'ok' if grounding else 'revisar'}"
+            )
         filas.append((datos["_paso"], datos["_ms"], detalle))
 
     lineas = [
@@ -183,6 +191,10 @@ def main() -> int:
         "3. Levantar la interfaz: `streamlit run streamlit_app.py --server.port 8502`.",
         "4. Abrir `http://127.0.0.1:8502` y dejar la barra lateral visible.",
         "",
+        "La primera consulta en alcance carga el modelo (unos 20 s); la segunda",
+        "responde en unos 9 s. Conviene hacer una consulta de calentamiento antes",
+        "de la demo.",
+        "",
         "## Recorrido medido",
         "",
         "| Paso | Latencia | Resultado |",
@@ -190,6 +202,31 @@ def main() -> int:
     ]
     for nombre, ms, detalle in filas:
         lineas.append(f"| {nombre} | {ms} ms | {detalle} |")
+
+    respuesta = next(
+        (dato for dato in pasos if dato["_paso"] == "Chat: consulta en alcance"),
+        None,
+    )
+    if respuesta:
+        texto_respuesta = " ".join(str(respuesta.get("respuesta") or "").split())
+        traza = "; ".join(
+            f"{fila['herramienta']} ({'ok' if fila['ok'] else 'fallo'}, {fila['ms']} ms)"
+            for fila in respuesta.get("tool_calls") or []
+        )
+        grounding = (respuesta.get("grounding") or {}).get("ok")
+        lineas.extend(
+            [
+                "",
+                "## Respuesta real del agente (consulta en alcance)",
+                "",
+                f"> {texto_respuesta[:600]}",
+                "",
+                (
+                    f"Traza: {traza or 'sin herramientas'}. Grounding: "
+                    f"{'verificado' if grounding else 'con citas sin verificar'}."
+                ),
+            ]
+        )
 
     guardrails = next(
         (dato for dato in pasos if dato["_paso"] == "Resumen de evaluación"), {}
@@ -223,12 +260,12 @@ def main() -> int:
     lineas.extend(
         [
             "",
-            "## Orden de la presentacion",
+            "## Orden de la presentación",
             "",
             "1. Portada y problema (2 min): 23.742 sentencias, 261 M palabras, la tarea manual.",
             "2. Datos y método (2 min): corpus, MTLD, benchmark de 90 casos y gold humano.",
             "3. Resultados (2 min): 0,6013 de la línea base a 0,7852 con gold humano.",
-            "4. Producto (3 min): P1 con el id 985, P2 con el articulo 86, P3 y chat.",
+            "4. Producto (3 min): P1 con el id 985, P2 con el artículo 86, P3 y chat.",
             "5. Cierre (1 min): límites, trabajo futuro y la frase de cierre.",
             "",
             "## Contingencia",
