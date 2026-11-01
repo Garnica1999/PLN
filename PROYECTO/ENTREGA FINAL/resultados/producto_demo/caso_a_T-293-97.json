@@ -1,0 +1,82 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "2195",
+  "ponente": "Jose Gregorio Hernandez Galindo",
+  "area": {
+    "top3": [
+      {
+        "area": "derechos_fundamentales",
+        "prob": 0.9429
+      },
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.0291
+      },
+      {
+        "area": "proteccion_aplicacion_derechos",
+        "prob": 0.0186
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "11",
+        "texto_150chars": "El derecho a la vida es inviolable. No habrá pena de muerte",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "13",
+        "texto_150chars": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "25",
+        "texto_150chars": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "49",
+        "texto_150chars": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie",
+        "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+        "numero": "86",
+        "texto_150chars": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi",
+        "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+        "numero": "241",
+        "texto_150chars": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu",
+        "bloque": "rama_judicial"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "86",
+        "score": 156.753
+      },
+      {
+        "numero": "234",
+        "score": 154.0025
+      },
+      {
+        "numero": "Transitorio ACL01017-12",
+        "score": 147.67
+      },
+      {
+        "numero": "Transitorio 24",
+        "score": 146.7251
+      },
+      {
+        "numero": "Transitorio ACL01017-7",
+        "score": 145.7475
+      }
+    ]
+  },
+  "sentencias_citadas": [],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9429); 6 articulos CP extraidos y 5 recuperados por BM25; 0 de 0 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 7.62
+}

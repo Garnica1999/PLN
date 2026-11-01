@@ -1,0 +1,986 @@
+{
+  "fecha": "2026-10-03T19:26:16.881085",
+  "script": "scripts/18_h1_ruido_m4.py",
+  "smoke": false,
+  "versiones": {
+    "python": "3.14.7",
+    "plataforma": "Linux-7.2.8-1-cachyos-x86_64-with-glibc2.44",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3",
+    "cleanlab": "2.9.0",
+    "matplotlib": "3.10.9"
+  },
+  "parametros_cli": {
+    "jobs": 3,
+    "smoke": false,
+    "forzar": false
+  },
+  "premisas": [
+    "Holdout bloqueado SELLADO: data/holdout_m4_bloqueado.parquet se construye desde el train canonico (data/splits_m4.parquet) y NINGUN variante de H1 lo evalua ni entrena con el; solo se usa para excluir sus ids del train reducido. La evaluacion final sobre el holdout queda reservada y fuera del alcance de este script.",
+    "Test canonico reutilizado de desarrollo: el baseline v1 ya reporto su macro-F1 sobre el test canonico (0.287008 observado / 0.269070 espacio fijo); por eso la lectura de test de H1 se marca 'development_test_reutilizado' y se limita UNA sola vez al ganador por val y a V1r como comparador.",
+    "Test temporal (split por ano, docs 2018-2021) con UNA sola lectura para el ganador por val y V1r; el resto de variantes solo se evalua en val canonica (seleccion).",
+    "El split temporal es una particion alternativa del MISMO corpus, no un holdout cronologico limpio: una fraccion de los docs de test temporal pertenece al train canonico y fue vista en entrenamiento. El solapamiento exacto con el train reducido se registra en conteos.temporal_test_en_train_reducido y conteos.temporal_val_en_train_reducido; una lectura temporal estrictamente out-of-sample exigiria reentrenar solo con docs pre-2018, fuera del alcance de H1.",
+    "Vectorizador TF-IDF ajustado SOLO sobre el train reducido (sin holdout), replicando la configuracion exacta del escenario enmascarado v1 de 06_baseline_clasico.py: lemas enmascarados, min_df=3, max_features=100000, ngram_range=(1,2), sublinear_tf=True. El split canonico de train/val/test no se rehace ni se modifica.",
+    "V2/V3 usan las probabilidades OOF del experimento 17 (resultados/m4_oof_probs.npz, out-of-sample sobre el train canonico) intersectadas por id con el train reducido; los flags de cleanlab se recalculan sobre ese subconjunto (no se reutilizan del JSON 17) y, si faltan clases en el subconjunto, se restringe a las presentes y se renormalizan las filas (patron del experimento 17).",
+    "V3 usa get_label_quality_scores de cleanlab (metodo por defecto self_confidence) como sample_weight de LogisticRegression; V2 descarta los documentos flagged por find_label_issues (defaults: filter_by=prune_by_noise_rate, frac_noise=1.0).",
+    "Metricas en espacio fijo de 16 clases (zero_division=0); macro_f1_espacio_fijo es el criterio de seleccion en val canonica. IC bootstrap percentil 95 % con 1000 remuestreos de casos y semilla 42.",
+    "Referencia v1 incluida sin reentrenar: valores leidos de los JSON canonicos (m4_baseline.json y m4_ruido_etiquetas.json); el joblib v1 solo se usa para leer sus hiperparametros, nunca para predecir en H1.",
+    "La matriz intermedia resultados/m4_h1_matriz.npz se construye una sola vez en el orquestador (del/gc antes de lanzar subprocesos) y se reutiliza salvo --forzar; cada variante corre en un subproceso con OMP/OPENBLAS/MKL/NUMEXPR=8 hilos y es resumible via resultados/m4_h1_{variante}_preds.npz.",
+    "Modo smoke: subconjunto estratificado de ~500 docs para matriz y modelado (un solo ajuste por variante, equivalente a 1 fold), protocolo calculado sobre el corpus completo con las tablas ligeras de etiquetas/splits y salidas SOLO en /tmp/opencode/h1_smoke/."
+  ],
+  "clases_espacio_fijo": [
+    "derechos_colectivos_ambiente",
+    "derechos_fundamentales",
+    "derechos_sociales_economicos_culturales",
+    "elecciones",
+    "habitantes_territorio",
+    "organismos_control",
+    "organizacion_estado",
+    "organizacion_territorial",
+    "participacion_democratica",
+    "principios_fundamentales",
+    "proteccion_aplicacion_derechos",
+    "rama_ejecutiva",
+    "rama_judicial",
+    "rama_legislativa",
+    "reforma_constitucion",
+    "regimen_economico"
+  ],
+  "md5_entradas": {
+    "lemas": "bd55c02c2b06832246a541acd3b4703d",
+    "etiquetas": "d3bbaace6a909d5ab0a5541d448f1b1c",
+    "splits": "37fdbc6d3baa7c0d89370ede305c11bb",
+    "oof_probs": "6361187411a77fda4457b6fa77e8ec56",
+    "modelo_v1": "17b7adddc08160e2a942f8c70192703a"
+  },
+  "protocolo": {
+    "regla_temporal": {
+      "regla_final": "train: ano<=2011; val: 2012-2017; test: ano>=2018",
+      "limites_propuestos": {
+        "corte_train": 2011,
+        "corte_val": 2017
+      },
+      "limites_finales": {
+        "corte_train": 2011,
+        "corte_val": 2017
+      },
+      "ajustado_por_minimo": false,
+      "minimo_docs_por_conjunto": 1500,
+      "conteos": {
+        "train": 16858,
+        "val": 5092,
+        "test": 1704
+      },
+      "conteos_por_clase": {
+        "train": {
+          "derechos_fundamentales": 7379,
+          "principios_fundamentales": 4311,
+          "derechos_sociales_economicos_culturales": 1961,
+          "proteccion_aplicacion_derechos": 1056,
+          "rama_judicial": 838,
+          "rama_legislativa": 538,
+          "regimen_economico": 316,
+          "rama_ejecutiva": 154,
+          "organizacion_territorial": 152,
+          "organizacion_estado": 94,
+          "organismos_control": 19,
+          "derechos_colectivos_ambiente": 14,
+          "habitantes_territorio": 10,
+          "participacion_democratica": 7,
+          "reforma_constitucion": 6,
+          "elecciones": 3
+        },
+        "val": {
+          "derechos_fundamentales": 2014,
+          "principios_fundamentales": 1645,
+          "derechos_sociales_economicos_culturales": 713,
+          "rama_judicial": 265,
+          "proteccion_aplicacion_derechos": 169,
+          "rama_legislativa": 128,
+          "regimen_economico": 66,
+          "organizacion_territorial": 32,
+          "rama_ejecutiva": 22,
+          "organizacion_estado": 19,
+          "organismos_control": 10,
+          "derechos_colectivos_ambiente": 5,
+          "reforma_constitucion": 3,
+          "participacion_democratica": 1
+        },
+        "test": {
+          "derechos_fundamentales": 688,
+          "principios_fundamentales": 595,
+          "derechos_sociales_economicos_culturales": 187,
+          "rama_judicial": 64,
+          "rama_legislativa": 46,
+          "regimen_economico": 37,
+          "rama_ejecutiva": 33,
+          "proteccion_aplicacion_derechos": 27,
+          "organizacion_territorial": 17,
+          "organizacion_estado": 7,
+          "derechos_colectivos_ambiente": 3
+        }
+      }
+    },
+    "regla_holdout": {
+      "fraccion_objetivo": 0.15,
+      "semilla": 42,
+      "umbral_excepcion_train": 10,
+      "umbral_colapso_estratos": 5,
+      "clases_excluidas_del_holdout": {
+        "elecciones": 2,
+        "habitantes_territorio": 7,
+        "participacion_democratica": 6,
+        "reforma_constitucion": 6
+      },
+      "estratos_colapsados": [],
+      "n_train_canonico": 16557,
+      "n_holdout": 2481,
+      "n_train_reducido": 14076,
+      "sellado": "solo lectura: ningun variante de H1 evalua ni entrena con el holdout; queda reservado para la evaluacion final",
+      "conteos_por_clase": {
+        "train_canonico": {
+          "derechos_fundamentales": 7056,
+          "principios_fundamentales": 4586,
+          "derechos_sociales_economicos_culturales": 2003,
+          "proteccion_aplicacion_derechos": 876,
+          "rama_judicial": 817,
+          "rama_legislativa": 498,
+          "regimen_economico": 293,
+          "rama_ejecutiva": 146,
+          "organizacion_territorial": 141,
+          "organizacion_estado": 84,
+          "organismos_control": 20,
+          "derechos_colectivos_ambiente": 16,
+          "habitantes_territorio": 7,
+          "participacion_democratica": 6,
+          "reforma_constitucion": 6,
+          "elecciones": 2
+        },
+        "holdout_bloqueado": {
+          "derechos_fundamentales": 1059,
+          "principios_fundamentales": 688,
+          "derechos_sociales_economicos_culturales": 300,
+          "proteccion_aplicacion_derechos": 131,
+          "rama_judicial": 123,
+          "rama_legislativa": 75,
+          "regimen_economico": 44,
+          "rama_ejecutiva": 22,
+          "organizacion_territorial": 21,
+          "organizacion_estado": 13,
+          "organismos_control": 3,
+          "derechos_colectivos_ambiente": 2
+        },
+        "train_reducido": {
+          "derechos_fundamentales": 5997,
+          "principios_fundamentales": 3898,
+          "derechos_sociales_economicos_culturales": 1703,
+          "proteccion_aplicacion_derechos": 745,
+          "rama_judicial": 694,
+          "rama_legislativa": 423,
+          "regimen_economico": 249,
+          "rama_ejecutiva": 124,
+          "organizacion_territorial": 120,
+          "organizacion_estado": 71,
+          "organismos_control": 17,
+          "derechos_colectivos_ambiente": 14,
+          "habitantes_territorio": 7,
+          "participacion_democratica": 6,
+          "reforma_constitucion": 6,
+          "elecciones": 2
+        }
+      }
+    },
+    "md5": {
+      "splits_m4_temporal": "85baf11c22edf4771c3e273af3c33bf3",
+      "holdout_m4_bloqueado": "d3d279a48d6816b6c0a6697ea91f454b"
+    },
+    "archivos": {
+      "splits_m4_temporal": "data/splits_m4_temporal.parquet",
+      "holdout_m4_bloqueado": "data/holdout_m4_bloqueado.parquet"
+    },
+    "nota_sellado": "el holdout es de solo lectura y queda reservado para la evaluacion final; H1 solo lo usa para excluir sus ids del train reducido"
+  },
+  "conteos": {
+    "train_canonico": 16557,
+    "holdout_bloqueado": 2481,
+    "train_reducido": 14076,
+    "val_canonica": 3549,
+    "test_canonico": 3548,
+    "temporal_train": 16858,
+    "temporal_val": 5092,
+    "temporal_test": 1704,
+    "temporal_val_en_train_reducido": 3045,
+    "temporal_test_en_train_reducido": 1053
+  },
+  "matriz": {
+    "n_features": 100000,
+    "params_v1": {
+      "C": 53.88253252984515,
+      "solver": "lbfgs",
+      "max_iter": 600,
+      "tol": 0.0001,
+      "fit_intercept": true,
+      "random_state": 42
+    },
+    "vec_params": {
+      "min_df": 3,
+      "max_features": 100000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "sublinear_tf": true
+    },
+    "ruta": "resultados/m4_h1_matriz.npz"
+  },
+  "referencia_v1": {
+    "macro_f1_observado": 0.2870081504940973,
+    "macro_f1_espacio_fijo": 0.2690701410882162,
+    "fuente": "resultados/m4_baseline.json + resultados/m4_ruido_etiquetas.json"
+  },
+  "variantes": {
+    "v1r": {
+      "metadatos": {
+        "modo": "baseline reentrenado en train reducido",
+        "n_entrenados": 14076,
+        "n_descartados": 0,
+        "tasa_descartados": 0.0,
+        "variante": "v1r",
+        "smoke": false,
+        "fecha": "2026-10-03T19:25:20.485682",
+        "n_train_reducido": 14076,
+        "n_iter": 253,
+        "params_v1": {
+          "C": 53.88253252984515,
+          "solver": "lbfgs",
+          "max_iter": 600,
+          "tol": 0.0001,
+          "fit_intercept": true,
+          "random_state": 42
+        },
+        "tiempos_seg": {
+          "carga_matriz_seg": 2.6579848950004816,
+          "fit_seg": 461.04587819800145,
+          "pred_seg": 0.634770964999916
+        },
+        "tiempo_total_seg": 464.3387506889994
+      },
+      "val": {
+        "macro_f1": 0.26583453766976023,
+        "macro_f1_espacio_fijo": 0.26583453766976023,
+        "accuracy": 0.5866441251056635,
+        "n": 3549,
+        "por_clase": {
+          "derechos_colectivos_ambiente": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 3
+          },
+          "derechos_fundamentales": {
+            "precision": 0.6318951392681594,
+            "recall": 0.7647058823529411,
+            "f1": 0.6919856459330144,
+            "soporte": 1513
+          },
+          "derechos_sociales_economicos_culturales": {
+            "precision": 0.547945205479452,
+            "recall": 0.372960372960373,
+            "f1": 0.44382801664355065,
+            "soporte": 429
+          },
+          "elecciones": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 1
+          },
+          "habitantes_territorio": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 2
+          },
+          "organismos_control": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 4
+          },
+          "organizacion_estado": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 18
+          },
+          "organizacion_territorial": {
+            "precision": 0.6111111111111112,
+            "recall": 0.36666666666666664,
+            "f1": 0.4583333333333333,
+            "soporte": 30
+          },
+          "participacion_democratica": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 1
+          },
+          "principios_fundamentales": {
+            "precision": 0.5190343546889508,
+            "recall": 0.5692464358452138,
+            "f1": 0.5429820301117048,
+            "soporte": 982
+          },
+          "proteccion_aplicacion_derechos": {
+            "precision": 0.5656565656565656,
+            "recall": 0.2978723404255319,
+            "f1": 0.3902439024390244,
+            "soporte": 188
+          },
+          "rama_ejecutiva": {
+            "precision": 0.6666666666666666,
+            "recall": 0.1935483870967742,
+            "f1": 0.3,
+            "soporte": 31
+          },
+          "rama_judicial": {
+            "precision": 0.5357142857142857,
+            "recall": 0.2571428571428571,
+            "f1": 0.3474903474903475,
+            "soporte": 175
+          },
+          "rama_legislativa": {
+            "precision": 0.6770833333333334,
+            "recall": 0.6074766355140186,
+            "f1": 0.6403940886699507,
+            "soporte": 107
+          },
+          "reforma_constitucion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 2
+          },
+          "regimen_economico": {
+            "precision": 0.5476190476190477,
+            "recall": 0.36507936507936506,
+            "f1": 0.4380952380952381,
+            "soporte": 63
+          }
+        },
+        "bootstrap_macro_f1_espacio_fijo": {
+          "macro_f1_espacio_fijo": 0.26583453766976023,
+          "media_bootstrap": 0.2647720335783131,
+          "desviacion_bootstrap": 0.010237049599558158,
+          "ic95_inf": 0.2451226641211652,
+          "ic95_sup": 0.285547132537658,
+          "n_boot": 1000,
+          "semilla": 42
+        }
+      },
+      "test_dev": {
+        "macro_f1": 0.2628330579315817,
+        "macro_f1_espacio_fijo": 0.24640599181085782,
+        "accuracy": 0.5837091319052987,
+        "n": 3548,
+        "por_clase": {
+          "derechos_colectivos_ambiente": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 3
+          },
+          "derechos_fundamentales": {
+            "precision": 0.6332425068119891,
+            "recall": 0.7685185185185185,
+            "f1": 0.6943531520764864,
+            "soporte": 1512
+          },
+          "derechos_sociales_economicos_culturales": {
+            "precision": 0.5791245791245792,
+            "recall": 0.40093240093240096,
+            "f1": 0.4738292011019284,
+            "soporte": 429
+          },
+          "elecciones": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 0
+          },
+          "habitantes_territorio": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 1
+          },
+          "organismos_control": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 5
+          },
+          "organizacion_estado": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 18
+          },
+          "organizacion_territorial": {
+            "precision": 0.5,
+            "recall": 0.2,
+            "f1": 0.2857142857142857,
+            "soporte": 30
+          },
+          "participacion_democratica": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 1
+          },
+          "principios_fundamentales": {
+            "precision": 0.509822263797942,
+            "recall": 0.5544252288911495,
+            "f1": 0.5311890838206628,
+            "soporte": 983
+          },
+          "proteccion_aplicacion_derechos": {
+            "precision": 0.594059405940594,
+            "recall": 0.3191489361702128,
+            "f1": 0.41522491349480967,
+            "soporte": 188
+          },
+          "rama_ejecutiva": {
+            "precision": 0.4444444444444444,
+            "recall": 0.125,
+            "f1": 0.1951219512195122,
+            "soporte": 32
+          },
+          "rama_judicial": {
+            "precision": 0.4117647058823529,
+            "recall": 0.2,
+            "f1": 0.2692307692307692,
+            "soporte": 175
+          },
+          "rama_legislativa": {
+            "precision": 0.65625,
+            "recall": 0.5887850467289719,
+            "f1": 0.6206896551724138,
+            "soporte": 107
+          },
+          "reforma_constitucion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 1
+          },
+          "regimen_economico": {
+            "precision": 0.5714285714285714,
+            "recall": 0.38095238095238093,
+            "f1": 0.45714285714285713,
+            "soporte": 63
+          }
+        },
+        "bootstrap_macro_f1_espacio_fijo": {
+          "macro_f1_espacio_fijo": 0.24640599181085782,
+          "media_bootstrap": 0.2456072700985077,
+          "desviacion_bootstrap": 0.010163255735659602,
+          "ic95_inf": 0.22590824021737266,
+          "ic95_sup": 0.26478688035692505,
+          "n_boot": 1000,
+          "semilla": 42
+        },
+        "development_test_reutilizado": true
+      },
+      "temporal_test": {
+        "macro_f1": 0.8237545247902248,
+        "macro_f1_espacio_fijo": 0.5663312357932797,
+        "accuracy": 0.8327464788732394,
+        "n": 1704,
+        "por_clase": {
+          "derechos_colectivos_ambiente": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "soporte": 3
+          },
+          "derechos_fundamentales": {
+            "precision": 0.8192612137203166,
+            "recall": 0.9026162790697675,
+            "f1": 0.8589211618257261,
+            "soporte": 688
+          },
+          "derechos_sociales_economicos_culturales": {
+            "precision": 0.8503401360544217,
+            "recall": 0.6684491978609626,
+            "f1": 0.7485029940119761,
+            "soporte": 187
+          },
+          "elecciones": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 0
+          },
+          "habitantes_territorio": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 0
+          },
+          "organismos_control": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 0
+          },
+          "organizacion_estado": {
+            "precision": 0.8,
+            "recall": 0.5714285714285714,
+            "f1": 0.6666666666666666,
+            "soporte": 7
+          },
+          "organizacion_territorial": {
+            "precision": 1.0,
+            "recall": 0.8235294117647058,
+            "f1": 0.9032258064516129,
+            "soporte": 17
+          },
+          "participacion_democratica": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 0
+          },
+          "principios_fundamentales": {
+            "precision": 0.8120915032679739,
+            "recall": 0.8352941176470589,
+            "f1": 0.8235294117647058,
+            "soporte": 595
+          },
+          "proteccion_aplicacion_derechos": {
+            "precision": 1.0,
+            "recall": 0.5555555555555556,
+            "f1": 0.7142857142857143,
+            "soporte": 27
+          },
+          "rama_ejecutiva": {
+            "precision": 0.9230769230769231,
+            "recall": 0.7272727272727273,
+            "f1": 0.8135593220338984,
+            "soporte": 33
+          },
+          "rama_judicial": {
+            "precision": 0.9803921568627451,
+            "recall": 0.78125,
+            "f1": 0.8695652173913043,
+            "soporte": 64
+          },
+          "rama_legislativa": {
+            "precision": 0.9130434782608695,
+            "recall": 0.9130434782608695,
+            "f1": 0.9130434782608695,
+            "soporte": 46
+          },
+          "reforma_constitucion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 0
+          },
+          "regimen_economico": {
+            "precision": 0.8888888888888888,
+            "recall": 0.6486486486486487,
+            "f1": 0.75,
+            "soporte": 37
+          }
+        },
+        "bootstrap_macro_f1_espacio_fijo": {
+          "macro_f1_espacio_fijo": 0.5663312357932797,
+          "media_bootstrap": 0.5614960036167262,
+          "desviacion_bootstrap": 0.020622886750730762,
+          "ic95_inf": 0.4980495599292406,
+          "ic95_sup": 0.5901226552089145,
+          "n_boot": 1000,
+          "semilla": 42
+        },
+        "development_test_reutilizado": true
+      }
+    },
+    "v2": {
+      "metadatos": {
+        "modo": "descarte de documentos flagged por cleanlab find_label_issues",
+        "n_entrenados": 9594,
+        "n_descartados": 4482,
+        "tasa_descartados": 0.31841432225063937,
+        "clases_cleanlab": [
+          "derechos_colectivos_ambiente",
+          "derechos_fundamentales",
+          "derechos_sociales_economicos_culturales",
+          "elecciones",
+          "habitantes_territorio",
+          "organismos_control",
+          "organizacion_estado",
+          "organizacion_territorial",
+          "participacion_democratica",
+          "principios_fundamentales",
+          "proteccion_aplicacion_derechos",
+          "rama_ejecutiva",
+          "rama_judicial",
+          "rama_legislativa",
+          "reforma_constitucion",
+          "regimen_economico"
+        ],
+        "variante": "v2",
+        "smoke": false,
+        "fecha": "2026-10-03T19:21:03.968912",
+        "n_train_reducido": 14076,
+        "n_iter": 127,
+        "params_v1": {
+          "C": 53.88253252984515,
+          "solver": "lbfgs",
+          "max_iter": 600,
+          "tol": 0.0001,
+          "fit_intercept": true,
+          "random_state": 42
+        },
+        "tiempos_seg": {
+          "carga_matriz_seg": 2.6529616080006235,
+          "carga_oof_seg": 0.030448809999143123,
+          "fit_seg": 204.23328211900116,
+          "pred_seg": 0.905340236999109
+        },
+        "tiempo_total_seg": 207.82213811600013
+      },
+      "val": {
+        "macro_f1": 0.23912163900031622,
+        "macro_f1_espacio_fijo": 0.23912163900031622,
+        "accuracy": 0.5756551141166526,
+        "n": 3549,
+        "por_clase": {
+          "derechos_colectivos_ambiente": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 3
+          },
+          "derechos_fundamentales": {
+            "precision": 0.6048387096774194,
+            "recall": 0.7931262392597488,
+            "f1": 0.6863025450386046,
+            "soporte": 1513
+          },
+          "derechos_sociales_economicos_culturales": {
+            "precision": 0.519298245614035,
+            "recall": 0.34498834498834496,
+            "f1": 0.41456582633053224,
+            "soporte": 429
+          },
+          "elecciones": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 1
+          },
+          "habitantes_territorio": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 2
+          },
+          "organismos_control": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 4
+          },
+          "organizacion_estado": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 18
+          },
+          "organizacion_territorial": {
+            "precision": 0.6153846153846154,
+            "recall": 0.26666666666666666,
+            "f1": 0.37209302325581395,
+            "soporte": 30
+          },
+          "participacion_democratica": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 1
+          },
+          "principios_fundamentales": {
+            "precision": 0.5171400587659157,
+            "recall": 0.5376782077393075,
+            "f1": 0.527209186220669,
+            "soporte": 982
+          },
+          "proteccion_aplicacion_derechos": {
+            "precision": 0.6909090909090909,
+            "recall": 0.20212765957446807,
+            "f1": 0.31275720164609055,
+            "soporte": 188
+          },
+          "rama_ejecutiva": {
+            "precision": 1.0,
+            "recall": 0.0967741935483871,
+            "f1": 0.17647058823529413,
+            "soporte": 31
+          },
+          "rama_judicial": {
+            "precision": 0.5918367346938775,
+            "recall": 0.1657142857142857,
+            "f1": 0.25892857142857145,
+            "soporte": 175
+          },
+          "rama_legislativa": {
+            "precision": 0.6355140186915887,
+            "recall": 0.6355140186915887,
+            "f1": 0.6355140186915887,
+            "soporte": 107
+          },
+          "reforma_constitucion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 2
+          },
+          "regimen_economico": {
+            "precision": 0.65625,
+            "recall": 0.3333333333333333,
+            "f1": 0.4421052631578947,
+            "soporte": 63
+          }
+        },
+        "bootstrap_macro_f1_espacio_fijo": {
+          "macro_f1_espacio_fijo": 0.23912163900031622,
+          "media_bootstrap": 0.2382223780931596,
+          "desviacion_bootstrap": 0.009468216729111916,
+          "ic95_inf": 0.22015463625697085,
+          "ic95_sup": 0.25840393712885107,
+          "n_boot": 1000,
+          "semilla": 42
+        }
+      }
+    },
+    "v3": {
+      "metadatos": {
+        "modo": "pesos por confianza de etiqueta (sample_weight)",
+        "n_entrenados": 14076,
+        "n_descartados": 0,
+        "tasa_descartados": 0.0,
+        "pesos": {
+          "min": 1.9904076609122967e-08,
+          "media": 0.5185504247931024,
+          "max": 0.9999763369560242
+        },
+        "clases_cleanlab": [
+          "derechos_colectivos_ambiente",
+          "derechos_fundamentales",
+          "derechos_sociales_economicos_culturales",
+          "elecciones",
+          "habitantes_territorio",
+          "organismos_control",
+          "organizacion_estado",
+          "organizacion_territorial",
+          "participacion_democratica",
+          "principios_fundamentales",
+          "proteccion_aplicacion_derechos",
+          "rama_ejecutiva",
+          "rama_judicial",
+          "rama_legislativa",
+          "reforma_constitucion",
+          "regimen_economico"
+        ],
+        "variante": "v3",
+        "smoke": false,
+        "fecha": "2026-10-03T19:24:43.435078",
+        "n_train_reducido": 14076,
+        "n_iter": 190,
+        "params_v1": {
+          "C": 53.88253252984515,
+          "solver": "lbfgs",
+          "max_iter": 600,
+          "tol": 0.0001,
+          "fit_intercept": true,
+          "random_state": 42
+        },
+        "tiempos_seg": {
+          "carga_matriz_seg": 2.6532890430007683,
+          "carga_oof_seg": 0.03219870999964769,
+          "fit_seg": 423.515144478999,
+          "pred_seg": 1.0876643489991693
+        },
+        "tiempo_total_seg": 427.2884040530007
+      },
+      "val": {
+        "macro_f1": 0.25039280427801475,
+        "macro_f1_espacio_fijo": 0.25039280427801475,
+        "accuracy": 0.5835446604677373,
+        "n": 3549,
+        "por_clase": {
+          "derechos_colectivos_ambiente": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 3
+          },
+          "derechos_fundamentales": {
+            "precision": 0.6018746916625555,
+            "recall": 0.806345009914078,
+            "f1": 0.6892655367231638,
+            "soporte": 1513
+          },
+          "derechos_sociales_economicos_culturales": {
+            "precision": 0.5892116182572614,
+            "recall": 0.331002331002331,
+            "f1": 0.42388059701492536,
+            "soporte": 429
+          },
+          "elecciones": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 1
+          },
+          "habitantes_territorio": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 2
+          },
+          "organismos_control": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 4
+          },
+          "organizacion_estado": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 18
+          },
+          "organizacion_territorial": {
+            "precision": 0.5882352941176471,
+            "recall": 0.3333333333333333,
+            "f1": 0.425531914893617,
+            "soporte": 30
+          },
+          "participacion_democratica": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 1
+          },
+          "principios_fundamentales": {
+            "precision": 0.5244618395303327,
+            "recall": 0.5458248472505092,
+            "f1": 0.5349301397205589,
+            "soporte": 982
+          },
+          "proteccion_aplicacion_derechos": {
+            "precision": 0.711864406779661,
+            "recall": 0.22340425531914893,
+            "f1": 0.340080971659919,
+            "soporte": 188
+          },
+          "rama_ejecutiva": {
+            "precision": 1.0,
+            "recall": 0.12903225806451613,
+            "f1": 0.22857142857142856,
+            "soporte": 31
+          },
+          "rama_judicial": {
+            "precision": 0.6041666666666666,
+            "recall": 0.1657142857142857,
+            "f1": 0.2600896860986547,
+            "soporte": 175
+          },
+          "rama_legislativa": {
+            "precision": 0.6666666666666666,
+            "recall": 0.616822429906542,
+            "f1": 0.6407766990291263,
+            "soporte": 107
+          },
+          "reforma_constitucion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "soporte": 2
+          },
+          "regimen_economico": {
+            "precision": 0.6875,
+            "recall": 0.3492063492063492,
+            "f1": 0.4631578947368421,
+            "soporte": 63
+          }
+        },
+        "bootstrap_macro_f1_espacio_fijo": {
+          "macro_f1_espacio_fijo": 0.25039280427801475,
+          "media_bootstrap": 0.24961848266351194,
+          "desviacion_bootstrap": 0.009880032695143908,
+          "ic95_inf": 0.23081061444198436,
+          "ic95_sup": 0.2707123313410223,
+          "n_boot": 1000,
+          "semilla": 42
+        }
+      }
+    }
+  },
+  "decision": {
+    "ganador_por_val": "v1r",
+    "criterio": "mayor macro_f1_espacio_fijo en val canonica (desempate: orden v1r, v2, v3)",
+    "val_macro_f1_espacio_fijo": {
+      "v1r": 0.26583453766976023,
+      "v2": 0.23912163900031622,
+      "v3": 0.25039280427801475
+    },
+    "delta_val_ganador_vs_v1r": 0.0,
+    "test_dev": {
+      "ganador": 0.24640599181085782,
+      "v1r": 0.24640599181085782,
+      "referencia_v1": 0.2690701410882162,
+      "delta_ganador_vs_v1r": 0.0,
+      "gana_a_referencia_v1": false,
+      "development_test_reutilizado": true
+    },
+    "temporal_test": {
+      "ganador": 0.5663312357932797,
+      "v1r": 0.5663312357932797,
+      "delta_ganador_vs_v1r": 0.0,
+      "development_test_reutilizado": true
+    },
+    "lecturas_test_canonico": [
+      "v1r"
+    ],
+    "lecturas_test_temporal": [
+      "v1r"
+    ],
+    "holdout_bloqueado": "no evaluado en H1; reservado para la evaluacion final del proyecto"
+  },
+  "tiempos_seg": {
+    "matriz_seg": 424.16161465999903,
+    "variantes_seg": 466.0568413050005,
+    "metricas_seg": 55.98929155899896,
+    "total_seg": 946.9618785580005
+  },
+  "artefactos": {
+    "matriz": "resultados/m4_h1_matriz.npz",
+    "preds": {
+      "v1r": "resultados/m4_h1_v1r_preds.npz",
+      "v2": "resultados/m4_h1_v2_preds.npz",
+      "v3": "resultados/m4_h1_v3_preds.npz"
+    },
+    "json": "resultados/m4_h1_ruido_v1.json",
+    "figura": "figuras/fig_h1_ruido_m4.png",
+    "log": "experimentos/18_h1_ruido_m4.log",
+    "protocolo_json": "resultados/protocolo_evaluacion_m4.json"
+  }
+}

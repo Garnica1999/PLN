@@ -1,0 +1,251 @@
+{
+  "version": "c3-b2",
+  "fecha": "2026-10-05T09:36:43.196908+00:00",
+  "experimento": "Ciclo v3 - Sprint B2: retriever denso de dominio (modelos/b2_retriever_smokev14, script 25) - variante 'smokev14' en la 1a etapa del hibrido 0.5/0.5 top-50 con el reranker B1 (modelos/b1_reranker) y hubs alpha=1.5 (3 casos)",
+  "origen": {
+    "archivo": "resultados/vinculo_cp_benchmark_v14_smokev14.json",
+    "version": "v14-ciclo3-b2-smokev14",
+    "md5": "4b32fc03ad16bfee7938812215e51561",
+    "seccion": "comparacion_b2"
+  },
+  "n_casos": 3,
+  "estrategia_b2": "hibrido_b2_rerank_chunks_top50_b1",
+  "estrategia_referencia_v12": "hibrido_rerank_chunks_top50_b1",
+  "retriever_b2": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/b2_retriever_smokev14",
+  "slug_b2": "b2_retriever_smokev14",
+  "variante_b2": "smokev14",
+  "ruta_modelo_b2_por_defecto": "modelos/b2_retriever",
+  "reranker_b2": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/b1_reranker",
+  "candidatos": 50,
+  "k_salida": 10,
+  "contexto_ganador": "con_hubs",
+  "contextos": {
+    "sin_hubs": 0.0,
+    "con_hubs": 1.5
+  },
+  "n_remuestreos_bootstrap": 1000,
+  "semilla_bootstrap": 42,
+  "fuente_referencia_delta_primario": "v12 (comparacion_b1 congelada)",
+  "referencia_v12": {
+    "archivo": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v12.json",
+    "version": "v12-ciclo3-sprintB1",
+    "indice": "permanentes-v3",
+    "md5": "bc4bbebf925136be68711dc30ba99d7b",
+    "estrategia": "hibrido_rerank_chunks_top50_b1",
+    "contextos": [
+      "sin_hubs",
+      "con_hubs"
+    ],
+    "origen_datos": "comparacion_b1.metricas_por_caso (alineado por muestra)",
+    "n_casos": 3,
+    "medidas_por_caso": {
+      "sin_hubs": {
+        "ndcg_at_10": [
+          0.714939,
+          0.704125,
+          0.472546
+        ],
+        "f1_at_10": [
+          0.5,
+          0.470588,
+          0.375
+        ]
+      },
+      "con_hubs": {
+        "ndcg_at_10": [
+          0.589608,
+          0.692079,
+          0.658438
+        ],
+        "f1_at_10": [
+          0.5,
+          0.470588,
+          0.5
+        ]
+      }
+    }
+  },
+  "pareado_vs_referencia_v12": {
+    "sin_hubs": {
+      "ndcg_at_10": {
+        "n": 3,
+        "media_delta": 0.019338666666666653,
+        "p2_5": -0.12054799999999999,
+        "p97_5": 0.17856399999999994,
+        "prob_mejora": 0.592,
+        "gana": false
+      },
+      "f1_at_10": {
+        "n": 3,
+        "media_delta": 0.041666666666666664,
+        "p2_5": -0.125,
+        "p97_5": 0.25,
+        "prob_mejora": 0.592,
+        "gana": false
+      }
+    },
+    "con_hubs": {
+      "ndcg_at_10": {
+        "n": 3,
+        "media_delta": -0.022930333333333313,
+        "p2_5": -0.043511999999999995,
+        "p97_5": -0.008423999999999987,
+        "prob_mejora": 0.0,
+        "gana": false
+      },
+      "f1_at_10": {
+        "n": 3,
+        "media_delta": 0.0,
+        "p2_5": 0.0,
+        "p97_5": 0.0,
+        "prob_mejora": 0.0,
+        "gana": false
+      }
+    }
+  },
+  "referencia_externa_a2": {
+    "archivo": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v9.json",
+    "version": "v9-ciclo3-sprintA2",
+    "indice": "permanentes-v3",
+    "md5": "2d7bc19962eed50aafdbcfce1abc3219",
+    "estrategia": "hibrido_alia_rerank_chunks_top100",
+    "slug_embedding": "alia",
+    "k_candidatos": 100,
+    "contextos": [
+      "sin_hubs",
+      "con_hubs"
+    ],
+    "origen_datos": "comparacion_a2.metricas_por_caso (alineado por muestra)",
+    "n_casos": 3,
+    "medidas_por_caso": {
+      "sin_hubs": {
+        "ndcg_at_10": [
+          0.678755,
+          0.491172,
+          0.307983
+        ],
+        "f1_at_10": [
+          0.5,
+          0.352941,
+          0.25
+        ]
+      },
+      "con_hubs": {
+        "ndcg_at_10": [
+          0.546096,
+          0.658312,
+          0.453904
+        ],
+        "f1_at_10": [
+          0.5,
+          0.470588,
+          0.25
+        ]
+      }
+    }
+  },
+  "pareado_vs_referencia_externa_a2": {
+    "sin_hubs": {
+      "ndcg_at_10": {
+        "n": 3,
+        "media_delta": 0.15723866666666667,
+        "p2_5": -0.084364,
+        "p97_5": 0.34312699999999996,
+        "prob_mejora": 0.968,
+        "gana": false
+      },
+      "f1_at_10": {
+        "n": 3,
+        "media_delta": 0.122549,
+        "p2_5": -0.125,
+        "p97_5": 0.375,
+        "prob_mejora": 0.848,
+        "gana": false
+      }
+    },
+    "con_hubs": {
+      "ndcg_at_10": {
+        "n": 3,
+        "media_delta": 0.07100733333333335,
+        "p2_5": 0.0,
+        "p97_5": 0.18767900000000004,
+        "prob_mejora": 0.968,
+        "gana": false
+      },
+      "f1_at_10": {
+        "n": 3,
+        "media_delta": 0.08333333333333333,
+        "p2_5": 0.0,
+        "p97_5": 0.25,
+        "prob_mejora": 0.709,
+        "gana": false
+      }
+    }
+  },
+  "metricas_por_caso": {
+    "sin_hubs": {
+      "hibrido_b2_rerank_chunks_top50_b1": {
+        "ndcg_at_10": [
+          0.594391,
+          0.704125,
+          0.65111
+        ],
+        "f1_at_10": [
+          0.375,
+          0.470588,
+          0.625
+        ]
+      }
+    },
+    "con_hubs": {
+      "hibrido_b2_rerank_chunks_top50_b1": {
+        "ndcg_at_10": [
+          0.546096,
+          0.683655,
+          0.641583
+        ],
+        "f1_at_10": [
+          0.5,
+          0.470588,
+          0.5
+        ]
+      }
+    }
+  },
+  "metricas_globales": {
+    "sin_hubs": {
+      "hibrido_b2_rerank_chunks_top50_b1": {
+        "ndcg_at_10": {
+          "n": 3,
+          "media": 0.6498752187742121,
+          "p2_5": 0.5943907508440193,
+          "p97_5": 0.7041249493150387
+        },
+        "f1_at_10": {
+          "n": 3,
+          "media": 0.49019607843137253,
+          "p2_5": 0.37499999999999994,
+          "p97_5": 0.625
+        }
+      }
+    },
+    "con_hubs": {
+      "hibrido_b2_rerank_chunks_top50_b1": {
+        "ndcg_at_10": {
+          "n": 3,
+          "media": 0.6237780888537965,
+          "p2_5": 0.5460963797517797,
+          "p97_5": 0.6836550817096437
+        },
+        "f1_at_10": {
+          "n": 3,
+          "media": 0.4901960784313726,
+          "p2_5": 0.4705882352941176,
+          "p97_5": 0.5
+        }
+      }
+    }
+  },
+  "nota": "Sprint B2: la estrategia hibrido_b2_rerank_chunks_top50_b1 usa el retriever denso de dominio (modelos/b2_retriever_smokev14, variante 'smokev14', fine-tune del script 25) como componente denso del hibrido pre-registrado 0.5*bm25 + 0.5*B2 (top-50 candidatos) y el reranker B1 (modelos/b1_reranker) sobre los MISMOS pares (chunk, pasaje) que la ruta B1 del producto (mejor pasaje BM25 + top-3 chunks + max-pooling); la ruta de producto es con_hubs alpha=1.5 con salida top-10. El delta primario es pareado contra la ruta B1 con hibrido E5 congelada en v12 (comparacion_b1.metricas_por_caso; si falta, top10_por_caso en el contexto sin_hubs; si no hay fuente, fallback documentado sin pareado primario). La verificacion externa compara ademas contra A2/ALIA@100 (v9 comparacion_a2.metricas_por_caso) cuando esta disponible.",
+  "nota_pareado": "Bootstrap PAREADO de delta = B2 - referencia: las dos series comparten el orden de casos y el generador (seed 42, 1000 remuestreos) produce la misma matriz de indices, por lo que el IC es el de la diferencia por caso. 'gana' exige el extremo inferior del IC > 0 (criterio de ruido del gate ADR-16)."
+}

@@ -1,0 +1,302 @@
+{
+  "version": "b1-pares-reranker-v1",
+  "ciclo": "v3",
+  "sprint": "B1",
+  "fecha": "2026-10-04 00:21:31",
+  "modo": "cerrar",
+  "smoke": false,
+  "nota": "JSON reconstruido desde data/pares_b1/ (marcas _lote*.json + re-escaneo completo de shards); NO recomputa pares. La corrida --pares termino todos los lotes y fallo solo en el guard de integridad (falso positivo por script_12)",
+  "huella": "696002518e19e6e19d434c9ab565fdf1",
+  "caps": {
+    "max_pares": 150000,
+    "max_positivos_por_doc": 30,
+    "negativos_por_positivo": 1,
+    "max_chunks_por_articulo": 1,
+    "max_docs_bm25": 8000,
+    "lote": 1000,
+    "semilla": 42,
+    "proporciones_negativos": {
+      "bm25": 0.5,
+      "cocitado": 0.3,
+      "aleatorio": 0.2
+    },
+    "top_bm25_pool": 30,
+    "limite_shard_bytes": 524288000
+  },
+  "caps_origen": "declarados en --cerrar",
+  "caps_verificados_desde_marcas": {
+    "lote_efectivo": 1000,
+    "docs_con_pares": 22994,
+    "docs_tier_bm25_efectivo": 8000,
+    "docs_tier_solape_efectivo": 14994,
+    "negativos_por_positivo_efectivo": 1.0
+  },
+  "interpretacion_cap_global": "--max-pares limita pares POSITIVOS (unidades doc-articulo); las filas totales son positivos + negativos",
+  "proporciones_negativos": {
+    "bm25": 0.5,
+    "cocitado": 0.3,
+    "aleatorio": 0.2
+  },
+  "exclusion_benchmark": {
+    "n_ids": 90,
+    "fuente_primaria": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v2.json",
+    "fuente_cruzada": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v8.json",
+    "md5_v2": "d8cf0cbde15eff34d6f57b702fb89868",
+    "md5_v8": "746621a797fe109335e2a43367717a77",
+    "conjuntos_iguales": true,
+    "docs_benchmark_en_pares": 0,
+    "verificacion": "re-escaneo completo de 23 shards (299999 filas)"
+  },
+  "seleccion": {
+    "docs_con_pares": 22994,
+    "docs_tier_bm25": 8000,
+    "docs_tier_solape": 14994,
+    "n_lotes": 23
+  },
+  "conteos": {
+    "filas_total": 299999,
+    "positivos": 150000,
+    "negativos": 149999,
+    "negativos_por_fuente": {
+      "aleatorio": 30120,
+      "aleatorio_sin_bm25": 49079,
+      "bm25": 26001,
+      "cocitado": 44799
+    },
+    "docs_sin_chunks": 0,
+    "negativos_omitidos": 1
+  },
+  "integridad": {
+    "datos": {
+      "fuentes_datos": [
+        "entidades",
+        "constitucion",
+        "red_citas_resumen",
+        "indice_bm25",
+        "benchmark_v2",
+        "benchmark_v8",
+        "corpus"
+      ],
+      "fuentes_md5_actuales": {
+        "entidades": "12e52c13e90842abf700fef037785f32",
+        "constitucion": "fe877c6332b5cce9f32094666cb8c325",
+        "red_citas_resumen": "63a9a67a474c0986437cc7c9ce06fe85",
+        "indice_bm25": "9a205d536afe81bc001b98ca62a548fd",
+        "benchmark_v2": "d8cf0cbde15eff34d6f57b702fb89868",
+        "benchmark_v8": "746621a797fe109335e2a43367717a77",
+        "corpus": "5115a21c987a9d7d535fc99b0ab3684f"
+      },
+      "verificacion": "re-escaneo completo de TODOS los shards (0 filas con doc_id del benchmark) + md5 actuales de las fuentes + mtimes anteriores a la corrida",
+      "mtimes": {
+        "referencia_mtime": "2026-10-03 22:08:57",
+        "mtimes_fuentes": {
+          "benchmark_v2": "2026-09-21 23:48:05",
+          "benchmark_v8": "2026-09-21 23:48:05",
+          "constitucion": "2026-09-10 14:13:03",
+          "corpus": "2026-09-08 02:53:23",
+          "entidades": "2026-09-08 07:53:19",
+          "indice_bm25": "2026-09-10 15:30:05",
+          "red_citas_resumen": "2026-09-09 12:59:07"
+        },
+        "mtimes_anteriores_a_la_corrida": true
+      },
+      "datos_ok": true
+    },
+    "script_12": {
+      "md5_inicio": "aa9618c2fae9708fbf54d696e244b665",
+      "md5_final": "7e2fa6b16abc13ac86da62a821533525",
+      "md5_fin_registrado_incidente": "7e2fa6b16abc13ac86da62a821533525",
+      "cambio_detectado": true,
+      "coincide_con_fin_registrado": true,
+      "causa": "integracion --b1 durante la corrida; cambio aditivo; datos intactos",
+      "informativo": true,
+      "aborta": false,
+      "nota": "incidente de la corrida real B1: script_12 se modifico durante la corrida (integracion --b1, cambio aditivo) y el guard original aborto por falso positivo; las fuentes de datos quedaron intactas (verificado por el orquestador: mtimes de septiembre, 0 archivos del corpus modificados)"
+    }
+  },
+  "shards": {
+    "dir": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/data/pares_b1",
+    "n_shards": 23,
+    "bytes_total": 91973599,
+    "archivos": [
+      {
+        "ruta": "pares_reranker_b1_shard0000.parquet",
+        "filas": 18450,
+        "bytes": 5244821,
+        "md5": "a33bb2aaa560805f58b4b037b1b15a56"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0001.parquet",
+        "filas": 17264,
+        "bytes": 4859116,
+        "md5": "1ef0bb277723630af9c408f7406b7a7a"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0002.parquet",
+        "filas": 19494,
+        "bytes": 5575613,
+        "md5": "6a6541650cf0d154095130bf05e00d6c"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0003.parquet",
+        "filas": 20888,
+        "bytes": 6132300,
+        "md5": "e43bf7cb80073159dea0fd2418c6472a"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0004.parquet",
+        "filas": 22480,
+        "bytes": 6714077,
+        "md5": "5b5595882302b9482881b185d161c16c"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0005.parquet",
+        "filas": 24875,
+        "bytes": 7405320,
+        "md5": "5400a322bd26ad11a52045471a20d2bd"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0006.parquet",
+        "filas": 18400,
+        "bytes": 5528995,
+        "md5": "534d26b32f9b8a2eedadda1dde7aef77"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0007.parquet",
+        "filas": 10300,
+        "bytes": 3042617,
+        "md5": "17054484c222685af34a05517ad6e021"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0008.parquet",
+        "filas": 8526,
+        "bytes": 2599603,
+        "md5": "6c3de09369c903092cce1005c8f777b9"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0009.parquet",
+        "filas": 7424,
+        "bytes": 2315798,
+        "md5": "8f5b856f0b2edc4e090e13f28a02ab10"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0010.parquet",
+        "filas": 7576,
+        "bytes": 2295517,
+        "md5": "32a52f99f3c4c9485af216ba269e536a"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0011.parquet",
+        "filas": 8456,
+        "bytes": 2687400,
+        "md5": "ae58c52a60373d642f93c10a93de08f5"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0012.parquet",
+        "filas": 8726,
+        "bytes": 2765793,
+        "md5": "005b4588294a0b51d2a12f3738b8ca33"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0013.parquet",
+        "filas": 9318,
+        "bytes": 3001240,
+        "md5": "646ba72ae090c773a6ccefa824f78cf3"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0014.parquet",
+        "filas": 9496,
+        "bytes": 3063799,
+        "md5": "80ac6865bc5a8b69db09b64323346edf"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0015.parquet",
+        "filas": 9374,
+        "bytes": 3016072,
+        "md5": "c15b3a4a6deff2e5c09f10a494da8e5b"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0016.parquet",
+        "filas": 9966,
+        "bytes": 3223663,
+        "md5": "98a66e94008a8b3c4f1aa1eaa7298682"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0017.parquet",
+        "filas": 10454,
+        "bytes": 3388253,
+        "md5": "b0515cc81e9fbc83085172df820d2b89"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0018.parquet",
+        "filas": 10862,
+        "bytes": 3525088,
+        "md5": "820d5c5f439f333c7c23899cfc9c02b8"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0019.parquet",
+        "filas": 11204,
+        "bytes": 3686640,
+        "md5": "0216d9e2d502412e4566d3fc7519bbdf"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0020.parquet",
+        "filas": 11676,
+        "bytes": 3853174,
+        "md5": "9104bd56439ee2cd4f6900979d3f2d1a"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0021.parquet",
+        "filas": 12682,
+        "bytes": 4154578,
+        "md5": "88f227286959a839c3f99ee52804a382"
+      },
+      {
+        "ruta": "pares_reranker_b1_shard0022.parquet",
+        "filas": 12108,
+        "bytes": 3894122,
+        "md5": "19498602012ace82fb63bf807157e6b4"
+      }
+    ]
+  },
+  "tiempos_segundos": {
+    "suma_lotes_segundos": 7385.0,
+    "por_lote_segundos": {
+      "0": 246.0,
+      "1": 226.8,
+      "2": 322.3,
+      "3": 469.9,
+      "4": 569.7,
+      "5": 789.8,
+      "6": 597.4,
+      "7": 137.1,
+      "8": 131.6,
+      "9": 103.4,
+      "10": 109.3,
+      "11": 162.4,
+      "12": 197.3,
+      "13": 215.9,
+      "14": 258.8,
+      "15": 229.4,
+      "16": 254.8,
+      "17": 318.0,
+      "18": 311.2,
+      "19": 355.8,
+      "20": 393.7,
+      "21": 483.7,
+      "22": 500.7
+    },
+    "cierre_segundos": 2.8
+  },
+  "versiones": {
+    "python": "3.14.7",
+    "plataforma": "Linux-7.2.8-1-cachyos-x86_64-with-glibc2.44",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3",
+    "cleanlab": "2.9.0",
+    "matplotlib": "3.10.9"
+  }
+}

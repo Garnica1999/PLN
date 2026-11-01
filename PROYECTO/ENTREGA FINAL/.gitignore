@@ -1,0 +1,12 @@
+# Caché derivada del backend (TF-IDF de sentencias similares, ~118 MB).
+# Se regenera en ~30 s al primer arranque: no va al repositorio.
+app/backend/cache/
+
+# Artefactos de ejecución
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Borradores del generador del informe
+informe/_borrador_informe.*

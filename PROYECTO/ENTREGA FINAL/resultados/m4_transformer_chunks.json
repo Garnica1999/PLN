@@ -1,0 +1,91 @@
+{
+  "fecha": "2026-09-11T08:28:13.310349",
+  "config": {
+    "semilla": 42,
+    "modelo": "dccuchile/bert-base-spanish-wwm-cased",
+    "max_tokens": 512,
+    "batch_train": 8,
+    "batch_eval": 16,
+    "grad_accum": 4,
+    "epochs": 3,
+    "lr": 2e-05,
+    "vram_min_gb": 10.0,
+    "vram_espera_seg": 300,
+    "vram_max_esperas": 288,
+    "ruta_splits": "data/splits_m4.parquet",
+    "ruta_corpus": "data/corpus_sentencias.parquet",
+    "ruta_etiquetas": "data/etiquetas_areas.parquet",
+    "dir_modelos": "modelos/m4_transformer_chunks",
+    "ruta_metricas": "resultados/m4_transformer_chunks.json",
+    "ruta_log": "experimentos/m4_transformer_chunks.log",
+    "chunk_tokens": 256,
+    "chunk_stride": 128,
+    "max_chunks": 64,
+    "dir_cache_chunks": "data/cache_chunks_beto",
+    "batch_efectivo_docs": 32,
+    "micro_chunks_eval": 128,
+    "num_workers": 0,
+    "amp": true,
+    "log_cada_lotes": 25
+  },
+  "modelo": "dccuchile/bert-base-spanish-wwm-cased",
+  "estrategia_longitud": "chunk_mean_256_stride128_max64",
+  "completo": {
+    "macro_f1": 0.2433442600823086,
+    "accuracy": 0.5634160090191658,
+    "modelo": "modelos/m4_transformer_chunks/beto_completo",
+    "mejor_f1_val": 0.23125167605155178,
+    "historial_epocas": [
+      {
+        "epoca": 1,
+        "perdida_train": 1.496312734865729,
+        "perdida_val": 1.3098958333333333,
+        "macro_f1_val": 0.15026304850559788
+      },
+      {
+        "epoca": 2,
+        "perdida_train": 1.2697603318212747,
+        "perdida_val": 1.2400287250140767,
+        "macro_f1_val": 0.1935281556405345
+      },
+      {
+        "epoca": 3,
+        "perdida_train": 1.1656669888107891,
+        "perdida_val": 1.1822146853885136,
+        "macro_f1_val": 0.23125167605155178
+      }
+    ],
+    "chunks_promedio_doc": 52.69922087334662,
+    "chunks_max_obs": 64
+  },
+  "enmascarado": {
+    "macro_f1": 0.23632401040291953,
+    "accuracy": 0.540304396843292,
+    "modelo": "modelos/m4_transformer_chunks/beto_enmascarado",
+    "mejor_f1_val": 0.22559786708539642,
+    "historial_epocas": [
+      {
+        "epoca": 1,
+        "perdida_train": 1.4944253377654655,
+        "perdida_val": 1.3113562781531531,
+        "macro_f1_val": 0.1502992577816692
+      },
+      {
+        "epoca": 2,
+        "perdida_train": 1.2725656542461505,
+        "perdida_val": 1.257639841990428,
+        "macro_f1_val": 0.1888288669279259
+      },
+      {
+        "epoca": 3,
+        "perdida_train": 1.1884554986066127,
+        "perdida_val": 1.213375607052365,
+        "macro_f1_val": 0.22559786708539642
+      }
+    ],
+    "chunks_promedio_doc": 52.674337138370475,
+    "chunks_max_obs": 64
+  },
+  "gap_leakage": 0.007020249679389079,
+  "tiempo_total_seg": 18555.264137029648
+}

@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "fecha": "2026-10-05T05:21:55",
+    "script": "scripts/32_pack_gold_150.py",
+    "version_pack": "gold_150_v1",
+    "semilla": 42,
+    "limite": null,
+    "dir_salida": "resultados/gold_150",
+    "estrategia_benchmark": "hibrido_b2_rerank_chunks_top50_b1",
+    "k_c3": 10,
+    "n_total_esperado": 150
+  },
+  "n_total": 150,
+  "por_origen": {
+    "benchmark": 40,
+    "c3": 110
+  },
+  "c3_por_anio": {
+    "2022": 22,
+    "2023": 22,
+    "2024": 22,
+    "2025": 22,
+    "2026": 22
+  },
+  "periodos": {
+    "1992-2001": 13,
+    "2002-2011": 13,
+    "2012-2021": 14,
+    "2022-2026": 110
+  },
+  "tercil_dificultad": {
+    "fuente": "terciles de n_citas_ner dentro del pack (0 = menos citas, mas dificil); proxy documentado porque C3 no tiene nDCG@10 por caso",
+    "distribucion": {
+      "0": 50,
+      "1": 50,
+      "2": 50
+    },
+    "por_origen": {
+      "benchmark": {
+        "0": 22,
+        "1": 10,
+        "2": 8
+      },
+      "c3": {
+        "0": 28,
+        "1": 40,
+        "2": 42
+      }
+    }
+  },
+  "n_citas_ner": {
+    "n": 150,
+    "min": 1,
+    "max": 67,
+    "media": 13.66,
+    "mediana": 11.0,
+    "p25": 8.0,
+    "p75": 18.0,
+    "total": 2049
+  },
+  "candidatos_por_caso": {
+    "n": 150,
+    "min": 10,
+    "max": 68,
+    "media": 18.266666666666666,
+    "mediana": 16.0,
+    "p25": 13.0,
+    "p75": 21.75,
+    "total": 2740
+  },
+  "n_casos_sin_texto": 0,
+  "n_candidatos_sin_catalogo": 1,
+  "rutas_c3": {
+    "n_casos": 110,
+    "n_items": 1100,
+    "n_casos_vacios": 0
+  },
+  "md5": {
+    "muestra": "d5d2de3ff0d4852845bfa6647bbdc2b8",
+    "candidatos": "b250635931c79c6efe4a994bd77576a9",
+    "guia": "a245f051a2fb496f5d1891d5c484b6f9",
+    "rutas_c3": "8db6a1137c1e24ab4060bd541253852c"
+  },
+  "premisas": [
+    "Muestra: 40 casos del benchmark M7 (los 90 de vinculo_cp_benchmark_v2.json menos los 50 anotados en el mini-gold B3) + 110 casos del corpus C3 2022-2026 (universo: estado ok y entidades NER; cuota equitativa ~22/anio; semilla 42).",
+    "Anti-leakage B1/B2: los pares de entrenamiento (data/pares_b1, scripts 23 y 25) excluyen los 90 ids del benchmark y provienen del corpus 1992-2021; el corpus C3 2022-2026 no participa en ellos. Los 40 casos benchmark son ids nuevos (no repiten el pack B3).",
+    "Candidatos por caso: union de arts_cp NER y el top-10 de la ruta del producto v2.2 (benchmark: hibrido_b2_rerank_chunks_top50_b1 de v13; C3: VinculoCP(usar_reranker=True).recuperar(texto, k=10) con scores en rutas_c3_gold150.json); ordenados por numero de articulo; snippet ~200 chars del catalogo de la CP. citado_ner es referencia automatica, no verdad.",
+    "tercil_dificultad: terciles de n_citas_ner DENTRO del pack (0 = menos citas, mas dificil). Proxy documentado: C3 no tiene nDCG@10 por caso y n_citas_ner es la unica senal comun; el benchmark conserva su ndcg en v13 pero el pack usa el mismo proxy para los dos origenes.",
+    "Anotacion humana graduada de relevancia 2/1/0 (script 16 con --pack gold_150). Es diagnostico: no entrena nada y no toca test ni el holdout sellado. La evaluacion contra este gold queda pendiente de los benchmarks v14.",
+    "El corpus y los parquet se leen SOLO por columnas/filtros; no se modifica ningun archivo de datos ni resultado previo (v2..v13 y gold_mini intactos)."
+  ]
+}

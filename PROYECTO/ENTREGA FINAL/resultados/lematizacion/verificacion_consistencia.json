@@ -1,0 +1,20 @@
+{
+  "n_docs": 23742,
+  "total_lemas_secuencias": 248533344,
+  "total_lemas_contador": 248533344,
+  "integridad_secuencias_contador": true,
+  "decodificacion_muestra_ok": false,
+  "n_tipos_nuevo": 195959,
+  "referencia": "/home/carlos/Git/PLN/PROYECTO/PRIMERA ENTREGA/resultados/eda_extendido/lemas_stems_pos/contadores_lemas.parquet",
+  "n_tipos_ref": 195959,
+  "total_lemas_ref": 248533344,
+  "tipos_interseccion": 195959,
+  "tipos_solo_nuevo": 0,
+  "tipos_solo_ref": 0,
+  "solapamiento_sobre_ref": 1.0,
+  "solapamiento_sobre_nuevo": 1.0,
+  "ej_solo_nuevo": [],
+  "ej_solo_ref": [],
+  "top_difs_freq": [],
+  "n_difs_freq": 0
+}

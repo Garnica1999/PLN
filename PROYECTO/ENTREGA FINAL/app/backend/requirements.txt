@@ -1,0 +1,15 @@
+# Backend Juris-PLN (Entrega Final).
+# El nucleo reutilizado de la SEGUNDA ENTREGA corre con el venv del proyecto,
+# que ya aporta numpy, pandas, pyarrow, rank-bm25, scikit-learn, joblib y
+# spaCy con es_core_news_md. Este archivo solo declara lo propio de la API.
+fastapi>=0.136
+uvicorn[standard]>=0.48
+pydantic>=2.13
+httpx>=0.28
+langchain>=1.4
+langchain-core>=1.7
+langchain-ollama>=1.1
+
+# Desarrollo y verificacion
+pytest>=9.1
+ruff>=0.16
