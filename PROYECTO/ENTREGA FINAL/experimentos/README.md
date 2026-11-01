@@ -11,14 +11,16 @@ la fusión por rango recíproco (RRF) con pesos elegidos por validación cruzada
 de 5 pliegues, con delta pareado e IC 95 % bootstrap.
 
 Resultado: v2.2 0,6926; oráculo de selección por caso 0,6996 (+0,0070, dentro
-del ruido); unión de los top-10 de todas las rutas 0,5732; ninguna fusión
-mejora (la de todas las rutas cae a 0,6350). `cita_exacta` se excluye porque
-devuelve los artículos que M2 extrajo y el gold del benchmark son esos mismos
-artículos.
+del ruido); **techo de reordenar el top-10 actual 0,7359** (+0,043); el top-10
+contiene **4,8 de los 11,4 relevantes** por caso; Borda 0,5497, conteo de rutas
+0,5431 y consenso de tres rutas 0,6926 (sin cambio). Ninguna regla mejora.
+`cita_exacta` se excluye porque devuelve los artículos que M2 extrajo y el gold
+del benchmark son esos mismos artículos.
 
-Lectura: el margen no está en combinar rutas. El recall del candidato está
-saturado (0 ítems fuera del pool en el gold humano) y la pérdida es de orden
-dentro del top-10, así que la palanca es el reranker.
+Lectura: el margen no está en combinar rutas ni en reordenar lo ya recuperado.
+Con 4,8 de 11,4 relevantes en el top-10, la mejora exige **promover candidatos
+de las posiciones 11 a 50**, es decir, un mejor reranker (o más anotación para
+desambiguar el gold).
 
 Artefactos: `exp_fusion_rutas.json`, `exp_fusion_rutas.md`.
 

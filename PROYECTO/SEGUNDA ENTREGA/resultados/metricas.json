@@ -7477,24 +7477,51 @@
 ,
  "fusion_rutas_m7": {
   "experimento": "exp_fusion_rutas",
-  "fecha": "2026-11-01T00:41:30-05:00",
+  "fecha": "2026-11-01T01:29:46-05:00",
   "fuente": "PROYECTO/ENTREGA FINAL/experimentos/exp_fusion_rutas.json",
   "n_casos": 90,
   "v2_2_ndcg_at_10": 0.6926,
   "oraculo_seleccion_por_caso": 0.6996,
-  "cobertura_union_top10": 0.5732,
-  "fusiones": {
-   "v2.2 + todas las rutas (0.25)": {
-    "ndcg_at_10": 0.635,
-    "delta_vs_v2_2": -0.0577,
+  "techo_reorden_top10": 0.7359,
+  "relevantes_en_top10_media": 4.8,
+  "relevantes_gold_media": 11.44,
+  "pesos_elegidos_rrf": {
+   "bm25": 0.0,
+   "bm25_rerank": 0.0,
+   "bm25_rerank_chunks": 0.0,
+   "bm25_rerank_chunks_top50": 0.0,
+   "e5": 0.0,
+   "hibrido": 0.0,
+   "hibrido_rerank_chunks_top50": 0.0
+  },
+  "combinaciones": {
+   "borda": {
+    "ndcg_at_10": 0.5497,
+    "delta_vs_v2_2": -0.143,
     "ic95": [
-     -0.0769,
-     -0.0379
+     -0.1694,
+     -0.1183
+    ]
+   },
+   "conteo de rutas": {
+    "ndcg_at_10": 0.5431,
+    "delta_vs_v2_2": -0.1495,
+    "ic95": [
+     -0.1778,
+     -0.1237
+    ]
+   },
+   "v2.2 + consenso de 3 rutas": {
+    "ndcg_at_10": 0.6926,
+    "delta_vs_v2_2": 0.0,
+    "ic95": [
+     0.0,
+     0.0
     ]
    }
   },
   "decision": "no adoptada",
-  "lectura": "El oraculo de seleccion por caso solo gana 0,0070 sobre v2.2 y ninguna fusion mejora: el margen no esta en combinar rutas sino en el orden dentro del top-10 (recall del candidato saturado en el gold humano)."
+  "lectura": "El oraculo de seleccion por caso gana 0,0070 y reordenar el top-10 tiene techo 0,7359; el top-10 contiene 4,8 de 11,4 relevantes. La palanca es promover candidatos de las posiciones 11 a 50 (reranker), no combinar rutas."
  },
  "calidad_respuesta_rag_intento": {
   "experimento": "calidad_respuesta_rag_v1",

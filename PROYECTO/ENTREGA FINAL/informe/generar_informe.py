@@ -1461,13 +1461,16 @@ def bloques_5_7() -> list[tuple]:
     )))
 
     b.append(("p", (
-        "Después del cierre se probó una quinta vía: la fusión tardía por rango recíproco de "
-        "v2.2 con las demás rutas del benchmark. El oráculo de selección de ruta por caso solo "
-        "gana 0,0070 sobre v2.2 (0,6996 frente a 0,6926) y ninguna fusión supera al modelo; la "
-        "de todas las rutas cae a 0,6350. La unión de los top-10 de todas las rutas cubre solo "
-        "el 57,3 % del gold, lo que confirma que el recall del candidato está saturado y que la "
-        "pérdida es de orden dentro del top-10: la palanca es el reranker, no la combinación de "
-        "rutas. El experimento queda registrado en experimentos/exp_fusion_rutas.md."
+        "Después del cierre se probaron dos vías de mejora sobre el benchmark de 90 casos. "
+        "Primera, combinar rutas: el oráculo de selección por caso solo gana 0,0070 sobre v2.2 "
+        "(0,6996 frente a 0,6926), la fusión por rango recíproco con pesos elegidos por "
+        "validación cruzada no supera al modelo, y Borda y el conteo de rutas caen a 0,55. "
+        "Segunda, reordenar: un reranker perfecto sobre el top-10 actual llegaría a 0,7359 "
+        "(+0,043), porque ese top-10 contiene solo 4,8 de los 11,4 artículos relevantes por "
+        "caso. La conclusión es que el techo no está en combinar rutas ni en reordenar lo ya "
+        "recuperado, sino en promover candidatos de las posiciones 11 a 50: es un problema de "
+        "reranker y de etiqueta, no de fusión. Queda registrado en "
+        "experimentos/exp_fusion_rutas.md."
     )))
     b.append(("h2", "5.8 Síntesis de la decisión"))
     b.append(("p", (
