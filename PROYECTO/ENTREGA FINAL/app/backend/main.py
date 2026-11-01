@@ -282,7 +282,7 @@ COMPARATIVA_RUTAS: tuple[tuple[str, str], ...] = (
 GUARDRAILS_TASAS: tuple[tuple[str, str, str], ...] = (
     (
         "ruteo_exacto",
-        "Ruteo exacto de intencion",
+        "Ruteo exacto de intención",
         "agente_guardrails_eval.metricas.ruteo_exacto",
     ),
     (
@@ -315,7 +315,7 @@ GUARDRAILS_TASAS: tuple[tuple[str, str, str], ...] = (
 GUARDRAILS_LATENCIA: tuple[tuple[str, str], ...] = (
     ("p50", "Latencia p50"),
     ("p95", "Latencia p95"),
-    ("max", "Latencia maxima"),
+    ("max", "Latencia máxima"),
 )
 
 RUTA_LATENCIA_AGENTE = (
