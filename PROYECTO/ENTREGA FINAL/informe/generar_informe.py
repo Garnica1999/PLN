@@ -2085,6 +2085,38 @@ def bloques_8_11() -> list[tuple]:
         "inventada."
     )))
 
+    b.append(("h2", "9.6 Calidad de respuesta de la capa RAG"))
+    b.append(("p", (
+        "La evaluación anterior mide el ruteo y el anclaje de citas, no la calidad de la "
+        "respuesta. Para cerrar ese hueco se juzgaron 30 respuestas en alcance con un modelo de "
+        "familia distinta al generador (gemma4:26b-factual), al que se le entrega la pregunta, "
+        "la respuesta y la evidencia real de la consulta reconstruida con /v1/link: artículos "
+        "extraídos, recuperados, citadas y resumen. Se califican tres dimensiones con una "
+        "rúbrica fija y temperatura 0. El juez es un proxy automático (gold-LLM), no un experto "
+        "humano."
+    )))
+    b.append(tabla(
+        "Calidad de respuesta del agente (30 consultas en alcance; 29 válidas).",
+        ["Dimensión", "Media", "IC 95 %", "Mínimo", "Máximo"],
+        [
+            ["Fidelidad a la evidencia", "0,881", "[0,774; 0,967]", "0,40", "1,00"],
+            ["Relevancia de la respuesta", "0,824", "[0,672; 0,945]", "0,30", "1,00"],
+            ["Precisión del contexto", "0,890", "[0,772; 0,986]", "0,50", "1,00"],
+        ],
+        [4.6, 2.0, 3.0, 2.0, 2.0],
+        "evaluacion/calidad_respuesta_v1.json (juez gemma4:26b-factual, semilla 42).",
+        ["l", "r", "l", "r", "r"],
+    ))
+    b.append(("p", (
+        "La lectura es consistente con el resto del sistema: las respuestas se apoyan en la "
+        "evidencia recuperada (fidelidad 0,881) y el contexto que se presenta es pertinente "
+        "(precisión 0,890); la relevancia baja algo porque varias preguntas piden comparar o "
+        "resumir y la respuesta se queda en enumerar. Dos advertencias: el juez es automático y "
+        "un intento previo con un modelo pequeño se descartó por devolver valores fuera de "
+        "escala, y esta métrica evalúa la capa conversacional, no el retriever, que se mide con "
+        "nDCG@10 en el capítulo 5."
+    )))
+
     # ------------------------------------------------------------------
     # 10. Análisis, limitaciones y ética
     # ------------------------------------------------------------------

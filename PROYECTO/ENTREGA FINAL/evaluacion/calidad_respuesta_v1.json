@@ -1,0 +1,2531 @@
+{
+ "experimento": "calidad_respuesta_rag_v1",
+ "fecha": "2026-11-01T02:15:12-05:00",
+ "n_casos": 30,
+ "n_validos": 29,
+ "generador": "qwen3.8:diario-8k-q3_k_s",
+ "juez": "gemma4:26b-factual",
+ "procedencia": "Juez LLM de familia distinta al generador con rubrica fija; es gold-LLM, no anotacion humana. Las consultas salen del gold set del agente (ruta en_alcance).",
+ "metricas": {
+  "fidelidad": {
+   "media": 0.881,
+   "ic95": [
+    0.774,
+    0.9672
+   ],
+   "min": 0.0,
+   "max": 1.0
+  },
+  "relevancia": {
+   "media": 0.8241,
+   "ic95": [
+    0.6724,
+    0.9448
+   ],
+   "min": 0.0,
+   "max": 1.0
+  },
+  "precision_contexto": {
+   "media": 0.8897,
+   "ic95": [
+    0.7724,
+    0.9862
+   ],
+   "min": 0.0,
+   "max": 1.0
+  }
+ },
+ "resultados": [
+  {
+   "id": "alc-01",
+   "prompt": "¿Qué artículos de la Constitución están vinculados a la sentencia T-293/97?",
+   "modo": "agente",
+   "respuesta": "Para la sentencia **T-293/97** (id 2195), los artículos vinculados son:\n\n**Citados explícitamente en el texto:**\n- Art. 11 (derechos fundamentales)\n- Art. 13 (derechos fundamentales)\n- Art. 25 (derechos fundamentales)\n- Art. 49 (derechos sociales, económicos y culturales)\n- Art. 86 (protección y aplicación de derechos)\n- Art. 241 (rama judicial)\n\n**Recuperados por similitud (BM25):**\n- Art. 86, 241, 1, 9, 2 y 53.\n\nLos más relevantes por puntuación son el 86 (tutela) y el 241 (guarda de la Constitución).",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "2195",
+      "canon": "T-293-1997"
+     },
+     "extraidos": [
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "25",
+       "bloque": "derechos_fundamentales",
+       "texto": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a "
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.6064,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.5414,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "1",
+       "score": 1.1081,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 1.0644,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "2",
+       "score": 1.053,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "53",
+       "score": 1.0427,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "234",
+       "score": 1.0087,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "13",
+       "score": 0.9971,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "48",
+       "score": 0.9885,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "93",
+       "score": 0.9423,
+       "bloque": "proteccion_aplicacion_derechos"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9429); 6 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente los artículos extraídos y los recuperados por similitud según el contexto proporcionado, sin inventar información fuera del corpus."
+  },
+  {
+   "id": "alc-02",
+   "prompt": "Analiza la sentencia T-760/08 e identifica los derechos fundamentales involucrados.",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: T-760-2008 (id 11705). Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos); 241 (rama_judicial); 1 (principios_fundamentales); 94 (proteccion_aplicacion_derechos); 50 (derechos_sociales_economicos_culturales); 49 (derechos_sociales_economicos_culturales); 9 (principios_fundamentales); 48 (derechos_sociales_economicos_culturales). Sentencias citadas resueltas: C-463-2008 (área: derechos_fundamentales); T-227-2003 (área: derechos_fundamentales); T-801-1998 (área: derechos_sociales_economicos_culturales); T-859-2003 (área: derechos_fundamentales); T-595-2002 (área: derechos_sociales_economicos_culturales); T-749-2001 (área: derechos_fundamentales); T-490-2006 (área: proteccion_aplicacion_derechos); T-198-2004 (área: derechos_fundamentales).",
+   "tool_calls": [
+    "id=11705 canon=T-760-2008 articulos=86,241,49,44,13,2",
+    "id=11705 citas=494 resueltas=424"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "11705",
+      "canon": "T-760-2008"
+     },
+     "extraidos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "94",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "La enunciación de los derechos y garantías contenidos en la Constitución y en los convenios internacionales vigentes, no debe entenderse como negación"
+      },
+      {
+       "numero": "50",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "Todo niño menor de un año que no esté cubierto por algún tipo de protección o de seguridad social, tendrá derecho a recibir atención gratuita en todas"
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "9",
+       "bloque": "principios_fundamentales",
+       "texto": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.3677,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.331,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "49",
+       "score": 1.0941,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "44",
+       "score": 0.9724,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "13",
+       "score": 0.9409,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "2",
+       "score": 0.9395,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "48",
+       "score": 0.8973,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "9",
+       "score": 0.8874,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "1",
+       "score": 0.8762,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "54",
+       "score": 0.8741,
+       "bloque": "derechos_sociales_economicos_culturales"
+      }
+     ],
+     "citadas": [
+      "C-463-2008",
+      "T-227-2003",
+      "T-801-1998",
+      "T-859-2003",
+      "T-595-2002",
+      "T-749-2001",
+      "T-490-2006",
+      "T-198-2004",
+      "T-676-2002",
+      "T-73-2007"
+     ],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_sociales_economicos_culturales (prob 0.8644); 48 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 424 de 494 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente los artículos constitucionales presentes en el contexto y los vincula con la sentencia solicitada, cumpliendo con el análisis de derechos."
+  },
+  {
+   "id": "alc-04",
+   "prompt": "¿Qué sentencias cita la SU-480/97?",
+   "modo": "agente",
+   "respuesta": "La SU-480/97 (id 2725) cita 46 sentencias, todas resueltas en el corpus. Entre las principales figuran:\n\n- SU-111/97 (derechos fundamentales, PageRank 0.0036)\n- T-493/93 (derechos fundamentales)\n- T-59/97 (derechos fundamentales)\n- T-271/95 (derechos fundamentales)\n- T-165/95 (derechos fundamentales)\n- T-125/97 (derechos fundamentales)\n- T-477/95 (derechos fundamentales)\n- T-67/94 (derechos sociales, económicos y culturales)\n- C-221/94 (derechos sociales, económicos y culturales)\n- C-179/97 (principios fundamentales)\n\nLa mayoría se concentra en derechos fundamentales.",
+   "tool_calls": [
+    "id=2725 citas=46 resueltas=46"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "2725",
+      "canon": "SU-480-1997"
+     },
+     "extraidos": [
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "33",
+       "bloque": "derechos_fundamentales",
+       "texto": "Nadie podrá ser obligado a declarar contra sí mismo o contra su cónyuge, compañero permanente o parientes dentro del cuarto grado de consanguinidad, s"
+      },
+      {
+       "numero": "35",
+       "bloque": "derechos_fundamentales",
+       "texto": "<Artículo modificado por el artículo 1 o. del Acto Legislativo No. 1 de 1997. El nuevo texto es el siguiente:> La extradición se podrá solicitar, conc"
+      },
+      {
+       "numero": "42",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La familia es el núcleo fundamental de la sociedad. Se constituye por vínculos naturales o jurídicos, por la decisión libre de un hombre y una mujer d"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "241",
+       "score": 1.4394,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "86",
+       "score": 1.2625,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "48",
+       "score": 1.0643,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "186",
+       "score": 1.0037,
+       "bloque": "rama_legislativa"
+      },
+      {
+       "numero": "234",
+       "score": 1.0005,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "235",
+       "score": 0.9888,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "2",
+       "score": 0.9884,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 0.9678,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "1",
+       "score": 0.9493,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "49",
+       "score": 0.8866,
+       "bloque": "derechos_sociales_economicos_culturales"
+      }
+     ],
+     "citadas": [
+      "T-271-1995",
+      "C-179-1997",
+      "T-67-1994",
+      "T-165-1995",
+      "T-125-1997",
+      "T-59-1997",
+      "T-477-1995",
+      "T-493-1993",
+      "C-221-1994",
+      "SU-111-1997"
+     ],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9269); 13 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 46 de 46 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es totalmente fiel al contexto, ya que identifica correctamente las sentencias citadas en el campo 'citadas' y su relación con los bloques temáticos."
+  },
+  {
+   "id": "alc-07",
+   "prompt": "¿Cuál es el área temática de la sentencia T-760/08 según el clasificador M4?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: T-760-2008 (id 11705). Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos); 241 (rama_judicial); 1 (principios_fundamentales); 94 (proteccion_aplicacion_derechos); 50 (derechos_sociales_economicos_culturales); 49 (derechos_sociales_economicos_culturales); 9 (principios_fundamentales); 48 (derechos_sociales_economicos_culturales). Sentencias citadas resueltas: C-463-2008 (área: derechos_fundamentales); T-227-2003 (área: derechos_fundamentales); T-801-1998 (área: derechos_sociales_economicos_culturales); T-859-2003 (área: derechos_fundamentales); T-595-2002 (área: derechos_sociales_economicos_culturales); T-749-2001 (área: derechos_fundamentales); T-490-2006 (área: proteccion_aplicacion_derechos); T-198-2004 (área: derechos_fundamentales).",
+   "tool_calls": [
+    "id=11705 canon=T-760-2008 articulos=86,241,49,44,13,2",
+    "id=11705 citas=494 resueltas=424"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "11705",
+      "canon": "T-760-2008"
+     },
+     "extraidos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "94",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "La enunciación de los derechos y garantías contenidos en la Constitución y en los convenios internacionales vigentes, no debe entenderse como negación"
+      },
+      {
+       "numero": "50",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "Todo niño menor de un año que no esté cubierto por algún tipo de protección o de seguridad social, tendrá derecho a recibir atención gratuita en todas"
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "9",
+       "bloque": "principios_fundamentales",
+       "texto": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.3677,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.331,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "49",
+       "score": 1.0941,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "44",
+       "score": 0.9724,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "13",
+       "score": 0.9409,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "2",
+       "score": 0.9395,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "48",
+       "score": 0.8973,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "9",
+       "score": 0.8874,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "1",
+       "score": 0.8762,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "54",
+       "score": 0.8741,
+       "bloque": "derechos_sociales_economicos_culturales"
+      }
+     ],
+     "citadas": [
+      "C-463-2008",
+      "T-227-2003",
+      "T-801-1998",
+      "T-859-2003",
+      "T-595-2002",
+      "T-749-2001",
+      "T-490-2006",
+      "T-198-2004",
+      "T-676-2002",
+      "T-73-2007"
+     ],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_sociales_economicos_culturales (prob 0.8644); 48 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 424 de 494 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 0.5,
+   "relevancia": 0.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta no responde la pregunta. Aunque el resumen del contexto contiene la información solicitada, el asistente solo repite metadatos y no identifica el área temática."
+  },
+  {
+   "id": "alc-09",
+   "prompt": "Resume los artículos citados explícitamente en la T-293/97.",
+   "modo": "agente",
+   "respuesta": "La T-293/97 cita explícitamente seis artículos de la Constitución:\n\n- **Art. 11**: derecho a la vida, inviolable; prohibición de la pena de muerte.\n- **Art. 13**: igualdad ante la ley, misma protección y trato de las autoridades.\n- **Art. 25**: el trabajo como derecho y obligación social, con especial protección del Estado.\n- **Art. 49**: atención de la salud y saneamiento ambiental como derechos.\n- **Art. 86**: acción de tutela, procedimiento preferente y sumario.\n- **Art. 241**: a la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución.\n\nEn conjunto, articulan derechos fundamentales, sociales y la competencia constitucional.",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53",
+    "articulo=11 bloque=derechos_fundamentales",
+    "articulo=13 bloque=derechos_fundamentales",
+    "articulo=25 bloque=derechos_fundamentales",
+    "articulo=49 bloque=derechos_sociales_economicos_culturales",
+    "articulo=86 bloque=proteccion_aplicacion_derechos",
+    "articulo=241 bloque=rama_judicial"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "2195",
+      "canon": "T-293-1997"
+     },
+     "extraidos": [
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "25",
+       "bloque": "derechos_fundamentales",
+       "texto": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a "
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.6064,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.5414,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "1",
+       "score": 1.1081,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 1.0644,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "2",
+       "score": 1.053,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "53",
+       "score": 1.0427,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "234",
+       "score": 1.0087,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "13",
+       "score": 0.9971,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "48",
+       "score": 0.9885,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "93",
+       "score": 0.9423,
+       "bloque": "proteccion_aplicacion_derechos"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9429); 6 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es totalmente fiel al contexto, resume con exactitud los artículos presentes y responde directamente a la solicitud de resumir los artículos citados."
+  },
+  {
+   "id": "alc-10",
+   "prompt": "¿La sentencia SU-480/97 qué artículos de la Constitución menciona?",
+   "modo": "agente",
+   "respuesta": "La sentencia SU-480/97 (canon detectado SU-480-1997, id 2725) menciona explícitamente estos artículos de la Constitución:\n\n- **11** (derechos fundamentales)\n- **13** (derechos fundamentales)\n- **33** (derechos fundamentales)\n- **35** (derechos fundamentales)\n- **42** (derechos sociales, económicos y culturales)\n- **48** (derechos sociales, económicos y culturales)\n- **49** (derechos sociales, económicos y culturales)\n- **86** (protección y aplicación de derechos)\n\nAdemás, por similitud temática el sistema recuperó los artículos 241, 186, 234 y 235, aunque no están citados directamente en el texto.",
+   "tool_calls": [
+    "id=2725 canon=SU-480-1997 articulos=241,86,48,186,234,235"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "2725",
+      "canon": "SU-480-1997"
+     },
+     "extraidos": [
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "33",
+       "bloque": "derechos_fundamentales",
+       "texto": "Nadie podrá ser obligado a declarar contra sí mismo o contra su cónyuge, compañero permanente o parientes dentro del cuarto grado de consanguinidad, s"
+      },
+      {
+       "numero": "35",
+       "bloque": "derechos_fundamentales",
+       "texto": "<Artículo modificado por el artículo 1 o. del Acto Legislativo No. 1 de 1997. El nuevo texto es el siguiente:> La extradición se podrá solicitar, conc"
+      },
+      {
+       "numero": "42",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La familia es el núcleo fundamental de la sociedad. Se constituye por vínculos naturales o jurídicos, por la decisión libre de un hombre y una mujer d"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "241",
+       "score": 1.4394,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "86",
+       "score": 1.2625,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "48",
+       "score": 1.0643,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "186",
+       "score": 1.0037,
+       "bloque": "rama_legislativa"
+      },
+      {
+       "numero": "234",
+       "score": 1.0005,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "235",
+       "score": 0.9888,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "2",
+       "score": 0.9884,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 0.9678,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "1",
+       "score": 0.9493,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "49",
+       "score": 0.8866,
+       "bloque": "derechos_sociales_economicos_culturales"
+      }
+     ],
+     "citadas": [
+      "T-271-1995",
+      "C-179-1997",
+      "T-67-1994",
+      "T-165-1995",
+      "T-125-1997",
+      "T-59-1997",
+      "T-477-1995",
+      "T-493-1993",
+      "C-221-1994",
+      "SU-111-1997"
+     ],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9269); 13 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 46 de 46 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente los artículos presentes en el bloque 'extraidos' del contexto y diferencia acertadamente los artículos recuperados por similitud temática."
+  },
+  {
+   "id": "alc-12",
+   "prompt": "¿La C-543/92 es una sentencia de constitucionalidad y qué artículos vincula?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: C-543-1992 (id 224). Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos); 11 (derechos_fundamentales); 29 (derechos_fundamentales); 25 (derechos_fundamentales); 90 (proteccion_aplicacion_derechos); 12 (derechos_fundamentales); 241 (rama_judicial); 5 (principios_fundamentales).",
+   "tool_calls": [
+    "id=224 canon=C-543-1992 articulos=86,241,243,234,2,29",
+    "id=224 citas=0 resueltas=0"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "224",
+      "canon": "C-543-1992"
+     },
+     "extraidos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "29",
+       "bloque": "derechos_fundamentales",
+       "texto": "El debido proceso se aplicará a toda clase de actuaciones judiciales y administrativas Nadie podrá ser juzgado sino conforme a leyes preexistentes al "
+      },
+      {
+       "numero": "25",
+       "bloque": "derechos_fundamentales",
+       "texto": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a "
+      },
+      {
+       "numero": "90",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "El Estado responderá patrimonialmente por los daños antijurídicos que le sean imputables, causados por la acción o la omisión de las autoridades públi"
+      },
+      {
+       "numero": "12",
+       "bloque": "derechos_fundamentales",
+       "texto": "Nadie será sometido a desaparición forzada, a torturas ni a tratos o penas crueles, inhumanos o degradantes"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "5",
+       "bloque": "principios_fundamentales",
+       "texto": "El Estado reconoce, sin discriminación alguna, la primacía de los derechos inalienables de la persona y ampara a la familia como institución básica de"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.5902,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.4705,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "243",
+       "score": 1.0531,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "234",
+       "score": 0.9906,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "2",
+       "score": 0.9772,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "29",
+       "score": 0.9697,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "186",
+       "score": 0.945,
+       "bloque": "rama_legislativa"
+      },
+      {
+       "numero": "4",
+       "score": 0.9283,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "235",
+       "score": 0.9066,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "13",
+       "score": 0.9048,
+       "bloque": "derechos_fundamentales"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.706); 43 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente la sentencia y lista los artículos presentes en el contexto, vinculándolos con su contenido temático de forma precisa."
+  },
+  {
+   "id": "alc-13",
+   "prompt": "Vincula los artículos de la Constitución a la sentencia con id 2195.",
+   "modo": "agente",
+   "respuesta": "Para la sentencia **T-293-1997** (id 2195) se vincularon los siguientes artículos de la Constitución:\n\n**Citados explícitamente:** 11, 13, 25, 49, 86 y 241.\n\n**Recuperados por relevancia:** 86 (tutela), 241 (guarda de la Constitución), 1 (Estado social de derecho), 9 (relaciones exteriores), 2 (fines del Estado) y 53 (estatuto del trabajo).\n\nLos bloques temáticos predominantes son derechos fundamentales, protección de derechos, rama judicial y principios fundamentales.",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "2195",
+      "canon": "T-293-1997"
+     },
+     "extraidos": [
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "25",
+       "bloque": "derechos_fundamentales",
+       "texto": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a "
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.6064,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.5414,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "1",
+       "score": 1.1081,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 1.0644,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "2",
+       "score": 1.053,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "53",
+       "score": 1.0427,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "234",
+       "score": 1.0087,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "13",
+       "score": 0.9971,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "48",
+       "score": 0.9885,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "93",
+       "score": 0.9423,
+       "bloque": "proteccion_aplicacion_derechos"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9429); 6 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 0.75,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es relevante, pero la fidelidad disminuye porque afirma que los artículos 11, 13, 25, 49, 86 y 241 fueron 'citados explícitamente', cuando el contexto indica que la lista de citados está "
+  },
+  {
+   "id": "alc-14",
+   "prompt": "¿Qué artículos de la Constitución están vinculados a la sentencia con id 11705?",
+   "modo": "agente",
+   "respuesta": "La sentencia con id 11705 corresponde al canon **T-760-2008**.\n\n**Artículos citados explícitamente en el texto:**\n- 86 (protección/aplicación de derechos)\n- 241 (rama judicial)\n- 1 (principios fundamentales)\n- 94 (protección/aplicación de derechos)\n- 50, 49, 48 (derechos sociales, económicos y culturales)\n- 9 (principios fundamentales)\n\n**Artículos recuperados por el sistema (BM25):**\n- 86, 241, 49 (también citados)\n- 44 (derechos de los niños)\n- 13 (derechos fundamentales)\n- 2 (principios fundamentales)\n\nEn total, 11 artículos distintos vinculados a esta providencia.",
+   "tool_calls": [
+    "id=11705 canon=T-760-2008 articulos=86,241,49,44,13,2"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "11705",
+      "canon": "T-760-2008"
+     },
+     "extraidos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "94",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "La enunciación de los derechos y garantías contenidos en la Constitución y en los convenios internacionales vigentes, no debe entenderse como negación"
+      },
+      {
+       "numero": "50",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "Todo niño menor de un año que no esté cubierto por algún tipo de protección o de seguridad social, tendrá derecho a recibir atención gratuita en todas"
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "9",
+       "bloque": "principios_fundamentales",
+       "texto": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.3677,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.331,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "49",
+       "score": 1.0941,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "44",
+       "score": 0.9724,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "13",
+       "score": 0.9409,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "2",
+       "score": 0.9395,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "48",
+       "score": 0.8973,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "9",
+       "score": 0.8874,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "1",
+       "score": 0.8762,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "54",
+       "score": 0.8741,
+       "bloque": "derechos_sociales_economicos_culturales"
+      }
+     ],
+     "citadas": [
+      "C-463-2008",
+      "T-227-2003",
+      "T-801-1998",
+      "T-859-2003",
+      "T-595-2002",
+      "T-749-2001",
+      "T-490-2006",
+      "T-198-2004",
+      "T-676-2002",
+      "T-73-2007"
+     ],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_sociales_economicos_culturales (prob 0.8644); 48 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 424 de 494 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente los artículos presentes en la sección 'extraidos' y 'recuperados' del contexto, vinculándolos con precisión a la sentencia solicitada."
+  },
+  {
+   "id": "alc-15",
+   "prompt": "Analiza la providencia con id 13921 y dime sus artículos.",
+   "modo": "agente",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: C-355-2006 (id 13921). Artículos de la Constitución vinculados: 243 (rama_judicial); 343 (regimen_economico); 11 (derechos_fundamentales); 93 (proteccion_aplicacion_derechos); 122 (organizacion_estado); 123 (organizacion_estado); 124 (organizacion_estado); 32 (derechos_fundamentales).",
+   "tool_calls": [
+    "id=13921 canon=C-355-2006 articulos=241,86,53,13,93,1"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "13921",
+      "canon": "C-355-2006"
+     },
+     "extraidos": [
+      {
+       "numero": "243",
+       "bloque": "rama_judicial",
+       "texto": "Los fallos que la Corte dicte en ejercicio del control jurisdiccional hacen tránsito a cosa juzgada constitucional Ninguna autoridad podrá reproducir "
+      },
+      {
+       "numero": "343",
+       "bloque": "regimen_economico",
+       "texto": "La entidad nacional de planeación que señale la ley, tendrá a su cargo el diseño y la organización de los sistemas de evaluación de gestión y resultad"
+      },
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "93",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Los tratados y convenios internacionales ratificados por el Congreso, que reconocen los derechos humanos y que prohíben su limitación en los estados d"
+      },
+      {
+       "numero": "122",
+       "bloque": "organizacion_estado",
+       "texto": "<Artículo corregido por Aclaración publicada en la Gaceta No. 125> No habrá empleo público que no tenga funciones detalladas en ley o reglamento y par"
+      },
+      {
+       "numero": "123",
+       "bloque": "organizacion_estado",
+       "texto": "Son servidores públicos los miembros de las corporaciones públicas, los empleados y trabajadores del Estado y de sus entidades descentralizadas territ"
+      },
+      {
+       "numero": "124",
+       "bloque": "organizacion_estado",
+       "texto": "La ley determinará la responsabilidad de los servidores públicos y la manera de hacerla efectiva"
+      },
+      {
+       "numero": "32",
+       "bloque": "derechos_fundamentales",
+       "texto": "El delincuente sorprendido en flagrancia podrá ser aprehendido y llevado ante el juez por cualquier persona. Si los agentes de la autoridad lo persigu"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "241",
+       "score": 1.3287,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "86",
+       "score": 1.1592,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "53",
+       "score": 1.1347,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "13",
+       "score": 1.1038,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "93",
+       "score": 1.0256,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "1",
+       "score": 0.9338,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "43",
+       "score": 0.8762,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "243",
+       "score": 0.8715,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "2",
+       "score": 0.8647,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 0.8146,
+       "bloque": "principios_fundamentales"
+      }
+     ],
+     "citadas": [
+      "C-239-1997",
+      "C-133-1994",
+      "C-13-1997",
+      "C-647-2001",
+      "C-133-2004",
+      "C-237-1997",
+      "C-507-2004",
+      "C-70-1996",
+      "C-198-2002",
+      "C-647-2003"
+     ],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9862); 74 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 199 de 230 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente la sentencia y enumera con exactitud los artículos presentes en la sección 'extraidos' del contexto proporcionado."
+  },
+  {
+   "id": "alc-16",
+   "prompt": "Dame las sentencias citadas por el documento 2725.",
+   "modo": "agente",
+   "respuesta": "El documento 2725 (SU-480-1997) cita 46 sentencias, todas resueltas en el corpus. Entre las más relevantes por PageRank:\n\n- **SU-111-1997** (id 2716) – derechos fundamentales\n- **T-493-1993** (id 1191) – derechos fundamentales\n- **T-59-1997** (id 2080) – derechos fundamentales\n- **T-67-1994** / **C-221-1994** – derechos sociales, económicos y culturales\n- **T-271-1995**, **T-165-1995**, **T-477-1995**, **T-125-1997** – derechos fundamentales\n- **C-179-1997** – principios fundamentales\n\nLa mayoría se concentra en derechos fundamentales.",
+   "tool_calls": [
+    "id=2725 citas=46 resueltas=46"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "2725",
+      "canon": "SU-480-1997"
+     },
+     "extraidos": [
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "33",
+       "bloque": "derechos_fundamentales",
+       "texto": "Nadie podrá ser obligado a declarar contra sí mismo o contra su cónyuge, compañero permanente o parientes dentro del cuarto grado de consanguinidad, s"
+      },
+      {
+       "numero": "35",
+       "bloque": "derechos_fundamentales",
+       "texto": "<Artículo modificado por el artículo 1 o. del Acto Legislativo No. 1 de 1997. El nuevo texto es el siguiente:> La extradición se podrá solicitar, conc"
+      },
+      {
+       "numero": "42",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La familia es el núcleo fundamental de la sociedad. Se constituye por vínculos naturales o jurídicos, por la decisión libre de un hombre y una mujer d"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "241",
+       "score": 1.4394,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "86",
+       "score": 1.2625,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "48",
+       "score": 1.0643,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "186",
+       "score": 1.0037,
+       "bloque": "rama_legislativa"
+      },
+      {
+       "numero": "234",
+       "score": 1.0005,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "235",
+       "score": 0.9888,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "2",
+       "score": 0.9884,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 0.9678,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "1",
+       "score": 0.9493,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "49",
+       "score": 0.8866,
+       "bloque": "derechos_sociales_economicos_culturales"
+      }
+     ],
+     "citadas": [
+      "T-271-1995",
+      "C-179-1997",
+      "T-67-1994",
+      "T-165-1995",
+      "T-125-1997",
+      "T-59-1997",
+      "T-477-1995",
+      "T-493-1993",
+      "C-221-1994",
+      "SU-111-1997"
+     ],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9269); 13 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 46 de 46 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es totalmente fiel al contexto, ya que identifica correctamente las sentencias listadas en el campo 'citadas' del documento 2725."
+  },
+  {
+   "id": "alc-17",
+   "prompt": "¿Qué área temática tiene la sentencia con id 224?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: C-543-1992 (id 224). Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos); 11 (derechos_fundamentales); 29 (derechos_fundamentales); 25 (derechos_fundamentales); 90 (proteccion_aplicacion_derechos); 12 (derechos_fundamentales); 241 (rama_judicial); 5 (principios_fundamentales).",
+   "tool_calls": [
+    "id=224 canon=C-543-1992 articulos=86,241,243,234,2,29",
+    "id=224 citas=0 resueltas=0"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "224",
+      "canon": "C-543-1992"
+     },
+     "extraidos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "29",
+       "bloque": "derechos_fundamentales",
+       "texto": "El debido proceso se aplicará a toda clase de actuaciones judiciales y administrativas Nadie podrá ser juzgado sino conforme a leyes preexistentes al "
+      },
+      {
+       "numero": "25",
+       "bloque": "derechos_fundamentales",
+       "texto": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a "
+      },
+      {
+       "numero": "90",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "El Estado responderá patrimonialmente por los daños antijurídicos que le sean imputables, causados por la acción o la omisión de las autoridades públi"
+      },
+      {
+       "numero": "12",
+       "bloque": "derechos_fundamentales",
+       "texto": "Nadie será sometido a desaparición forzada, a torturas ni a tratos o penas crueles, inhumanos o degradantes"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "5",
+       "bloque": "principios_fundamentales",
+       "texto": "El Estado reconoce, sin discriminación alguna, la primacía de los derechos inalienables de la persona y ampara a la familia como institución básica de"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.5902,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.4705,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "243",
+       "score": 1.0531,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "234",
+       "score": 0.9906,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "2",
+       "score": 0.9772,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "29",
+       "score": 0.9697,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "186",
+       "score": 0.945,
+       "bloque": "rama_legislativa"
+      },
+      {
+       "numero": "4",
+       "score": 0.9283,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "235",
+       "score": 0.9066,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "13",
+       "score": 0.9048,
+       "bloque": "derechos_fundamentales"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.706); 43 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente la sentencia y sus artículos vinculados basándose en el resumen y los artículos extraídos del contexto proporcionado."
+  },
+  {
+   "id": "alc-18",
+   "prompt": "Valida si la sentencia con id 42 es una providencia de la Corte Constitucional.",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Artículos de la Constitución vinculados: 241 (rama_judicial) score 1.6521; 86 (proteccion_aplicacion_derechos) score 1.3931; 152 (rama_legislativa) score 1.0212; 215 (rama_ejecutiva) score 1.0021; 239 (rama_judicial) score 0.9999; 109 (participacion_democratica) score 0.8979.",
+   "tool_calls": [
+    "id=None canon=None articulos=241,86,152,215,239,109"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": null,
+      "canon": null
+     },
+     "extraidos": [],
+     "recuperados": [
+      {
+       "numero": "241",
+       "score": 1.6521,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "86",
+       "score": 1.3931,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "152",
+       "score": 1.0212,
+       "bloque": "rama_legislativa"
+      },
+      {
+       "numero": "215",
+       "score": 1.0021,
+       "bloque": "rama_ejecutiva"
+      },
+      {
+       "numero": "239",
+       "score": 0.9999,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "109",
+       "score": 0.8979,
+       "bloque": "participacion_democratica"
+      },
+      {
+       "numero": "153",
+       "score": 0.8942,
+       "bloque": "rama_legislativa"
+      },
+      {
+       "numero": "156",
+       "score": 0.8905,
+       "bloque": "rama_legislativa"
+      },
+      {
+       "numero": "116",
+       "score": 0.8833,
+       "bloque": "organizacion_estado"
+      },
+      {
+       "numero": "167",
+       "score": 0.8781,
+       "bloque": "rama_legislativa"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Texto sin encabezado de providencia; vinculo calculado sobre el texto literal: 0 articulos CP extraidos y 10 recuperados; 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 0.0,
+   "relevancia": 0.0,
+   "precision_contexto": 0.0,
+   "justificacion": "La respuesta no valida la sentencia 42; solo enumera artículos recuperados sin aportar información sobre el ID solicitado, evadiendo la pregunta directamente."
+  },
+  {
+   "id": "alc-19",
+   "prompt": "Para la sentencia con id 11705, lista los artículos extraídos y los recuperados.",
+   "modo": "agente",
+   "respuesta": "Para la sentencia T-760-2008 (id 11705):\n\n**Artículos extraídos (8):** 86, 241, 1, 94, 50, 49, 9 y 48.\n\n**Artículos recuperados (6):** 86, 241, 49, 44, 13 y 2.\n\nCoinciden en 86, 241 y 49. Los recuperados adicionales son 44 (derechos de los niños), 13 (igualdad) y 2 (fines del Estado). Los extraídos adicionales son 1, 94, 50, 9 y 48.",
+   "tool_calls": [
+    "id=11705 canon=T-760-2008 articulos=86,241,49,44,13,2"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "11705",
+      "canon": "T-760-2008"
+     },
+     "extraidos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "94",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "La enunciación de los derechos y garantías contenidos en la Constitución y en los convenios internacionales vigentes, no debe entenderse como negación"
+      },
+      {
+       "numero": "50",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "Todo niño menor de un año que no esté cubierto por algún tipo de protección o de seguridad social, tendrá derecho a recibir atención gratuita en todas"
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "9",
+       "bloque": "principios_fundamentales",
+       "texto": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.3677,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.331,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "49",
+       "score": 1.0941,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "44",
+       "score": 0.9724,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "13",
+       "score": 0.9409,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "2",
+       "score": 0.9395,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "48",
+       "score": 0.8973,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "9",
+       "score": 0.8874,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "1",
+       "score": 0.8762,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "54",
+       "score": 0.8741,
+       "bloque": "derechos_sociales_economicos_culturales"
+      }
+     ],
+     "citadas": [
+      "C-463-2008",
+      "T-227-2003",
+      "T-801-1998",
+      "T-859-2003",
+      "T-595-2002",
+      "T-749-2001",
+      "T-490-2006",
+      "T-198-2004",
+      "T-676-2002",
+      "T-73-2007"
+     ],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_sociales_economicos_culturales (prob 0.8644); 48 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 424 de 494 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente los artículos listados en los campos 'extraidos' y 'recuperados' del contexto, verificando con exactitud las coincidencias y diferencias."
+  },
+  {
+   "id": "alc-20",
+   "prompt": "¿Qué sentencias cita el documento 2195?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: T-293-1997 (id 2195). Artículos de la Constitución vinculados: 11 (derechos_fundamentales); 13 (derechos_fundamentales); 25 (derechos_fundamentales); 49 (derechos_sociales_economicos_culturales); 86 (proteccion_aplicacion_derechos); 241 (rama_judicial); 1 (principios_fundamentales) score 1.1081; 9 (principios_fundamentales) score 1.0644.",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53",
+    "id=2195 citas=0 resueltas=0"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "2195",
+      "canon": "T-293-1997"
+     },
+     "extraidos": [
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "25",
+       "bloque": "derechos_fundamentales",
+       "texto": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a "
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.6064,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.5414,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "1",
+       "score": 1.1081,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 1.0644,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "2",
+       "score": 1.053,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "53",
+       "score": 1.0427,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "234",
+       "score": 1.0087,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "13",
+       "score": 0.9971,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "48",
+       "score": 0.9885,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "93",
+       "score": 0.9423,
+       "bloque": "proteccion_aplicacion_derechos"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9429); 6 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente la sentencia T-293-1997 vinculada al ID 2195 y los artículos constitucionales presentes en el contexto."
+  },
+  {
+   "id": "alc-21",
+   "prompt": "¿Qué dice el artículo 86 de la Constitución sobre la acción de tutela?",
+   "modo": "agente",
+   "respuesta": "El artículo 86 de la Constitución Política establece que toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario. Esta acción está orientada a la protección inmediata de los derechos fundamentales cuando resulten violados, amenazados o en riesgo de serlo. Pertenece al bloque temático de protección y aplicación de derechos.",
+   "tool_calls": [
+    "articulo=86 bloque=proteccion_aplicacion_derechos"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "articulo": {
+      "numero": "86",
+      "bloque": "proteccion_aplicacion_derechos",
+      "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí misma o por quien actúe a su nombre, la protección inmediata de sus derechos constitucionales fundamentales, cuando quiera que éstos resulten vulnerados o amenazados por la acción o la omisión de cualquier autoridad pública La protección consistirá en una orden para que aquel respecto de quien se solicita la tutela, actúe o se abstenga de hacerlo. El fallo, que será de inmediato cumplimiento, podrá impugnarse ante el juez competente y, en todo caso, éste lo remitirá a la Corte Constitucional para su eventual revisión. Esta acción solo procederá cuando el afectado no disponga de otro medio de defensa judicial, salvo que aquella se utilice como mecanismo transitorio para evitar un perjuicio irremediable. En ningún caso podrán transcurrir más de diez días entre la solicitud de tutela y su resolución. La ley establecerá los casos en los que la acción de tutela procede contra particulares encargados de la prestación de un servicio público o cuya conducta afecte grave y directamente el interés colectivo, o respecto de quienes el solicitante se halle en estado de subordinación o indefensión."
+     }
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es fiel al texto proporcionado, responde directamente a la pregunta y utiliza correctamente la información del artículo 86 contenido en el contexto."
+  },
+  {
+   "id": "alc-22",
+   "prompt": "Explícame el artículo 13 de la Constitución.",
+   "modo": "agente",
+   "respuesta": "El artículo 13 de la Constitución Política está clasificado en el bloque de **derechos fundamentales**.\n\nSu texto establece que todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades, y gozarán de los mismos derechos. En esencia, consagra el principio de **igualdad**: prohíbe discriminaciones y obliga al Estado a tratar por igual a quienes se encuentren en situaciones equivalentes, garantizando protección jurídica uniforme.\n\nNota: la herramienta solo devolvió el inicio del texto (truncado a 150 caracteres), por lo que esta explicación se basa en ese fragmento y su bloque temático.",
+   "tool_calls": [
+    "articulo=13 bloque=derechos_fundamentales"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "articulo": {
+      "numero": "13",
+      "bloque": "derechos_fundamentales",
+      "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libertades y oportunidades sin ninguna discriminación por razones de sexo, raza, origen nacional o familiar, lengua, religión, opinión política o filosófica El Estado promoverá las condiciones para que la igualdad sea real y efectiva y adoptará medidas en favor de grupos discriminados o marginados. El Estado protegerá especialmente a aquellas personas que por su condición económica, física o mental, se encuentren en circunstancia de debilidad manifiesta y sancionará los abusos o maltratos que contra ellas se cometan."
+     }
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta explica con exactitud el contenido del artículo 13 basándose fielmente en el texto proporcionado, sin inventar información fuera del contexto."
+  },
+  {
+   "id": "alc-24",
+   "prompt": "¿Qué dice el artículo 93 sobre el bloque de constitucionalidad?",
+   "modo": "agente",
+   "respuesta": "El artículo 93, según el corpus, se ubica en el bloque temático de protección y aplicación de derechos. Su texto (recortado por la herramienta) establece que los tratados y convenios internacionales ratificados por el Congreso que reconocen los derechos humanos y prohíben su limitación en tiempo de guerra tienen fuerza jurídica dentro del Estado.\n\nLa recuperación por tema confirma que el artículo 93 es el núcleo del bloque de constitucionalidad en materia de tratados internacionales de derechos humanos (score 1.0865), junto con los artículos 241, 86, 164, 214 y 44.\n\nNota: la herramienta solo devolvió el texto truncado a 150 caracteres, por lo que no puedo reproducir el artículo completo.",
+   "tool_calls": [
+    "articulo=93 bloque=proteccion_aplicacion_derechos",
+    "id=None canon=None articulos=241,93,86,164,214,44"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "articulo": {
+      "numero": "93",
+      "bloque": "proteccion_aplicacion_derechos",
+      "texto": "Los tratados y convenios internacionales ratificados por el Congreso, que reconocen los derechos humanos y que prohíben su limitación en los estados de excepción, prevalecen en el orden interno Los derechos y deberes consagrados en esta Carta, se interpretarán de conformidad con los tratados internacionales sobre derechos humanos ratificados por Colombia. <Incisos 3 y 4 adicionados por el artículo 1 del Acto Legislativo No. 2 de 2001. El nuevo texto es el siguiente:> El Estado Colombiano puede reconocer la jurisdicción de la Corte Penal Internacional en los términos previstos en el Estatuto de Roma adoptado el 17 de julio de 1998 por la Conferencia de Plenipotenciarios de las Naciones Unidas y, consecuentemente, ratificar este tratado de conformidad con el procedimiento establecido en esta Constitución. La admisión de un tratamiento diferente en materias sustanciales por parte del Estatuto de Roma con respecto a las garantías contenidas en la Constitución tendrá efectos exclusivamente dentro del ámbito de la materia regulada en él."
+     }
+    }
+   ],
+   "fidelidad": 0.9,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es fiel al contenido, aunque comete un error leve al mencionar 'tiempo de guerra' en lugar de 'estados de excepción' presentes en el contexto."
+  },
+  {
+   "id": "alc-25",
+   "prompt": "Consulta el artículo 44 de la Constitución.",
+   "modo": "agente",
+   "respuesta": "El artículo 44 de la Constitución Política de Colombia consagra los derechos fundamentales de los niños. Según el corpus, incluye: la vida, la integridad física, la salud y la seguridad social, la alimentación equilibrada, su nombre y nacionalidad, la familia y no ser separados de ella, el disfrute de la cultura y el arte, y el juego y el recreo.\n\nEl sistema clasifica este artículo en el bloque temático de derechos sociales, económicos y culturales.\n\n¿Quieres que identifique las sentencias de la Corte Constitucional que lo vinculan?",
+   "tool_calls": [
+    "articulo=44 bloque=derechos_sociales_economicos_culturales"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "articulo": {
+      "numero": "44",
+      "bloque": "derechos_sociales_economicos_culturales",
+      "texto": "Son derechos fundamentales de los niños: la vida, la integridad física, la salud y la seguridad social, la alimentación equilibrada, su nombre y nacionalidad, tener una familia y no ser separados de ella, el cuidado y amor, la educación y la cultura, la recreación y la libre expresión de su opinión. Serán protegidos contra toda forma de abandono, violencia física o moral, secuestro, venta, abuso sexual, explotación laboral o económica y trabajos riesgosos. Gozarán también de los demás derechos consagrados en la Constitución, en las leyes y en los tratados internacionales ratificados por Colombia La familia, la sociedad y el Estado tienen la obligación de asistir y proteger al niño para garantizar su desarrollo armónico e integral y el ejercicio pleno de sus derechos. Cualquier persona puede exigir de la autoridad competente su cumplimiento y la sanción de los infractores. Los derechos de los niños prevalecen sobre los derechos de los demás."
+     }
+    }
+   ],
+   "fidelidad": 0.9,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es fiel al contenido del artículo 44, aunque omite algunos elementos del texto original. Responde directamente a la consulta con precisión."
+  },
+  {
+   "id": "alc-27",
+   "prompt": "¿Qué dice el artículo 241 sobre las funciones de la Corte Constitucional?",
+   "modo": "agente",
+   "respuesta": "El artículo 241 (bloque: rama_judicial) establece que a la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de la norma.\n\nLa herramienta solo devolvió el inicio del texto (truncado a 150 caracteres), por lo que no puedo enumerar aquí la lista completa de funciones que el artículo desarrolla. Si necesitas el texto íntegro con todas las funciones, indícamelo y lo consulto de nuevo.",
+   "tool_calls": [
+    "articulo=241 bloque=rama_judicial"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "articulo": {
+      "numero": "241",
+      "bloque": "rama_judicial",
+      "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artículo. Con tal fin, cumplirá las siguientes funciones: 1. Decidir sobre las demandas de inconstitucionalidad que promuevan los ciudadanos contra los actos reformatorios de la Constitución, cualquiera que sea su origen, sólo por vicios de procedimiento en su formación. 2. Decidir, con anterioridad al pronunciamiento popular, sobre la constitucionalidad de la convocatoria a un referendo o a una Asamblea Constituyente para reformar la Constitución, sólo por vicios de procedimiento en su formación. 3. Decidir sobre la constitucionalidad de los referendos sobre leyes y de las consultas populares y plebiscitos del orden nacional. Estos últimos sólo por vicios de procedimiento en su convocatoria y realización. 4. Decidir sobre las demandas de inconstitucionalidad que presenten los ciudadanos contra las leyes, tanto por su contenido material como por vicios de procedimiento en su formación. 5. Decidir sobre las demandas de inconstitucionalidad que presenten los ciudadanos contra los decretos con fuerza de ley dictados por el Gobierno con fundamento en los artículos 150 numeral 10 y 341 de la Constitución, por su contenido material o por vicios de procedimiento en su formación. 6. Decidir sobre las excusas de que trata el artículo 137 de la Constitución. 7. Decidir definitivamente sobre la constitucionalidad de los decretos legislativos que dicte el Gobierno con fundamento en los artículos 212 , 213 y 215 de la Constitución. 8. Decidir definitivamente sobre la constitucionalidad de los proyectos de ley que hayan sido objetados por el Gobierno como inconstitucionales, y de los proyectos de leyes estatutarias, tanto por su contenido material como por vicios de procedimiento en su formación. 9. Revisar, en la forma que determine la ley, las decisiones judiciales relacionadas con la acción de tutela de los derechos constitucionales. 10. Decidir definitivamente sobre la exequibilidad de los tratados internacionales y de las leyes que los aprueben. Con tal fin, el Gobierno los remitirá a la Corte, dentro de los seis días siguientes a la sanción de la ley. Cualquier ciudadano podrá intervenir para defender o impugnar su constitucionalidad. Si la Corte los declara constitucionales, el Gobierno podrá efectuar el canje de notas; en caso contrario no serán ratificados. Cuando una o varias normas de un tratado multilateral sean decl"
+     }
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 0.7,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es fiel al texto inicial, pero no responde la pregunta completa sobre las funciones debido a una limitación autoimpuesta, omitiendo la mayoría del contenido pertinente."
+  },
+  {
+   "id": "alc-28",
+   "prompt": "Muéstrame el artículo 11 de la Constitución.",
+   "modo": "agente",
+   "respuesta": "El artículo 11 de la Constitución Política de Colombia, según el corpus, establece:\n\n\"El derecho a la vida es inviolable. No habrá pena de muerte.\"\n\nPertenece al bloque temático de derechos fundamentales.",
+   "tool_calls": [
+    "articulo=11 bloque=derechos_fundamentales"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "articulo": {
+      "numero": "11",
+      "bloque": "derechos_fundamentales",
+      "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+     }
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es exacta, cita textualmente el contenido del artículo 11 proporcionado y responde directamente a la solicitud del usuario."
+  },
+  {
+   "id": "alc-30",
+   "prompt": "Busca jurisprudencia sobre libertad de expresión en el corpus.",
+   "modo": "agente",
+   "respuesta": "Evidencia recuperada por las herramientas. Artículos de la Constitución vinculados: 241 (rama_judicial) score 1.0742; 310 (organizacion_territorial) score 1.0035; 44 (derechos_sociales_economicos_culturales) score 0.9421; 86 (proteccion_aplicacion_derechos) score 0.9243; 333 (regimen_economico) score 0.9042; 73 (derechos_sociales_economicos_culturales) score 0.9035.",
+   "tool_calls": [
+    "id=None canon=None articulos=241,310,44,86,333,73"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": null,
+      "canon": null
+     },
+     "extraidos": [],
+     "recuperados": [
+      {
+       "numero": "241",
+       "score": 1.0742,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "310",
+       "score": 1.0035,
+       "bloque": "organizacion_territorial"
+      },
+      {
+       "numero": "44",
+       "score": 0.9421,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "86",
+       "score": 0.9243,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "333",
+       "score": 0.9042,
+       "bloque": "regimen_economico"
+      },
+      {
+       "numero": "73",
+       "score": 0.9035,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "53",
+       "score": 0.902,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "18",
+       "score": 0.8744,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "20",
+       "score": 0.8249,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "71",
+       "score": 0.7861,
+       "bloque": "derechos_sociales_economicos_culturales"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Texto sin encabezado de providencia; vinculo calculado sobre el texto literal: 0 articulos CP extraidos y 10 recuperados; 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 0.0,
+   "precision_contexto": 0.2,
+   "justificacion": "La respuesta no ofrece jurisprudencia sobre libertad de expresión, solo enumera artículos irrelevantes del contexto que no abordan el tema solicitado."
+  },
+  {
+   "id": "alc-32",
+   "prompt": "Necesito jurisprudencia sobre el mínimo vital y la protección de personas vulnerables.",
+   "modo": "agente",
+   "respuesta": "Evidencia recuperada por las herramientas. Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos) score 1.2718; 13 (derechos_fundamentales) score 1.2069; 241 (rama_judicial) score 1.1527; 53 (derechos_sociales_economicos_culturales) score 1.1347; 46 (derechos_sociales_economicos_culturales) score 1.0209; 48 (derechos_sociales_economicos_culturales) score 0.9938.",
+   "tool_calls": [
+    "id=None canon=None articulos=86,13,241,53,46,48"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": null,
+      "canon": null
+     },
+     "extraidos": [],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.2718,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "13",
+       "score": 1.2069,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "241",
+       "score": 1.1527,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "53",
+       "score": 1.1347,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "46",
+       "score": 1.0209,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "48",
+       "score": 0.9938,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "1",
+       "score": 0.9558,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "67",
+       "score": 0.9412,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "49",
+       "score": 0.9292,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "109",
+       "score": 0.9246,
+       "bloque": "participacion_democratica"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Texto sin encabezado de providencia; vinculo calculado sobre el texto literal: 0 articulos CP extraidos y 10 recuperados; 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 0.5,
+   "relevancia": 0.2,
+   "precision_contexto": 0.6,
+   "justificacion": "La respuesta no proporciona jurisprudencia solicitada, solo enumera artículos. Aunque los artículos son pertinentes, la respuesta evade el núcleo de la pregunta sobre sentencias."
+  },
+  {
+   "id": "alc-33",
+   "prompt": "Valida este documento: Sentencia T-293/97. Corte Constitucional de Colombia. Magistrado Ponente: Dr. Jose Gregorio Hernandez Galindo. Referencia: Expediente T-120148. Se revisa la acción de tutela instaurada por Jorge Arsenio Alvarez Escobar contra Colomsat S.A.",
+   "modo": "agente",
+   "respuesta": "El documento es válido como providencia de la Corte Constitucional. La heurística M0 arrojó score 1.0, cumpliendo las tres reglas: encabezado con canon, marcador \"Corte Constitucional\" y marcador \"Magistrado Ponente\".\n\n- Canon detectado: T-293-1997\n- Id en el corpus: 2195\n\nEl texto coincide con la sentencia T-293/97 (ponencia del Dr. José Gregorio Hernández Galindo, expediente T-120148). Si deseas, puedo vincular los artículos de la Constitución aplicables o listar las sentencias que esta providencia cita.",
+   "tool_calls": [
+    "es_sentencia=True canon=T-293-1997"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia_texto": "Sentencia T-293/97. Corte Constitucional de Colombia. Magistrado Ponente: Dr. Jose Gregorio Hernandez Galindo. Referencia: Expediente T-120148. Se revisa la acción de tutela instaurada por Jorge Arsenio Alvarez Escobar contra Colomsat S.A."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta confirma la validez basándose exactamente en los datos proporcionados en el contexto, sin inventar información externa relevante."
+  },
+  {
+   "id": "alc-34",
+   "prompt": "¿Es esta una providencia de la Corte Constitucional? T-293-97 Sentencia T-293/97 Magistrado Ponente: Jose Gregorio Hernandez Galindo",
+   "modo": "agente",
+   "respuesta": "Sí. La validación (heurística M0) la reconoce como providencia de la Corte Constitucional: cumple 2 de 3 reglas (encabezado con canon y marcador \"magistrado ponente\"; no detecta el marcador \"corte constitucional\"), con score 0.667. El canon detectado es T-293-1997 y el id en el corpus es 2195.\n\nNota: el texto pegado es solo un encabezado, no el cuerpo completo de la sentencia, por lo que la validación es parcial. Si me pegas el texto íntegro, puedo confirmar con mayor certeza.",
+   "tool_calls": [
+    "es_sentencia=True canon=T-293-1997"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia_texto": "T-293-97 Sentencia T-293/97 Magistrado Ponente: Jose Gregorio Hernandez Galindo"
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta analiza correctamente los elementos presentes en el contexto para validar la identidad de la providencia, sin inventar información fuera de lo proporcionado."
+  },
+  {
+   "id": "alc-35",
+   "prompt": "¿Qué artículos de la Constitución se vinculan a la sentencia T-293/97 y cuáles son sus sentencias citadas?",
+   "modo": "agente",
+   "respuesta": "Para la sentencia T-293/97 (id 2195), los artículos de la Constitución vinculados son:\n\n**Citados explícitamente:** 11, 13, 25, 49, 86 y 241.\n\n**Recuperados por el sistema:** 86 (tutela), 241 (guarda de la Constitución), 1 (Estado social de derecho), 9 (relaciones exteriores), 2 (fines del Estado) y 53 (estatuto del trabajo).\n\nRespecto a las sentencias citadas, el análisis no encontró ninguna cita resuelta en el corpus (0 citas). Por tanto, no hay providencias citadas que reportar para esta sentencia.",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53",
+    "id=2195 citas=0 resueltas=0"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "2195",
+      "canon": "T-293-1997"
+     },
+     "extraidos": [
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "25",
+       "bloque": "derechos_fundamentales",
+       "texto": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a "
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "86",
+       "score": 1.6064,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "241",
+       "score": 1.5414,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "1",
+       "score": 1.1081,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 1.0644,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "2",
+       "score": 1.053,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "53",
+       "score": 1.0427,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "234",
+       "score": 1.0087,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "13",
+       "score": 0.9971,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "48",
+       "score": 0.9885,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "93",
+       "score": 0.9423,
+       "bloque": "proteccion_aplicacion_derechos"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9429); 6 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta es fiel al contexto, identifica correctamente los artículos extraídos y recuperados, y responde con precisión que no existen sentencias citadas en el corpus."
+  },
+  {
+   "id": "alc-37",
+   "prompt": "¿De qué año es la sentencia SU-480/97 y qué artículos de la CP le corresponden?",
+   "modo": "agente",
+   "respuesta": "La sentencia SU-480/97 es de **1997** (canon detectado: SU-480-1997, id 2725).\n\nArtículos de la CP citados explícitamente en la providencia:\n- **11** (derechos fundamentales)\n- **13** (derechos fundamentales)\n- **33** (derechos fundamentales)\n- **35** (derechos fundamentales)\n- **42** (derechos sociales, económicos y culturales)\n- **48** (derechos sociales, económicos y culturales)\n- **49** (derechos sociales, económicos y culturales)\n- **86** (protección y aplicación de derechos)\n\nAdemás, por recuperación temática se asocian los artículos 241, 186, 234 y 235 (rama judicial y legislativa).",
+   "tool_calls": [
+    "id=2725 canon=SU-480-1997 articulos=241,86,48,186,234,235"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": "2725",
+      "canon": "SU-480-1997"
+     },
+     "extraidos": [
+      {
+       "numero": "11",
+       "bloque": "derechos_fundamentales",
+       "texto": "El derecho a la vida es inviolable. No habrá pena de muerte"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "33",
+       "bloque": "derechos_fundamentales",
+       "texto": "Nadie podrá ser obligado a declarar contra sí mismo o contra su cónyuge, compañero permanente o parientes dentro del cuarto grado de consanguinidad, s"
+      },
+      {
+       "numero": "35",
+       "bloque": "derechos_fundamentales",
+       "texto": "<Artículo modificado por el artículo 1 o. del Acto Legislativo No. 1 de 1997. El nuevo texto es el siguiente:> La extradición se podrá solicitar, conc"
+      },
+      {
+       "numero": "42",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La familia es el núcleo fundamental de la sociedad. Se constituye por vínculos naturales o jurídicos, por la decisión libre de un hombre y una mujer d"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      }
+     ],
+     "recuperados": [
+      {
+       "numero": "241",
+       "score": 1.4394,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "86",
+       "score": 1.2625,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "48",
+       "score": 1.0643,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "186",
+       "score": 1.0037,
+       "bloque": "rama_legislativa"
+      },
+      {
+       "numero": "234",
+       "score": 1.0005,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "235",
+       "score": 0.9888,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "2",
+       "score": 0.9884,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "9",
+       "score": 0.9678,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "1",
+       "score": 0.9493,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "49",
+       "score": 0.8866,
+       "bloque": "derechos_sociales_economicos_culturales"
+      }
+     ],
+     "citadas": [
+      "T-271-1995",
+      "C-179-1997",
+      "T-67-1994",
+      "T-165-1995",
+      "T-125-1997",
+      "T-59-1997",
+      "T-477-1995",
+      "T-493-1993",
+      "C-221-1994",
+      "SU-111-1997"
+     ],
+     "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9269); 13 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 46 de 46 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente el año y todos los artículos citados como presentes en el contexto, incluyendo los recuperados por relevancia temática."
+  },
+  {
+   "id": "alc-38",
+   "prompt": "¿Qué bloque temático tiene el artículo 86 de la Constitución?",
+   "modo": "agente",
+   "respuesta": "El artículo 86 de la Constitución Política, que consagra la acción de tutela, pertenece al bloque temático **protección y aplicación de derechos**.\n\nEste artículo establece que toda persona podrá reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, el restablecimiento inmediato de derechos fundamentales amenazados o vulnerados.",
+   "tool_calls": [
+    "articulo=86 bloque=proteccion_aplicacion_derechos"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "articulo": {
+      "numero": "86",
+      "bloque": "proteccion_aplicacion_derechos",
+      "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí misma o por quien actúe a su nombre, la protección inmediata de sus derechos constitucionales fundamentales, cuando quiera que éstos resulten vulnerados o amenazados por la acción o la omisión de cualquier autoridad pública La protección consistirá en una orden para que aquel respecto de quien se solicita la tutela, actúe o se abstenga de hacerlo. El fallo, que será de inmediato cumplimiento, podrá impugnarse ante el juez competente y, en todo caso, éste lo remitirá a la Corte Constitucional para su eventual revisión. Esta acción solo procederá cuando el afectado no disponga de otro medio de defensa judicial, salvo que aquella se utilice como mecanismo transitorio para evitar un perjuicio irremediable. En ningún caso podrán transcurrir más de diez días entre la solicitud de tutela y su resolución. La ley establecerá los casos en los que la acción de tutela procede contra particulares encargados de la prestación de un servicio público o cuya conducta afecte grave y directamente el interés colectivo, o respecto de quienes el solicitante se halle en estado de subordinación o indefensión."
+     }
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "La respuesta identifica correctamente el bloque temático y describe con exactitud el contenido del artículo 86 según el contexto proporcionado."
+  },
+  {
+   "id": "alc-39",
+   "prompt": "¿Cuáles son las sentencias más citadas del corpus que tratan derechos fundamentales?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Artículos de la Constitución vinculados: 241 (rama_judicial) score 1.1149; 23 (derechos_fundamentales) score 1.0823; 86 (proteccion_aplicacion_derechos) score 1.0547; 250 (rama_judicial) score 0.9757; 44 (derechos_sociales_economicos_culturales) score 0.9462; 334 (regimen_economico) score 0.9433.",
+   "tool_calls": [
+    "id=None canon=None articulos=241,23,86,250,44,334"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": {
+      "id": null,
+      "canon": null
+     },
+     "extraidos": [],
+     "recuperados": [
+      {
+       "numero": "241",
+       "score": 1.1149,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "23",
+       "score": 1.0823,
+       "bloque": "derechos_fundamentales"
+      },
+      {
+       "numero": "86",
+       "score": 1.0547,
+       "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+       "numero": "250",
+       "score": 0.9757,
+       "bloque": "rama_judicial"
+      },
+      {
+       "numero": "44",
+       "score": 0.9462,
+       "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+       "numero": "334",
+       "score": 0.9433,
+       "bloque": "regimen_economico"
+      },
+      {
+       "numero": "2",
+       "score": 0.8737,
+       "bloque": "principios_fundamentales"
+      },
+      {
+       "numero": "282",
+       "score": 0.8314,
+       "bloque": "organismos_control"
+      },
+      {
+       "numero": "214",
+       "score": 0.8101,
+       "bloque": "rama_ejecutiva"
+      },
+      {
+       "numero": "16",
+       "score": 0.79,
+       "bloque": "derechos_fundamentales"
+      }
+     ],
+     "citadas": [],
+     "resumen": "Texto sin encabezado de providencia; vinculo calculado sobre el texto literal: 0 articulos CP extraidos y 10 recuperados; 0 de 0 sentencias citadas resueltas al corpus."
+    }
+   ],
+   "fidelidad": 0.0,
+   "relevancia": 0.0,
+   "precision_contexto": 0.0,
+   "justificacion": "La respuesta no identifica sentencias, ya que el contexto no contiene ninguna. El asistente solo repite los artículos recuperados sin responder a la pregunta formulada."
+  },
+  {
+   "id": "alc-40",
+   "prompt": "¿Qué dice la sentencia T-500/90 sobre la acción de tutela?",
+   "error": "sin contexto recuperado"
+  }
+ ]
+}

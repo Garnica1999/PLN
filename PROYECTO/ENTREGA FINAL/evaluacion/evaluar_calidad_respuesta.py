@@ -35,6 +35,9 @@ import numpy as np
 BASE = Path(__file__).resolve().parent
 GOLD = BASE / "gold_agente_v1.jsonl"
 RESPUESTAS_V3 = BASE / "agente_eval_v3.json"
+CONSTITUCION = BASE.parents[1] / "SEGUNDA ENTREGA" / "data" / "constitucion_articulos.parquet"
+MAX_CARACTERES_ARTICULO = 2500
+MAX_ARTICULOS_CONTEXTO = 8
 SALIDA_JSON = BASE / "calidad_respuesta_v1.json"
 SALIDA_MD = BASE / "calidad_respuesta_v1.md"
 
@@ -45,6 +48,7 @@ MODELO_JUEZ = os.getenv("JURIS_JUEZ", "alia-legal:latest")
 N_CASOS = 30
 SEMILLA = 42
 REMUESTREOS = 1000
+_TEXTOS_CP: dict | None = None
 TIMEOUT_ASK = 300.0
 TIMEOUT_JUEZ = 180.0
 
@@ -109,6 +113,7 @@ def respuestas_grabadas() -> list[dict]:
                 llamada.get("resumen")
                 for llamada in en_alcance[int(indice)].get("tool_calls") or []
             ],
+            "tool_calls_detalle": en_alcance[int(indice)].get("tool_calls") or [],
             "modo": en_alcance[int(indice)].get("modo"),
             "grounding_ok": (
                 en_alcance[int(indice)].get("grounding") or {}
@@ -131,51 +136,122 @@ def preguntar(cliente: httpx.Client, pregunta: str) -> dict:
     return datos
 
 
-def contexto(cliente: httpx.Client, pregunta: str, respuesta: dict) -> list[dict]:
-    """Arma el contexto recuperado a partir de la traza y del indice CP.
+def textos_cp() -> dict[str, str]:
+    """Carga una vez el texto completo de los articulos de la CP."""
+    global _TEXTOS_CP
+    if _TEXTOS_CP is None:
+        import pyarrow.parquet as pq
 
-    Usa la sentencia que resolvio la herramienta y los articulos que el
-    sistema presenta, con su texto constitucional.
+        tabla = pq.read_table(
+            CONSTITUCION, columns=["numero", "texto", "bloque_tematico"]
+        ).to_pandas()
+        _TEXTOS_CP = {
+            str(fila.numero).upper(): {
+                "texto": str(fila.texto),
+                "bloque": str(fila.bloque_tematico),
+            }
+            for fila in tabla.itertuples(index=False)
+        }
+    return _TEXTOS_CP
+
+
+def _referencia(respuesta: dict, pregunta: str) -> tuple[str | None, str | None]:
+    """Recupera la entrada que uso la herramienta: sentencia, articulo o texto."""
+    for llamada in respuesta.get("tool_calls_detalle") or []:
+        herramienta = llamada.get("herramienta")
+        argumentos = llamada.get("argumentos") or {}
+        if herramienta in {"vincular_cp", "contexto_citas"} and argumentos.get("referencia"):
+            return "sentencia", str(argumentos["referencia"])
+        if herramienta == "explorar_articulo" and argumentos.get("numero"):
+            return "articulo", str(argumentos["numero"])
+        if herramienta == "validar_sentencia" and argumentos.get("texto"):
+            return "texto", str(argumentos["texto"])
+    return None, None
+
+
+def contexto(cliente: httpx.Client, pregunta: str, respuesta: dict) -> list[dict]:
+    """Reconstruye la evidencia que vio el agente para juzgar la respuesta.
+
+    La herramienta vincular_cp devuelve articulos extraidos, articulos
+    recuperados, citadas y resumen; eso es el contexto real del modelo. Se
+    reconstruye con /v1/link a partir de la referencia de la traza (o de la
+    pregunta) y se recorta para no inflar el prompt del juez.
     """
-    articulos: dict[str, dict] = {}
-    sentencia = None
+    tipo, referencia = _referencia(respuesta, pregunta)
+    if tipo == "articulo" and referencia:
+        textos = textos_cp()
+        numero = referencia.upper()
+        if numero in textos:
+            return [
+                {
+                    "articulo": {
+                        "numero": numero,
+                        "bloque": textos[numero]["bloque"],
+                        "texto": textos[numero]["texto"][:MAX_CARACTERES_ARTICULO],
+                    }
+                }
+            ]
+    if tipo == "texto" and referencia:
+        return [{"sentencia_texto": referencia[:2500]}]
+    if tipo == "sentencia" and referencia:
+        try:
+            enlace = cliente.post(
+                "/v1/link", json={"texto": referencia, "k": 10}, timeout=180.0
+            )
+            if enlace.status_code == 200:
+                datos = enlace.json()
+                return [
+                    {
+                        "sentencia": {
+                            "id": datos.get("id"),
+                            "canon": datos.get("canon_detectado"),
+                        },
+                        "extraidos": [
+                            {
+                                "numero": fila.get("numero"),
+                                "bloque": fila.get("bloque"),
+                                "texto": (fila.get("texto_150chars") or "")[:220],
+                            }
+                            for fila in (datos.get("articulos_extraidos") or [])[:8]
+                        ],
+                        "recuperados": [
+                            {
+                                "numero": fila.get("numero"),
+                                "score": fila.get("score"),
+                                "bloque": fila.get("bloque"),
+                            }
+                            for fila in (datos.get("articulos_recuperados") or [])[:10]
+                        ],
+                        "citadas": [
+                            fila.get("canon")
+                            for fila in (datos.get("sentencias_citadas") or [])[:10]
+                        ],
+                        "resumen": datos.get("resumen"),
+                    }
+                ]
+        except httpx.HTTPError:
+            pass
+    # Respaldo: articulos del resumen de la traza con su texto constitucional.
     resumenes = respuesta.get("tool_calls_resumen") or [
         llamada.get("resumen") for llamada in respuesta.get("tool_calls") or []
     ]
+    articulos: list[str] = []
     for resumen_bruto in resumenes:
-        resumen = str(resumen_bruto or "")
-        for parte in resumen.replace("articulos=", ";").split(";"):
+        for parte in str(resumen_bruto or "").replace("articulos=", ";").split(";"):
             valor = parte.strip()
             if valor.isdigit() and valor not in articulos:
-                articulos[valor] = {}
-        if "id=" in resumen and sentencia is None:
-            sentencia = resumen.split("id=")[1].split()[0].strip(",")
-    if not articulos:
-        try:
-            enlace = cliente.post(
-                "/v1/link", json={"texto": pregunta, "k": 5}, timeout=120.0
-            )
-            if enlace.status_code == 200:
-                for fila in enlace.json().get("articulos_recuperados") or []:
-                    articulos[str(fila["numero"])] = {}
-        except httpx.HTTPError:
-            pass
-    detalle = []
-    for numero in list(articulos)[:5]:
-        try:
-            info = cliente.get(f"/v1/article/{numero}", timeout=30.0)
-            if info.status_code == 200:
-                datos = info.json()
-                detalle.append(
-                    {
-                        "numero": numero,
-                        "bloque": datos.get("bloque"),
-                        "texto": datos.get("texto_150chars"),
-                    }
-                )
-        except httpx.HTTPError:
-            continue
-    return [{"sentencia": sentencia, "articulos": detalle}] if detalle else []
+                articulos.append(valor)
+    textos = textos_cp()
+    detalle = [
+        {
+            "numero": numero,
+            "bloque": textos[numero]["bloque"],
+            "texto": textos[numero]["texto"][:MAX_CARACTERES_ARTICULO],
+        }
+        for numero in articulos[:MAX_ARTICULOS_CONTEXTO]
+        if numero in textos
+    ]
+    return [{"articulos": detalle}] if detalle else []
 
 
 def juzgar(pregunta: str, respuesta: str, contexto_datos: list[dict]) -> dict:
@@ -196,6 +272,9 @@ def juzgar(pregunta: str, respuesta: str, contexto_datos: list[dict]) -> dict:
         ],
         "stream": False,
         "format": "json",
+        # Sin think=false los modelos de razonamiento devuelven contenido vacio
+        # y el juez quedaria en ceros (verificado con gemma4 y qwen).
+        "think": False,
         "options": {"temperature": 0.0, "seed": 42, "num_predict": 300},
     }
     with httpx.Client(timeout=TIMEOUT_JUEZ) as cliente:

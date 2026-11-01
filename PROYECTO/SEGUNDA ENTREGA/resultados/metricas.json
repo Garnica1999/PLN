@@ -7523,45 +7523,45 @@
   "decision": "no adoptada",
   "lectura": "El oraculo de seleccion por caso gana 0,0070 y reordenar el top-10 tiene techo 0,7359; el top-10 contiene 4,8 de 11,4 relevantes. La palanca es promover candidatos de las posiciones 11 a 50 (reranker), no combinar rutas."
  },
- "calidad_respuesta_rag_intento": {
+ "calidad_respuesta_rag": {
   "experimento": "calidad_respuesta_rag_v1",
-  "fecha": "2026-11-01T01:13:08-05:00",
+  "fecha": "2026-11-01T02:15:12-05:00",
+  "fuente": "PROYECTO/ENTREGA FINAL/evaluacion/calidad_respuesta_v1.json",
   "generador": "qwen3.8:diario-8k-q3_k_s",
-  "juez": "alia-legal:latest",
+  "juez": "gemma4:26b-factual",
   "n_casos": 30,
-  "n_validos": 28,
-  "estado": "no admisible",
-  "motivo": "El juez devolvio valores fuera de la escala 0 a 1 (relevancia 9,00) y dos casos sin parsear. Se requiere un juez mayor (gemma4:26b o qwen3.8:docs-32k) con la GPU libre; el script ya valida la escala y acepta JURIS_JUEZ.",
-  "artefacto": "PROYECTO/ENTREGA FINAL/evaluacion/calidad_respuesta_intento_alia.json",
-  "metricas_preliminares": {
+  "n_validos": 29,
+  "metricas": {
    "fidelidad": {
-    "media": 0.7749,
+    "media": 0.881,
     "ic95": [
-     0.7067,
-     0.8442
+     0.774,
+     0.9672
     ],
-    "min": 0.5,
-    "max": 1.1081
+    "min": 0.0,
+    "max": 1.0
    },
    "relevancia": {
-    "media": 1.2857,
+    "media": 0.8241,
     "ic95": [
-     1.0,
-     1.8571
+     0.6724,
+     0.9448
     ],
-    "min": 1.0,
-    "max": 9.0
+    "min": 0.0,
+    "max": 1.0
    },
    "precision_contexto": {
-    "media": 0.7742,
+    "media": 0.8897,
     "ic95": [
-     0.7067,
-     0.8387
+     0.7724,
+     0.9862
     ],
-    "min": 0.5,
-    "max": 1.0644
+    "min": 0.0,
+    "max": 1.0
    }
-  }
+  },
+  "procedencia": "Juez LLM de familia distinta al generador con rubrica fija; es gold-LLM, no anotacion humana. Las consultas salen del gold set del agente (ruta en_alcance).",
+  "nota_metodologica": "El contexto del juez se reconstruye con /v1/link (articulos extraidos, recuperados, citadas y resumen), que es la evidencia real del agente. Un intento previo con alia-legal se descarto por devolver valores fuera de escala; queda en evaluacion/calidad_respuesta_intento_alia.json. El juez es gold-LLM, no anotacion humana."
  }
 ,
  "listwise_top10_m7": {

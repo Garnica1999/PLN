@@ -26,15 +26,26 @@ Artefactos: `exp_fusion_rutas.json`, `exp_fusion_rutas.md`.
 
 ## 2. Calidad de respuesta del RAG (`evaluacion/evaluar_calidad_respuesta.py`)
 
-Evalúa fidelidad, relevancia y precisión del contexto sobre 30 respuestas en
-alcance, con un juez LLM distinto del generador. Se ejecutó con `alia-legal`
-(4,9 GB, el único juez que cabía con la GPU compartida) y **no es admisible**:
-devolvió relevancia 9,00 (fuera de la escala 0 a 1) y dos casos sin parsear.
-Los artefactos quedan como `calidad_respuesta_intento_alia.*`.
+Mide fidelidad, relevancia y precisión del contexto sobre 30 respuestas en
+alcance del gold set, con un juez de familia distinta al generador
+(`gemma4:26b-factual`) y la evidencia real de cada consulta reconstruida con
+`/v1/link` (extraídos, recuperados, citadas y resumen).
 
-El script ya valida la escala (descarta al juez que se sale) y acepta
-`JURIS_JUEZ` para usar un juez mayor. Pendiente: repetirlo con `gemma4:26b`
-o `qwen3.8:docs-32k` cuando la GPU esté libre de otros proyectos.
+Resultado (29 de 30 respuestas válidas; una pregunta por una sentencia fuera
+del corpus):
+
+| Dimensión | Media | IC 95 % |
+|---|---:|---|
+| Fidelidad a la evidencia | 0,881 | [0,774; 0,967] |
+| Relevancia de la respuesta | 0,824 | [0,672; 0,945] |
+| Precisión del contexto | 0,890 | [0,772; 0,986] |
+
+Es gold-LLM, no anotación humana. Un primer intento con `alia-legal` se
+descartó porque devolvía valores fuera de la escala 0 a 1; queda como
+`evaluacion/calidad_respuesta_intento_alia.*`. Dos hallazgos de método: los
+modelos de razonamiento necesitan `think=false` (si no, gastan la salida en el
+bloque de pensamiento y devuelven vacío) y el contexto debe ser la evidencia
+completa de las herramientas, no el resumen de la traza.
 
 ## 3. Sonda listwise sobre el top-10 (`exp_listwise_top10.py`)
 
