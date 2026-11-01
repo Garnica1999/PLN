@@ -1,0 +1,61 @@
+{
+ "experimento": "exp_fusion_rutas",
+ "fecha": "2026-11-01T00:41:30-05:00",
+ "fuente": "PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v13.json",
+ "n_casos": 90,
+ "rutas": [
+  "bm25",
+  "bm25_rerank",
+  "bm25_rerank_chunks",
+  "bm25_rerank_chunks_top50",
+  "e5",
+  "hibrido",
+  "hibrido_b2_rerank_chunks_top50_b1",
+  "hibrido_rerank_chunks_top50"
+ ],
+ "ndcg_at_10_por_ruta_fija": {
+  "bm25": 0.3798,
+  "bm25_rerank": 0.2962,
+  "bm25_rerank_chunks": 0.4382,
+  "bm25_rerank_chunks_top50": 0.4798,
+  "e5": 0.2646,
+  "hibrido": 0.42,
+  "hibrido_b2_rerank_chunks_top50_b1": 0.6926,
+  "hibrido_rerank_chunks_top50": 0.5125
+ },
+ "oraculo_seleccion_por_caso": 0.6996,
+ "cobertura_union_top10": 0.5732,
+ "pesos_elegidos": {
+  "bm25": 0.0,
+  "bm25_rerank": 0.0,
+  "bm25_rerank_chunks": 0.0,
+  "bm25_rerank_chunks_top50": 0.0,
+  "e5": 0.0,
+  "hibrido": 0.0,
+  "hibrido_rerank_chunks_top50": 0.0
+ },
+ "fusiones": {
+  "v2.2 + todas las rutas (0.25)": {
+   "pesos": {
+    "hibrido_b2_rerank_chunks_top50_b1": 1.0,
+    "bm25": 0.25,
+    "bm25_rerank": 0.25,
+    "bm25_rerank_chunks": 0.25,
+    "bm25_rerank_chunks_top50": 0.25,
+    "e5": 0.25,
+    "hibrido": 0.25,
+    "hibrido_rerank_chunks_top50": 0.25
+   },
+   "ndcg_at_10": 0.635,
+   "vs_v2_2": {
+    "delta": -0.0577,
+    "ic95": [
+     -0.0769,
+     -0.0379
+    ],
+    "prob_mejora": 0.0
+   }
+  }
+ },
+ "nota": "cita_exacta se excluye de la fusion: devuelve los articulos que M2 extrajo y el gold del benchmark son esos mismos articulos."
+}

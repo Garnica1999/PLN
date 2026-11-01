@@ -1460,6 +1460,15 @@ def bloques_5_7() -> list[tuple]:
         "el paso pendiente para llevar la validación humana de 50 a 150 casos."
     )))
 
+    b.append(("p", (
+        "Después del cierre se probó una quinta vía: la fusión tardía por rango recíproco de "
+        "v2.2 con las demás rutas del benchmark. El oráculo de selección de ruta por caso solo "
+        "gana 0,0070 sobre v2.2 (0,6996 frente a 0,6926) y ninguna fusión supera al modelo; la "
+        "de todas las rutas cae a 0,6350. La unión de los top-10 de todas las rutas cubre solo "
+        "el 57,3 % del gold, lo que confirma que el recall del candidato está saturado y que la "
+        "pérdida es de orden dentro del top-10: la palanca es el reranker, no la combinación de "
+        "rutas. El experimento queda registrado en experimentos/exp_fusion_rutas.md."
+    )))
     b.append(("h2", "5.8 Síntesis de la decisión"))
     b.append(("p", (
         "La evidencia sostiene tres conclusiones. Primera: los modelos de dominio funcionan "

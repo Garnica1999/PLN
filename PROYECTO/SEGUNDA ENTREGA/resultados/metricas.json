@@ -7474,4 +7474,66 @@
    "nota": "Mismo gold set y mismo modelo en las tres corridas; solo cambia el router y el plan determinista."
   }
  }
+,
+ "fusion_rutas_m7": {
+  "experimento": "exp_fusion_rutas",
+  "fecha": "2026-11-01T00:41:30-05:00",
+  "fuente": "PROYECTO/ENTREGA FINAL/experimentos/exp_fusion_rutas.json",
+  "n_casos": 90,
+  "v2_2_ndcg_at_10": 0.6926,
+  "oraculo_seleccion_por_caso": 0.6996,
+  "cobertura_union_top10": 0.5732,
+  "fusiones": {
+   "v2.2 + todas las rutas (0.25)": {
+    "ndcg_at_10": 0.635,
+    "delta_vs_v2_2": -0.0577,
+    "ic95": [
+     -0.0769,
+     -0.0379
+    ]
+   }
+  },
+  "decision": "no adoptada",
+  "lectura": "El oraculo de seleccion por caso solo gana 0,0070 sobre v2.2 y ninguna fusion mejora: el margen no esta en combinar rutas sino en el orden dentro del top-10 (recall del candidato saturado en el gold humano)."
+ },
+ "calidad_respuesta_rag_intento": {
+  "experimento": "calidad_respuesta_rag_v1",
+  "fecha": "2026-11-01T01:13:08-05:00",
+  "generador": "qwen3.8:diario-8k-q3_k_s",
+  "juez": "alia-legal:latest",
+  "n_casos": 30,
+  "n_validos": 28,
+  "estado": "no admisible",
+  "motivo": "El juez devolvio valores fuera de la escala 0 a 1 (relevancia 9,00) y dos casos sin parsear. Se requiere un juez mayor (gemma4:26b o qwen3.8:docs-32k) con la GPU libre; el script ya valida la escala y acepta JURIS_JUEZ.",
+  "artefacto": "PROYECTO/ENTREGA FINAL/evaluacion/calidad_respuesta_intento_alia.json",
+  "metricas_preliminares": {
+   "fidelidad": {
+    "media": 0.7749,
+    "ic95": [
+     0.7067,
+     0.8442
+    ],
+    "min": 0.5,
+    "max": 1.1081
+   },
+   "relevancia": {
+    "media": 1.2857,
+    "ic95": [
+     1.0,
+     1.8571
+    ],
+    "min": 1.0,
+    "max": 9.0
+   },
+   "precision_contexto": {
+    "media": 0.7742,
+    "ic95": [
+     0.7067,
+     0.8387
+    ],
+    "min": 0.5,
+    "max": 1.0644
+   }
+  }
+ }
 }
