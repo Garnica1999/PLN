@@ -36,7 +36,20 @@ El script ya valida la escala (descarta al juez que se sale) y acepta
 `JURIS_JUEZ` para usar un juez mayor. Pendiente: repetirlo con `gemma4:26b`
 o `qwen3.8:docs-32k` cuando la GPU esté libre de otros proyectos.
 
-## 3. Reentrenamiento de B1 con negativos duros (no ejecutado)
+## 3. Sonda listwise sobre el top-10 (`exp_listwise_top10.py`)
+
+Para los 90 casos se le pidió al LLM local (qwen, `think=false`) que reordenara
+los diez candidatos de v2.2 con la sentencia y el texto de cada artículo.
+
+Resultado: v2.2 0,6926; LLM 0,6764; delta pareado -0,0162 [-0,0331; +0,0004];
+87 de 90 respuestas parseadas; 5 a 20 s por consulta. El LLM no explota el
+techo de reordenamiento (+0,043): el cross-encoder B1 ordena mejor. Confirma
+que el margen está en promover candidatos de las posiciones 11 a 50, no en
+reordenar el top-10.
+
+Artefactos: `exp_listwise_top10.json`, `exp_listwise_top10.md`.
+
+## 4. Reentrenamiento de B1 con negativos duros (no ejecutado)
 
 El guion de entrenamiento parte de `BAAI/bge-reranker-v2-m3` (no del B1 ya
 ajustado), una época son ~17.800 pasos y el registro de la corrida anterior

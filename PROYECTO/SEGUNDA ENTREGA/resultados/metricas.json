@@ -7563,4 +7563,25 @@
    }
   }
  }
+,
+ "listwise_top10_m7": {
+  "experimento": "exp_listwise_top10",
+  "fecha": "2026-11-01T01:51:34-05:00",
+  "fuente": "PROYECTO/ENTREGA FINAL/experimentos/exp_listwise_top10.json",
+  "n_casos": 90,
+  "modelo": "qwen3.8:diario-8k-q3_k_s",
+  "ndcg_v2_2": 0.6926,
+  "ndcg_llm": 0.6764,
+  "delta": -0.0162,
+  "ic95": [
+   -0.0331,
+   0.0004
+  ],
+  "prob_mejora": 0.029,
+  "parse_ok": 87,
+  "latencia_media_ms": 3380,
+  "techo_reorden": 0.7359,
+  "decision": "no adoptada",
+  "lectura": "Un LLM listwise sobre el top-10 no supera a B1 (0,6764 frente a 0,6926) y consume 5 a 20 s por consulta: el margen de reordenar el top-10 no es alcanzable con prompting; la palanca sigue siendo promover candidatos de las posiciones 11 a 50 con un reranker entrenado."
+ }
 }
