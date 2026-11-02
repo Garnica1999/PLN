@@ -26,8 +26,8 @@ def run(command: list[str], env: dict | None = None, check: bool = True) -> None
 
 def performance() -> None:
     base = [
-        "docker", "compose", "exec", "-T", "api", "python", "-m",
-        "src.scripts.eval_configuracion_final", "--model", "gemma4:e4b", "--k-answer", "5",
+        "docker", "compose", "--profile", "rocm", "run", "--rm", "-T", "ingest-rocm",
+        "python", "-m", "src.scripts.eval_configuracion_final", "--model", "gemma4:e4b", "--k-answer", "5",
     ]
     run(base + [
         "--raw", "reports/corridas/metricas_final_sin.jsonl",
@@ -40,7 +40,7 @@ def performance() -> None:
         "--raw", "reports/corridas/metricas_final_con.jsonl",
         "--summary", "reports/tablas/metricas_final_con.csv",
         "--by-lang", "reports/tablas/metricas_final_con_por_idioma.csv",
-        "--figures-dir", "/tmp/opencode/fig_eval_con",
+        "--figures-dir", "/tmp/fig_eval_con",
     ])
 
 

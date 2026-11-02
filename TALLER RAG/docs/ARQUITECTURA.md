@@ -124,7 +124,7 @@ El tema sigue Material 3. Los tokens de color, forma, tipografía, elevación y 
 | `eval_ragas.py` | RAGAS con juez y embedding configurables |
 | `run_evaluation.py` | pipeline completo y comparación contra la arquitectura anterior |
 
-El pipeline corre en el contenedor `eval` con Python 3.12, RAGAS 0.4.3, LangChain 0.3 y `BAAI/bge-m3` en CPU. La comparación se guarda en `reports/tablas/evaluacion_comparativa.md`.
+La fase de desempeño corre en el worker GPU (`ingest-rocm`, perfil `rocm`), que tiene ROCm y sus propios límites de memoria; así la API no carga una segunda copia de `bge-m3` ni del reranker. RAGAS corre en el contenedor `eval` con Python 3.12, RAGAS 0.4.3, LangChain 0.3 y `BAAI/bge-m3` en CPU. La comparación se guarda en `reports/tablas/evaluacion_comparativa.md`.
 
 ### 2.9 Despliegue
 
@@ -187,12 +187,12 @@ La corrección de spans de la revisión de Óscar se volvió a medir y `span_hit
 | Directas entregadas | 37 de 38 | 37 de 38 |
 | Abstenciones directas | 1 | 1 |
 | Abstenciones en sin respuesta | 5 de 5 | 5 de 5 |
-| Match estricto | 26 de 37 (70,3%) | 25 de 37 (67,6%) |
+| Match estricto | 25 de 37 (67,6%) | 25 de 37 (67,6%) |
 | F1 por tokens | 0,273 | 0,272 |
 | Respuestas con cita | 100% | 100% |
 | Contexto medio | 1.361 tokens | 1.361 tokens |
-| Latencia media | 6.788 ms | 6.482 ms |
-| Latencia mediana | 6.790 ms | 6.435 ms |
+| Latencia media | 7.938 ms | 6.834 ms |
+| Latencia mediana | 7.086 ms | 6.729 ms |
 
 La revisión manual de las 12 respuestas no estrictas da 8 correctas, 3 parciales y 1 incorrecta: 33 de 37 equivalentes (89,2%) o 36 de 37 con parciales (97,3%). La incorrecta es g-046, donde el retrieval no trae Newcastle.
 
@@ -239,10 +239,10 @@ El juez y el embedding cambiaron, así que la comparación no es completamente e
 | Recuperación | k=5, reranker top-5 | k=15, sin reranker |
 | Entregadas | 37 de 38 | 33 de 38 |
 | Abstenciones directas | 1 | 5 |
-| Match estricto | 26 de 37 (70,3%) | 24 de 33 (72,7%) |
+| Match estricto | 25 de 37 (67,6%) | 24 de 33 (72,7%) |
 | Revisión manual | 33 de 37 (89,2%) | 32 de 37 (86,5%) |
 | Chat con Modo estricto | 14 de 14 | 9 de 12 |
-| Latencia media | 6.788 ms | 17.657 ms |
+| Latencia media | 7.938 ms | 17.657 ms |
 | Contexto medio | 1.361 | 3.975 |
 
 La arquitectura actual entrega más respuestas, acierta más en la revisión manual y es 2,6 veces más rápida. El coste es un contexto más corto y una corrección de respuesta algo menor.

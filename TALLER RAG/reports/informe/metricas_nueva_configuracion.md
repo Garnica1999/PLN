@@ -50,13 +50,13 @@ La corrección de spans de Óscar se volvió a medir: `span_hit` se mantiene en 
 | Directas entregadas | 37 de 38 | 37 de 38 |
 | Abstenciones directas | 1 | 1 |
 | Abstenciones en sin respuesta | 5 de 5 | 5 de 5 |
-| Match estricto | 26 de 37 (70,3%) | 25 de 37 (67,6%) |
+| Match estricto | 25 de 37 (67,6%) | 25 de 37 (67,6%) |
 | F1 por tokens | 0,273 | 0,272 |
 | Respuestas con cita | 37 de 37 (100%) | 37 de 37 (100%) |
 | Contexto medio | 1.361 tokens | 1.361 tokens |
-| Latencia total, media | 6.788 ms | 6.482 ms |
-| Latencia total, mediana | 6.790 ms | 6.435 ms |
-| Latencia total, p95 | 9.404 ms | 8.765 ms |
+| Latencia total, media | 7.938 ms | 6.834 ms |
+| Latencia total, mediana | 7.086 ms | 6.729 ms |
+| Latencia total, p95 | 10.127 ms | 9.162 ms |
 
 El razonamiento no cambia los puntajes. Cambia qué pregunta directa se abstiene: sin razonamiento se abstiene g-031 por el generador; con razonamiento se abstiene g-017 por el juez. El conteo y el match estricto son iguales.
 
@@ -127,10 +127,14 @@ La arquitectura actual gana en faithfulness, answer relevancy, context precision
 |---|---|
 | k=15, sin razonamiento | 17.657 ms |
 | k=5, sin reranker | 14.951 ms |
-| k=5 + reranker, sin razonamiento | 6.788 ms |
-| k=5 + reranker, con razonamiento | 6.482 ms |
+| k=5 + reranker, sin razonamiento | 7.938 ms |
+| k=5 + reranker, con razonamiento | 6.834 ms |
 
 La mayor ganancia vino de alinear el contexto del router con el del generador. Antes el router usaba 8K y el generador 116K, y Ollama recargaba el modelo en cada consulta. El MTP aporta 217 tokens por segundo. El reranker en CPU añade unos 1,1 segundos. La primera consulta de una sesión tarda unos 29 segundos por la carga del modelo.
+
+## Nota de medición
+
+Corrida del 2026-11-02 en el worker GPU con el host cargado (2 GB libres): la latencia y el match estricto varían frente a la corrida limpia del 2026-11-01 (6.788 ms y 26/37). La diferencia es ruido de generación y de carga, no de arquitectura.
 
 ## Limitaciones
 

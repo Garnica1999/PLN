@@ -206,7 +206,7 @@ docker compose exec api python -m src.scripts.metrics --results reports/corridas
 ```
 
 4. Comparación de limpieza, chunking y codificadores: `docs/EXPERIMENTOS.md`.
-5. Pipeline unificado: `python src/scripts/run_evaluation.py`. Corre desempeño, chat y RAGAS; escribe `reports/tablas/evaluacion_comparativa.md`. El contenedor `eval` tiene RAGAS 0.4.3, LangChain 0.3 y `BAAI/bge-m3` en CPU; se levanta con el perfil `eval`.
+5. Pipeline unificado: `python src/scripts/run_evaluation.py`. Corre desempeño, chat y RAGAS; escribe `reports/tablas/evaluacion_comparativa.md`. La fase de desempeño corre en el worker GPU (`ingest-rocm`, perfil `rocm`) para no cargar una segunda copia de los modelos dentro de la API. El contenedor `eval` tiene RAGAS 0.4.3, LangChain 0.3 y `BAAI/bge-m3` en CPU; se levanta con el perfil `eval`.
 
 Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`, con Recall@k, P@1, P@5, Hit@k, MRR, MAP, nDCG, cobertura de span, context precision y recall, duplicados, latencias e intervalos por bootstrap.
 
@@ -220,7 +220,7 @@ Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`
 | Chat | 11 de 14 sin Modo estricto; 14 de 14 con Modo estricto |
 | RAGAS actual (`gemma4` + `bge-m3`) | 0,952 / 0,840 / 0,881 / 0,921 / 0,657 |
 | RAGAS anterior (`gemma2` + `qwen3`) | 0,925 / 0,798 / 0,760 / 0,842 / 0,705 |
-| Latencia media | 6.788 ms sin razonamiento; 6.482 ms con razonamiento |
+| Latencia media | 7.938 ms sin razonamiento; 6.834 ms con razonamiento |
 
 La arquitectura completa, las capas y la comparación contra la versión anterior están en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md). El informe de métricas está en [reports/informe/metricas_nueva_configuracion.md](reports/informe/metricas_nueva_configuracion.md).
 
@@ -239,10 +239,13 @@ Son 84 pruebas: pipeline, API, chat, guardarraíles, preferencias y una prueba d
 |---|---|---|
 | Milvus | 8 | 10 GB |
 | Ollama local | 8 | 12 GB |
-| API | 24 | 12 GB |
+| API | 24 | 16 GB |
 | Frontend | 2 | 1,5 GB |
+| Worker GPU (ingesta y evaluación) | 8 | 16 GB |
 
 No ejecutes ingesta y generación al mismo tiempo. La GPU se comparte entre bge-m3 y Ollama; el cuello real es la VRAM y la CPU.
+
+La evaluación de desempeño corre en el worker GPU y no dentro de la API: así no conviven dos copias de `bge-m3` y del reranker en el mismo contenedor, que era lo que agotaba la memoria del host.
 
 ## 14. Solución de problemas
 

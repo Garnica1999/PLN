@@ -103,6 +103,7 @@ services:
       OLLAMA_KEEP_ALIVE: 10m
     mem_limit: 12g
 
+  # Worker GPU: ingesta del corpus y evaluacion de desempeno.
   ingest-rocm:
     build:
       context: .
@@ -124,9 +125,16 @@ services:
     environment:
       PYTHONPATH: /work
       HF_HOME: /root/.cache/huggingface
+      EMBEDDER: bge
+      EMBEDDINGS_MODEL: BAAI/bge-m3
+      EMBEDDINGS_DIMS: "1024"
       EMBEDDING_DEVICE: cuda
+      EMBEDDING_HALF: "true"
       EMBEDDINGS_BATCH: "128"
       MILVUS_URI: http://localhost:19530
+      MILVUS_COLLECTION: rag_full_bge_m3_d1024_v1
+      RETRIEVER: dense
+      SEARCH_EF: "800"
     volumes:
       - ./src:/work/src
       - ./Dataset:/work/data:ro

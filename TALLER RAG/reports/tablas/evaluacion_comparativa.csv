@@ -5,13 +5,13 @@ Recuperacion,P@1,0.737,0.737
 Recuperacion,P@5,0.947,0.947
 Respuesta,Entregadas,37/38,33/38
 Respuesta,Abstenciones directas,1,5
-Respuesta,Match estricto,26/37 (70.3%),24/33 (72.7%)
+Respuesta,Match estricto,25/37 (67.6%),24/33 (72.7%)
 Respuesta,F1 tokens,0.273,0.274
-Respuesta,Latencia media,6788 ms,17657 ms
-Respuesta,Latencia mediana,6790 ms,17569 ms
+Respuesta,Latencia media,7938 ms,17657 ms
+Respuesta,Latencia mediana,7086 ms,17569 ms
 Respuesta,Contexto medio,1361,3975
 Respuesta con razonamiento,Entregadas,37/38,33/38
-Respuesta con razonamiento,Latencia media,6482 ms,18840 ms
+Respuesta con razonamiento,Latencia media,6834 ms,18840 ms
 Recuperacion top-5,nDCG con reranker,0.865,0.809
 Recuperacion top-5,P@1 con reranker,0.868,0.737
 Recuperacion top-5,Recall,0.895,0.895
