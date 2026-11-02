@@ -53,9 +53,9 @@ def limpieza() -> None:
 def escala() -> None:
     labels = ["Recall@10", "P@1", "P@5", "nDCG@10"]
     series = {
-        "Piloto 2k": [0.947, 0.895, 0.947, 0.909],
-        "Completo 618k": [0.684, 0.474, 0.658, 0.594],
-        "Completo + rerank": [0.684, 0.632, 0.684, 0.661],
+        "Piloto, 1.932 docs": [0.947, 0.842, 0.947, 0.909],
+        "Corpus, 161.868 docs": [0.684, 0.500, 0.658, 0.604],
+        "Corpus + rerank e5 top-50": [0.684, 0.632, 0.684, 0.661],
     }
     positions = np.arange(len(labels))
     width = 0.26
@@ -71,6 +71,25 @@ def escala() -> None:
     save_figure(fig, FIGURES / "escala_e6_e7.png")
 
 
+def colecciones() -> None:
+    """Documentos por coleccion con etiquetas legibles, desde el perfilado."""
+    import json
+
+    perfil = json.loads((TABLES / "perfilado.json").read_text(encoding="utf-8"))
+    etiquetas = {"url_crawls": "Rastreo web", "bluesky_posts": "Bluesky"}
+    conteo = perfil["colecciones"]
+    nombres = [etiquetas.get(k, k) for k in conteo]
+    valores = list(conteo.values())
+    fig, ax = plt.subplots(figsize=(5.6, 3.2))
+    ax.bar(nombres, valores, color=[PALETTE[0], PALETTE[1]], width=0.55)
+    for i, v in enumerate(valores):
+        ax.text(i, v, f"{v:,}".replace(",", "."), ha="center", va="bottom", fontsize=9)
+    ax.set_ylabel("Documentos")
+    ax.set_title("Documentos por coleccion")
+    ax.set_ylim(0, max(valores) * 1.12)
+    save_figure(fig, FIGURES / "perfil_colecciones.png")
+
+
 def main() -> None:
     apply_theme()
     limpieza()
@@ -78,6 +97,7 @@ def main() -> None:
     grouped(TABLES / "e2_k3_vs_k10.csv", "Tamaño de contexto: k=3 contra k=10", "e2_k3_vs_k10.png")
     grouped(TABLES / "e2_k5_vs_k10.csv", "Tamaño de contexto: k=5 contra k=10", "e2_k5_vs_k10.png")
     escala()
+    colecciones()
 
 
 if __name__ == "__main__":

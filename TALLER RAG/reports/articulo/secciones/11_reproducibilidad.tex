@@ -5,6 +5,33 @@
 
 El sistema se ejecut\'o en una estaci\'on con Ryzen 9 5950X, 31 GB de RAM y una GPU AMD Radeon RX 9070 XT de 16 GB con ROCm 7.2.4. Los contenedores usan Python 3.12, Milvus 2.6.6, PyTorch 2.10 con ROCm, FastAPI, Streamlit y Ollama. RAGAS 0.4.3 y LangChain 0.3 corren en un contenedor aparte con Python 3.12 y \texttt{BAAI/bge-m3} en CPU.
 
+\subsection{Modelos}
+
+La Tabla~\ref{tab:modelos} fija la versi\'on de cada modelo. Los identificadores son las etiquetas de Ollama y de Hugging Face usadas en el c\'odigo; no se usan alias m\'oviles.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Modelos, etiqueta y papel en el sistema.}
+\label{tab:modelos}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lll}
+\toprule
+Papel & Etiqueta & Cuantizaci\'on \\
+\midrule
+Generador & \texttt{gemma4:e4b} & Q4\_K\_M \\
+Condensador y juez & \texttt{gemma2:2b} & Q4\_K\_M \\
+Embedding & \texttt{BAAI/bge-m3} & fp16 en GPU \\
+Reordenador & \texttt{BAAI/bge-reranker-v2-m3} & fp32 en CPU \\
+Comparaci\'on E4 & \texttt{qwen2.5:1.5b} & Q4\_K\_M \\
+Comparaci\'on E4 & \texttt{llama3.2:3b}, \texttt{llama3.2:1b} & Q4\_K\_M \\
+Comparaci\'on E3 & \texttt{qwen3-embedding:8b} & Q4\_K\_M \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El art\'iculo se compila con IEEEtran V1.8b y un parche local que sustituye la raya del resumen y de las palabras clave por dos puntos. La corrida de referencia de latencia y respuesta es el commit \texttt{125bbc7}; las figuras y tablas se regeneran desde \texttt{reports/tablas/}. RAGAS 0.4.3 corre con LangChain 0.3 y \texttt{BAAI/bge-m3} en CPU.
+
 \subsection{Comandos}
 
 El stack se levanta con un comando:

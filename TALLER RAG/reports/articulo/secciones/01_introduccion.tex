@@ -5,7 +5,7 @@ Un sistema de recuperaci\'on aumentada por generaci\'on (RAG) responde una pregu
 
 La literatura de RAG suele evaluar un componente a la vez. BEIR y MTEB miden recuperadores \cite{thakur2021beir,muennighoff2023mteb}; los benchmarks multiling\"ues como MIRACL comparan codificadores \cite{zhang2023miracl}; RAGAS, ARES, eRAG y RAGChecker eval\'uan la respuesta generada \cite{es2023ragas,saadfalcon2024ares,salemi2024erag,ru2024ragchecker}. Son piezas necesarias, pero no dicen c\'omo se comporta la cadena completa sobre un corpus real, con duplicados, truncamiento, ruido de rastreo y preguntas sin respuesta. Tampoco dicen cu\'anto cuesta cada mejora ni cu\'ando conviene rechazarla.
 
-Este trabajo construye y eval\'ua esa cadena completa sobre un corpus de 169.248 documentos recolectados de prensa colombiana y Bluesky, 161.868 indexados y 618.286 fragmentos. El sistema corre \'integramente en una estaci\'on de trabajo con una GPU AMD de 16 GB, Milvus como motor vectorial \cite{milvusdocs} y modelos servidos por Ollama \cite{ollamadocs}. No se usan servicios externos de generaci\'on ni de embeddings. La Tabla~\ref{tab:config-final} resume la configuraci\'on final y la Secci\'on~\ref{sec:arquitectura} justifica cada elecci\'on.
+Este trabajo construye y eval\'ua esa cadena completa sobre un corpus de 169.248 documentos recolectados de prensa colombiana e internacional y Bluesky, 161.868 indexados y 618.286 fragmentos. El sistema corre \'integramente en una estaci\'on de trabajo con una GPU AMD de 16 GB, Milvus como motor vectorial \cite{milvusdocs} y modelos servidos por Ollama \cite{ollamadocs}. No se usan servicios externos de generaci\'on ni de embeddings. La Tabla~\ref{tab:config-final} resume la configuraci\'on final y la Secci\'on~\ref{sec:arquitectura} justifica cada elecci\'on.
 
 \subsection{Preguntas de investigaci\'on}
 
@@ -20,7 +20,7 @@ Este trabajo construye y eval\'ua esa cadena completa sobre un corpus de 169.248
 
 \begin{enumerate}
 \item Un pipeline reproducible de extremo a extremo, con Docker Compose, Milvus, Ollama, FastAPI y Streamlit, que se levanta con un comando y no depende de servicios de pago.
-\item Un an\'alisis exploratorio y una textometr\'ia del corpus que cuantifican truncamiento (32,7\,\%), ruido de rastreo, duplicados exactos y near-duplicates, y que justifican una limpieza conservadora.
+\item Un an\'alisis exploratorio y una textometr\'ia del corpus que cuantifican el texto sin cierre terminal (32,7\,\%, un proxy de truncamiento), ruido de rastreo, duplicados exactos y near-duplicates, y que justifican una limpieza conservadora.
 \item Una comparaci\'on pareada de cuatro variantes de limpieza, dos estrategias de segmentaci\'on, tres codificadores, recuperaci\'on densa, dispersa e h\'ibrida, y tres alcances de reordenamiento, con intervalos de confianza por bootstrap.
 \item Un gold de 43 preguntas con revisi\'on de tres anotadores y una cuarta pendiente, con acuerdo entre anotadores reportado, y una evaluaci\'on autom\'atica con RAGAS que distingue el ruido del juez de una mejora real.
 \item Una compuerta de dominio entrenada con 160 preguntas que rechaza las preguntas sin respuesta con 0 falsos aceptados, y una interfaz que expone la evidencia, las citas y la abstenci\'on.

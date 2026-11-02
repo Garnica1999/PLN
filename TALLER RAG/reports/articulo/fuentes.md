@@ -17,7 +17,9 @@ Cada tabla del artículo se respalda en un artefacto. El verificador debe compar
 | Compuerta (Tabla) | `reports/tablas/domain_classifier_metrics.csv`, `domain_classifier_predictions.csv` |
 | RAGAS (Tabla) | `reports/tablas/ragas_gemma4-e4b_bge-m3.csv` (media y n por métrica) |
 | MTP (Tabla) | `docs/ARQUITECTURA.md` §4.7 |
-| Respuesta final (37/38, 25/37, F1, latencia) | `reports/tablas/metricas_final_sin.csv`, `metricas_final_con.csv`. La latencia de 6.788/6.482 ms es la corrida limpia del commit 125bbc7; el CSV actual tiene la corrida con el host cargado (7.938/6.834) |
+| Respuesta final (37/38, 25/37, F1, latencia) | `reports/tablas/metricas_final_sin.csv` y `metricas_final_con.csv` del commit `125bbc7`: 7.938/6.834 ms, 25/37 de match estricto. La corrida limpia de 6.788/6.482 ms no conserva CSV y no se usa como referencia |
+| Modelos y versiones | `docker-compose.yml`, manifiestos de Ollama y `docs/ARQUITECTURA.md` §3; tabla XVIII del artículo |
+| Reranker p50 | `reports/tablas/mejoras_recuperacion.csv` (rerank5 1.297 ms, rerank20 5.460 ms) |
 | Chat (11/14, 14/14) | `reports/tablas/chat_eval_final_*.csv` |
 | Gold (43, 19/24, 38/5, kappa) | `eval/gold/README.md`, `docs/EXPERIMENTOS.md` §10 |
 | Configuración final | `docs/ARQUITECTURA.md` §3 |

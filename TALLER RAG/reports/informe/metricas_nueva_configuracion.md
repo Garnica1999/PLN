@@ -70,7 +70,7 @@ El razonamiento no cambia los puntajes. Cambia qué pregunta directa se abstiene
 | Parciales | 3 |
 | Incorrectas | 1 |
 
-Con la revisión, 33 de 37 son equivalentes (89,2%); 36 de 37 si se aceptan las parciales (97,3%). La incorrecta es g-046: el retrieval no trae Newcastle. La corrida sin reranker daba 32 de 37 (86,5%).
+25 de 37 coinciden de forma exacta (67,6%). De las 12 respuestas no exactas, la revisión manual de un anotador juzgó correctas 8, parciales 3 e incorrecta 1: 33 de 37 son exactas o equivalentes (89,2%) y 36 de 37 si se aceptan las parciales (97,3%). La incorrecta es g-046: el retrieval no trae Newcastle. La corrida sin reranker daba 32 de 37 (86,5%).
 
 ## Compuerta de dominio
 
@@ -130,17 +130,17 @@ La arquitectura actual gana en faithfulness, answer relevancy, context precision
 | k=5 + reranker, sin razonamiento | 7.938 ms |
 | k=5 + reranker, con razonamiento | 6.834 ms |
 
-La mayor ganancia vino de alinear el contexto del router con el del generador. Antes el router usaba 8K y el generador 116K, y Ollama recargaba el modelo en cada consulta. El MTP aporta 217 tokens por segundo. El reranker en CPU añade unos 1,1 segundos. La primera consulta de una sesión tarda unos 29 segundos por la carga del modelo.
+La mayor ganancia vino de alinear el contexto del router con el del generador. Antes el router usaba 8K y el generador 116K, y Ollama recargaba el modelo en cada consulta. El MTP aporta 217 tokens por segundo. El reranker en CPU añade 1,30 s de mediana. La primera consulta de una sesión tarda unos 29 segundos por la carga del modelo.
 
 ## Nota de medición
 
-Corrida del 2026-11-02 en el worker GPU con el host cargado (2 GB libres): la latencia y el match estricto varían frente a la corrida limpia del 2026-11-01 (6.788 ms y 26/37). La diferencia es ruido de generación y de carga, no de arquitectura.
+Corrida del 2026-11-02 en el worker GPU con el host cargado (2 GB libres): 7.938 ms sin razonamiento, 6.834 ms con razonamiento y 25/37 de match estricto. La corrida limpia del 2026-11-01 dio 6.788 ms, pero su CSV no se conserva y no se usa como referencia. La diferencia es carga del entorno, no arquitectura.
 
 ## Limitaciones
 
 - La revisión manual la hizo un solo anotador.
 - El gold tiene 43 preguntas; los intervalos de confianza no se reportan.
-- La compuerta deja pasar 3 de los 5 casos sin respuesta; el RAG se abstiene en los 5.
+- La compuerta rechaza los 5 casos sin respuesta, con probabilidades de 0,293 a 0,436; el RAG también se abstiene en los 5.
 - RAGAS actual usa `gemma4` y `bge-m3`; la comparación con la corrida anterior cambia juez y embedding.
 - El contexto de 116K usa 13,9 GB de VRAM y deja 3,2 GB libres.
 - La primera consulta tarda unos 29 segundos; conviene precalentar la demo.

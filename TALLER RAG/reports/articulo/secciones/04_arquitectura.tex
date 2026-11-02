@@ -23,6 +23,7 @@ La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una int
 \node[box, below=of prompt] (llm) {gemma4:e4b + MTP};
 \node[box, below=of llm] (guard) {Guardarra\'iles};
 \node[box, below=of guard, fill=black!10] (resp) {Respuesta con citas};
+\node[box, left=0.5cm of guard, dashed, fill=black!6] (abst) {Abstenci\'on\\con motivo};
 \node[db, right=0.55cm of ret] (milvus) {Milvus\\618k};
 \draw[arr] (ui) -- (api);
 \draw[arr] (api) -- (cond);
@@ -33,23 +34,25 @@ La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una int
 \draw[arr] (prompt) -- (llm);
 \draw[arr] (llm) -- (guard);
 \draw[arr] (guard) -- (resp);
+\draw[arr, dashed] (gate.west) -- ++(-0.5,0) |- (abst.east);
+\draw[arr, dashed] (guard.west) -- (abst.east);
 \draw[arr, <->] (ret) -- (milvus);
 \end{tikzpicture}
-\caption{Flujo de una consulta. La compuerta solo act\'ua con el Modo estricto; el condensador solo en preguntas encadenadas.}
+\caption{Flujo de una consulta. La compuerta solo act\'ua con el Modo estricto; el condensador solo en preguntas encadenadas. Las l\'ineas discontinuas son las salidas de abstenci\'on, antes y despu\'es de generar.}
 \label{fig:arquitectura}
 \end{figure}
 
 \subsection{Capas y justificaci\'on}
 
-\textbf{Ingesta.} Los documentos se limpian, se fragmentan y se codifican una sola vez. La colecci\'on se valida contra la etiqueta del codificador activo para no mezclar espacios vectoriales. Se eligi\'o un pipeline idempotente y reanudable porque el corpus cambia y la ingesta tarda unos 27 minutos en la GPU.
+\textbf{Ingesta.} Los documentos se limpian, se fragmentan y se codifican una sola vez. La colecci\'on se valida contra la etiqueta del codificador activo para no mezclar espacios vectoriales. Se eligi\'o un pipeline idempotente y reanudable porque el corpus cambia y la codificaci\'on es la etapa m\'as costosa: la ingesta completa desde documentos tard\'o 2 h 41 min y reindexar 618.286 fragmentos ya troceados con bge-m3 tard\'o 27,3 min.
 
 \textbf{\'Indice vectorial.} Milvus se eligi\'o por tres razones: soporta HNSW con par\'ametro de exploraci\'on ajustable \cite{malkov2020hnsw}, filtra por metadatos (idioma, fecha, colecci\'on) sin salir del motor y mantiene 618.286 fragmentos con latencias de milisegundos. Una base local en memoria no habr\'ia permitido filtrar ni auditar la procedencia.
 
-\textbf{Codificaci\'on.} bge-m3 produce vectores densos de 1024 dimensiones, es multiling\"ue y rinde bien sin ajuste fino \cite{chen2024bge}. Se compar\'o con e5-base y con qwen3-embedding sobre el mismo \'indice; la decisi\'on se reporta en la Secci\'on~\ref{sec:experimentos}.
+\textbf{Codificaci\'on.} bge-m3 produce vectores densos de 1024 dimensiones, es multiling\"ue y rinde bien sin ajuste fino \cite{chen2024bge}. Se compar\'o con e5-base y con qwen3-embedding sobre el mismo corpus y el mismo protocolo, con un \'indice por modelo; la decisi\'on se reporta en la Secci\'on~\ref{sec:experimentos}.
 
 \textbf{Recuperaci\'on.} El recuperador denso devuelve el top-10 para medir y el top-5 para responder. La fusi\'on con BM25 y el recuperador disperso se midieron y no se adoptaron. El motivo es emp\'irico: la fusi\'on baj\'o el recall en este corpus.
 
-\textbf{Reordenamiento.} Un cross-encoder multiling\"ue reordena el top-5 en CPU \cite{nogueira2019passage}. Se eligi\'o CPU para no competir por la VRAM con el generador; el coste es de unos 1,1 s por consulta. La alternativa de reordenar 20 o 50 candidatos mejora el orden pero pierde cobertura y multiplica la latencia.
+\textbf{Reordenamiento.} Un cross-encoder multiling\"ue reordena el top-5 en CPU \cite{nogueira2019passage}. Se eligi\'o CPU para no competir por la VRAM con el generador; el coste es de 1,30 s de mediana por consulta. La alternativa de reordenar 20 o 50 candidatos mejora el orden pero pierde cobertura y multiplica la latencia.
 
 \textbf{Generaci\'on.} gemma4:e4b es un modelo de 7,5B cuantizado a Q4\_K\_M con 116.384 tokens de contexto y MTP nativo. Se eligi\'o por tres motivos: cabe en 16 GB de VRAM, soporta contextos largos y el MTP con draft 3 acelera la decodificaci\'on sin cambiar la distribuci\'on del modelo. Los modelos peque\~nos comparados en E4 quedaron por debajo en correcci\'on y citas.
 
@@ -90,11 +93,11 @@ Fragmentos & 618.286 en \texttt{rag\_full\_bge\_m3\_d1024\_v1} \\
 
 \subsection{Interfaz para el usuario final}
 
-La interfaz tiene dos zonas. En el panel lateral se elige el modelo, el n\'umero de fragmentos, el idioma del documento, el rango de fechas y la colecci\'on; se activan el razonamiento y el Modo estricto, y se cambia entre tema claro y oscuro. En el \'area central se conversa con historial. Cada respuesta muestra el texto con citas numeradas, chips con la intenci\'on y el guardarra\'il que actu\'o, la latencia por etapa, los tokens por segundo y un desplegable con las evidencias: t\'itulo, puntuaci\'on, fragmento, enlace y metadatos. Si el sistema se abstiene, aparece el motivo y, en el caso de fuera de dominio, la sugerencia de desactivar el Modo estricto. El razonamiento del modelo, cuando se activa, va en un desplegable separado y se advierte que no sustituye la evidencia. La Figura~\ref{fig:ui} muestra una respuesta real.
+La interfaz tiene dos zonas. En el panel lateral se elige el modelo, el n\'umero de fragmentos, el idioma del documento, el rango de fechas y la colecci\'on; se activan el razonamiento y el Modo estricto, y se cambia entre tema claro y oscuro. En el \'area central se conversa con historial. Cada respuesta muestra el texto con citas numeradas, chips con la intenci\'on y el guardarra\'il que actu\'o, la latencia por etapa, los tokens por segundo y un desplegable con las evidencias: t\'itulo, puntuaci\'on, fragmento, enlace y metadatos. Si el sistema se abstiene, aparece el motivo y, en el caso de fuera de dominio, la sugerencia de desactivar el Modo estricto. El razonamiento del modelo, cuando se activa, va en un desplegable separado y se advierte que no sustituye la evidencia. La Figura~\ref{fig:ui} muestra una abstenci\'on real de la compuerta.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{figuras/ui_recorte.png}
-\caption{Interfaz final: respuesta con citas, chips de intenci\'on y guardarra\'il, m\'etricas y evidencias desplegables.}
+\caption{Interfaz final: abstenci\'on por compuerta de dominio. Se ven la pregunta, el motivo, la probabilidad de dominio (0,189), la sugerencia de desactivar el Modo estricto y el acceso a las cinco evidencias recuperadas, plegadas por defecto. El chip de la derecha identifica la ruta de ejecuci\'on, no un guardarra\'il de cita.}
 \label{fig:ui}
 \end{figure*}

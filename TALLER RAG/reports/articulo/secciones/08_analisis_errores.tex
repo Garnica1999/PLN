@@ -15,7 +15,7 @@ La abstenci\'on tiene dos caminos. El primero ocurre antes de generar, cuando la
 
 \subsection{Errores de evaluaci\'on}
 
-RAGAS deja 4 muestras sin valor en la precisi\'on del contexto por errores de parser del juez. Una media con 34 valores no es comparable con una de 38, y por eso se reporta $n$ en cada fila. En la primera corrida, con timeout de 180 s y 16 workers, la m\'etrica ten\'ia 4 valores y su media (0,750) no era comparable con la de la arquitectura anterior (0,760, con 36 valores). La conclusi\'on anterior, que afirmaba una p\'erdida de precisi\'on, era un artefacto del juez. Con la corrida corregida, la precisi\'on sube a 0,881.
+RAGAS deja 4 muestras sin valor en la precisi\'on del contexto por errores de parser del juez. Una media con 34 valores no es comparable con una de 38, y por eso se reporta $n$ en cada fila. En la primera corrida, con timeout de 180 s y 16 workers, la m\'etrica ten\'ia 4 valores y su media (0,750) no era comparable con nada. La conclusi\'on anterior, que afirmaba una p\'erdida de precisi\'on frente a la arquitectura previa (0,760, con 36 valores), era un artefacto del juez. La repetici\'on corregida del mismo sistema da 0,881 con 34 valores. La comparaci\'on entre arquitecturas sigue siendo observacional porque cambia juez y embedding.
 
 \subsection{Errores de dise\~no del protocolo}
 

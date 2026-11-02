@@ -262,7 +262,7 @@ El MTP ya estaba activo. La mayor ganancia de latencia vino de alinear el contex
 - La revisión manual la hizo un solo anotador.
 - El gold tiene 43 preguntas; los intervalos de confianza no se reportan.
 - RAGAS con el timeout por defecto de 180 s dejaba `context precision` con 4 valores de 38. La corrida de referencia usa 900 s y 6 workers.
-- La compuerta deja pasar 3 de los 5 casos sin respuesta; el RAG se abstiene en los 5.
+- La compuerta rechaza los 5 casos sin respuesta, con probabilidades de 0,293 a 0,436; el RAG también se abstiene en los 5.
 - El contexto de 116K usa 13,9 GB de VRAM y deja 3,2 GB libres.
 - La primera consulta tarda unos 29 s; conviene precalentar la demo.
 

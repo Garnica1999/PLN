@@ -59,7 +59,7 @@ Fidelidad & 0,12 \\
 
 \subsection{Estad\'istica}
 
-Las comparaciones de recuperaci\'on usan bootstrap pareado por pregunta con 10.000 remuestreos e intervalos de confianza al 95\,\%. En la comparaci\'on de limpieza se aplica correcci\'on de Bonferroni por comparaciones m\'ultiples. El split de prueba se congela antes de ajustar prompts, umbrales o par\'ametros; ninguna decisi\'on se toma mirando el test. Las diferencias que no excluyen cero se reportan como no concluyentes, aunque la media favorezca a una variante.
+Las comparaciones de recuperaci\'on usan bootstrap pareado por pregunta con 1.000 remuestreos e intervalos de confianza al 95\,\%. En la comparaci\'on de limpieza se aplica correcci\'on de Bonferroni por comparaciones m\'ultiples. La configuraci\'on se eligi\'o inspeccionando las 43 preguntas del gold, as\'i que los resultados sobre las 38 respondibles son exploratorios. No se dispone de un conjunto de prueba independiente; una evaluaci\'on futura debe reservar preguntas nuevas. Las diferencias que no excluyen cero se reportan como no concluyentes, aunque la media favorezca a una variante. Los intervalos pareados se calcularon para limpieza, E1 y E2; las comparaciones de codificadores, reordenamiento y fusi\'on se reportan como estimaciones puntuales sobre 38 preguntas, sin intervalo, y as\'i se indica en cada tabla.
 
 \subsection{Configuraci\'on de RAGAS}
 
