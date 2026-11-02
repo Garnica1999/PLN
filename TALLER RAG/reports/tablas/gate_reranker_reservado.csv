@@ -1,0 +1,26 @@
+id,type,question,probability,prediction
+r-001,directa,¿En qué ciudad se celebrará la Asamblea del Banco Interamericano de Desarrollo?,0.8338,dominio
+r-002,directa,¿Cuántos helicópteros Black Hawk llegaron al país?,0.7957,dominio
+r-003,directa,¿Qué porcentaje de la contaminación de los océanos es producto de la actividad humana?,0.8137,dominio
+r-004,directa,¿Qué porcentaje de las aguas del Valle de Aburrá está siendo saneado?,0.7307,dominio
+r-005,directa,¿En qué departamento se encuentra la Zona de Ubicación Temporal?,0.9999,dominio
+r-006,directa,¿Cuántos votos a favor obtuvo la iniciativa en la Cámara de Representantes?,0.4865,dominio
+r-007,directa,¿Cuántos municipios Zomac hay en el Tolima?,0.7983,dominio
+r-008,directa,¿En qué ciudad se celebrará la COP16?,0.9671,dominio
+r-009,directa,¿Cuántas firmas ha reunido el precandidato?,0.8539,dominio
+r-010,directa,In what year is the Eden Project Portland expected to open?,0.8518,dominio
+r-011,directa,In what year did they sell Cellarmasters to the Fosters group?,0.1053,fuera
+r-012,directa,Which organization led the initiative to restore trees?,0.2243,fuera
+r-013,directa,In what year did Birkenhead Park first open?,0.4503,dominio
+r-014,directa,In which city is Forest Hills Elementary School located?,0.0006,fuera
+r-015,directa,¿Qué región busca proteger el proyecto Triángulo del Puma?,0.8819,dominio
+r-016,directa,¿En qué ciudad se llevará a cabo el concierto?,0.5137,dominio
+r-017,directa,¿Qué magnitud tuvo el terremoto que sacudió Colombia?,0.9668,dominio
+r-018,directa,By what percentage has flytipping increased in the UK over the past year?,0.9669,dominio
+r-019,directa,Which type of hornet is mentioned in the warning?,0.7411,dominio
+r-020,directa,Which phenomenon is likely to cause a wetter and warmer-than-normal autumn?,0.8105,dominio
+r-021,sin_respuesta,¿Cuál es la capital de Puerto Inexistente?,0.0,fuera
+r-022,sin_respuesta,¿Qué dijo el alcalde de Puerto Inexistente sobre el presupuesto de 2027?,0.0054,fuera
+r-023,sin_respuesta,What is the population of Nuevo Bogotá?,0.1658,fuera
+r-024,sin_respuesta,¿Quién ganó el Mundial de Fútbol de 2038?,0.0056,fuera
+r-025,sin_respuesta,What is the chemical formula of zorblaxium?,0.0002,fuera

@@ -96,8 +96,8 @@ def load_settings() -> Settings:
         rerank_batch=_int("RERANK_BATCH", 16),
         rerank_top_n=_int("RERANK_TOP_N", 0),
         rerank_score_ratio=_float("RERANK_SCORE_RATIO", 0.0),
-        domain_classifier_path=os.getenv("DOMAIN_CLASSIFIER_PATH", "modelos/domain_classifier.json"),
-        domain_threshold=_float("DOMAIN_THRESHOLD", 0.5),
+        domain_classifier_path=os.getenv("DOMAIN_CLASSIFIER_PATH", "modelos/domain_classifier_v2.json"),
+        domain_threshold=_float("DOMAIN_THRESHOLD", 0.4),
     )
 
 

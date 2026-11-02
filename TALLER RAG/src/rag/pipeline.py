@@ -61,22 +61,29 @@ def get_reranker():
     )
 
 
+def score_hits(query: str, hits: list[dict]) -> list[dict]:
+    """Anota rerank_score sin reordenar, para compartirlo con la compuerta."""
+    if not hits:
+        return hits
+    missing = [index for index, hit in enumerate(hits) if "rerank_score" not in hit]
+    if missing:
+        scores = get_reranker().predict(
+            [(query, hits[index].get("text", "")) for index in missing],
+            batch_size=settings.rerank_batch,
+            show_progress_bar=False,
+        )
+        for index, score in zip(missing, scores):
+            hits[index]["rerank_score"] = float(score)
+    return hits
+
+
 def rerank_hits(query: str, hits: list[dict]) -> list[dict]:
     """Reordena los fragmentos recuperados con un cross-encoder multilingüe."""
     if len(hits) < 2:
         return hits
-    scores = get_reranker().predict(
-        [(query, hit.get("text", "")) for hit in hits],
-        batch_size=settings.rerank_batch,
-        show_progress_bar=False,
-    )
-    order = sorted(range(len(hits)), key=lambda index: -float(scores[index]))
-    ranked = []
-    for index in order:
-        hit = dict(hits[index])
-        hit["rerank_score"] = float(scores[index])
-        ranked.append(hit)
-    return ranked
+    hits = score_hits(query, hits)
+    order = sorted(range(len(hits)), key=lambda index: -float(hits[index]["rerank_score"]))
+    return [dict(hits[index]) for index in order]
 
 
 def retrieve(
@@ -287,6 +294,8 @@ def generate(
         "native_thinking": False,
         "domain_probability": None,
     }
+    if settings.rerank and len(hits) > 1:
+        hits = score_hits(query, hits)
     domain_probability = None
     if domain_gate and hits:
         domain_probability = domain_probability_score(query, hits)

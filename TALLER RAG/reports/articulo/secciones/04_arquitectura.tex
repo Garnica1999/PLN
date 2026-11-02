@@ -60,7 +60,7 @@ La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una int
 
 \textbf{Guardarra\'iles.} Tres controles antes de responder: cita obligatoria, verificaci\'on de entidades y n\'umeros contra el fragmento citado, y un juez de evidencia. Si alguno falla, el sistema se abstiene con el motivo. El juez es gemma2:2b, distinto del generador, para no validar con el mismo modelo que redacta.
 
-\textbf{Compuerta de dominio.} Un clasificador de regresi\'on log\'istica con embeddings y se\~nales de recuperaci\'on decide si la pregunta pertenece al corpus. No es un LLM juez: su decisi\'on cuesta milisegundos, es reproducible y se puede medir con precisi\'on y recall. Se activa con el interruptor Modo estricto.
+\textbf{Compuerta de dominio.} Un clasificador de regresi\'on log\'istica con la puntuaci\'on del cross-encoder y se\~nales de recuperaci\'on decide si la pregunta pertenece al corpus. No es un LLM juez: reutiliza la pasada del reranker, es reproducible y se puede medir con precisi\'on y recall. Se activa con el interruptor Modo estricto.
 
 \textbf{API e interfaz.} FastAPI separa el pipeline de la presentaci\'on y expone \texttt{/chat}, \texttt{/ask}, \texttt{/retrieve}, \texttt{/health}, \texttt{/models} y \texttt{/stats} \cite{fastapidocs}. Streamlit consume \texttt{/chat} y muestra la respuesta, las citas, las evidencias, las m\'etricas y el razonamiento \cite{streamlitdocs}. La separaci\'on permite probar el pipeline sin la interfaz y cambiar la interfaz sin tocar el pipeline.
 
@@ -85,7 +85,7 @@ Contexto & 116.384 tokens (16.384 entrada, 100.000 salida) \\
 MTP & draft 3, 217 tok/s \\
 Prompt & v2 \\
 Juez y condensador & gemma2:2b \\
-Compuerta & regresi\'on log\'istica, umbral 0,5 \\
+Compuerta & regresi\'on log\'istica con cross-encoder, umbral 0,4 \\
 Fragmentos & 618.286 en \texttt{rag\_full\_bge\_m3\_d1024\_v1} \\
 \bottomrule
 \end{tabular}
@@ -93,11 +93,11 @@ Fragmentos & 618.286 en \texttt{rag\_full\_bge\_m3\_d1024\_v1} \\
 
 \subsection{Interfaz para el usuario final}
 
-La interfaz tiene dos zonas. En el panel lateral se elige el modelo, el n\'umero de fragmentos, el idioma del documento, el rango de fechas y la colecci\'on; se activan el razonamiento y el Modo estricto, y se cambia entre tema claro y oscuro. En el \'area central se conversa con historial. Cada respuesta muestra el texto con citas numeradas, chips con la intenci\'on y el guardarra\'il que actu\'o, la latencia por etapa, los tokens por segundo y un desplegable con las evidencias: t\'itulo, puntuaci\'on, fragmento, enlace y metadatos. Si el sistema se abstiene, aparece el motivo y, en el caso de fuera de dominio, la sugerencia de desactivar el Modo estricto. El razonamiento del modelo, cuando se activa, va en un desplegable separado y se advierte que no sustituye la evidencia. La Figura~\ref{fig:ui} muestra una abstenci\'on real de la compuerta.
+La interfaz tiene dos zonas. En el panel lateral se elige el modelo, el n\'umero de fragmentos, el idioma del documento, el rango de fechas y la colecci\'on; se activan el razonamiento y el Modo estricto, y se cambia entre tema claro y oscuro. En el \'area central se conversa con historial. Cada respuesta muestra el texto con citas numeradas, chips con la intenci\'on y la ruta de ejecuci\'on, la latencia por etapa, los tokens por segundo y un desplegable con las evidencias: t\'itulo, puntuaci\'on, fragmento, enlace y metadatos. Si el sistema se abstiene, aparece el motivo y, en el caso de fuera de dominio, la sugerencia de desactivar el Modo estricto. El razonamiento del modelo, cuando se activa, va en un desplegable separado y se advierte que no sustituye la evidencia. La Figura~\ref{fig:ui} muestra una respuesta real con las evidencias abiertas.
 
-\begin{figure*}[t]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=0.92\textwidth]{figuras/ui_recorte.png}
-\caption{Interfaz final: abstenci\'on por compuerta de dominio. Se ven la pregunta, el motivo, la probabilidad de dominio (0,189), la sugerencia de desactivar el Modo estricto y el acceso a las cinco evidencias recuperadas, plegadas por defecto. El chip de la derecha identifica la ruta de ejecuci\'on, no un guardarra\'il de cita.}
+\includegraphics[width=\textwidth]{figuras/ui_recorte.png}
+\caption{Interfaz final: respuesta con citas y evidencias abiertas. La pregunta se acepta con probabilidad de dominio 0,967; la respuesta cita las evidencias [1] y [2], y el panel muestra t\'itulo, puntuaci\'on, fragmento, enlace y metadatos de la primera evidencia. El chip de la derecha identifica la ruta de ejecuci\'on, no un guardarra\'il de cita.}
 \label{fig:ui}
 \end{figure*}

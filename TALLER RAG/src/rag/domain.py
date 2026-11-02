@@ -10,7 +10,6 @@ from pathlib import Path
 import numpy as np
 
 from .config import settings
-from .embeddings import get_embedder
 
 STOPWORDS = {
     "cual", "cuales", "que", "quien", "quienes", "cuando", "donde", "cuanto", "cuantos",
@@ -84,19 +83,41 @@ def _model() -> dict | None:
     }
 
 
+def cross_encoder_features(question: str, hits: list[dict]) -> list[float]:
+    """Resumen del cross-encoder sobre el top-5, reutilizando el reranker."""
+    top = hits[:5]
+    if top and any("rerank_score" not in hit for hit in top):
+        from .pipeline import score_hits
+
+        score_hits(question, top)
+    scores = sorted((float(hit.get("rerank_score") or 0.0) for hit in top), reverse=True)
+    if not scores:
+        return [0.0, 0.0, 0.0, 0.0]
+    top_score = scores[0]
+    return [
+        top_score,
+        float(np.mean(scores)),
+        top_score - (scores[1] if len(scores) > 1 else top_score),
+        float(min(scores)),
+    ]
+
+
 def domain_probability(question: str, hits: list[dict]) -> float:
     """Probabilidad de que la pregunta sea del dominio del corpus."""
     model = _model()
     if model is None:
         return 1.0
-    embedding = get_embedder().embed_queries([question])[0].astype(np.float32)
-    features = np.concatenate(
-        [
-            embedding,
-            np.asarray(retrieval_features(question, hits), dtype=np.float32),
-            np.asarray(question_type(question), dtype=np.float32),
-        ]
+    features = np.asarray(
+        cross_encoder_features(question, hits)
+        + retrieval_features(question, hits)
+        + question_type(question),
+        dtype=np.float32,
     )
+    if features.shape[0] != model["mean"].shape[0]:
+        raise ValueError(
+            f"features de compuerta incompatibles: {features.shape[0]} "
+            f"vs {model['mean'].shape[0]}"
+        )
     scaled = (features - model["mean"]) / model["scale"]
     logit = float(scaled @ model["coef"] + model["intercept"])
     return float(1.0 / (1.0 + np.exp(-logit)))
