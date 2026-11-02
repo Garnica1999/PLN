@@ -1,0 +1,21 @@
+id,question,label,subtype,group,prediction,prob_domain
+d-039,¿Cuántos empleados tiene la empresa Nebulosa Andina?,fuera,sin_respuesta,sin_respuesta_g-048,dominio,0.5595
+d-040,¿Cuántos colonos marcianos viven en la base de Marte?,fuera,sin_respuesta,sin_respuesta_g-049,fuera,0.4925
+d-041,¿Quién ganó el premio Nobel de Literatura 2027?,fuera,sin_respuesta,sin_respuesta_g-050,fuera,0.3606
+d-042,¿Cuál es el precio del bitcoin el 31 de diciembre de 2030?,fuera,sin_respuesta,sin_respuesta_g-051,dominio,0.5527
+d-043,¿Qué país firmó el Tratado de Nebulosa Andina en 2028?,fuera,sin_respuesta,sin_respuesta_g-052,dominio,0.6017
+d-055,¿Qué aprobó la Cámara de Representantes sobre la Paz Total?,dominio,hard_positive,paz_total,dominio,0.6837
+d-056,¿Cuál es la cotización del euro en Colombia?,dominio,hard_positive,euro,dominio,0.5784
+d-057,¿Cuánto se aceleró la inflación en Colombia?,dominio,hard_positive,inflacion,dominio,0.5775
+d-058,¿Qué ofrece Colombia como destino turístico?,dominio,hard_positive,turismo,dominio,0.5903
+d-059,¿Qué polémica arbitral hubo en el partido Junior vs Fortaleza?,dominio,hard_positive,futbol,dominio,0.6906
+d-060,¿Qué se dice sobre la inversión en ciencia en Colombia?,dominio,hard_positive,ciencia,dominio,0.6662
+d-061,¿Dónde se inició el encuentro de energías renovables?,dominio,hard_positive,energia,dominio,0.625
+d-062,¿Qué exigen los manifestantes en Colombia?,dominio,hard_positive,protestas,dominio,0.6286
+d-063,¿Qué amenaza las elecciones en Colombia?,dominio,hard_positive,elecciones,dominio,0.6686
+d-064,¿Cómo afecta el cambio climático a la salud en Colombia?,dominio,hard_positive,salud,dominio,0.6695
+d-065,¿Qué se dice en Bluesky sobre políticas de IA en Colombia?,dominio,hard_positive,ia,dominio,0.7011
+d-066,¿Cuál es la capital de Francia?,fuera,fuera,capital_francia,fuera,0.1889
+d-067,¿Cuál es la población de Tokio?,fuera,fuera,poblacion_tokio,fuera,0.2478
+d-068,¿Quién escribió Cien años de soledad?,fuera,fuera,literatura_cien_anos,fuera,0.3121
+d-069,¿Quién ganó el mundial de fútbol de 2022?,fuera,fuera,deportes_mundial,fuera,0.4184

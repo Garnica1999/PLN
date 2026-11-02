@@ -1,0 +1,15 @@
+query,tipo,intent,guardrail,abstained,citas,correcto,ms
+Hola,charla,charla,charla,False,0,True,5278
+Buenos días,charla,charla,charla,False,0,True,1300
+Gracias,charla,charla,charla,False,0,True,991
+¿Quién eres?,charla,charla,charla,False,0,True,1852
+"Hola, ¿cómo estás?",charla,charla,charla,False,0,True,1206
+¿Cómo estás?,charla,charla,charla,False,0,True,1233
+¿Cuántos municipios han reportado la presencia del Retamo Espinoso?,dominio,dominio,tool_calling,False,2,True,9692
+¿Cuándo se celebra el Global Big Day?,dominio,dominio,fallback_sin_tools,False,4,True,7841
+¿Entre qué años tuvo su primera circulación la moneda de 1.000 pesos?,dominio,dominio,tool_calling,False,4,True,6074
+¿Dónde se encuentra la Marianne North Gallery?,dominio,dominio,fallback_sin_tools,False,2,True,6282
+¿Cuál es la capital de Francia?,fuera,dominio,fallback_sin_tools,False,2,False,5834
+¿Cuál es la población de Tokio?,fuera,dominio,fallback_sin_tools,True,0,True,5836
+¿Quién escribió Cien años de soledad?,fuera,dominio,fallback_sin_tools,False,3,False,5951
+¿Quién ganó el mundial de fútbol de 2022?,fuera,dominio,fallback_sin_tools,False,1,False,5900

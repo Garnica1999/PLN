@@ -1,0 +1,5 @@
+fecha,modelo,pregunta_id,latencia_s,citas,abstencion,correcta,nota
+2026-10-31,gemma2:2b,g-001,2.0,1,False,si,22 [1]
+2026-10-31,qwen2.5:1.5b,g-001,2.0,0,False,si,correcta sin citas
+2026-10-31,llama3.2:3b,g-001,3.3,1,False,si,22 [1].
+2026-10-31,llama3.2:1b,g-001,7.3,0,False,no,respuesta larga que no da 22

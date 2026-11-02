@@ -1,0 +1,5 @@
+comparacion,eje,diff,ic_lo,ic_hi,excluye_cero
+gemma2:2b - qwen2.5:1.5b,correccion,0.5,0.111,1.0,True
+gemma2:2b - qwen2.5:1.5b,fidelidad,0.25,0.056,0.444,True
+gemma2:2b - qwen2.5:1.5b,citas,2.667,2.278,2.972,True
+gemma2:2b - qwen2.5:1.5b,abstencion,0.083,-0.083,0.333,False

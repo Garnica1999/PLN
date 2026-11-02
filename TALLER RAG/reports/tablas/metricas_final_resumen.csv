@@ -1,0 +1,2 @@
+n_total,n_direct,n_negative,recall_at_10,ndcg_at_10,p_at_1,p_at_5,mrr,map,span_hit,delivered_direct,abstained_direct,abstained_negative,strict_match_direct,strict_match_rate,token_f1_direct,citation_rate,context_tokens_mean,retrieval_ms_mean,total_ms_mean,total_ms_median,total_ms_p95
+43,38,5,0.9122807017543859,0.818369472831941,0.7368421052631579,0.9473684210526315,0.8223684210526315,0.7673245614035087,0.8157894736842105,37,1,5,25,0.6756756756756757,0.2790502894956817,1.0,1361.3023255813953,29.899767441860465,14950.806279069771,14659.71,19121.869

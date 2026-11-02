@@ -1,0 +1,3 @@
+source,n,recall,ndcg,p_at_1,span_hit
+bluesky_posts,2,0.5,0.5,0.5,0.5
+url_crawls,36,0.6944444444444444,0.6098799656533685,0.5,0.6944444444444444
