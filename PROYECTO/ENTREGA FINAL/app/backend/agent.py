@@ -38,11 +38,11 @@ from tools import MAPA_TOOLS, TOOLS
 OLLAMA_URL = "http://127.0.0.1:11434"
 MODELO_DEFECTO = "qwen3.8:diario-8k-q3_k_s"
 NUM_CTX = 8192
-NUM_PREDICT = 512
-# Con razonamiento el modelo gasta salida en el bloque de pensamiento y en la
-# respuesta; si el presupuesto es corto devuelve contenido vacio.
-NUM_PREDICT_PENSANDO = 2048
-TIMEOUT_LLM_S = 180.0
+# -1 = sin tope artificial: el modelo genera hasta su fin de secuencia o
+# hasta llenar la ventana de contexto (num_ctx). Se aplica a todos los casos,
+# con y sin razonamiento, para no recortar respuestas largas.
+NUM_PREDICT = -1
+TIMEOUT_LLM_S = 300.0
 TIMEOUT_OLLAMA_S = 5.0
 MAX_PASOS = 4
 MAX_CITAS_PROMPT = 8
@@ -306,10 +306,10 @@ def _crear_llm(modelo: str, pensar: bool = False) -> ChatOllama:
 
     Args:
         modelo: Nombre del modelo en ollama.
-        pensar: Si True habilita el razonamiento nativo del modelo y amplia el
-            presupuesto de salida para que quepan el pensamiento y la
-            respuesta. El pensamiento se devuelve aparte, en
-            `additional_kwargs["reasoning_content"]`.
+        pensar: Si True habilita el razonamiento nativo del modelo. El
+            pensamiento se devuelve aparte, en
+            `additional_kwargs["reasoning_content"]`. La salida no tiene tope
+            artificial: termina en el fin de secuencia o al llenar el contexto.
 
     Returns:
         ChatOllama con temperature=0 y num_ctx de 8192 tokens.
@@ -320,7 +320,7 @@ def _crear_llm(modelo: str, pensar: bool = False) -> ChatOllama:
         temperature=0.0,
         seed=42,
         num_ctx=NUM_CTX,
-        num_predict=NUM_PREDICT_PENSANDO if pensar else NUM_PREDICT,
+        num_predict=NUM_PREDICT,
         reasoning=pensar,
         sync_client_kwargs={"timeout": TIMEOUT_LLM_S},
     )

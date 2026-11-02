@@ -122,4 +122,6 @@ VRAM o si hay menos de 14 GB libres.
 - El resumen de evaluacion lee JSON congelados; si falta una clave devuelve
   `null` en lugar de fabricar el valor.
 
-`/v1/ask` acepta `pensar: true` para habilitar el razonamiento nativo del modelo: amplia `num_predict` a 2048 y devuelve el pensamiento en el campo `pensamiento`. Cuesta latencia y contexto; por defecto esta desactivado.
+`/v1/ask` acepta `pensar: true` para habilitar el razonamiento nativo del modelo y devuelve el pensamiento en el campo `pensamiento`. Cuesta latencia y contexto; por defecto esta desactivado.
+
+La generacion no tiene tope artificial: `num_predict` es -1 en todas las llamadas (agente y redactor), de modo que el modelo termina en su fin de secuencia o al llenar `num_ctx` (8192 por defecto). El timeout del LLM es de 300 s.

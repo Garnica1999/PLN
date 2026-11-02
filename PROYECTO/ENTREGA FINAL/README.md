@@ -66,6 +66,11 @@ el sistema responde igual que antes. No todos los modelos soportan
 razonamiento: si el elegido no lo soporta, el backend cae al plan determinista
 y lo indica en la respuesta.
 
+La salida de los modelos no tiene tope artificial: `num_predict` es -1, así que
+la generación termina en el fin de secuencia del modelo o al llenar la ventana
+de contexto (8k por defecto). El límite real es esa ventana, no un número fijo
+de tokens; el estilo de la respuesta sigue pidiendo 120 palabras o menos.
+
 ## Endpoints
 
 | Método | Ruta | Uso |

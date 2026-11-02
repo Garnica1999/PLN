@@ -268,14 +268,14 @@ def test_agente_sin_tool_calls_usa_plan_determinista(monkeypatch) -> None:
     assert "T-293" in resultado["respuesta"]
 
 
-def test_crear_llm_amplia_salida_con_pensamiento() -> None:
-    """El modo pensamiento activa reasoning y amplia el presupuesto de salida."""
+def test_crear_llm_sin_tope_y_con_pensamiento() -> None:
+    """La salida no tiene tope artificial y el pensamiento es opcional."""
     normal = agent._crear_llm("modelo-demo", False)
     pensando = agent._crear_llm("modelo-demo", True)
     assert normal.reasoning is False
     assert pensando.reasoning is True
-    assert pensando.num_predict == agent.NUM_PREDICT_PENSANDO
-    assert pensando.num_predict > normal.num_predict
+    assert normal.num_predict == -1
+    assert pensando.num_predict == -1
 
 
 def test_ask_acepta_pensar_sin_cargar_modelo(cliente: TestClient) -> None:
