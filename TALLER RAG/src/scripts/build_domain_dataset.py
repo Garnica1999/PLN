@@ -1,8 +1,9 @@
-"""Construye el set de 120 preguntas para la compuerta de dominio.
+"""Construye el set de 160 preguntas para la compuerta de dominio.
 
 60 de dominio: 38 directas del gold, 11 variantes de entidades del gold y 11
-nuevas sacadas de titulos del corpus. 60 de fuera: 4 del chat, 5 sin respuesta
-del gold y 51 de conocimiento general.
+nuevas sacadas de titulos del corpus. 100 de fuera: 4 del chat, 5 sin respuesta
+del gold, 51 de conocimiento general y 40 negativos duros nuevos (entidades
+inventadas, eventos futuros y conocimiento general fuera del corpus).
 """
 from __future__ import annotations
 
@@ -46,6 +47,53 @@ NEW_DOMAIN = [
     ("¿Cómo afecta el cambio climático a la salud en Colombia?", "salud"),
     ("¿Qué se dice en Bluesky sobre políticas de IA en Colombia?", "ia"),
 ]
+
+EXTRA_TRAIN = [
+    ("¿Cuántos empleados tiene la empresa Aurora del Caribe?", "fake_empresa"),
+    ("¿Quién es el gerente de la compañía Río Verde?", "fake_empresa"),
+    ("¿Cuándo abrió la sede de Tecnologías Andinas en Medellín?", "fake_empresa"),
+    ("¿Qué productos vende la empresa Cumbre Azul?", "fake_empresa"),
+    ("¿Cuántas sucursales tiene la cadena Páramo Café?", "fake_empresa"),
+    ("¿Quién fundó la empresa Llanura Solar?", "fake_empresa"),
+    ("¿Cuánto factura al año la compañía Mar de Cristal?", "fake_empresa"),
+    ("¿Cuál es el teléfono de atención de la fundación Sendero Vivo?", "fake_empresa"),
+    ("¿Quién ganará las elecciones presidenciales de 2030?", "futuro"),
+    ("¿Cuál será el precio del dólar en diciembre de 2035?", "futuro"),
+    ("¿Qué equipo ganará la Liga BetPlay 2031?", "futuro"),
+    ("¿Cuántos habitantes tendrá Bogotá en 2050?", "futuro"),
+    ("¿Qué país organizará el mundial de fútbol de 2038?", "futuro"),
+    ("¿Cuál será la temperatura media de Colombia en 2040?", "futuro"),
+    ("¿Cuántos habitantes tiene París?", "general"),
+    ("¿Cuál es la moneda de Japón?", "general"),
+    ("¿Cuántos kilómetros tiene el río Nilo?", "general"),
+    ("¿En qué año se inventó la imprenta?", "general"),
+    ("¿Cuál es la capital de Portugal?", "general"),
+    ("¿Cuántos huesos tiene el cuerpo humano?", "general"),
+    ("¿Cuál es la montaña más alta de África?", "general"),
+    ("¿Qué altura tiene el Everest?", "general"),
+    ("¿Qué dijo el alcalde de Villanueva del Mar sobre el paro?", "fake_local"),
+    ("¿Cuándo se inauguró el acueducto de Puerto Escondido?", "fake_local"),
+    ("¿Cuántas hectáreas tiene el parque natural Sierra del Viento?", "fake_local"),
+    ("¿Quién es el director del Observatorio de Ciénaga Grande?", "fake_local"),
+    ("¿Qué pasó con el proyecto eólico de Punta Brava?", "fake_local"),
+    ("¿Cuántos docentes tiene la universidad de San Rafael del Llano?", "fake_local"),
+]
+
+EXTRA_DEV = [
+    ("¿Cuál es la fórmula química del agua?", "general"),
+    ("¿En qué año cayó el muro de Berlín?", "general"),
+    ("¿Quién descubrió la penicilina?", "general"),
+    ("¿Cuántos continentes hay?", "general"),
+    ("¿Cuál es el océano más profundo?", "general"),
+    ("¿Cuál es la velocidad de la luz?", "general"),
+    ("¿Qué planeta es el más grande del sistema solar?", "general"),
+    ("¿Cuántos jugadores tiene un equipo de fútbol?", "general"),
+    ("¿En qué año se fundó la ONU?", "general"),
+    ("¿Cuántos empleados tiene la mina La Esperanza del Sur?", "fake_empresa"),
+    ("¿Quién ganará el Premio Nobel de Paz en 2032?", "futuro"),
+    ("¿Cuál es la capital de Islandia?", "general"),
+]
+
 
 CHAT_OUTSIDE = [
     ("¿Cuál es la capital de Francia?", "capital_francia"),
@@ -210,6 +258,36 @@ def main() -> None:
                 "evidence_title": "",
             }
         )
+    for question, group in EXTRA_TRAIN:
+        rows.append(
+            {
+                "question": question,
+                "label": "fuera",
+                "subtype": "hard_negative",
+                "source": "extra",
+                "group": group,
+                "split": "train",
+                "reference_answer": "",
+                "reference_doc_ids": [],
+                "evidence_doc_id": "",
+                "evidence_title": "",
+            }
+        )
+    for question, group in EXTRA_DEV:
+        rows.append(
+            {
+                "question": question,
+                "label": "fuera",
+                "subtype": "hard_negative",
+                "source": "extra",
+                "group": group,
+                "split": "dev",
+                "reference_answer": "",
+                "reference_doc_ids": [],
+                "evidence_doc_id": "",
+                "evidence_title": "",
+            }
+        )
     for index, (question, group) in enumerate(OUTSIDE):
         rows.append(
             {
@@ -229,8 +307,8 @@ def main() -> None:
     for index, row in enumerate(rows, start=1):
         row["id"] = f"d-{index:03d}"
 
-    if len(rows) != 120:
-        raise SystemExit(f"se esperaban 120 preguntas y hay {len(rows)}")
+    if len(rows) != 160:
+        raise SystemExit(f"se esperaban 160 preguntas y hay {len(rows)}")
 
     OUT_JSONL.parent.mkdir(parents=True, exist_ok=True)
     with OUT_JSONL.open("w", encoding="utf-8") as handle:

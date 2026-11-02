@@ -93,7 +93,7 @@ El MTP viene en el manifiesto del modelo. Ollama arranca llama-server con `--spe
 | Juez de evidencia | `gemma2:2b` verifica que la cita sostenga la respuesta |
 | Compuerta de dominio | clasificador bge-m3 + logística; si la pregunta no es del corpus, se abstiene con `fuera_dominio` |
 
-La compuerta se entrena con 120 preguntas: 60 de dominio y 60 de fuera. Usa embeddings bge-m3, features de retrieval y regresión logística. No es un LLM juez.
+La compuerta se entrena con 160 preguntas: 60 de dominio y 100 de fuera. Usa embeddings bge-m3, features de retrieval y regresión logística. No es un LLM juez.
 
 ### 2.6 API
 
@@ -178,6 +178,8 @@ La API y el frontend usan `network_mode: host`. El contenedor `eval` se levanta 
 
 El reranker sube nDCG y P@1 sin perder recall ni P@5. Por idioma, el reranker top-5 da en inglés 0,889 de recall, 0,817 de nDCG, 0,778 de P@1 y 0,889 de P@5; en español 0,897, 0,880, 0,897 y 0,966.
 
+La corrección de spans de la revisión de Óscar se volvió a medir y `span_hit` se mantiene en 0,816.
+
 ### 4.2 Respuesta
 
 | Métrica | Sin razonamiento | Con razonamiento |
@@ -207,16 +209,16 @@ Con `Modo estricto`, los 4 casos de fuera se abstienen con `fuera_dominio` en 61
 
 | Métrica | Valor |
 |---|---|
-| Preguntas | 120 (60 dominio, 60 fuera) |
-| Split | 75 train, 25 dev, 20 test |
+| Preguntas | 160 (60 dominio, 100 fuera) |
+| Split | 103 train, 37 dev, 20 test |
 | Modelo | regresión logística con bge-m3 y features de retrieval |
 | Dev F1 | 1,000 |
-| Test objetivo (4 fuera + 11 dominio nuevo) | 15 de 15, F1 1,000 |
-| Test completo | F1 0,880 |
-| Falsos rechazos de dominio | 0,000 |
-| Falsos aceptados de fuera | 0,333 |
+| Test objetivo (4 fuera + 11 dominio nuevo) | 14 de 15 |
+| Test completo | F1 0,952 |
+| Falsos rechazos de dominio | 0,091 |
+| Falsos aceptados de fuera | 0,000 |
 
-Los 5 casos sin respuesta son la diferencia del test completo: 3 pasan la compuerta y 2 se rechazan. El RAG se abstiene en los 5.
+La ampliación añadió 40 negativos duros: entidades inventadas, eventos futuros y conocimiento general fuera del corpus. Los 5 casos sin respuesta ahora se rechazan con probabilidades 0,293 a 0,436. El único falso rechazo es «¿Cuánto se aceleró la inflación en Colombia?», en 0,494. El umbral sigue en 0,5 porque el margen de dev va de 0,456 a 0,559.
 
 ### 4.5 RAGAS
 
@@ -276,7 +278,7 @@ El MTP ya estaba activo. La mayor ganancia de latencia vino de alinear el contex
 - `reports/tablas/metricas_rerank_top5.csv`: denso contra reranker.
 - `reports/tablas/chat_eval_final_sin_strict.csv` y `chat_eval_final_con_strict.csv`: chat.
 - `modelos/domain_classifier.json`: compuerta.
-- `eval/domain/domain_questions.jsonl`: 120 preguntas de dominio.
+- `eval/domain/domain_questions.jsonl`: 160 preguntas de la compuerta.
 
 
 ## 7. Fase 6. Mejoras probadas

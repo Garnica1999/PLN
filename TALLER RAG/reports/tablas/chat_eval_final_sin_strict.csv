@@ -1,15 +1,15 @@
 query,tipo,intent,guardrail,abstained,citas,correcto,ms
-Hola,charla,charla,charla,False,0,True,5857
-Buenos días,charla,charla,charla,False,0,True,1271
-Gracias,charla,charla,charla,False,0,True,972
-¿Quién eres?,charla,charla,charla,False,0,True,1791
-"Hola, ¿cómo estás?",charla,charla,charla,False,0,True,1232
-¿Cómo estás?,charla,charla,charla,False,0,True,1189
-¿Cuántos municipios han reportado la presencia del Retamo Espinoso?,dominio,dominio,fallback_sin_tools,False,2,True,8803
-¿Cuándo se celebra el Global Big Day?,dominio,dominio,fallback_sin_tools,False,4,True,5305
-¿Entre qué años tuvo su primera circulación la moneda de 1.000 pesos?,dominio,dominio,fallback_sin_tools,False,4,True,4659
-¿Dónde se encuentra la Marianne North Gallery?,dominio,dominio,fallback_sin_tools,False,2,True,3833
-¿Cuál es la capital de Francia?,fuera,dominio,fallback_sin_tools,True,0,True,43
-¿Cuál es la población de Tokio?,fuera,dominio,fallback_sin_tools,True,0,True,58
-¿Quién escribió Cien años de soledad?,fuera,dominio,fallback_sin_tools,True,0,True,40
-¿Quién ganó el mundial de fútbol de 2022?,fuera,dominio,fallback_sin_tools,True,0,True,43
+Hola,charla,charla,charla,False,0,True,7377
+Buenos días,charla,charla,charla,False,0,True,1326
+Gracias,charla,charla,charla,False,0,True,991
+¿Quién eres?,charla,charla,charla,False,0,True,1876
+"Hola, ¿cómo estás?",charla,charla,charla,False,0,True,1235
+¿Cómo estás?,charla,charla,charla,False,0,True,1278
+¿Cuántos municipios han reportado la presencia del Retamo Espinoso?,dominio,dominio,fallback_sin_tools,False,2,True,10116
+¿Cuándo se celebra el Global Big Day?,dominio,dominio,fallback_sin_tools,False,4,True,5409
+¿Entre qué años tuvo su primera circulación la moneda de 1.000 pesos?,dominio,dominio,fallback_sin_tools,False,4,True,4618
+¿Dónde se encuentra la Marianne North Gallery?,dominio,dominio,fallback_sin_tools,False,2,True,3974
+¿Cuál es la capital de Francia?,fuera,dominio,fallback_sin_tools,True,0,True,115
+¿Cuál es la población de Tokio?,fuera,dominio,fallback_sin_tools,True,0,True,56
+¿Quién escribió Cien años de soledad?,fuera,dominio,fallback_sin_tools,True,0,True,42
+¿Quién ganó el mundial de fútbol de 2022?,fuera,dominio,fallback_sin_tools,True,0,True,42

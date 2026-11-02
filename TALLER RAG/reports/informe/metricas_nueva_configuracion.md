@@ -41,6 +41,8 @@ El reranker reordena el top-5 denso. No añade ni quita documentos.
 
 El nDCG sube 0,056 y el P@1 sube 0,132, sin perder recall ni P@5. La recuperación densa a `k=10` sigue en 0,912 de Recall@10 y 0,818 de nDCG.
 
+La corrección de spans de Óscar se volvió a medir: `span_hit` se mantiene en 0,816, así que la tabla conserva la corrida limpia.
+
 ## Respuesta
 
 | Métrica | Sin razonamiento | Con razonamiento |
@@ -72,22 +74,22 @@ Con la revisión, 33 de 37 son equivalentes (89,2%); 36 de 37 si se aceptan las 
 
 ## Compuerta de dominio
 
-Set de 120 preguntas: 60 de dominio y 60 de fuera. 75 train, 25 dev y 20 test. El test tiene 11 dominios de entidades nuevas y los 4 casos de fuera del chat.
+Set de 160 preguntas: 60 de dominio y 100 de fuera. 103 train, 37 dev y 20 test. El test tiene 11 dominios de entidades nuevas y los 4 casos de fuera del chat.
 
 | Métrica | Valor |
 |---|---|
 | Modelo | regresión logística con bge-m3 y features de retrieval |
 | Dev F1 | 1,000 |
-| Test objetivo (4 fuera + 11 dominio nuevo) | 15 de 15, F1 1,000 |
-| Test completo | F1 0,880 |
-| Falsos rechazos de dominio | 0,000 |
-| Falsos aceptados de fuera | 0,333 |
+| Test objetivo (4 fuera + 11 dominio nuevo) | 14 de 15 |
+| Test completo | F1 0,952 |
+| Falsos rechazos de dominio | 0,091 |
+| Falsos aceptados de fuera | 0,000 |
 
-La diferencia del test completo son los 5 casos sin respuesta: el clasificador deja pasar 3 y rechaza 2. El RAG se abstiene en los 5, así que la compuerta no necesita cubrirlos.
+Los 40 negativos nuevos (entidades inventadas, eventos futuros y conocimiento general) bajaron los falsos aceptados de 0,333 a 0,000. Los 5 casos sin respuesta se rechazan con 0,293 a 0,436. El único falso rechazo es «¿Cuánto se aceleró la inflación en Colombia?» en 0,494; el umbral sigue en 0,5 porque el margen de dev es 0,456 a 0,559.
 
 En la API:
 
-- `strict=True` en los 4 fuera: `abstained=True`, `abstain_reason="fuera_dominio"`, probabilidades 0,186 a 0,428.
+- `strict=True` en los 4 fuera: `abstained=True`, `abstain_reason="fuera_dominio"`, probabilidades 0,175 a 0,308. Las 5 preguntas sin respuesta se rechazan con 0,293 a 0,436.
 - `strict=True` en el Retamo: dominio, probabilidad 0,750, respuesta con citas.
 - Los casos de fuera tardan 61 a 88 ms, sin router ni generación.
 - El chat completo con `Modo estricto` da 14 de 14: 4 fuera se abstienen, 4 dominio responden y 6 saludos pasan.
@@ -142,7 +144,7 @@ La mayor ganancia vino de alinear el contexto del router con el del generador. A
 ## Artefactos
 
 - `plan/evaluacion_dominio_ragas.md`: plan y estado por fase.
-- `eval/domain/domain_questions.jsonl` y `.csv`: 120 preguntas.
+- `eval/domain/domain_questions.jsonl` y `.csv`: 160 preguntas.
 - `modelos/domain_classifier.json` y `.joblib`: compuerta.
 - `reports/tablas/domain_classifier_metrics.csv` y `domain_classifier_predictions.csv`.
 - `reports/tablas/metricas_final_sin.csv` y `metricas_final_con.csv`: respuesta final.

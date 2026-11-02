@@ -51,6 +51,15 @@ Las preguntas sin respuesta no entran en Recall@k: se evalúan por abstención.
 
 ## Estado de validación
 
-Carlos revisó las 43 filas: 31 con Sí y 12 con correcciones aplicadas. La segunda revisión de Julián, Erika y Óscar está pendiente; sus copias `gold_standard_<nombre>.xlsx` tienen el campo `validado` vacío.
+| Revisor | Filas con estado | Sí | Corregir | No | Aplicado |
+|---|---|---|---|---|---|
+| Carlos | 43 | 43 | 12 comentarios | 0 | 12 correcciones |
+| Julián | 40 | 30 | 8 | 2 | 7 spans y 1 pregunta |
+| Óscar | 40 | 26 | 6 | 8 | 5 spans |
+| Erika | 0 | 0 | 0 | 0 | pendiente |
+
+Óscar dejó 12 comentarios: 5 spans corregidos contra el texto indexado (g-009, g-012, g-028, g-031, g-042), 3 enlaces rotos ya marcados como sin verificar, 3 casos ya resueltos o no aplicables y las 5 preguntas sin respuesta, que no tienen documento que validar. La consolidación está en `src/scripts/apply_gold_review_oscar.py` y los respaldos en `gold_standard_pre_oscar.jsonl` y `gold_standard_ampliado_pre_oscar.jsonl`.
+
+Falta la revisión de Erika, que dejó comentarios pero no marcó el campo `validado`.
 
 El `gold_standard.jsonl` consolidado es la fuente de verdad. No ejecutes `build_gold_standard` después de la revisión: regeneraría el gold desde los archivos fuente y perdería las correcciones. Para cambiar una fila, edita el JSONL y vuelve a exportar el Excel con `export_gold_excel`.

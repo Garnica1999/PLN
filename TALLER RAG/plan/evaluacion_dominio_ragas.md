@@ -14,7 +14,7 @@ Cerrar tres frentes del taller sin añadir un juez nuevo al runtime:
 
 - El juez de evidencia actual del RAG se queda como está. No se añade otro juez al runtime.
 - La compuerta de dominio usa un clasificador de embeddings y, si hace falta, features de retrieval.
-- El set de dominio tiene 120 preguntas: 60 de dominio y 60 de fuera.
+- El set de dominio tiene 160 preguntas: 60 de dominio y 100 de fuera.
 - El split es por entidad o tema, no aleatorio, para que el test tenga entidades no vistas.
 - RAGAS se instala en un contenedor `eval` con Python 3.12. El intento en `/home/carlos/venv` se revirtió porque rompió numpy y LangChain.
 - El juez de RAGAS es local, por el endpoint compatible con OpenAI de Ollama. Se decide entre `gemma4:e4b` y `gemma2:2b` según el coste.
@@ -24,7 +24,7 @@ Cerrar tres frentes del taller sin añadir un juez nuevo al runtime:
 | Fase | Estado | Entregable |
 |---|---|---|
 | 0. Instalar RAGAS | Completada | `ragas` importable en el contenedor `eval` |
-| 1. Generar las 120 preguntas | Completada | `eval/domain/domain_questions.jsonl` |
+| 1. Generar las 160 preguntas | Completada | `eval/domain/domain_questions.jsonl` |
 | 2. Entrenar y evaluar el clasificador | Completada | `modelos/domain_classifier.json` |
 | 2b. Integrar la compuerta | Completada | Toggle `Modo estricto` y `strict` en la API |
 | 3. Revisión manual con reranker | Completada | 33 de 37 equivalentes (89,2%) |
@@ -40,7 +40,7 @@ Cerrar tres frentes del taller sin añadir un juez nuevo al runtime:
 - Versiones del contenedor: `ragas 0.4.3`, `langchain 0.3.30`, `langchain-community 0.3.31`, `langchain-core 0.3.86`, `langchain-openai 0.2.14`, `langchain-ollama 0.2.3`.
 - `import ragas` funciona en el contenedor. El juez local se probará con `gemma2:2b` y `gemma4:e4b`.
 
-## Fase 1. Las 120 preguntas
+## Fase 1. Las 160 preguntas
 
 Composición:
 
@@ -51,7 +51,8 @@ Composición:
 | Fuera del chat | 4 | fuera |
 | Sin respuesta del gold | 5 | fuera |
 | Conocimiento general nuevo | 51 | fuera |
-| Total | 120 | |
+| Negativos duros nuevos (entidades inventadas, futuros, general) | 40 | fuera |
+| Total | 160 | |
 
 Campos: `id`, `question`, `label`, `subtype`, `source`, `split`.
 
@@ -72,11 +73,12 @@ Criterios:
 
 ### Resultado del clasificador
 
-- 120 preguntas: 75 train, 25 dev y 20 test.
-- Modelo elegido: regresión logística con embeddings bge-m3 y features de retrieval. LightGBM quedó por debajo en dev.
-- Dev F1: 1,000.
-- Test en el objetivo de la compuerta, 4 fuera del chat contra 11 dominios nuevos: 15 de 15, precision 1,000, recall 1,000, F1 1,000.
-- Test completo: F1 0,880, precision 0,786, recall 1,000. La diferencia son los 5 casos sin respuesta: el clasificador deja pasar 3 y rechaza 2. El RAG se abstiene en los 5, así que la compuerta no necesita cubrirlos.
+- 160 preguntas: 103 train, 37 dev y 20 test.
+- Modelo elegido: regresión logística con embeddings bge-m3 y features de retrieval. LightGBM no está instalado en la imagen.
+- Dev F1: 1,000, con margen de 0,456 a 0,559.
+- Test en el objetivo de la compuerta, 4 fuera del chat contra 11 dominios nuevos: 14 de 15.
+- Test completo: F1 0,952, precision 1,000, recall 0,909. Los 5 casos sin respuesta se rechazan con 0,293 a 0,436. El único falso rechazo es «¿Cuánto se aceleró la inflación en Colombia?» en 0,494; no se movió el umbral porque el margen de dev lo deja en 0,5.
+- Los 40 negativos duros nuevos bajaron los falsos aceptados de 0,333 a 0,000.
 - El modelo se exportó a `modelos/domain_classifier.json` para no depender de sklearn en la API.
 
 ### Resultado de la compuerta
@@ -133,7 +135,7 @@ La referencia es el top-5 con reranker: recall 0,895; P@5 0,947; nDCG 0,865; P@1
 
 - Python 3.14 puede no tener wheels para todas las dependencias de RAGAS.
 - RAGAS puede actualizar `langchain`, `pydantic` u `openai` en el venv del host.
-- Con 120 preguntas, el test tendrá unas 18 y los intervalos de confianza serán amplios.
+- Con 160 preguntas, el test tiene 20 y los intervalos de confianza siguen siendo amplios.
 - El clasificador puede sobreajustar a las entidades del gold si el split no es por entidad.
 - RAGAS con `gemma4` puede tardar una hora o más.
 

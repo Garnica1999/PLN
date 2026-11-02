@@ -68,54 +68,94 @@ En qué año se revertió la prohibición de la minería metálica en El Salvado
 ¿Cuál es la población de Tokio?,fuera,fuera,chat,poblacion_tokio,test,,,,,d-067
 ¿Quién escribió Cien años de soledad?,fuera,fuera,chat,literatura_cien_anos,test,,,,,d-068
 ¿Quién ganó el mundial de fútbol de 2022?,fuera,fuera,chat,deportes_mundial,test,,,,,d-069
-¿Cuál es la capital de Italia?,fuera,hard_negative,general,capitales,train,,,,,d-070
-¿Cuál es la capital de Japón?,fuera,hard_negative,general,capitales,train,,,,,d-071
-¿Cuál es la capital de Australia?,fuera,hard_negative,general,capitales,train,,,,,d-072
-¿Cuál es la capital de Canadá?,fuera,hard_negative,general,capitales,train,,,,,d-073
-¿Cuál es la capital de Egipto?,fuera,hard_negative,general,capitales,train,,,,,d-074
-¿Cuál es la capital de Brasil?,fuera,hard_negative,general,capitales,train,,,,,d-075
-¿Cuál es la capital de India?,fuera,hard_negative,general,capitales,train,,,,,d-076
-¿Cuál es la capital de Noruega?,fuera,hard_negative,general,capitales,train,,,,,d-077
-¿Cuántos habitantes tiene Ciudad de México?,fuera,hard_negative,general,poblacion,train,,,,,d-078
-¿Cuántos habitantes tiene El Cairo?,fuera,hard_negative,general,poblacion,train,,,,,d-079
-¿Cuántos habitantes tiene Lagos?,fuera,hard_negative,general,poblacion,train,,,,,d-080
-¿Cuántos habitantes tiene Londres?,fuera,hard_negative,general,poblacion,train,,,,,d-081
-¿Cuántos habitantes tiene Nueva York?,fuera,hard_negative,general,poblacion,train,,,,,d-082
-¿Cuántos habitantes tiene São Paulo?,fuera,hard_negative,general,poblacion,train,,,,,d-083
-¿Cuántos habitantes tiene Delhi?,fuera,hard_negative,general,poblacion,train,,,,,d-084
-¿Cuántos habitantes tiene Shanghái?,fuera,hard_negative,general,poblacion,train,,,,,d-085
-¿Quién escribió Don Quijote?,fuera,hard_negative,general,literatura,train,,,,,d-086
-¿Quién escribió La Odisea?,fuera,hard_negative,general,literatura,train,,,,,d-087
-¿Quién escribió Hamlet?,fuera,hard_negative,general,literatura,train,,,,,d-088
-¿Quién escribió Orgullo y prejuicio?,fuera,hard_negative,general,literatura,train,,,,,d-089
-¿Quién escribió El Principito?,fuera,hard_negative,general,literatura,train,,,,,d-090
-¿Quién escribió Rayuela?,fuera,hard_negative,general,literatura,train,,,,,d-091
-¿Quién escribió Fahrenheit 451?,fuera,hard_negative,general,literatura,train,,,,,d-092
-¿Quién escribió 1984?,fuera,hard_negative,general,literatura,train,,,,,d-093
-¿Cuál es la fórmula del agua?,fuera,hard_negative,general,ciencia_general,train,,,,,d-094
-¿Cuál es la velocidad de la luz?,fuera,hard_negative,general,ciencia_general,train,,,,,d-095
-¿Cuál es el planeta más grande del sistema solar?,fuera,hard_negative,general,ciencia_general,train,,,,,d-096
-¿Qué es un gas noble?,fuera,hard_negative,general,ciencia_general,train,,,,,d-097
-¿Qué es el ADN?,fuera,hard_negative,general,ciencia_general,train,,,,,d-098
-¿Qué es la gravedad?,fuera,hard_negative,general,ciencia_general,train,,,,,d-099
-¿Cuántos elementos tiene la tabla periódica?,fuera,hard_negative,general,ciencia_general,train,,,,,d-100
-¿Qué es un agujero negro?,fuera,hard_negative,general,ciencia_general,train,,,,,d-101
-¿Cuándo cayó el Muro de Berlín?,fuera,hard_negative,general,historia,train,,,,,d-102
-¿Cuándo empezó la Revolución Francesa?,fuera,hard_negative,general,historia,train,,,,,d-103
-¿Cuándo se independizó Colombia?,fuera,hard_negative,general,historia,train,,,,,d-104
-¿Cuándo terminó la Segunda Guerra Mundial?,fuera,hard_negative,general,historia,train,,,,,d-105
-¿Cuándo cayó el Imperio Romano?,fuera,hard_negative,general,historia,dev,,,,,d-106
-¿Cuándo cayó Constantinopla?,fuera,hard_negative,general,historia,dev,,,,,d-107
-¿Cuándo terminó la Guerra Fría?,fuera,hard_negative,general,historia,dev,,,,,d-108
-¿Quién ganó el Balón de Oro 2023?,fuera,hard_negative,general,deportes,dev,,,,,d-109
-¿Quién ganó la NBA 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-110
-¿Quién ganó el Tour de Francia 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-111
-¿Quién ganó Wimbledon 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-112
-¿Quién ganó el Super Bowl 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-113
-¿Quién ganó la Champions League 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-114
-¿Cuál es el río más largo del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-115
-¿Cuál es el océano más profundo?,fuera,hard_negative,general,geografia,dev,,,,,d-116
-¿Cuál es el desierto más grande del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-117
-¿Cuál es la montaña más alta del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-118
-¿Cuál es el país más grande del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-119
-¿Cuál es la isla más grande del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-120
+¿Cuántos empleados tiene la empresa Aurora del Caribe?,fuera,hard_negative,extra,fake_empresa,train,,,,,d-070
+¿Quién es el gerente de la compañía Río Verde?,fuera,hard_negative,extra,fake_empresa,train,,,,,d-071
+¿Cuándo abrió la sede de Tecnologías Andinas en Medellín?,fuera,hard_negative,extra,fake_empresa,train,,,,,d-072
+¿Qué productos vende la empresa Cumbre Azul?,fuera,hard_negative,extra,fake_empresa,train,,,,,d-073
+¿Cuántas sucursales tiene la cadena Páramo Café?,fuera,hard_negative,extra,fake_empresa,train,,,,,d-074
+¿Quién fundó la empresa Llanura Solar?,fuera,hard_negative,extra,fake_empresa,train,,,,,d-075
+¿Cuánto factura al año la compañía Mar de Cristal?,fuera,hard_negative,extra,fake_empresa,train,,,,,d-076
+¿Cuál es el teléfono de atención de la fundación Sendero Vivo?,fuera,hard_negative,extra,fake_empresa,train,,,,,d-077
+¿Quién ganará las elecciones presidenciales de 2030?,fuera,hard_negative,extra,futuro,train,,,,,d-078
+¿Cuál será el precio del dólar en diciembre de 2035?,fuera,hard_negative,extra,futuro,train,,,,,d-079
+¿Qué equipo ganará la Liga BetPlay 2031?,fuera,hard_negative,extra,futuro,train,,,,,d-080
+¿Cuántos habitantes tendrá Bogotá en 2050?,fuera,hard_negative,extra,futuro,train,,,,,d-081
+¿Qué país organizará el mundial de fútbol de 2038?,fuera,hard_negative,extra,futuro,train,,,,,d-082
+¿Cuál será la temperatura media de Colombia en 2040?,fuera,hard_negative,extra,futuro,train,,,,,d-083
+¿Cuántos habitantes tiene París?,fuera,hard_negative,extra,general,train,,,,,d-084
+¿Cuál es la moneda de Japón?,fuera,hard_negative,extra,general,train,,,,,d-085
+¿Cuántos kilómetros tiene el río Nilo?,fuera,hard_negative,extra,general,train,,,,,d-086
+¿En qué año se inventó la imprenta?,fuera,hard_negative,extra,general,train,,,,,d-087
+¿Cuál es la capital de Portugal?,fuera,hard_negative,extra,general,train,,,,,d-088
+¿Cuántos huesos tiene el cuerpo humano?,fuera,hard_negative,extra,general,train,,,,,d-089
+¿Cuál es la montaña más alta de África?,fuera,hard_negative,extra,general,train,,,,,d-090
+¿Qué altura tiene el Everest?,fuera,hard_negative,extra,general,train,,,,,d-091
+¿Qué dijo el alcalde de Villanueva del Mar sobre el paro?,fuera,hard_negative,extra,fake_local,train,,,,,d-092
+¿Cuándo se inauguró el acueducto de Puerto Escondido?,fuera,hard_negative,extra,fake_local,train,,,,,d-093
+¿Cuántas hectáreas tiene el parque natural Sierra del Viento?,fuera,hard_negative,extra,fake_local,train,,,,,d-094
+¿Quién es el director del Observatorio de Ciénaga Grande?,fuera,hard_negative,extra,fake_local,train,,,,,d-095
+¿Qué pasó con el proyecto eólico de Punta Brava?,fuera,hard_negative,extra,fake_local,train,,,,,d-096
+¿Cuántos docentes tiene la universidad de San Rafael del Llano?,fuera,hard_negative,extra,fake_local,train,,,,,d-097
+¿Cuál es la fórmula química del agua?,fuera,hard_negative,extra,general,dev,,,,,d-098
+¿En qué año cayó el muro de Berlín?,fuera,hard_negative,extra,general,dev,,,,,d-099
+¿Quién descubrió la penicilina?,fuera,hard_negative,extra,general,dev,,,,,d-100
+¿Cuántos continentes hay?,fuera,hard_negative,extra,general,dev,,,,,d-101
+¿Cuál es el océano más profundo?,fuera,hard_negative,extra,general,dev,,,,,d-102
+¿Cuál es la velocidad de la luz?,fuera,hard_negative,extra,general,dev,,,,,d-103
+¿Qué planeta es el más grande del sistema solar?,fuera,hard_negative,extra,general,dev,,,,,d-104
+¿Cuántos jugadores tiene un equipo de fútbol?,fuera,hard_negative,extra,general,dev,,,,,d-105
+¿En qué año se fundó la ONU?,fuera,hard_negative,extra,general,dev,,,,,d-106
+¿Cuántos empleados tiene la mina La Esperanza del Sur?,fuera,hard_negative,extra,fake_empresa,dev,,,,,d-107
+¿Quién ganará el Premio Nobel de Paz en 2032?,fuera,hard_negative,extra,futuro,dev,,,,,d-108
+¿Cuál es la capital de Islandia?,fuera,hard_negative,extra,general,dev,,,,,d-109
+¿Cuál es la capital de Italia?,fuera,hard_negative,general,capitales,train,,,,,d-110
+¿Cuál es la capital de Japón?,fuera,hard_negative,general,capitales,train,,,,,d-111
+¿Cuál es la capital de Australia?,fuera,hard_negative,general,capitales,train,,,,,d-112
+¿Cuál es la capital de Canadá?,fuera,hard_negative,general,capitales,train,,,,,d-113
+¿Cuál es la capital de Egipto?,fuera,hard_negative,general,capitales,train,,,,,d-114
+¿Cuál es la capital de Brasil?,fuera,hard_negative,general,capitales,train,,,,,d-115
+¿Cuál es la capital de India?,fuera,hard_negative,general,capitales,train,,,,,d-116
+¿Cuál es la capital de Noruega?,fuera,hard_negative,general,capitales,train,,,,,d-117
+¿Cuántos habitantes tiene Ciudad de México?,fuera,hard_negative,general,poblacion,train,,,,,d-118
+¿Cuántos habitantes tiene El Cairo?,fuera,hard_negative,general,poblacion,train,,,,,d-119
+¿Cuántos habitantes tiene Lagos?,fuera,hard_negative,general,poblacion,train,,,,,d-120
+¿Cuántos habitantes tiene Londres?,fuera,hard_negative,general,poblacion,train,,,,,d-121
+¿Cuántos habitantes tiene Nueva York?,fuera,hard_negative,general,poblacion,train,,,,,d-122
+¿Cuántos habitantes tiene São Paulo?,fuera,hard_negative,general,poblacion,train,,,,,d-123
+¿Cuántos habitantes tiene Delhi?,fuera,hard_negative,general,poblacion,train,,,,,d-124
+¿Cuántos habitantes tiene Shanghái?,fuera,hard_negative,general,poblacion,train,,,,,d-125
+¿Quién escribió Don Quijote?,fuera,hard_negative,general,literatura,train,,,,,d-126
+¿Quién escribió La Odisea?,fuera,hard_negative,general,literatura,train,,,,,d-127
+¿Quién escribió Hamlet?,fuera,hard_negative,general,literatura,train,,,,,d-128
+¿Quién escribió Orgullo y prejuicio?,fuera,hard_negative,general,literatura,train,,,,,d-129
+¿Quién escribió El Principito?,fuera,hard_negative,general,literatura,train,,,,,d-130
+¿Quién escribió Rayuela?,fuera,hard_negative,general,literatura,train,,,,,d-131
+¿Quién escribió Fahrenheit 451?,fuera,hard_negative,general,literatura,train,,,,,d-132
+¿Quién escribió 1984?,fuera,hard_negative,general,literatura,train,,,,,d-133
+¿Cuál es la fórmula del agua?,fuera,hard_negative,general,ciencia_general,train,,,,,d-134
+¿Cuál es la velocidad de la luz?,fuera,hard_negative,general,ciencia_general,train,,,,,d-135
+¿Cuál es el planeta más grande del sistema solar?,fuera,hard_negative,general,ciencia_general,train,,,,,d-136
+¿Qué es un gas noble?,fuera,hard_negative,general,ciencia_general,train,,,,,d-137
+¿Qué es el ADN?,fuera,hard_negative,general,ciencia_general,train,,,,,d-138
+¿Qué es la gravedad?,fuera,hard_negative,general,ciencia_general,train,,,,,d-139
+¿Cuántos elementos tiene la tabla periódica?,fuera,hard_negative,general,ciencia_general,train,,,,,d-140
+¿Qué es un agujero negro?,fuera,hard_negative,general,ciencia_general,train,,,,,d-141
+¿Cuándo cayó el Muro de Berlín?,fuera,hard_negative,general,historia,train,,,,,d-142
+¿Cuándo empezó la Revolución Francesa?,fuera,hard_negative,general,historia,train,,,,,d-143
+¿Cuándo se independizó Colombia?,fuera,hard_negative,general,historia,train,,,,,d-144
+¿Cuándo terminó la Segunda Guerra Mundial?,fuera,hard_negative,general,historia,train,,,,,d-145
+¿Cuándo cayó el Imperio Romano?,fuera,hard_negative,general,historia,dev,,,,,d-146
+¿Cuándo cayó Constantinopla?,fuera,hard_negative,general,historia,dev,,,,,d-147
+¿Cuándo terminó la Guerra Fría?,fuera,hard_negative,general,historia,dev,,,,,d-148
+¿Quién ganó el Balón de Oro 2023?,fuera,hard_negative,general,deportes,dev,,,,,d-149
+¿Quién ganó la NBA 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-150
+¿Quién ganó el Tour de Francia 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-151
+¿Quién ganó Wimbledon 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-152
+¿Quién ganó el Super Bowl 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-153
+¿Quién ganó la Champions League 2024?,fuera,hard_negative,general,deportes,dev,,,,,d-154
+¿Cuál es el río más largo del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-155
+¿Cuál es el océano más profundo?,fuera,hard_negative,general,geografia,dev,,,,,d-156
+¿Cuál es el desierto más grande del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-157
+¿Cuál es la montaña más alta del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-158
+¿Cuál es el país más grande del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-159
+¿Cuál es la isla más grande del mundo?,fuera,hard_negative,general,geografia,dev,,,,,d-160

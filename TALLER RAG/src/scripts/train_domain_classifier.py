@@ -163,6 +163,26 @@ def main() -> None:
             flush=True,
         )
 
+    dev_probabilities = model.predict_proba(x_dev)[:, 1]
+    neg_max = float(dev_probabilities[y_dev == 0].max())
+    pos_min = float(dev_probabilities[y_dev == 1].min())
+    suggested = round((neg_max + pos_min) / 2, 2)
+    print(
+        f"dev margen: max fuera={neg_max:.3f} min dominio={pos_min:.3f} umbral sugerido={suggested:.2f}",
+        flush=True,
+    )
+    test_probabilities = model.predict_proba(x_test)[:, 1]
+    for threshold in (0.40, 0.45, 0.50):
+        dev_pred = dev_probabilities >= threshold
+        test_pred = test_probabilities >= threshold
+        print(
+            f"umbral {threshold:.2f}: dev F1={f1_score(y_dev, dev_pred, pos_label=1):.3f} | "
+            f"test F1={f1_score(y_test, test_pred, pos_label=1):.3f} "
+            f"falsos rechazos={float(np.mean(test_pred[y_test == 1] == 0)):.3f} "
+            f"falsos aceptados={float(np.mean(test_pred[y_test == 0] == 1)):.3f}",
+            flush=True,
+        )
+
     test_result = score_model(model, x_test, y_test)
     test_indices = list(np.where(splits == "test")[0])
     prediction_rows = []
