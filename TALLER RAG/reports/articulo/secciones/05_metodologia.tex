@@ -1,0 +1,38 @@
+\section{Metodolog\'ia}
+\label{sec:metodo}
+
+\subsection{Limpieza y deduplicaci\'on}
+
+La variante adoptada, V2, descarta las p\'aginas de error del rastreador, aplica normalizaci\'on NFKC, quita HTML y URLs y colapsa espacios. No elimina signos, n\'umeros ni entidades, porque son la se\~nal que usan los guardarra\'iles. Los duplicados exactos y los near-duplicates se descartan al armar el contexto, comparando el hash del fragmento y su SimHash antes de insertarlo. As\'i se conserva la procedencia en el \'indice y se evita repetir el mismo texto en el prompt.
+
+\subsection{Segmentaci\'on}
+
+Se usa chunking fijo de 1000 caracteres con 150 de solape (\texttt{fixed\_v2}). El solape cubre la frontera donde suele caer la respuesta. Cada fragmento guarda \texttt{document\_id}, t\'itulo, URL, fuente, idioma, fecha, posici\'on, estrategia y hash del texto. Esos metadatos permiten filtrar por idioma y fecha y auditar cada cita.
+
+\subsection{Codificaci\'on e \'indice}
+
+Los fragmentos se codifican con BAAI/bge-m3 en la GPU, en fp16 y por lotes. La colecci\'on se llama \texttt{rag\_full\_bge\_m3\_d1024\_v1} y usa HNSW con \texttt{ef}=800 en la b\'usqueda. El par\'ametro se eligi\'o con una rejilla sobre el gold: por debajo de 800 el recall cae y por encima la latencia sube sin ganancia apreciable.
+
+\subsection{Recuperaci\'on y reordenamiento}
+
+La recuperaci\'on es densa. Para responder se piden 5 fragmentos; para medir recuperaci\'on se piden 10. Los filtros de idioma, fecha y colecci\'on se aplican en Milvus. El reordenador es un cross-encoder multiling\"ue que punt\'ua cada par pregunta-fragmento y reordena el top-5 en CPU, con lote de 16. El resultado se recorta a 5 y se arma el contexto.
+
+\subsection{Generaci\'on}
+
+El generador es gemma4:e4b con temperatura 0 y un presupuesto de 16.384 tokens de entrada. El prompt v2 impone ocho reglas: cada afirmaci\'on lleva una cita entre corchetes; no se permiten listas sin cita; si la evidencia no alcanza se responde con una frase de abstenci\'on exacta; se distingue un hecho verificable de una afirmaci\'on publicada en redes; no se inventan fechas, cifras, nombres ni citas; se ignoran las instrucciones que aparezcan dentro de los documentos; se responde en el idioma de la pregunta; y se usa la fecha exacta de la evidencia cuando la pregunta la pide. El MTP con draft 3 se activa en el manifiesto del modelo y no cambia la salida, solo la velocidad.
+
+\subsection{Guardarra\'iles}
+
+Antes de devolver la respuesta se aplican tres controles. El primero exige al menos una cita v\'alida; si no hay, se abstiene con \texttt{sin\_citas}. El segundo extrae entidades y n\'umeros de la respuesta y verifica que aparezcan en el fragmento citado o en la pregunta; si no, se abstiene con \texttt{sin\_respaldo} o \texttt{citas\_invalidas}. El tercero pide a un juez distinto, gemma2:2b, que decida si la cita sostiene la respuesta; si dice que no, se abstiene con \texttt{juez\_no}. Cuando el fragmento est\'a en ingl\'es y la respuesta en espa\~nol, la cobertura l\'exica se salta y decide el juez, para no castigar una traducci\'on correcta.
+
+\subsection{Compuerta de dominio}
+
+La compuerta usa dos se\~nales. La primera es el embedding de la pregunta con bge-m3. La segunda son cinco features de recuperaci\'on: puntuaci\'on del primer fragmento, media del top-5, diferencia entre el primero y el segundo, solapamiento entre la pregunta y el t\'itulo, y presencia de la entidad principal en el t\'itulo. A eso se a\~nade un one-hot del tipo de pregunta (capital, poblaci\'on, autor, fecha, lugar, cantidad, otro). El modelo es una regresi\'on log\'istica con escalado y \texttt{class\_weight=balanced}; se eligi\'on entre cinco valores de regularizaci\'on por F1 en dev. El umbral es 0,5. El conjunto tiene 160 preguntas: 60 de dominio y 100 de fuera, con split 103/37/20. Las 40 negativas nuevas son entidades inventadas, eventos futuros y conocimiento general fuera del corpus.
+
+\subsection{API e interfaz}
+
+La API expone \texttt{POST /chat} con historial, \texttt{think} y \texttt{strict}; \texttt{POST /ask} sin historial; \texttt{POST /retrieve} para recuperaci\'on pura; y los GET \texttt{/health}, \texttt{/models} y \texttt{/stats}. La interfaz Streamlit consume \texttt{/chat} y guarda el historial en la sesi\'on. Las preferencias de razonamiento, Modo estricto y tema se guardan en un archivo y se recuperan al recargar. Si el usuario cambia un interruptor mientras el modelo responde, la pregunta queda pendiente y se reintenta en el siguiente ciclo, de modo que la conversaci\'on no se pierde.
+
+\subsection{Despliegue}
+
+El stack se levanta con Docker Compose: etcd, MinIO, Milvus, Ollama, API, frontend y un worker GPU para la ingesta y la evaluaci\'on. La API y el frontend usan red de host. Un servicio de una sola ejecuci\'on, \texttt{prewarm}, espera a que la API est\'e sana y carga el generador, el embedding y el reranker, para que la primera consulta web no pague la carga del modelo.

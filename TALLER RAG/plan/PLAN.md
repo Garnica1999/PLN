@@ -115,10 +115,13 @@ TALLER RAG/
 │   └── results/
 ├── reports/
 │   ├── README.md
+│   ├── articulo/
+│   │   ├── articulo_ieee.tex
+│   │   ├── secciones/
+│   │   └── articulo_ieee.pdf
 │   ├── informe/
-│   │   ├── informe_final.tex
-│   │   ├── tg_usta.cls
-│   │   └── informe_final.pdf
+│   │   ├── metricas_nueva_configuracion.md
+│   │   └── tg_usta.cls
 │   ├── figuras/
 │   ├── tablas/
 │   └── corridas/

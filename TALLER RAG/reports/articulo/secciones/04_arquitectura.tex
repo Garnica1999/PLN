@@ -1,0 +1,100 @@
+\section{Arquitectura}
+\label{sec:arquitectura}
+
+\subsection{Vista general}
+
+La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una interfaz Streamlit; la API FastAPI recibe la pregunta, la condensa si viene de una conversaci\'on, aplica la compuerta de dominio si el Modo estricto est\'a activo, recupera fragmentos de Milvus, los reordena, arma el contexto y genera la respuesta. Antes de devolverla, los guardarra\'iles verifican citas, entidades y n\'umeros. Cada capa se eligi\'o por una raz\'on medible, no por disponibilidad.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  node distance=0.55cm,
+  box/.style={draw, rounded corners=2pt, align=center, font=\scriptsize, minimum width=2.6cm, minimum height=0.7cm, fill=black!3},
+  db/.style={draw, cylinder, shape border rotate=90, aspect=0.25, align=center, font=\scriptsize, minimum width=1.9cm, minimum height=0.8cm, fill=black!8},
+  arr/.style={-{Latex[length=2mm]}, thick}
+]
+\node[box] (ui) {UI Streamlit};
+\node[box, below=of ui] (api) {API FastAPI};
+\node[box, below=of api] (cond) {Condensador\\gemma2:2b};
+\node[box, below=of cond] (gate) {Compuerta de dominio\\(Modo estricto)};
+\node[box, below=of gate] (ret) {Retriever bge-m3};
+\node[box, below=of ret] (rer) {Reranker\\bge-reranker-v2-m3};
+\node[box, below=of rer] (prompt) {Prompt v2};
+\node[box, below=of prompt] (llm) {gemma4:e4b + MTP};
+\node[box, below=of llm] (guard) {Guardarra\'iles};
+\node[box, below=of guard, fill=black!10] (resp) {Respuesta con citas};
+\node[db, right=0.55cm of ret] (milvus) {Milvus\\618k};
+\draw[arr] (ui) -- (api);
+\draw[arr] (api) -- (cond);
+\draw[arr] (cond) -- (gate);
+\draw[arr] (gate) -- (ret);
+\draw[arr] (ret) -- (rer);
+\draw[arr] (rer) -- (prompt);
+\draw[arr] (prompt) -- (llm);
+\draw[arr] (llm) -- (guard);
+\draw[arr] (guard) -- (resp);
+\draw[arr, <->] (ret) -- (milvus);
+\end{tikzpicture}
+\caption{Flujo de una consulta. La compuerta solo act\'ua con el Modo estricto; el condensador solo en preguntas encadenadas.}
+\label{fig:arquitectura}
+\end{figure}
+
+\subsection{Capas y justificaci\'on}
+
+\textbf{Ingesta.} Los documentos se limpian, se fragmentan y se codifican una sola vez. La colecci\'on se valida contra la etiqueta del codificador activo para no mezclar espacios vectoriales. Se eligi\'o un pipeline idempotente y reanudable porque el corpus cambia y la ingesta tarda unos 27 minutos en la GPU.
+
+\textbf{\'Indice vectorial.} Milvus se eligi\'o por tres razones: soporta HNSW con par\'ametro de exploraci\'on ajustable \cite{malkov2020hnsw}, filtra por metadatos (idioma, fecha, colecci\'on) sin salir del motor y mantiene 618.286 fragmentos con latencias de milisegundos. Una base local en memoria no habr\'ia permitido filtrar ni auditar la procedencia.
+
+\textbf{Codificaci\'on.} bge-m3 produce vectores densos de 1024 dimensiones, es multiling\"ue y rinde bien sin ajuste fino \cite{chen2024bge}. Se compar\'o con e5-base y con qwen3-embedding sobre el mismo \'indice; la decisi\'on se reporta en la Secci\'on~\ref{sec:experimentos}.
+
+\textbf{Recuperaci\'on.} El recuperador denso devuelve el top-10 para medir y el top-5 para responder. La fusi\'on con BM25 y el recuperador disperso se midieron y no se adoptaron. El motivo es emp\'irico: la fusi\'on baj\'o el recall en este corpus.
+
+\textbf{Reordenamiento.} Un cross-encoder multiling\"ue reordena el top-5 en CPU \cite{nogueira2019passage}. Se eligi\'o CPU para no competir por la VRAM con el generador; el coste es de unos 1,1 s por consulta. La alternativa de reordenar 20 o 50 candidatos mejora el orden pero pierde cobertura y multiplica la latencia.
+
+\textbf{Generaci\'on.} gemma4:e4b es un modelo de 7,5B cuantizado a Q4\_K\_M con 116.384 tokens de contexto y MTP nativo. Se eligi\'o por tres motivos: cabe en 16 GB de VRAM, soporta contextos largos y el MTP con draft 3 acelera la decodificaci\'on sin cambiar la distribuci\'on del modelo. Los modelos peque\~nos comparados en E4 quedaron por debajo en correcci\'on y citas.
+
+\textbf{Conversaci\'on.} Un condensador reescribe la \'ultima pregunta con el historial para que la recuperaci\'on no dependa de pronombres. Se usa gemma2:2b para no cargar dos veces el modelo grande. Si el condensador pierde el tema, se antepone la primera pregunta del usuario.
+
+\textbf{Guardarra\'iles.} Tres controles antes de responder: cita obligatoria, verificaci\'on de entidades y n\'umeros contra el fragmento citado, y un juez de evidencia. Si alguno falla, el sistema se abstiene con el motivo. El juez es gemma2:2b, distinto del generador, para no validar con el mismo modelo que redacta.
+
+\textbf{Compuerta de dominio.} Un clasificador de regresi\'on log\'istica con embeddings y se\~nales de recuperaci\'on decide si la pregunta pertenece al corpus. No es un LLM juez: su decisi\'on cuesta milisegundos, es reproducible y se puede medir con precisi\'on y recall. Se activa con el interruptor Modo estricto.
+
+\textbf{API e interfaz.} FastAPI separa el pipeline de la presentaci\'on y expone \texttt{/chat}, \texttt{/ask}, \texttt{/retrieve}, \texttt{/health}, \texttt{/models} y \texttt{/stats} \cite{fastapidocs}. Streamlit consume \texttt{/chat} y muestra la respuesta, las citas, las evidencias, las m\'etricas y el razonamiento \cite{streamlitdocs}. La separaci\'on permite probar el pipeline sin la interfaz y cambiar la interfaz sin tocar el pipeline.
+
+\subsection{Configuraci\'on final}
+
+La Tabla~\ref{tab:config-final} fija los par\'ametros. Los valores se justifican en las Secciones~\ref{sec:metodo} y~\ref{sec:experimentos}.
+
+\begin{table}[t]
+\centering
+\caption{Configuraci\'on final del sistema.}
+\label{tab:config-final}
+\begin{tabular}{ll}
+\toprule
+Par\'ametro & Valor \\
+\midrule
+Codificador & BAAI/bge-m3, 1024 dimensiones \\
+\'Indice & HNSW en Milvus, \texttt{ef}=800 \\
+Recuperaci\'on & densa, $k=10$ para medir, $k=5$ para responder \\
+Reordenador & BAAI/bge-reranker-v2-m3, CPU, top-5 \\
+Generador & gemma4:e4b, Q4\_K\_M \\
+Contexto & 116.384 tokens (16.384 entrada, 100.000 salida) \\
+MTP & draft 3, 217 tok/s \\
+Prompt & v2 \\
+Juez y condensador & gemma2:2b \\
+Compuerta & regresi\'on log\'istica, umbral 0,5 \\
+Fragmentos & 618.286 en \texttt{rag\_full\_bge\_m3\_d1024\_v1} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Interfaz para el usuario final}
+
+La interfaz tiene dos zonas. En el panel lateral se elige el modelo, el n\'umero de fragmentos, el idioma del documento, el rango de fechas y la colecci\'on; se activan el razonamiento y el Modo estricto, y se cambia entre tema claro y oscuro. En el \'area central se conversa con historial. Cada respuesta muestra el texto con citas numeradas, chips con la intenci\'on y el guardarra\'il que actu\'o, la latencia por etapa, los tokens por segundo y un desplegable con las evidencias: t\'itulo, puntuaci\'on, fragmento, enlace y metadatos. Si el sistema se abstiene, aparece el motivo y, en el caso de fuera de dominio, la sugerencia de desactivar el Modo estricto. El razonamiento del modelo, cuando se activa, va en un desplegable separado y se advierte que no sustituye la evidencia. La Figura~\ref{fig:ui} muestra una respuesta real.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{figuras/ui_recorte.png}
+\caption{Interfaz final: respuesta con citas, chips de intenci\'on y guardarra\'il, m\'etricas y evidencias desplegables.}
+\label{fig:ui}
+\end{figure*}

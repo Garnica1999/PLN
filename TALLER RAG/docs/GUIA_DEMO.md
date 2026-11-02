@@ -5,12 +5,11 @@
 ```bash
 docker compose ps
 curl http://localhost:8010/health
-docker compose exec -T api python -m src.scripts.prewarm
 ```
 
 Condiciones: Milvus, LLM y embeddings en verde, y al menos una colección con documentos (`GET /stats`).
 
-El precalentamiento carga el generador, el recuperador y el reranker. Sin él, la primera pregunta tarda unos 29 s; con él, la demo arranca en los 6 a 7 s normales.
+El servicio `prewarm` del compose ya cargó el generador, el recuperador y el reranker al levantar el stack. Si hiciste `down` y `up`, espera a que el contenedor `prewarm` salga con código 0. Para repetirlo a mano: `docker compose exec -T api python -m src.scripts.prewarm`. Sin precalentamiento, la primera pregunta tarda unos 29 s; con él, la demo arranca en los 6 a 7 s normales.
 
 ## Guion (5 a 7 minutos)
 

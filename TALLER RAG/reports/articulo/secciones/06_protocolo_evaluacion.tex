@@ -1,0 +1,66 @@
+\section{Protocolo de evaluaci\'on}
+\label{sec:evaluacion}
+
+\subsection{Gold est\'andar}
+
+El gold tiene 43 preguntas: 19 en desarrollo y 24 en prueba, 38 respondibles y 5 sin respuesta. Cada fila guarda el identificador, la pregunta, el idioma, el tipo, el split, los documentos y fragmentos de referencia, el span literal que responde, la respuesta de referencia, el criterio de correcci\'on y el estado de validaci\'on. La Tabla~\ref{tab:gold} resume la composici\'on. Las preguntas sin respuesta no entran en Recall@k: se eval\'uan por abstenci\'on.
+
+\begin{table}[t]
+\centering
+\caption{Composici\'on del gold est\'andar.}
+\label{tab:gold}
+\begin{tabular}{lrrr}
+\toprule
+Split & Respondibles & Sin respuesta & Total \\
+\midrule
+Desarrollo & 19 & 0 & 19 \\
+Prueba & 19 & 5 & 24 \\
+\midrule
+Total & 38 & 5 & 43 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El gold se ampli\'o con 17 documentos adicionales marcados por consenso de dos anotadores (kappa 0,626). Con esa ampliaci\'on, 14 preguntas quedaron con dos o m\'as documentos relevantes, lo que hace que Recall@k y nDCG no dependan de un \'unico pasaje.
+
+\subsection{Revisi\'on humana}
+
+Tres personas revisaron el gold contra el documento citado y una cuarta revisi\'on qued\'o pendiente. Carlos revis\'o las 43 y dej\'o 12 correcciones; Juli\'an aport\'o 7 spans y una reformulaci\'on; \'Oscar aport\'o 5 spans corregidos y marc\'o 3 enlaces rotos; la revisi\'on de Erika sigue pendiente. Cada propuesta se aplic\'o solo si el span aparec\'ia literalmente en el texto indexado. Las que no se pudieron verificar quedaron con nota.
+
+Para la comparaci\'on de modelos se anotaron 72 respuestas de 4 modelos, ciegas y en orden barajado, con r\'ubrica de 0 a 3 en correcci\'on, fidelidad, citas y abstenci\'on. Dos anotadores calificaron las mismas respuestas. La Tabla~\ref{tab:kappa} reporta el acuerdo. La fidelidad no alcanz\'o acuerdo suficiente y no se usa para el veredicto; la correcci\'on y las citas s\'i.
+
+\begin{table}[t]
+\centering
+\caption{Acuerdo entre anotadores en la comparaci\'on de modelos (kappa lineal, $n=72$).}
+\label{tab:kappa}
+\begin{tabular}{lr}
+\toprule
+Eje & Kappa \\
+\midrule
+Correcci\'on & 0,95 \\
+Citas & 0,90 \\
+Abstenci\'on & 0,72 \\
+Fidelidad & 0,12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{M\'etricas}
+
+\textbf{Recuperaci\'on.} Recall@k mide la fracci\'on de documentos de referencia recuperados en el top-k; nDCG@k usa relevancia binaria; P@k mide precisi\'on en el corte; MRR mide la posici\'on del primer acierto; y la cobertura de span indica si al menos un fragmento recuperado contiene el texto exacto que responde. Esta \'ultima es la m\'as cercana a lo que necesita el generador.
+
+\textbf{Respuesta.} Se reportan las preguntas entregadas, las abstenciones, el match estricto (igualdad normalizada con la respuesta de referencia), el F1 por tokens, la tasa de citas, el contexto medio en tokens y la latencia por etapa. La revisi\'on manual clasifica cada respuesta como correcta, parcial o incorrecta.
+
+\textbf{Conversaci\'on.} Catorce casos: seis saludos, cuatro de dominio y cuatro de fuera. Cada uno tiene un resultado esperado y se marca como correcto o incorrecto. Se ejecutan con y sin Modo estricto, y con y sin razonamiento.
+
+\textbf{RAGAS.} Se reportan fidelidad, relevancia de la respuesta, precisi\'on del contexto, cobertura del contexto y correcci\'on de la respuesta \cite{es2023ragas}. Para cada m\'etrica se informa cu\'antas muestras tienen valor, porque el juez falla en algunas y una media con cuatro valores no es comparable con una con 38.
+
+\textbf{Compuerta.} Precisi\'on, recall y F1 en dev y test, falsos rechazos de dominio (preguntas del corpus rechazadas) y falsos aceptados de fuera (preguntas ajenas aceptadas).
+
+\subsection{Estad\'istica}
+
+Las comparaciones de recuperaci\'on usan bootstrap pareado por pregunta con 10.000 remuestreos e intervalos de confianza al 95\,\%. En la comparaci\'on de limpieza se aplica correcci\'on de Bonferroni por comparaciones m\'ultiples. El split de prueba se congela antes de ajustar prompts, umbrales o par\'ametros; ninguna decisi\'on se toma mirando el test. Las diferencias que no excluyen cero se reportan como no concluyentes, aunque la media favorezca a una variante.
+
+\subsection{Configuraci\'on de RAGAS}
+
+La corrida de referencia usa juez gemma4:e4b y embeddings BAAI/bge-m3 en CPU, con 38 preguntas directas. El timeout del juez se fij\'o en 900 s y la concurrencia en 6. Con los valores por defecto (180 s y 16 workers) el juez no terminaba en varias muestras y la precisi\'on del contexto quedaba con 4 valores de 38. La corrida de referencia tiene 34 valores en esa m\'etrica y 38 en las dem\'as. Las preguntas sin respuesta se miden aparte y se abstienen 5 de 5.

@@ -1,0 +1,276 @@
+\section{Experimentos y resultados}
+\label{sec:experimentos}
+
+Todos los experimentos usan el mismo gold y los mismos splits. El conjunto de prueba se congel\'o antes de ajustar par\'ametros. Cada subsecci\'on reporta el montaje en una frase, la tabla y la decisi\'on; el detalle del montaje est\'a en la Secci\'on~\ref{sec:metodo}.
+
+\subsection{Limpieza}
+
+Se construyeron cuatro \'indices sobre el piloto con 30 preguntas, e5-base, $k=10$ y tres repeticiones. La Tabla~\ref{tab:limpieza} muestra el resultado. Ninguna comparaci\'on pareada contra V0 excluye cero tras la correcci\'on de Bonferroni sobre 21 pruebas. V2 toca el l\'imite inferior en cuatro m\'etricas, compatible con una mejora peque\~na o con ausencia de efecto. Se adopta V2 por tres razones no estad\'isticas: la consistencia de la estimaci\'on en todas las m\'etricas, el coste nulo en consulta y la eliminaci\'on de 68 p\'aginas de error que de otro modo entrar\'ian al \'indice.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Limpieza sobre el piloto (30 preguntas, e5-base, $k=10$).}
+\label{tab:limpieza}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrr}
+\toprule
+Variante & P@1 & P@5 & Recall@10 & MRR & nDCG \\
+\midrule
+V0 crudo & 0,733 & 0,833 & 0,833 & 0,775 & 0,790 \\
+V1 sin p\'aginas de error & 0,767 & 0,833 & 0,833 & 0,800 & 0,809 \\
+V2 normalizaci\'on & \textbf{0,833} & \textbf{0,900} & \textbf{0,900} & \textbf{0,867} & \textbf{0,875} \\
+V3 V2 + dedup & 0,800 & 0,867 & 0,867 & 0,833 & 0,842 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Segmentaci\'on y tama\~no del contexto}
+
+E1 compar\'o chunking fijo de 1000 caracteres con 150 de solape contra segmentaci\'on por oraciones de 384 caracteres. La Tabla~\ref{tab:e1} muestra que el fijo gana en todas las m\'etricas de calidad y es 3,65 ms m\'as r\'apido (IC [2,25; 4,97]). La diferencia de nDCG no excluye cero, pero la direcci\'on es consistente. Se mantiene el fijo.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{E1: chunking fijo contra oraciones (30 preguntas).}
+\label{tab:e1}
+\begin{tabular}{lrrrrr}
+\toprule
+Variante & P@1 & P@5 & Recall@10 & nDCG & p50 \\
+\midrule
+Fijo 1000/150 & \textbf{0,833} & \textbf{0,900} & \textbf{0,900} & \textbf{0,875} & \textbf{38,5 ms} \\
+Oraciones 384/1 & 0,767 & 0,833 & 0,833 & 0,804 & 42,1 ms \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+E2 ablacion\'o el n\'umero de fragmentos. Con el gold del piloto, el documento relevante est\'a siempre en el top-3, as\'i que $k=3$, 5 y 10 devuelven las mismas m\'etricas de calidad. La \'unica diferencia significativa es la latencia: $k=3$ tarda 1,64 ms menos que $k=10$ y $k=5$ tarda 0,94 ms menos. Se fija $k=5$ como margen para preguntas comparativas que no est\'an en el conjunto, sabiendo que el coste es m\'as contexto en generaci\'on, no m\'as latencia de recuperaci\'on.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{escala_e6_e7.png}
+\caption{Recuperaci\'on en el piloto y en el corpus completo, con y sin reordenamiento.}
+\label{fig:escala}
+\end{figure*}
+
+\subsection{Codificadores y escala}
+
+E3 compar\'o e5-base con qwen3-embedding:8b sobre el piloto, con 18 preguntas de desarrollo. qwen3 recupera mejor: Recall@10 perfecto y 6,4 puntos m\'as de nDCG. El problema es el coste: con lotes de 16 textos, qwen3 tarda unas 23 horas en codificar 618.286 fragmentos en la GPU local, frente a 1,6 horas de e5-base en la GPU. Se adopta e5-base para la ingesta y qwen3 queda como comparaci\'on documentada.
+
+E6 midi\'o el mismo pipeline sobre el corpus completo. La Figura~\ref{fig:escala} muestra la ca\'ida. La ca\'ida es el hallazgo m\'as importante del trabajo: con el mismo codificador, el mismo \'indice y las mismas 38 preguntas, Recall@10 pasa de 0,947 a 0,684 y nDCG de 0,909 a 0,604 al crecer de 1.932 a 161.868 documentos. La latencia no explica la ca\'ida (40 ms contra 42 ms); es un problema de ordenamiento y de competencia entre fragmentos.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{E6: piloto contra corpus completo con e5-base (38 preguntas).}
+\label{tab:e6}
+\begin{tabular}{lrrrrr}
+\toprule
+Corpus & Recall@10 & P@1 & P@5 & nDCG & Span \\
+\midrule
+Piloto (1.932 docs) & \textbf{0,947} & \textbf{0,842} & \textbf{0,947} & \textbf{0,909} & \textbf{0,895} \\
+Completo (161.868) & 0,684 & 0,500 & 0,658 & 0,604 & 0,684 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+E8 y E10 buscaron un recuperador mejor. BM25 sparse sube el recall a 0,763 y es ocho veces m\'as r\'apido, pero su techo de cobertura es bajo. bge-m3 llega a 0,842 de Recall@10 y 0,708 de nDCG, y recupera el ingl\'es de 0,111 a 0,667. La Tabla~\ref{tab:codificadores} resume.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{E10: recuperadores sobre el corpus completo (38 preguntas).}
+\label{tab:codificadores}
+\begin{tabular}{lrrrrr}
+\toprule
+M\'etodo & Recall@10 & P@1 & P@5 & nDCG & p50 \\
+\midrule
+Denso e5 & 0,684 & 0,500 & 0,658 & 0,604 & 48 ms \\
+BM25 sparse & 0,763 & \textbf{0,684} & 0,737 & \textbf{0,727} & \textbf{7 ms} \\
+bge-m3 & \textbf{0,842} & 0,553 & \textbf{0,816} & 0,708 & 56 ms \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+E11 ajust\'o \texttt{ef} y prob\'o la fusi\'on con BM25. \texttt{ef}=800 sube el recall 2,6 puntos y el nDCG 1,3 con 6 ms m\'as. La fusi\'on 0,5/0,5 empata en recall y sube nDCG 6,9, P@1 13,2 y cobertura de span 5,3. Con el gold de un solo relevante la fusi\'on parec\'ia ganar. E12 repiti\'o la comparaci\'on con el gold ampliado: el denso recupera m\'as documentos nuevos (Recall@10 0,921 contra 0,890 y nDCG 0,827 contra 0,804). La configuraci\'on final es densa, \texttt{ef}=800, sin fusi\'on.
+
+\subsection{Reordenamiento}
+
+E7 midi\'o el cross-encoder sobre el top-50 con e5 en el corpus completo: P@1 sube de 0,474 a 0,632 y nDCG de 0,594 a 0,661, pero la cobertura no cambia y el coste es de 3,1 s por consulta. La mejora de orden no compensa el coste si se reordena tanto.
+
+El denso a $k=10$ recupera 0,912 de recall y 0,818 de nDCG. Con bge-m3 se prob\'o reordenar 5 y 20 candidatos. La Tabla~\ref{tab:rerank} muestra que el top-20 baja el recall a 0,864 y el P@5 a 0,921, mientras que el top-5 mantiene 0,895 de recall y 0,947 de P@5, y sube el nDCG a 0,865 y el P@1 a 0,868 con 1,03 s. Se adopta el top-5.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Reordenamiento con bge-m3 (38 preguntas).}
+\label{tab:rerank}
+\begin{tabular}{lrrrrr}
+\toprule
+Configuraci\'on & Recall & nDCG & P@1 & P@5 & p50 \\
+\midrule
+Denso top-5 & 0,895 & 0,809 & 0,737 & 0,947 & 0,10 s \\
+Rerank top-5 & 0,895 & \textbf{0,865} & \textbf{0,868} & \textbf{0,947} & 1,03 s \\
+Rerank top-20 & 0,864 & 0,853 & \textbf{0,868} & 0,921 & 4,06 s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Modelos generativos}
+
+E4 compar\'o cuatro modelos con la misma evidencia: 19 preguntas respondibles y 5 sin respuesta, tres repeticiones, anotaci\'on humana ciega de la primera repetici\'on. La Tabla~\ref{tab:e4} muestra las medias de los dos anotadores en escala de 0 a 3. gemma2:2b gana en correcci\'on, fidelidad, citas y abstenci\'on. qwen2.5:1.5b es el m\'as r\'apido pero no cita en el 89,5\,\% de los casos. llama3.2:3b cita la mitad de las veces. llama3.2:1b se abstiene en el 73,7\,\% de las preguntas respondibles y no se recomienda.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{E4: anotaci\'on humana (0 a 3) y conducta autom\'atica.}
+\label{tab:e4}
+\begin{tabular}{lrrrr}
+\toprule
+Modelo & Correcci\'on & Citas & Abstenci\'on & Sin citas \\
+\midrule
+gemma2:2b & \textbf{2,81} & \textbf{2,67} & \textbf{2,89} & \textbf{0,0\,\%} \\
+qwen2.5:1.5b & 2,31 & 0,00 & 2,81 & 89,5\,\% \\
+llama3.2:3b & 2,22 & 0,86 & 2,69 & 56,1\,\% \\
+llama3.2:1b & 0,42 & 0,28 & 1,61 & 15,8\,\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La hip\'otesis H1, que esperaba que llama3.2:3b superara a los dem\'as en fidelidad y correcci\'on, se refuta. La evidencia recuperada es la misma entre modelos; lo que cambia es el generador. La comparaci\'on fij\'o la familia de modelos peque\~nos. El generador final es gemma4:e4b, que no estaba en E4: se adopt\'o despu\'es por contexto largo y MTP, y se valid\'o en la corrida final.
+
+\subsection{Inyecci\'on de instrucciones}
+
+E5 insert\'o instrucciones expl\'icitas dentro del texto recuperado. Dos de los tres modelos las ignoraron. gemma2:2b obedeci\'o una de cinco y a\~nadi\'o la palabra pedida a una respuesta por lo dem\'as correcta. La regla de dise\~no que sale de aqu\'i es que el prompt debe delimitar la evidencia y ordenar expl\'icitamente ignorar instrucciones internas, y esa orden debe repetirse despu\'es del bloque de contexto.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{E5: instrucciones inyectadas en el texto recuperado.}
+\label{tab:e5}
+\begin{tabular}{lrrr}
+\toprule
+Modelo & Obedeci\'o & Respondi\'o el hecho & Se abstuvo \\
+\midrule
+gemma2:2b & 1/5 & 4/5 & 0/5 \\
+llama3.2:3b & 0/5 & 5/5 & 0/5 \\
+qwen2.5:1.5b & 0/5 & 5/5 & 0/5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Prompts y mejoras rechazadas}
+
+La fase 6 prob\'o cuatro mejoras sobre la configuraci\'on de referencia y la fase 7 prob\'o diversidad. Ninguna supera al top-5 con reranker. La Tabla~\ref{tab:fases} resume. El filtro por score pierde recall; reordenar el top-20 pierde P@5 y multiplica la latencia; la expansi\'on de consulta baja el recall y el nDCG; el prompt v4 no mejora el match estricto; y MMR baja el recall 8 puntos. El prompt v4 entreg\'o 37 de 38 y 25 de 37 de match estricto, sin mejora. Todas se rechazan y la configuraci\'on se mantiene.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Fases 6 y 7: variantes probadas sobre 38 preguntas. La referencia es el top-5 con reranker.}
+\label{tab:fases}
+\begin{tabular}{lrrrrl}
+\toprule
+Variante & Recall & nDCG & P@1 & P@5 & Decisi\'on \\
+\midrule
+Top-5 con reranker & \textbf{0,895} & \textbf{0,865} & \textbf{0,868} & \textbf{0,947} & Referencia \\
+Rerank top-20 & 0,864 & 0,853 & \textbf{0,868} & 0,921 & Rechazada \\
+Filtro por score 0,8 & 0,838 & 0,837 & \textbf{0,868} & 0,921 & Rechazada \\
+Filtro por score 0,9 & 0,825 & 0,830 & \textbf{0,868} & 0,921 & Rechazada \\
+Expansi\'on de consulta & 0,825 & 0,739 & 0,658 & 0,895 & Rechazada \\
+MMR coseno 0,5 & 0,868 & 0,784 & 0,737 & \textbf{0,947} & Rechazada \\
+MMR con reranker 0,7 & 0,816 & 0,818 & \textbf{0,868} & 0,921 & Rechazada \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Compuerta de dominio}
+
+La compuerta se entren\'o con 160 preguntas: 60 de dominio y 100 de fuera, con 103 de train, 37 de dev y 20 de test. Los 40 negativos nuevos son entidades inventadas, eventos futuros y conocimiento general. La Tabla~\ref{tab:compuerta} muestra el resultado. En dev el F1 es 1,000; en test, 0,952 con 0 falsos aceptados y 1 falso rechazo. Las 5 preguntas sin respuesta se rechazan con probabilidades de 0,293 a 0,436. El umbral se mantiene en 0,5 porque el margen de dev va de 0,456 a 0,559; bajarlo a 0,45 mejorar\'ia el test pero empeorar\'ia dev, se\~nal de ajuste contra el test.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Compuerta de dominio: 160 preguntas, split 103/37/20.}
+\label{tab:compuerta}
+\begin{tabular}{lrrrr}
+\toprule
+Split & F1 & Falsos rechazos & Falsos aceptados \\
+\midrule
+Dev & 1,000 & 0,000 & 0,000 \\
+Test & 0,952 & 0,091 & 0,000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{RAGAS}
+
+La Tabla~\ref{tab:ragas} compara la configuraci\'on final con la anterior. La corrida de referencia usa timeout de 900 s y 6 workers; con los valores por defecto, la precisi\'on del contexto quedaba con 4 valores de 38 y su media no era comparable. Con la correcci\'on tiene 34. La configuraci\'on actual gana en fidelidad, relevancia, precisi\'on y cobertura del contexto; pierde en correcci\'on de la respuesta. La comparaci\'on cambia juez y embedding, as\'i que no es completamente equivalente.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{RAGAS: configuraci\'on final contra la anterior ($n$ entre par\'entesis).}
+\label{tab:ragas}
+\begin{tabular}{lrr}
+\toprule
+M\'etrica & Final & Anterior \\
+\midrule
+Fidelidad & \textbf{0,952} (38) & 0,925 (36) \\
+Relevancia & \textbf{0,840} (38) & 0,798 (38) \\
+Precisi\'on del contexto & \textbf{0,881} (34) & 0,760 (36) \\
+Cobertura del contexto & \textbf{0,921} (38) & 0,842 (38) \\
+Correcci\'on & 0,657 (38) & \textbf{0,705} (37) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Latencia y MTP}
+
+La Tabla~\ref{tab:mtp} muestra el efecto del draft. El draft 3 es el m\'as r\'apido: 217,1 tokens por segundo frente a 193,5 con 5 y 159,5 con 7. La decodificaci\'on especulativa es exacta: el draft propone y el modelo objetivo verifica, as\'i que la salida no cambia.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{MTP: tokens por segundo seg\'un el draft.}
+\label{tab:mtp}
+\begin{tabular}{lr}
+\toprule
+Draft & Tokens/s \\
+\midrule
+3 & \textbf{217,1} \\
+5 & 193,5 \\
+7 & 159,5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La latencia final es de 6.788 ms de media sin razonamiento (mediana 6.790, p95 9.404) y 6.482 ms con razonamiento (mediana 6.435, p95 8.765). El reranker en CPU aporta unos 1,1 s y la generaci\'on el resto. Una corrida posterior con el host cargado dio 7.938 y 6.834 ms; la diferencia es carga del entorno, no del sistema.
+
+\subsection{Progresi\'on de la configuraci\'on}
+
+La Tabla~\ref{tab:progresion} resume el recorrido. Cada fila es una decisi\'on tomada con una medici\'on, no una preferencia.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Progresi\'on de la configuraci\'on y m\'etrica que la justific\'o.}
+\label{tab:progresion}
+\begin{tabular}{llll}
+\toprule
+Etapa & Cambio & M\'etrica & Decisi\'on \\
+\midrule
+Piloto & e5-base, 1.932 docs & Recall@10 0,947 & Punto de partida \\
+Escala & corpus completo & Recall@10 0,684 & El piloto sobreestima \\
+Dispersa & BM25 & Recall@10 0,763 & No alcanza el techo \\
+Codificador & bge-m3 & Recall@10 0,842 & Adoptado \\
+\'Indice & \texttt{ef}=800 & Recall@10 0,895 & Adoptado \\
+Fusi\'on & h\'ibrido RRF & Recall@10 0,890 & Rechazado \\
+Reordenamiento & top-5 & nDCG 0,865 & Adoptado \\
+Contexto & $k=5$ & sin cambio de calidad & Adoptado \\
+Prompt & v2 & 37/38 y 25/37 & Adoptado \\
+Compuerta & 160 preguntas & 0 falsos aceptados & Adoptado \\
+Fase 6 & cuatro variantes & sin mejora & Rechazadas \\
+Fase 7 & MMR & recall 0,816 & Rechazado \\
+\bottomrule
+\end{tabular}
+\end{table*}

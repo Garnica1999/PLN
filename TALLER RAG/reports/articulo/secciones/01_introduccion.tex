@@ -1,0 +1,31 @@
+\section{Introducci\'on}
+\label{sec:intro}
+
+Un sistema de recuperaci\'on aumentada por generaci\'on (RAG) responde una pregunta con fragmentos recuperados de una colecci\'on y un modelo de lenguaje que redacta a partir de ellos \cite{lewis2020rag}. La promesa es atractiva: actualizar el conocimiento sin reentrenar y citar la evidencia. En la pr\'actica, la calidad depende de una cadena de decisiones que se afectan entre s\'i. Una limpieza agresiva puede borrar la frase que responde; un chunking peque\~no pierde contexto; un codificador entrenado en otro dominio recupera vecinos plausibles pero in\'utiles; un reordenador puede mejorar el orden y a la vez encarecer cada consulta; un prompt permisivo invita a inventar; y sin un control de abstenci\'on el sistema responde con seguridad sobre temas que el corpus no cubre.
+
+La literatura de RAG suele evaluar un componente a la vez. BEIR y MTEB miden recuperadores \cite{thakur2021beir,muennighoff2023mteb}; los benchmarks multiling\"ues como MIRACL comparan codificadores \cite{zhang2023miracl}; RAGAS, ARES, eRAG y RAGChecker eval\'uan la respuesta generada \cite{es2023ragas,saadfalcon2024ares,salemi2024erag,ru2024ragchecker}. Son piezas necesarias, pero no dicen c\'omo se comporta la cadena completa sobre un corpus real, con duplicados, truncamiento, ruido de rastreo y preguntas sin respuesta. Tampoco dicen cu\'anto cuesta cada mejora ni cu\'ando conviene rechazarla.
+
+Este trabajo construye y eval\'ua esa cadena completa sobre un corpus de 169.248 documentos recolectados de prensa colombiana y Bluesky, 161.868 indexados y 618.286 fragmentos. El sistema corre \'integramente en una estaci\'on de trabajo con una GPU AMD de 16 GB, Milvus como motor vectorial \cite{milvusdocs} y modelos servidos por Ollama \cite{ollamadocs}. No se usan servicios externos de generaci\'on ni de embeddings. La Tabla~\ref{tab:config-final} resume la configuraci\'on final y la Secci\'on~\ref{sec:arquitectura} justifica cada elecci\'on.
+
+\subsection{Preguntas de investigaci\'on}
+
+\begin{enumerate}
+\item \textbf{Calidad del corpus.} ?`Qu\'e problemas de limpieza, truncamiento, duplicados e idioma aparecen en un corpus de prensa y redes sociales, y cu\'anto afectan la recuperaci\'on?
+\item \textbf{Recuperaci\'on.} ?`Qu\'e combinaci\'on de codificador, \'indice, tama\~no de contexto y reordenamiento maximiza la cobertura y el orden con un coste aceptable?
+\item \textbf{Generaci\'on y abstenci\'on.} ?`C\'omo se comportan distintos modelos locales sobre la misma evidencia y qu\'e controles evitan respuestas sin respaldo?
+\item \textbf{Evaluaci\'on.} ?`Qu\'e acuerdo alcanzan los anotadores humanos y qu\'e se\~nales de evaluaci\'on autom\'atica son fiables cuando el juez tambi\'en es un modelo local?
+\end{enumerate}
+
+\subsection{Aportes}
+
+\begin{enumerate}
+\item Un pipeline reproducible de extremo a extremo, con Docker Compose, Milvus, Ollama, FastAPI y Streamlit, que se levanta con un comando y no depende de servicios de pago.
+\item Un an\'alisis exploratorio y una textometr\'ia del corpus que cuantifican truncamiento (32,7\,\%), ruido de rastreo, duplicados exactos y near-duplicates, y que justifican una limpieza conservadora.
+\item Una comparaci\'on pareada de cuatro variantes de limpieza, dos estrategias de segmentaci\'on, tres codificadores, recuperaci\'on densa, dispersa e h\'ibrida, y tres alcances de reordenamiento, con intervalos de confianza por bootstrap.
+\item Un gold de 43 preguntas con revisi\'on de tres anotadores y una cuarta pendiente, con acuerdo entre anotadores reportado, y una evaluaci\'on autom\'atica con RAGAS que distingue el ruido del juez de una mejora real.
+\item Una compuerta de dominio entrenada con 160 preguntas que rechaza las preguntas sin respuesta con 0 falsos aceptados, y una interfaz que expone la evidencia, las citas y la abstenci\'on.
+\end{enumerate}
+
+\subsection{Organizaci\'on}
+
+La Secci\'on~\ref{sec:relacionados} revisa los trabajos relacionados. La Secci\'on~\ref{sec:corpus} describe el corpus y el an\'alisis exploratorio. La Secci\'on~\ref{sec:arquitectura} presenta la arquitectura y justifica cada capa. La Secci\'on~\ref{sec:metodo} detalla el procesamiento y la configuraci\'on. La Secci\'on~\ref{sec:evaluacion} define el protocolo y el gold. La Secci\'on~\ref{sec:experimentos} reporta los experimentos y sus decisiones. Las Secciones~\ref{sec:errores} a \ref{sec:conclusiones} discuten errores, l\'imites y conclusiones.

@@ -1,0 +1,32 @@
+\section{Reproducibilidad}
+\label{sec:reproducibilidad}
+
+\subsection{Hardware y software}
+
+El sistema se ejecut\'o en una estaci\'on con Ryzen 9 5950X, 31 GB de RAM y una GPU AMD Radeon RX 9070 XT de 16 GB con ROCm 7.2.4. Los contenedores usan Python 3.12, Milvus 2.6.6, PyTorch 2.10 con ROCm, FastAPI, Streamlit y Ollama. RAGAS 0.4.3 y LangChain 0.3 corren en un contenedor aparte con Python 3.12 y \texttt{BAAI/bge-m3} en CPU.
+
+\subsection{Comandos}
+
+El stack se levanta con un comando:
+
+\begin{verbatim}
+docker compose up -d --build
+docker compose ps
+curl http://localhost:8010/health
+\end{verbatim}
+
+El servicio \texttt{prewarm} carga el generador, el embedding y el reranker cuando la API est\'a sana. La evaluaci\'on completa se ejecuta con:
+
+\begin{verbatim}
+python src/scripts/run_evaluation.py
+\end{verbatim}
+
+Ese pipeline corre la evaluaci\'on de desempe\~no en el worker GPU, la de conversaci\'on contra la API y RAGAS en el contenedor de evaluaci\'on. Los resultados se escriben en \texttt{reports/tablas/} y la comparaci\'on en \texttt{reports/tablas/evaluacion\_comparativa.md}.
+
+\subsection{Artefactos}
+
+El gold consolidado est\'a en \texttt{eval/gold/gold\_standard.jsonl}, con su versi\'on ampliada en \texttt{gold\_standard\_ampliado.jsonl}. Las tablas de recuperaci\'on, respuesta, conversaci\'on, compuerta y RAGAS est\'an en \texttt{reports/tablas/}. Las figuras del art\'iculo est\'an en \texttt{reports/figuras/}. Los registros crudos de cada corrida est\'an en \texttt{reports/corridas/} y los modelos de la compuerta en \texttt{modelos/}.
+
+\subsection{Datos}
+
+El corpus completo no se publica por derechos de las fuentes. Se incluyen el gold, las anotaciones, la muestra del piloto y los Parquet de evaluaci\'on necesarios para reproducir las m\'etricas. Las cifras de este art\'iculo se pueden verificar contra esos artefactos sin volver a descargar el corpus.

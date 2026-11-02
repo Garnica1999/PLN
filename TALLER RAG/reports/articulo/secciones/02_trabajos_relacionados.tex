@@ -1,0 +1,30 @@
+\section{Trabajos relacionados}
+\label{sec:relacionados}
+
+\subsection{Recuperaci\'on aumentada por generaci\'on}
+
+RAG combina un recuperador con un generador para responder con conocimiento externo \cite{lewis2020rag}. La variante densa codifica pregunta y documentos en un mismo espacio y busca por similitud; la dispersa, como BM25, punt\'ua por coincidencia de t\'erminos. La fusi\'on de ambas con reciprocal rank fusion es una pr\'actica com\'un para compensar sus sesgos. En este trabajo se comparan las tres sobre el mismo \'indice y se conserva la que gana en cobertura y orden, no la m\'as compleja.
+
+\subsection{Codificadores y recuperaci\'on}
+
+BEIR mostr\'o que un recuperador bueno en un dominio puede fallar en otro \cite{thakur2021beir}, y MTEB extendi\'o esa comparaci\'on a tareas y lenguas \cite{muennighoff2023mteb}. MIRACL evidenci\'o la brecha multiling\"ue \cite{zhang2023miracl}. Los codificadores entrenados con contrastive learning, como e5 \cite{wang2024e5} y bge-m3 \cite{chen2024bge}, mejoran el rendimiento zero-shot y multiling\"ue. bge-m3 adem\'as produce representaciones densas, dispersas y multi-vector con un solo modelo, lo que simplifica la infraestructura. La elecci\'on entre ellos no se puede decidir solo por la literatura: depende del corpus, del idioma y del tama\~no del \'indice. Por eso se miden sobre el corpus completo en lugar de limitarse al piloto.
+
+\subsection{Reordenamiento}
+
+Un cross-encoder punt\'ua el par pregunta-documento con atenci\'on conjunta y suele superar al bi-encoder en precisi\'on \cite{nogueira2019passage}. El coste crece con el n\'umero de candidatos, porque cada par exige una pasada completa del modelo. La pr\'actica habitual es recuperar un conjunto amplio y reordenar un top peque\~no. Este trabajo mide el efecto de reordenar 5, 20 y 50 candidatos, y encuentra que ampliar el conjunto mejora el orden pero pierde cobertura y multiplica la latencia. La configuraci\'on elegida reordena solo el top-5.
+
+\subsection{\'Indices vectoriales}
+
+HNSW aproxima la b\'usqueda por vecinos con un grafo jer\'arquico y un par\'ametro de exploraci\'on que intercambia recall por latencia \cite{malkov2020hnsw}. Milvus implementa HNSW y otros \'indices sobre almacenamiento distribuido \cite{milvusdocs}. El par\'ametro \texttt{ef} se ajusta en este trabajo con una b\'usqueda en rejilla sobre el gold, y se documenta el punto donde la ganancia deja de compensar el coste.
+
+\subsection{Evaluaci\'on}
+
+Las m\'etricas de recuperaci\'on (Recall@k, nDCG, P@k, MRR) son est\'andar en recuperaci\'on de informaci\'on. Para la respuesta generada, RAGAS descompone la calidad en fidelidad, relevancia, precisi\'on y cobertura del contexto y correcci\'on \cite{es2023ragas}; ARES entrena jueces para reducir el sesgo del evaluador \cite{saadfalcon2024ares}; eRAG eval\'ua la utilidad de cada documento recuperado \cite{salemi2024erag}; y RAGChecker diagnostica errores de recuperaci\'on y de generaci\'on por separado \cite{ru2024ragchecker}. Un problema recurrente es que el juez tambi\'en es un modelo y su veredicto var\'ia con el prompt, el timeout y la concurrencia. Liu et al. muestran adem\'as que el generador aprovecha peor la evidencia cuando esta se coloca en el medio de un contexto largo \cite{liu2024lost}. Este trabajo reporta la cobertura de cada m\'etrica de RAGAS adem\'as de su media, y separa el ruido del juez de una mejora del sistema.
+
+\subsection{Abstenci\'on y control de dominio}
+
+Un sistema RAG que siempre responde produce alucinaciones cuando la evidencia no alcanza. Las soluciones van desde pedir al generador que se abstenga hasta entrenar un clasificador que decida si la pregunta pertenece al dominio. Este trabajo usa dos controles: guardarra\'iles de cita y de entidades sobre la respuesta, y una compuerta de dominio supervisada que se activa con un interruptor. La compuerta es un clasificador de regresi\'on log\'istica con embeddings y se\~nales de recuperaci\'on, no un juez generativo, para que su decisi\'on sea barata, reproducible y medible.
+
+\subsection{Posici\'on de este trabajo}
+
+La contribuci\'on no es un componente nuevo, sino una evaluaci\'on completa y honesta de la cadena sobre un corpus real. Se reportan las mejoras que funcionaron y las que no, con el coste de cada una, y se separa la calidad del sistema de la calidad del juez. Esa combinaci\'on es la que permite decidir qu\'e mantener en producci\'on y qu\'e descartar.

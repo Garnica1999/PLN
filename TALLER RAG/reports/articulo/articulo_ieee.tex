@@ -1,0 +1,67 @@
+% Artículo IEEE Transactions on AI
+% Taller de RAG - Procesamiento de Lenguaje Natural
+% Pontificia Universidad Javeriana, Maestría en Inteligencia Artificial
+
+\documentclass[journal]{IEEEtran}
+
+\usepackage[spanish,es-nodecimaldot,es-noquoting]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{url}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+\graphicspath{{../figuras/}{figuras/}}
+
+\addto\captionsspanish{\renewcommand{\tablename}{Tabla}\renewcommand{\figurename}{Figura}}
+
+\begin{document}
+
+\title{Asistente RAG reproducible sobre prensa y Bluesky con Milvus y modelos locales: arquitectura, evaluaci\'on y compuerta de dominio}
+
+\author{
+\IEEEauthorblockN{Erika Valeria Rivera Jimenez}
+\IEEEauthorblockA{Pontificia Universidad Javeriana\\
+Bogot\'a, Colombia\\
+riveraev@javeriana.edu.co}
+\and
+\IEEEauthorblockN{Julian Guillermo Carrillo Meneses}
+\IEEEauthorblockA{Pontificia Universidad Javeriana\\
+Bogot\'a, Colombia\\
+carrillojuliang@javeriana.edu.co}
+\and
+\IEEEauthorblockN{Carlos Andres Garnica Salazar}
+\IEEEauthorblockA{Pontificia Universidad Javeriana\\
+Bogot\'a, Colombia\\
+carlos\_garnicas@javeriana.edu.co}
+\and
+\IEEEauthorblockN{Oscar Andres Prieto Moreno}
+\IEEEauthorblockA{Pontificia Universidad Javeriana\\
+Bogot\'a, Colombia\\
+o-prieto@javeriana.edu.co}
+}
+
+\maketitle
+
+\input{secciones/00_resumen}
+\input{secciones/01_introduccion}
+\input{secciones/02_trabajos_relacionados}
+\input{secciones/03_corpus_eda}
+\input{secciones/04_arquitectura}
+\input{secciones/05_metodologia}
+\input{secciones/06_protocolo_evaluacion}
+\input{secciones/07_experimentos}
+\input{secciones/08_analisis_errores}
+\input{secciones/09_limitaciones}
+\input{secciones/10_conclusiones}
+\input{secciones/11_reproducibilidad}
+
+\bibliographystyle{IEEEtran}
+\bibliography{referencias}
+
+\end{document}

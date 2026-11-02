@@ -219,6 +219,22 @@ services:
     mem_limit: 1536m
     cpus: 2
 
+  # Carga el generador, el embedding y el reranker cuando la API está sana.
+  prewarm:
+    image: taller-rag:local
+    network_mode: host
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      PYTHONPATH: /work
+      API_URL: http://localhost:8010
+    volumes:
+      - ./src:/work/src
+    command: python -m src.scripts.prewarm
+    restart: "no"
+    mem_limit: 512m
+
   eval:
     build:
       context: .

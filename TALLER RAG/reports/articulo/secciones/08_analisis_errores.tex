@@ -1,0 +1,22 @@
+\section{An\'alisis de errores}
+\label{sec:errores}
+
+\subsection{Errores de recuperaci\'on}
+
+Quedan dos fallos claros en el gold. g-031 pregunta por el municipio de gran extensi\'on y tradici\'on agropecuaria del sur del Tolima. El documento de referencia aparece en el puesto 11 del top-50 denso y en el puesto 1 despu\'es del reranker: el pipeline actual solo pasa cinco candidatos al reordenador y nunca lo ve. Ampliar el conjunto a 20 recupera esa pregunta, pero baja el recall global 3,1 puntos y el P@5 2,6, as\'i que no se adopta. g-046, sobre la protesta de Extinction Rebellion, no aparece ni en el top-50 denso ni tras el reranker. El problema est\'a en la consulta o en el \'indice, no en el ordenamiento.
+
+\subsection{Errores de generaci\'on}
+
+Los modelos peque\~nos fallan de formas distintas con la misma evidencia. qwen2.5:1.5b responde sin citar en el 89,5\,\% de los casos: la respuesta puede ser correcta, pero el usuario no puede verificar de d\'onde sale. llama3.2:3b cita la mitad de las veces. llama3.2:1b se abstiene en el 73,7\,\% de las preguntas respondibles. gemma2:2b cita siempre y responde casi siempre, pero responde preguntas sin respuesta en 3 de 15 repeticiones, es decir, alucina con evidencia insuficiente. El generador final, gemma4:e4b, no estaba en esa comparaci\'on; los guardarra\'iles de cita, entidades y juez cubren parte de ese riesgo, y la compuerta lo cubre antes de generar.
+
+\subsection{Abstenci\'on y compuerta}
+
+La abstenci\'on tiene dos caminos. El primero ocurre antes de generar, cuando la compuerta rechaza la pregunta; el segundo, despu\'es, cuando los guardarra\'iles o el juez no encuentran respaldo. El primer camino es barato (decenas de milisegundos) y ahora rechaza las 5 preguntas sin respuesta con 0,293 a 0,436. El segundo cuesta una generaci\'on completa. El \'unico falso rechazo de la compuerta es una pregunta leg\'itima sobre la inflaci\'on, en 0,494, justo por debajo del umbral. Es el precio de no aceptar preguntas ajenas.
+
+\subsection{Errores de evaluaci\'on}
+
+RAGAS deja 4 muestras sin valor en la precisi\'on del contexto por errores de parser del juez. Una media con 34 valores no es comparable con una de 38, y por eso se reporta $n$ en cada fila. En la primera corrida, con timeout de 180 s y 16 workers, la m\'etrica ten\'ia 4 valores y su media (0,750) no era comparable con la de la arquitectura anterior (0,760, con 36 valores). La conclusi\'on anterior, que afirmaba una p\'erdida de precisi\'on, era un artefacto del juez. Con la corrida corregida, la precisi\'on sube a 0,881.
+
+\subsection{Errores de dise\~no del protocolo}
+
+El experimento de limpieza se lanz\'o inicialmente con el gold de humo, que pertenece a una muestra de 600 documentos que no es subconjunto del piloto de 2.000. Las referencias no exist\'ian en las colecciones y las m\'etricas habr\'ian sido cero. El error se detect\'o al medir y oblig\'o a construir un gold espec\'ifico para el piloto. La lecci\'on es que el gold debe declarar a qu\'e muestra pertenece y que la ingesta debe verificar que los documentos de referencia est\'an en la colecci\'on antes de evaluar. Esa verificaci\'on ya forma parte del protocolo.

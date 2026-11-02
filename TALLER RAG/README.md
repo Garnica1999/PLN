@@ -26,7 +26,8 @@ TALLER RAG/
 │   ├── scripts/            perfilado, ingesta, evaluación y métricas
 │   └── tests/
 ├── eval/                   gold, anotaciones y muestra del piloto
-├── reports/                informe, figuras, tablas y corridas
+├── reports/                artículo IEEE, informe, figuras, tablas y corridas
+├── reports/articulo/       artículo en LaTeX por secciones y PDF compilado
 ├── docs/                   arquitectura, decisiones, hallazgos y experimentos
 ├── docs/ARQUITECTURA.md    arquitectura y resultados de evaluación
 ├── plan/                   PLAN.md y mejora_rag.md
@@ -103,6 +104,8 @@ docker compose up -d --build
 docker compose ps
 curl http://localhost:8010/health
 ```
+
+Al levantar el stack, el servicio `prewarm` espera a que la API esté sana, carga el generador, el embedding y el reranker, y termina. La primera consulta web ya no paga los 29 s de carga. Se puede repetir a mano con `docker compose exec -T api python -m src.scripts.prewarm`.
 
 Servicios y puertos:
 

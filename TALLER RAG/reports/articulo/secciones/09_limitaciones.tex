@@ -1,0 +1,12 @@
+\section{Limitaciones}
+\label{sec:limitaciones}
+
+\begin{enumerate}
+\item \textbf{Corpus truncado.} El 32,7\,\% de los documentos termina a mitad de frase o en un corte del rastreador. La limpieza no puede recuperar ese texto y ning\'un recuperador puede encontrar lo que no est\'a.
+\item \textbf{Sesgo de fuentes.} Cuatro cabeceras concentran la prensa y Bluesky llega casi todo en ingl\'es. El corpus no representa la conversaci\'on p\'ublica en espa\~nol ni la diversidad de medios del pa\'is.
+\item \textbf{Fechas incompletas.} El rango declarado va de 2008 a 2026, pero la distribuci\'on utilizable se concentra en 2024 a 2026. El filtro temporal solo es fiable en ese tramo.
+\item \textbf{Gold peque\~no.} 43 preguntas, 5 sin respuesta y 24 en prueba. Los intervalos de confianza son amplios y las diferencias de una o dos preguntas no son concluyentes. La revisi\'on de Erika sigue pendiente y algunas correcciones las aplic\'o un solo revisor.
+\item \textbf{Ruido del juez.} RAGAS depende de un modelo local que falla en algunas muestras y cambia con el timeout y la concurrencia. La comparaci\'on con la arquitectura anterior cambia juez y embedding, as\'i que no es completamente equivalente.
+\item \textbf{Hardware.} La estaci\'on tiene 16 GB de VRAM y 31 GB de RAM. El contexto de 116K ocupa 13,9 GB de VRAM y deja poco margen; la evaluaci\'on y la generaci\'on compiten por memoria y el sistema operativo puede matar procesos bajo presi\'on.
+\item \textbf{Alcance.} El sistema est\'a dise\~nado para un corpus concreto de prensa y redes. No es un RAG de prop\'osito general y las decisiones de limpieza, chunking y compuerta no se transfieren sin medir.
+\end{enumerate}
