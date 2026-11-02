@@ -7,6 +7,7 @@ name: taller-rag
 
 services:
   etcd:
+    restart: "no"
     image: quay.io/coreos/etcd:v3.5.18
     network_mode: host
     command: etcd -advertise-client-urls=http://localhost:2379 -listen-client-urls=http://0.0.0.0:2379 --data-dir=/etcd
@@ -19,6 +20,7 @@ services:
       retries: 12
 
   minio:
+    restart: "no"
     # MinIO retiró sus imágenes oficiales en 2026; se usa el espejo legacy de Bitnami,
     # fijado por digest. Ver docs/DECISIONES.md (ADR-014).
     image: bitnamilegacy/minio@sha256:451fe6858cb770cc9d0e77ba811ce287420f781c7c1b806a386f6896471a349c
@@ -36,6 +38,7 @@ services:
       retries: 12
 
   milvus:
+    restart: "no"
     image: milvusdb/milvus:v2.6.6
     network_mode: host
     command: ["milvus", "run", "standalone"]
@@ -62,6 +65,7 @@ services:
     cpus: 8
 
   ollama:
+    restart: "no"
     image: ollama/ollama:latest
     network_mode: host
     volumes:
@@ -85,6 +89,7 @@ services:
     cpus: 8
 
   ollama-embeddings:
+    restart: "no"
     image: ollama/ollama:latest
     profiles:
       - embeddings
@@ -105,6 +110,7 @@ services:
 
   # Worker GPU: ingesta del corpus y evaluacion de desempeno.
   ingest-rocm:
+    restart: "no"
     build:
       context: .
       dockerfile: Dockerfile.rocm
@@ -146,6 +152,7 @@ services:
     cpus: 8
 
   api:
+    restart: "no"
     build:
       context: .
       dockerfile: Dockerfile.rocm
@@ -197,6 +204,7 @@ services:
     cpus: 24
 
   frontend:
+    restart: "no"
     build:
       context: .
       network: host
@@ -221,6 +229,7 @@ services:
 
   # Carga el generador, el embedding y el reranker cuando la API está sana.
   prewarm:
+    restart: "no"
     image: taller-rag:local
     network_mode: host
     depends_on:
@@ -232,10 +241,10 @@ services:
     volumes:
       - ./src:/work/src
     command: python -m src.scripts.prewarm
-    restart: "no"
     mem_limit: 512m
 
   eval:
+    restart: "no"
     build:
       context: .
       dockerfile: Dockerfile.eval
