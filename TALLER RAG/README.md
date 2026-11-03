@@ -256,7 +256,7 @@ Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`
 | RAGAS actual (`gemma4` + `bge-m3`) | 0,952 / 0,840 / 0,881 / 0,921 / 0,657 |
 | RAGAS anterior (`gemma2` + `qwen3`) | 0,925 / 0,798 / 0,760 / 0,842 / 0,705 |
 | Latencia media | 7.938 ms sin razonamiento; 6.834 ms con razonamiento |
-| Ambigüedad | Detector F1 0,958 en v2 (42 preguntas); condicional 35/42 vs baseline 29/42 (p=0,070); clarificación 29/42 (p=1,0); recomendación retirada |
+| Ambigüedad | Detector F1 0,96 en v2 (42 preguntas); condicional 36/42 vs baseline 29/42 (p=0,039); clarificación 30/42 (p=1,0); recomendación retirada |
 
 La arquitectura completa, las capas y la comparación contra la versión anterior están en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md). El informe de métricas está en [reports/informe/metricas_nueva_configuracion.md](reports/informe/metricas_nueva_configuracion.md).
 
