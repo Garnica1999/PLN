@@ -50,9 +50,9 @@ La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una int
 
 \textbf{Codificaci\'on.} bge-m3 produce vectores densos de 1024 dimensiones, es multiling\"ue y rinde bien sin ajuste fino \cite{chen2024bge}. Se compar\'o con e5-base y con qwen3-embedding sobre el mismo corpus y el mismo protocolo, con un \'indice por modelo; la decisi\'on se reporta en la Secci\'on~\ref{sec:experimentos}.
 
-\textbf{Recuperaci\'on.} El recuperador denso devuelve el top-10 para medir y el top-5 para responder. La fusi\'on con BM25 y el recuperador disperso se midieron y no se adoptaron. El motivo es emp\'irico: la fusi\'on baj\'o el recall en este corpus.
+\textbf{Recuperaci\'on.} El recuperador combina una lista densa de 10 fragmentos con una dispersa de 20. Las dos se unen sin fusionar y se deduplican; la uni\'on conserva el top-5 denso y a\~nade las entidades que BM25 encuentra. La fusi\'on RRF sin reordenar se midi\'o y perd\'ia frente al denso; la uni\'on reordenada gana en el conjunto reservado.
 
-\textbf{Reordenamiento.} Un cross-encoder multiling\"ue reordena el top-5 en CPU \cite{nogueira2019passage}. Se eligi\'o CPU para no competir por la VRAM con el generador; el coste es de 1,30 s de mediana por consulta. La alternativa de reordenar 20 o 50 candidatos mejora el orden pero pierde cobertura y multiplica la latencia.
+\textbf{Reordenamiento.} Un cross-encoder multiling\"ue reordena la uni\'on en GPU y el resultado se recorta a 10 \cite{nogueira2019passage}. El reordenador comparte la pasada con la compuerta, que usa la puntuaci\'on del top-5. El coste medido es de 0,68 s para 50 pares en GPU, frente a 1,30 s para 5 pares en CPU; la GPU deja m\'as margen porque el generador usa el resto de la VRAM.
 
 \textbf{Generaci\'on.} gemma4:e4b es un modelo de 7,5B cuantizado a Q4\_K\_M con 116.384 tokens de contexto y MTP nativo. Se eligi\'o por tres motivos: cabe en 16 GB de VRAM, soporta contextos largos y el MTP con draft 3 acelera la decodificaci\'on sin cambiar la distribuci\'on del modelo. Los modelos peque\~nos comparados en E4 quedaron por debajo en correcci\'on y citas.
 
@@ -78,8 +78,8 @@ Par\'ametro & Valor \\
 \midrule
 Codificador & BAAI/bge-m3, 1024 dimensiones \\
 \'Indice & HNSW en Milvus, \texttt{ef}=800 \\
-Recuperaci\'on & densa, $k=10$ para medir, $k=5$ para responder \\
-Reordenador & BAAI/bge-reranker-v2-m3, CPU, top-5 \\
+Recuperaci\'on & uni\'on densa top-10 + BM25 top-20, $k=10$ \\
+Reordenador & BAAI/bge-reranker-v2-m3, GPU, top-10 \\
 Generador & gemma4:e4b, Q4\_K\_M \\
 Contexto & 116.384 tokens (16.384 entrada, 100.000 salida) \\
 MTP & draft 3, 217 tok/s \\
@@ -98,6 +98,6 @@ La interfaz tiene dos zonas. En el panel lateral se elige el modelo, el n\'umero
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{figuras/ui_recorte.png}
-\caption{Interfaz final: respuesta con citas y evidencias abiertas. La pregunta se acepta con probabilidad de dominio 0,967; la respuesta cita las evidencias [1] y [2], y el panel muestra t\'itulo, puntuaci\'on, fragmento, enlace y metadatos de la primera evidencia. El chip de la derecha identifica la ruta de ejecuci\'on, no un guardarra\'il de cita.}
+\caption{Interfaz final: respuesta con citas y evidencias abiertas. La pregunta se acepta con probabilidad de dominio 0,956; la respuesta cita diez evidencias y el panel muestra t\'itulo, puntuaci\'on, fragmento, enlace y metadatos de la primera. El chip de la derecha identifica la ruta de ejecuci\'on, no un guardarra\'il de cita.}
 \label{fig:ui}
 \end{figure*}

@@ -118,6 +118,21 @@ Servicios y puertos:
 | API | `taller-rag-rocm:local` | 8010 |
 | Streamlit | `taller-rag:local` | 8501 |
 
+### Capa de datos remota
+
+La capa de datos (etcd, MinIO y Milvus) puede correr en un servidor de la red local. En ese modo, el API y el frontend se levantan sin los servicios de datos y la conexión va por un túnel SSH:
+
+```bash
+# en el servidor
+docker compose -f docker-compose.data.yml up -d
+
+# en la estación
+ssh -N -L 19530:localhost:19530 carlos@192.168.1.100
+docker compose up -d --no-deps api frontend
+```
+
+No levantes `etcd`, `minio` ni `milvus` locales mientras el túnel use el puerto 19530. Los volúmenes locales quedan como copia de seguridad.
+
 El compose usa `network_mode: host` porque este equipo tiene dockerd con `iptables: false` y `bridge: none`. Los servicios se hablan por `localhost`. El Ollama nativo, si existe, se queda en 11434.
 
 La API usa la imagen ROCm y monta `/dev/kfd` y `/dev/dri`. El frontend usa la imagen CPU.

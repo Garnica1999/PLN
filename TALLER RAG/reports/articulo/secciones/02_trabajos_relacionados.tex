@@ -3,7 +3,7 @@
 
 \subsection{Recuperaci\'on aumentada por generaci\'on}
 
-RAG combina un recuperador con un generador para responder con conocimiento externo \cite{lewis2020rag}. La variante densa codifica pregunta y documentos en un mismo espacio y busca por similitud; la dispersa, como BM25 \cite{robertson2009bm25}, punt\'ua por coincidencia de t\'erminos. La fusi\'on de ambas con reciprocal rank fusion \cite{cormack2009rrf} es una pr\'actica com\'un para compensar sus sesgos. En este trabajo se comparan las tres sobre el mismo corpus y el mismo protocolo, con un \'indice por codificador, y se conserva la que gana en cobertura y orden.
+RAG combina un recuperador con un generador para responder con conocimiento externo \cite{lewis2020rag}. La variante densa codifica pregunta y documentos en un mismo espacio y busca por similitud; la dispersa, como BM25 \cite{robertson2009bm25}, punt\'ua por coincidencia de t\'erminos. La fusi\'on de ambas con reciprocal rank fusion \cite{cormack2009rrf} es una pr\'actica com\'un para compensar sus sesgos. En este trabajo se comparan las tres sobre el mismo corpus y el mismo protocolo, con un \'indice por codificador, y la configuraci\'on final combina densa y dispersa antes de reordenar, porque la uni\'on recupera entidades que el denso no trae.
 
 \subsection{Variantes iterativas y correctivas}
 
@@ -15,7 +15,7 @@ BEIR mostr\'o que un recuperador bueno en un dominio puede fallar en otro \cite{
 
 \subsection{Reordenamiento}
 
-Un cross-encoder punt\'ua el par pregunta-documento con atenci\'on conjunta y suele superar al bi-encoder en precisi\'on \cite{nogueira2019passage}. El coste crece con el n\'umero de candidatos, porque cada par exige una pasada completa del modelo. La pr\'actica habitual es recuperar un conjunto amplio y reordenar un top peque\~no. Este trabajo mide el efecto de reordenar 5, 20 y 50 candidatos, y encuentra que ampliar el conjunto mejora el orden pero pierde cobertura y multiplica la latencia. La configuraci\'on elegida reordena solo el top-5.
+Un cross-encoder punt\'ua el par pregunta-documento con atenci\'on conjunta y suele superar al bi-encoder en precisi\'on \cite{nogueira2019passage}. El coste crece con el n\'umero de candidatos, porque cada par exige una pasada completa del modelo. La pr\'actica habitual es recuperar un conjunto amplio y reordenar un top peque\~no. Este trabajo mide el efecto de reordenar 5, 20 y 50 candidatos densos, y encuentra que ampliar el conjunto denso mejora el orden pero pierde cobertura. La configuraci\'on final reordena una uni\'on de denso y BM25 en GPU y recorta a 10; la uni\'on a\~nade cobertura sin el coste de un top-50 denso.
 
 \subsection{\'Indices vectoriales}
 

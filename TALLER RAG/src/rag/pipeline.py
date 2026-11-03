@@ -130,6 +130,22 @@ def retrieve_sparse(
     return dedupe(hits), round((time.perf_counter() - started) * 1000, 2)
 
 
+def retrieve_union(
+    query: str,
+    k: int | None = None,
+    collection: str | None = None,
+    expr: str | None = None,
+    dense_k: int | None = None,
+    sparse_k: int | None = None,
+) -> tuple[list[dict], float]:
+    """Union densa + BM25 sin fusionar: conserva el top denso y anade entidades."""
+    dense_k = dense_k or settings.union_dense_k
+    sparse_k = sparse_k or settings.union_sparse_k
+    dense_hits, dense_ms = retrieve(query, k=dense_k, collection=collection, expr=expr)
+    sparse_hits, sparse_ms = retrieve_sparse(query, k=sparse_k, expr=expr)
+    return dedupe(dense_hits + sparse_hits), round(dense_ms + sparse_ms, 2)
+
+
 def weighted_rrf(
     dense_hits: list[dict],
     sparse_hits: list[dict],
@@ -177,6 +193,8 @@ def search_hits(
         return retrieve_hybrid(query, k=k, collection=collection, expr=expr)
     if hybrid is False:
         return retrieve(query, k=k, collection=collection, expr=expr)
+    if settings.retriever == "hybrid_union":
+        return retrieve_union(query, k=k, collection=collection, expr=expr)
     if settings.retriever == "sparse":
         return retrieve_sparse(query, k=k, expr=expr)
     if settings.retriever == "hybrid":

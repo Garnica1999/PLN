@@ -46,15 +46,15 @@ Los documentos se limpian y fragmentan antes de la ingesta. La colección se val
 
 | Elemento | Valor |
 |---|---|
-| Recuperador principal | bge-m3 denso |
-| `k` de respuesta | 5 |
+| Recuperador principal | unión densa top-10 + BM25 top-20 |
+| `k` de respuesta | 10 |
 | `k` de evaluación | 10 |
 | `ef` | 800 |
-| Recuperadores alternativos | sparse BM25 e híbrido con RRF |
-| Reranker | `BAAI/bge-reranker-v2-m3` en CPU |
-| Alcance del reranker | top-5 |
+| Recuperadores alternativos | denso, sparse BM25 e híbrido con RRF |
+| Reranker | `BAAI/bge-reranker-v2-m3` en GPU |
+| Alcance del reranker | top-10 sobre la unión |
 
-El recuperador denso devuelve los fragmentos; el reranker reordena el top-5 con un cross-encoder multilingüe. No añade ni quita documentos en la configuración actual. La fusión con BM25 queda como opción, pero no se usa porque en las pruebas bajó el recall.
+El recuperador combina denso top-10 y BM25 top-20, deduplica y el reranker en GPU reordena la unión y recorta a 10. La fusión RRF sin reordenar bajó el recall; la unión reordenada lo sube en el conjunto reservado (0,600 a 0,700) y recupera entidades que el denso no trae.
 
 ### 2.3 Generación
 
@@ -137,6 +137,8 @@ La fase de desempeño corre en el worker GPU (`ingest-rocm`, perfil `rocm`), que
 | `api` | FastAPI y RAG |
 | `frontend` | Streamlit |
 | `eval` | RAGAS y evaluación aislada |
+
+En el modo remoto, `etcd`, `minio` y `milvus` corren en un servidor de la red local y el API se conecta por un túnel SSH a `localhost:19530`. El compose de la capa de datos está en `docker-compose.data.yml`.
 
 La API y el frontend usan `network_mode: host`. El contenedor `eval` se levanta con el perfil `eval` y monta `src`, `eval`, `reports`, `plan` y la caché de Hugging Face.
 
@@ -234,7 +236,7 @@ El juez y el embedding cambiaron, así que la comparación no es completamente e
 
 ### 4.6 Arquitectura anterior contra actual
 
-| Frente | Actual | Anterior |
+| Frente | Densa (gold exploratorio) | Anterior |
 |---|---|---|
 | Recuperación | k=5, reranker top-5 | k=15, sin reranker |
 | Entregadas | 37 de 38 | 33 de 38 |
@@ -245,7 +247,7 @@ El juez y el embedding cambiaron, así que la comparación no es completamente e
 | Latencia media | 7.938 ms | 17.657 ms |
 | Contexto medio | 1.361 | 3.975 |
 
-La arquitectura actual entrega más respuestas, acierta más en la revisión manual y es 2,6 veces más rápida. El coste es un contexto más corto y una corrección de respuesta algo menor.
+La arquitectura densa entrega más respuestas, acierta más en la revisión manual y es 2,6 veces más rápida. El coste es un contexto más corto y una corrección de respuesta algo menor. La configuración híbrida, evaluada en el conjunto reservado, entrega 19 de 20, acierta 17 y tiene una latencia media de 6.154 ms.
 
 ### 4.7 MTP y latencia
 
@@ -255,7 +257,7 @@ La arquitectura actual entrega más respuestas, acierta más en la revisión man
 | 5 | 193,5 |
 | 7 | 159,5 |
 
-El MTP ya estaba activo. La mayor ganancia de latencia vino de alinear el contexto del router con el del generador: antes el router usaba 8K y el generador 116K, y Ollama recargaba el modelo. El reranker en CPU añade 1,1 s. La primera consulta de una sesión tarda unos 29 s por la carga.
+El MTP ya estaba activo. La mayor ganancia de latencia vino de alinear el contexto del router con el del generador: antes el router usaba 8K y el generador 116K, y Ollama recargaba el modelo. El reranker en GPU añade 0,68 s para 50 pares; en CPU eran 1,30 s para 5. La primera consulta de una sesión tarda unos 29 s por la carga.
 
 ## 5. Limitaciones
 

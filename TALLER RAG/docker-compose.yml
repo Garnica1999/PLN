@@ -139,7 +139,11 @@ services:
       EMBEDDINGS_BATCH: "128"
       MILVUS_URI: http://localhost:19530
       MILVUS_COLLECTION: rag_full_bge_m3_d1024_v1
-      RETRIEVER: dense
+      RETRIEVER: hybrid_union
+      TOP_K: "10"
+      RERANK_DEVICE: cuda
+      UNION_DENSE_K: "10"
+      UNION_SPARSE_K: "20"
       SEARCH_EF: "800"
     volumes:
       - ./src:/work/src
@@ -180,7 +184,7 @@ services:
       EMBEDDING_DEVICE: cuda
       EMBEDDING_HALF: "true"
       MILVUS_COLLECTION: rag_full_bge_m3_d1024_v1
-      RETRIEVER: dense
+      RETRIEVER: hybrid_union
       HYBRID_DENSE: "0.5"
       HYBRID_SPARSE: "0.5"
       SEARCH_EF: "800"

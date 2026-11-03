@@ -671,7 +671,7 @@ with st.sidebar:
     else:
         st.error("No hay modelos disponibles en Ollama.")
         model = st.text_input("Modelo", value=DEFAULT_MODEL)
-    k = st.slider("Fragmentos recuperados", 1, 20, 5)
+    k = st.slider("Fragmentos recuperados", 1, 20, 10)
     think = st.toggle(
         "Razonamiento",
         key="think",

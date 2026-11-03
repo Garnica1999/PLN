@@ -11,11 +11,11 @@ Se usa chunking fijo de 1000 caracteres con 150 de solape (\texttt{fixed\_v2}). 
 
 \subsection{Codificaci\'on e \'indice}
 
-Los fragmentos se codifican con BAAI/bge-m3 en la GPU, en fp16 y por lotes. La colecci\'on se llama \texttt{rag\_full\_bge\_m3\_d1024\_v1} y usa HNSW con \texttt{ef}=800 en la b\'usqueda. El par\'ametro se eligi\'o con una rejilla sobre el gold: por debajo de 800 el recall cae y por encima la latencia sube sin ganancia apreciable.
+Los fragmentos se codifican con BAAI/bge-m3 en la GPU, en fp16 y por lotes. La colecci\'on se llama \texttt{rag\_full\_bge\_m3\_d1024\_v1} y usa HNSW con \texttt{ef}=800 en la b\'usqueda. El par\'ametro se eligi\'o con una rejilla sobre el gold: por debajo de 800 el recall cae y por encima la latencia sube sin ganancia apreciable. En paralelo se mantiene una colecci\'on BM25 sobre los mismos fragmentos, \texttt{rag\_full\_e5base\_d768\_v2\_bm25\_v1}, que alimenta la recuperaci\'on dispersa.
 
 \subsection{Recuperaci\'on y reordenamiento}
 
-La recuperaci\'on es densa. Para responder se piden 5 fragmentos; para medir recuperaci\'on se piden 10. Los filtros de idioma, fecha y colecci\'on se aplican en Milvus. El reordenador es un cross-encoder multiling\"ue que punt\'ua cada par pregunta-fragmento y reordena el top-5 en CPU, con lote de 16. El resultado se recorta a 5 y se arma el contexto.
+La recuperaci\'on combina dos listas. La densa pide 10 fragmentos a bge-m3; la dispersa pide 20 a BM25. Las dos se unen sin fusionar, se deduplican por texto y se pasan al reordenador. El cross-encoder multiling\"ue punt\'ua cada par pregunta-fragmento en GPU, con lote de 16, y el resultado se recorta a 10. La uni\'on conserva el top-5 denso, que es la se\~nal que la compuerta espera, y a\~nade las entidades que BM25 encuentra y el denso no. Los filtros de idioma, fecha y colecci\'on se aplican en Milvus.
 
 \subsection{Generaci\'on}
 

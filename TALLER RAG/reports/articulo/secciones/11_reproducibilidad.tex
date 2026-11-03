@@ -3,7 +3,7 @@
 
 \subsection{Hardware y software}
 
-El sistema se ejecut\'o en una estaci\'on con Ryzen 9 5950X, 31 GB de RAM y una GPU AMD Radeon RX 9070 XT de 16 GB con ROCm 7.2.4. Los contenedores usan Python 3.12, Milvus 2.6.6, PyTorch 2.10 con ROCm, FastAPI, Streamlit y Ollama. RAGAS 0.4.3 y LangChain 0.3 corren en un contenedor aparte con Python 3.12 y \texttt{BAAI/bge-m3} en CPU.
+El sistema se ejecut\'o en una estaci\'on con Ryzen 9 5950X, 31 GB de RAM y una GPU AMD Radeon RX 9070 XT de 16 GB con ROCm 7.2.4. La capa de datos (etcd, MinIO y Milvus 2.6.6) corre en un servidor de la red local con 16 n\'ucleos y 62 GB de RAM; el API, el embedding y el generador siguen en la estaci\'on. La conexi\'on al Milvus remoto va por un t\'unel SSH a \texttt{localhost:19530}. Los contenedores usan Python 3.12, PyTorch 2.10 con ROCm, FastAPI, Streamlit y Ollama. RAGAS 0.4.3 y LangChain 0.3 corren en un contenedor aparte con Python 3.12 y \texttt{BAAI/bge-m3} en CPU.
 
 \subsection{Modelos}
 
@@ -22,7 +22,7 @@ Papel & Etiqueta & Cuantizaci\'on \\
 Generador & \texttt{gemma4:e4b} & Q4\_K\_M \\
 Condensador y juez & \texttt{gemma2:2b} & Q4\_K\_M \\
 Embedding & \texttt{BAAI/bge-m3} & fp16 en GPU \\
-Reordenador & \texttt{BAAI/bge-reranker-v2-m3} & fp32 en CPU \\
+Reordenador & \texttt{BAAI/bge-reranker-v2-m3} & fp16 en GPU \\
 Comparaci\'on E4 & \texttt{qwen2.5:1.5b} & Q4\_K\_M \\
 Comparaci\'on E4 & \texttt{llama3.2:3b}, \texttt{llama3.2:1b} & Q4\_K\_M \\
 Comparaci\'on E3 & \texttt{qwen3-embedding:8b} & Q4\_K\_M \\
@@ -30,7 +30,7 @@ Comparaci\'on E3 & \texttt{qwen3-embedding:8b} & Q4\_K\_M \\
 \end{tabular}
 \end{table}
 
-El art\'iculo se compila con IEEEtran V1.8b y un parche local que sustituye la raya del resumen y de las palabras clave por dos puntos. La corrida de referencia de latencia y respuesta es el commit \texttt{125bbc7}; las figuras y tablas se regeneran desde \texttt{reports/tablas/}. RAGAS 0.4.3 corre con LangChain 0.3 y \texttt{BAAI/bge-m3} en CPU.
+El art\'iculo se compila con IEEEtran V1.8b y un parche local que sustituye la raya del resumen y de las palabras clave por dos puntos. La corrida de referencia de la configuraci\'on densa es el commit \texttt{125bbc7}; la de la configuraci\'on h\'ibrida es \texttt{experimento\_recuperacion\_hibrida.py}. Las figuras y tablas se regeneran desde \texttt{reports/tablas/}. RAGAS 0.4.3 corre con LangChain 0.3 y \texttt{BAAI/bge-m3} en CPU.
 
 \subsection{Comandos}
 
@@ -42,7 +42,7 @@ docker compose ps
 curl http://localhost:8010/health
 \end{verbatim}
 
-El servicio \texttt{prewarm} carga el generador, el embedding y el reranker cuando la API est\'a sana. La evaluaci\'on completa se ejecuta con:
+La capa de datos se levanta en el servidor con \texttt{docker compose -f docker-compose.data.yml up -d} y la estaci\'on abre el t\'unel con \texttt{ssh -N -L 19530:localhost:19530 carlos@192.168.1.100}. El servicio \texttt{prewarm} carga el generador, el embedding y el reranker cuando la API est\'a sana. La evaluaci\'on completa se ejecuta con:
 
 \begin{verbatim}
 python src/scripts/run_evaluation.py
@@ -52,7 +52,7 @@ Ese pipeline corre la evaluaci\'on de desempe\~no en el worker GPU, la de conver
 
 \subsection{Artefactos}
 
-El gold consolidado est\'a en \texttt{eval/gold/gold\_standard.jsonl}, con su versi\'on ampliada en \texttt{gold\_standard\_ampliado.jsonl}. Las tablas de recuperaci\'on, respuesta, conversaci\'on, compuerta y RAGAS est\'an en \texttt{reports/tablas/}. El conjunto reservado est\'a en \texttt{eval/gold/gold\_reservado.jsonl}, con su construcci\'on y sus hashes en \texttt{README\_RESERVADO.md}; la corrida escribe \texttt{reports/corridas/reservado\_raw.jsonl} y \texttt{reports/tablas/reservado\_resumen.csv}. Las figuras del art\'iculo est\'an en \texttt{reports/figuras/}. Los registros crudos de cada corrida est\'an en \texttt{reports/corridas/} y los modelos de la compuerta en \texttt{modelos/}.
+El gold consolidado est\'a en \texttt{eval/gold/gold\_standard.jsonl}, con su versi\'on ampliada en \texttt{gold\_standard\_ampliado.jsonl}. Las tablas de recuperaci\'on, respuesta, conversaci\'on, compuerta y RAGAS est\'an en \texttt{reports/tablas/}. El conjunto reservado est\'a en \texttt{eval/gold/gold\_reservado.jsonl}, con su construcci\'on y sus hashes en \texttt{README\_RESERVADO.md}; la corrida densa escribe \texttt{reports/corridas/reservado\_raw.jsonl} y \texttt{reports/tablas/reservado\_resumen.csv}, y la h\'ibrida, \texttt{reservado\_hibrida\_raw.jsonl}, \texttt{reservado\_hibrida\_resumen.csv} y \texttt{reservado\_hibrida\_por\_pregunta.csv}. La capa de datos remota se define en \texttt{docker-compose.data.yml}. Las figuras del art\'iculo est\'an en \texttt{reports/figuras/}. Los registros crudos de cada corrida est\'an en \texttt{reports/corridas/} y los modelos de la compuerta en \texttt{modelos/}.
 
 \subsection{Datos}
 

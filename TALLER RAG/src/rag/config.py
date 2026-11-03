@@ -41,6 +41,8 @@ class Settings:
     sparse_collection: str
     hybrid_dense: float
     hybrid_sparse: float
+    union_dense_k: int
+    union_sparse_k: int
     retriever: str
     rerank: bool
     rerank_model: str
@@ -89,6 +91,8 @@ def load_settings() -> Settings:
         sparse_collection=os.getenv("SPARSE_COLLECTION", "rag_full_e5base_d768_v2_bm25_v1"),
         hybrid_dense=_float("HYBRID_DENSE", 0.3),
         hybrid_sparse=_float("HYBRID_SPARSE", 0.7),
+        union_dense_k=_int("UNION_DENSE_K", 10),
+        union_sparse_k=_int("UNION_SPARSE_K", 20),
         retriever=os.getenv("RETRIEVER", "sparse"),
         rerank=os.getenv("RERANK", "1") == "1",
         rerank_model=os.getenv("RERANK_MODEL", "BAAI/bge-reranker-v2-m3"),

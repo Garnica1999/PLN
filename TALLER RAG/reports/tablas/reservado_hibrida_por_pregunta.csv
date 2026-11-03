@@ -1,0 +1,44 @@
+id,type,lang,question,reference_answer,answer,abstained,abstain_reason,citations,strict_match,token_f1,retrieval_recall,retrieval_ndcg,retrieval_p_at_1,retrieval_p_at_5,retrieval_span_hit,retrieval_ms,generation_ms,total_ms,context_tokens,domain_probability,gate_domain
+r-001,directa,es,¿En qué ciudad se celebrará la Asamblea del Banco Interamericano de Desarrollo?,Barranquilla,"La Asamblea del Banco Interamericano de Desarrollo (BID) se celebrará en Barranquilla [1, 2, 6, 7, 9, 10]. En otras ocasiones, Santa Marta ha funcionado como sede alterna de la cumbre [3, 4].",False,,8,True,0.05882352941176471,1.0,0.3562071871080222,0,0,1.0,8371.72,4904.52,17415.31,3066,0.8338,True
+r-002,directa,es,¿Cuántos helicópteros Black Hawk llegaron al país?,tres,"Según la evidencia, se reportan diferentes cantidades de helicópteros Black Hawk que llegaron al país:
+
+*   Inicialmente, se reportó la llegada de tres helicópteros Black Hawk [1, 2, 3, 6, 7, 8].
+*   En otra ocasión, Colombia recibió siete helicópteros Black Hawk [4, 5, 9].
+*   En total, el gobierno de Joe Biden donará 12 helicópteros [3, 4, 5, 6, 7, 10].",False,,10,True,0.03333333333333333,1.0,0.6309297535714575,0,1,1.0,112.5,5505.66,7884.07,2944,0.7941,True
+r-003,directa,es,¿Qué porcentaje de la contaminación de los océanos es producto de la actividad humana?,80 %,El 80 % de la contaminación de los océanos es producto de la actividad humana [1].,False,,1,True,0.125,1.0,1.0,1,1,1.0,34.09,3279.87,9448.45,3087,0.8138,True
+r-004,directa,es,¿Qué porcentaje de las aguas del Valle de Aburrá está siendo saneado?,92.4%,"Según la evidencia, el 92.4% de las aguas del Valle de Aburrá están siendo saneadas [1]. Adicionalmente, el Programa de Saneamiento del río Medellín ha logrado una cobertura de recolección de aguas residuales estimada del 94% en los usuarios del Valle de Aburrá [2].",False,,2,True,0.0851063829787234,1.0,1.0,1,1,1.0,37.16,3569.23,4638.79,2977,0.7308,True
+r-005,directa,es,¿En qué departamento se encuentra la Zona de Ubicación Temporal?,Putumayo,"La Zona de Ubicación Temporal se encuentra en la zona rural del Valle del Guamuez, en el departamento de Putumayo [1, 2]. Además, se ha mencionado que el municipio Valle del Guamuez es donde se establecieron las Zonas de Ubicación Temporal [3].",False,,3,True,0.046511627906976744,0.0,0.0,0,0,0.0,37.27,3205.29,5009.35,2885,0.9999,True
+r-006,directa,es,¿Cuántos votos a favor obtuvo la iniciativa en la Cámara de Representantes?,95,No hay evidencia suficiente en el corpus para responder.,True,juez_no,0,False,0.0,0.0,0.0,0,0,0.0,36.42,5034.44,6166.28,3094,0.4863,True
+r-007,directa,es,¿Cuántos municipios Zomac hay en el Tolima?,21,El Tolima cuenta con 21 municipios Zomac [1].,False,,1,True,0.2222222222222222,1.0,1.0,1,1,1.0,36.0,2108.54,5632.74,3005,0.7984,True
+r-008,directa,es,¿En qué ciudad se celebrará la COP16?,Cali,"La COP16 de Biodiversidad se celebrará en Cali [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]. Cali es la capital del departamento de Valle del Cauca [3, 4].",False,,10,True,0.06451612903225806,0.0,0.0,0,0,0.0,31.98,3965.01,6729.94,2827,0.9559,True
+r-009,directa,es,¿Cuántas firmas ha reunido el precandidato?,500.000,"El precandidato Alejandro Gaviria ha reunido más de 500.000 firmas [1, 2].
+
+En cuanto a sus metas, Gaviria espera recolectar más de 1,2 millones de firmas para los próximos comicios [1, 2], y también se ha mencionado que espera recoger al menos un millón de firmas para inscribir su candidatura presidencial [4, 5, 6].
+
+Adicionalmente, Luis Fernando Suárez ha reunido 537.892 firmas que avalan su aspiración a la Gobernación de Antioquia [9].",False,,6,True,0.05194805194805195,1.0,1.0,1,1,1.0,32.5,4864.99,7169.17,2969,0.8541,True
+r-010,directa,en,In what year is the Eden Project Portland expected to open?,2028,The Eden Project Portland is expected to open in 2028 [1].,False,,1,True,0.16666666666666669,1.0,1.0,1,1,1.0,37.27,3428.77,5877.0,2566,0.8518,True
+r-011,directa,en,In what year did they sell Cellarmasters to the Fosters group?,1996,"They sold the business to the Fosters group in 1996 [1, 2, 3].",False,,3,True,0.14285714285714288,1.0,1.0,1,1,1.0,35.62,2893.26,4083.76,2926,0.1053,False
+r-012,directa,en,Which organization led the initiative to restore trees?,World Economic Forum,"Existen varias iniciativas de restauración de árboles y la organización líder varía según el proyecto:
+
+*   La iniciativa para asegurar la restauración de 1tn árboles fue liderada por el Foro Económico Mundial [1].
+*   En el proyecto Affric Highlands, la iniciativa fue liderada por Trees for Life [3, 10].
+*   El proyecto Glen Loyne fue liderado por Trees for Life y Rewilding Europe [2].
+*   En Colombia, la iniciativa #MeUnoColombia fue liderada por Bavaria [6].
+*   En Inglaterra, la Red de Recuperación de la Naturaleza (Nature Recovery Network) fue liderada por Natural England [7].",False,,6,False,0.0,1.0,1.0,1,1,1.0,36.83,4781.12,6115.92,3072,0.2398,False
+r-013,directa,en,In what year did Birkenhead Park first open?,1847,"Birkenhead Park abrió por primera vez en 1847 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].",False,,10,True,0.10526315789473684,1.0,0.6309297535714575,0,1,1.0,37.06,2716.91,4840.37,3025,0.4505,True
+r-014,directa,en,In which city is Forest Hills Elementary School located?,Walterboro,"La Escuela Primaria Forest Hills se encuentra en Walterboro, Carolina del Sur [1].",False,,1,True,0.14285714285714288,1.0,1.0,1,1,1.0,35.84,2389.0,4058.87,2617,0.0006,False
+r-015,directa,es,¿Qué región busca proteger el proyecto Triángulo del Puma?,Orinoquía,"El proyecto Triángulo del Puma busca proteger la biodiversidad de la Orinoquía de Colombia [1, 2]. Este proyecto une las reservas El Amparo, La Reseda y el Parque Yurumí para proteger el corredor biológico por donde transita el puma [3]. Además, la reserva natural Corozalito, ubicada en Puerto López, es parte de este proyecto [4].",False,,4,True,0.03571428571428572,1.0,0.6309297535714575,0,1,1.0,36.36,3259.88,4427.44,2329,0.8818,True
+r-016,directa,es,¿En qué ciudad se llevará a cabo el concierto?,Bogotá,"El concierto 'Paz con la Naturaleza: un canto por la vida' se llevará a cabo en Cali [1, 4, 5].",False,,3,False,0.0,0.0,0.0,0,0,0.0,31.93,3063.59,5081.23,2721,0.5136,True
+r-017,directa,es,¿Qué magnitud tuvo el terremoto que sacudió Colombia?,7.4,"El terremoto que sacudió Colombia tuvo una magnitud de 7,4 [1, 3, 4, 5, 6, 8, 9, 10].",False,,8,True,0.1904761904761905,0.0,0.0,0,0,0.0,30.83,3432.73,4912.68,1564,0.9668,True
+r-018,directa,en,By what percentage has flytipping increased in the UK over the past year?,13%,El vertido ilegal de basura (flytipping) está aumentando en el Reino Unido en un 13% durante el último año [1].,False,,1,True,0.09523809523809523,1.0,1.0,1,1,1.0,36.67,2926.26,5577.7,2573,0.9669,True
+r-019,directa,en,Which type of hornet is mentioned in the warning?,Asian Hornet,"Se menciona el avispero asiático (Asian hornet) [1, 2, 3, 4, 6, 7, 8, 10].
+
+Además, se hace referencia a:
+*   El avispero de patas amarillas (Yellow-legged hornets) [1, 4, 5].
+*   El nombre científico *Vespa velutina* [5].",False,,9,True,0.10256410256410257,0.0,0.0,0,0,0.0,36.8,3509.09,4867.83,2473,0.7655,True
+r-020,directa,en,Which phenomenon is likely to cause a wetter and warmer-than-normal autumn?,El Niño,El Niño es probable que cause un otoño más húmedo y más cálido de lo normal [1].,False,,1,True,0.21052631578947367,1.0,1.0,1,1,1.0,33.22,3403.87,7320.64,2739,0.8103,True
+r-021,sin_respuesta,es,¿Cuál es la capital de Puerto Inexistente?,,No hay evidencia suficiente en el corpus para responder.,True,modelo,0,False,0.0,0.0,0.0,0,0,,40.03,2991.25,4608.97,2814,0.0,False
+r-022,sin_respuesta,es,¿Qué dijo el alcalde de Puerto Inexistente sobre el presupuesto de 2027?,,No hay evidencia suficiente en el corpus para responder.,True,modelo,0,False,0.0,0.0,0.0,0,0,,42.57,3314.98,4157.34,3013,0.0054,False
+r-023,sin_respuesta,en,What is the population of Nuevo Bogotá?,,No hay evidencia suficiente en el corpus para responder.,True,modelo,0,False,0.0,0.0,0.0,0,0,,37.08,3756.05,7165.32,2613,0.1656,False
+r-024,sin_respuesta,es,¿Quién ganó el Mundial de Fútbol de 2038?,,No hay evidencia suficiente en el corpus para responder.,True,modelo,0,False,0.0,0.0,0.0,0,0,,33.72,3897.8,5884.56,1622,0.0056,False
+r-025,sin_respuesta,en,What is the chemical formula of zorblaxium?,,No hay evidencia suficiente en el corpus para responder.,True,modelo,0,False,0.0,0.0,0.0,0,0,,35.24,2679.16,4788.12,2943,0.0002,False
