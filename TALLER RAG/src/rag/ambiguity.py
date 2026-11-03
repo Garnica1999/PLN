@@ -11,6 +11,7 @@ GENERIC_REFERENCES = (
     "la iniciativa", "el concierto", "la reforma", "el proyecto", "el acuerdo",
     "la cumbre", "la cop", "el partido", "la empresa", "el presidente",
     "el ministro", "la ley", "el programa", "el plan", "la campana",
+    "el terremoto", "el sismo", "la cumbre", "el tratado",
     "the initiative", "the concert", "the reform", "the project", "the agreement",
     "the summit", "the cop", "the match", "the company", "the president",
     "the minister", "the law", "the program", "the plan", "the campaign",
@@ -89,6 +90,14 @@ QUANTITY_PATTERN = re.compile(
 )
 
 
+def _question_unit(question: str) -> str | None:
+    text = normalize(question)
+    for unit in ("municipios", "votos", "personas", "kilos", "hectareas", "millones", "billones"):
+        if unit.rstrip("s") in text:
+            return unit.rstrip("s")
+    return None
+
+
 def _quantity_mentions(question: str, hits: list[dict]) -> list[dict]:
     text = normalize(question)
     if not any(word in text for word in ("cuantos", "cuantas", "cuanto", "cuanta", "how many", "votos", "voto")):
@@ -99,8 +108,6 @@ def _quantity_mentions(question: str, hits: list[dict]) -> list[dict]:
         for match in QUANTITY_PATTERN.finditer(body):
             number = match.group(1).rstrip(".,")
             unit = match.group(2).lower()
-            if unit not in ("voto", "votos"):
-                continue
             mentions.append(
                 {
                     "number": number,
@@ -121,16 +128,23 @@ def augment_quantity_options(question: str, hits: list[dict], options: list[dict
         for option in options
         for number in re.findall(r"\d[\d.,]*", option["answer"])
     }
+    unit_root = _question_unit(question)
     for mention in _quantity_mentions(question, hits):
+        if unit_root and not mention["unit"].startswith(unit_root):
+            continue
         answer = f"{mention['number']} {mention['unit']}"
         if mention["number"] in existing:
             continue
         title = mention["title"] or f"iniciativa con {mention['number']} votos"
         clean_title = re.split(r"\s[-|]\s", title)[0]
+        if mention["unit"] in ("voto", "votos"):
+            query = f"¿Cuántos votos a favor obtuvo la iniciativa sobre {clean_title}?"
+        else:
+            query = f"{question.rstrip('?')} según {clean_title}?"
         options.append(
             {
                 "label": title,
-                "query": f"¿Cuántos votos a favor obtuvo la iniciativa sobre {clean_title}?",
+                "query": query,
                 "answer": answer,
                 "evidence": [mention["index"]],
             }
@@ -148,7 +162,10 @@ def augment_quantity_conditions(question: str, hits: list[dict], conditions: lis
         for condition in conditions
         for number in re.findall(r"\d[\d.,]*", condition["answer"])
     }
+    unit_root = _question_unit(question)
     for mention in _quantity_mentions(question, hits):
+        if unit_root and not mention["unit"].startswith(unit_root):
+            continue
         answer = f"{mention['number']} {mention['unit']}"
         if mention["number"] in existing:
             continue
@@ -173,7 +190,7 @@ AMOUNT_PATTERN = re.compile(
 
 def _amount_mentions(question: str, hits: list[dict]) -> list[dict]:
     text = normalize(question)
-    if not any(word in text for word in ("que dijo", "qué dijo", "what did", "cuanto", "cuánto", "how much")):
+    if not (re.search(r"\bcuanto\b", text) or "que dijo" in text or "what did" in text or "how much" in text):
         return []
     mentions = []
     for index, hit in enumerate(hits[:10], start=1):
@@ -268,7 +285,22 @@ def conditional_payload(detection: dict, hits: list[dict]) -> dict | None:
         }
         for option in options
     ]
-    lines = ["La pregunta tiene varias interpretaciones:"]
+
+    def support(condition: dict) -> float:
+        scores = [
+            float(hits[index - 1].get("rerank_score") or hits[index - 1].get("score") or 0.0)
+            for index in condition["citations"]
+            if 1 <= index <= len(hits)
+        ]
+        return max(scores) if scores else 0.0
+
+    best = max(conditions, key=support) if conditions else None
+    lines = []
+    if best is not None:
+        cites = ", ".join(f"[{index}]" for index in best["citations"])
+        lines.append(f"La interpretación con mayor respaldo es {best['label']}: {best['answer']} {cites}.")
+        lines.append("")
+    lines.append("La pregunta tiene varias interpretaciones:")
     for condition in conditions:
         cites = ", ".join(f"[{index}]" for index in condition["citations"])
         lines.append(f"- Para {condition['label']}: {condition['answer']} {cites}")
@@ -277,6 +309,7 @@ def conditional_payload(detection: dict, hits: list[dict]) -> dict | None:
         "type": "conditional",
         "answer": "\n".join(lines),
         "conditions": conditions,
+        "recommendation": best,
         "evidence": hits[:10],
         "abstained": False,
         "abstain_reason": None,

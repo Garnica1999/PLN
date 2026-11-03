@@ -19,8 +19,8 @@ def matches(text: str, aliases: list[str]) -> bool:
     return any(contains_reference(alias, text) for alias in aliases)
 
 
-def main() -> None:
-    rows = [json.loads(line) for line in GOLD.read_text(encoding="utf-8").splitlines() if line.strip()]
+def run(gold_path: Path = GOLD, raw_path: Path = RAW, summary_path: Path = SUMMARY, per_question_path: Path = PER_QUESTION) -> None:
+    rows = [json.loads(line) for line in gold_path.read_text(encoding="utf-8").splitlines() if line.strip()]
     results = []
     for index, row in enumerate(rows, start=1):
         question = row["question"]
@@ -58,12 +58,15 @@ def main() -> None:
         conditional_detected = conditional.get("type") == "conditional"
         conditional_covered = False
         conditional_correct = False
+        recommendation_correct = False
         if conditional_detected:
             conditional_covered = any(
                 matches(condition.get("answer") or "", aliases)
                 for condition in conditional.get("conditions", [])
             )
             conditional_correct = conditional_covered
+            recommendation = conditional.get("recommendation") or {}
+            recommendation_correct = bool(recommendation) and matches(recommendation.get("answer") or "", aliases)
         else:
             conditional_answer = conditional.get("answer") or ""
             conditional_correct = (not conditional.get("abstained")) and matches(conditional_answer, aliases)
@@ -83,6 +86,7 @@ def main() -> None:
                 "conditional_detected": conditional_detected,
                 "conditional_covered": conditional_covered,
                 "conditional_correct": conditional_correct,
+                "conditional_recommendation_correct": recommendation_correct,
                 "hybrid_correct": hybrid_correct,
                 "clarification_turns": clarification_turns,
                 "baseline_ms": baseline.get("total_ms"),
@@ -101,10 +105,10 @@ def main() -> None:
         )
 
     frame = pd.DataFrame(results)
-    RAW.parent.mkdir(parents=True, exist_ok=True)
-    PER_QUESTION.parent.mkdir(parents=True, exist_ok=True)
-    frame.to_csv(PER_QUESTION, index=False)
-    with RAW.open("w", encoding="utf-8") as handle:
+    raw_path.parent.mkdir(parents=True, exist_ok=True)
+    per_question_path.parent.mkdir(parents=True, exist_ok=True)
+    frame.to_csv(per_question_path, index=False)
+    with raw_path.open("w", encoding="utf-8") as handle:
         for result in results:
             handle.write(json.dumps(result, ensure_ascii=False) + "\n")
 
@@ -130,14 +134,19 @@ def main() -> None:
         "clarification_turns": round(float(frame["clarification_turns"].mean()), 2),
         "conditional_accuracy": round(float(frame["conditional_correct"].mean()), 3),
         "conditional_intended_covered": round(float(ambiguous["conditional_covered"].mean()), 3),
+        "conditional_recommendation_accuracy": round(float(ambiguous["conditional_recommendation_correct"].mean()), 3),
         "hybrid_accuracy": round(float(frame["hybrid_correct"].mean()), 3),
         "baseline_ms": round(float(frame["baseline_ms"].mean()), 1),
         "clarification_ms": round(float(frame["clarification_ms"].mean()), 1),
         "conditional_ms": round(float(frame["conditional_ms"].mean()), 1),
     }
-    pd.DataFrame([summary]).to_csv(SUMMARY, index=False)
+    pd.DataFrame([summary]).to_csv(summary_path, index=False)
     for key, value in summary.items():
         print(f"{key}: {value}", flush=True)
+
+
+def main() -> None:
+    run()
 
 
 if __name__ == "__main__":

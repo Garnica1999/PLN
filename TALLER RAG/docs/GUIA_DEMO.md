@@ -66,6 +66,8 @@ Pregunta de ejemplo:
 
 La interfaz muestra la aclaración y las opciones (paz total, trazabilidad ganadera, servicio social, aguas de lastre, etc.). Al elegir "El Congreso aprueba ley para acabar con la contaminación a los mares", el sistema responde con los 95 votos y la cita. En la API de una pasada, `POST /ask` devuelve la respuesta condicional con todas las interpretaciones.
 
+Otra prueba de alcance: "¿Cuántos municipios fueron afectados por el terremoto?" ofrece 472, 437 y 450; la respuesta condicional las lista con su cita.
+
 ## Qué mirar en cada respuesta
 
 - ¿La respuesta usa solo la evidencia?

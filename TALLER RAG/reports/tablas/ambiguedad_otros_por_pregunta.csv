@@ -1,0 +1,23 @@
+id,type,lang,question,detected,intended_offered,chosen_option,baseline_correct,clarification_correct,conditional_detected,conditional_covered,conditional_correct,conditional_recommendation_correct,hybrid_correct,clarification_turns,baseline_ms,clarification_ms,conditional_ms,baseline_answer,clarification_answer,conditional_answer
+o-001,ambigua,es,¿Cuándo se firmó el acuerdo de paz?,True,True,24 de noviembre de 2016,True,True,True,True,True,False,True,2,18360.8,14074.87,7599.97,El Gobierno y las Farc firmaron el Acuerdo de Paz el 26 de septiembre [1]. El documento definitivo para la Terminación del Conflicto y la Construcción de una Paz Estable y Duradera fue firmado por Juan Manuel Santos y Rodrigo Londoño ‘Timochenko’ el 24 de noviembre de 2016 [4]. Se firmó el Acuerdo entre el Gobierno y Fedegán para compra de tierras a los ganaderos con destino a la Reforma Agraria el 8 de octubre de 2022 [8].,¿A qué acuerdo de paz se refiere la pregunta?,"La interpretación con mayor respaldo es 26 de septiembre: El 26 de septiembre [1], [10].
+
+La pregunta tiene varias interpretaciones:
+- Para 26 de septiembre: El 26 de septiembre [1], [10]
+- Para 24 de noviembre de 2016: El 24 de noviembre de 2016 [2], [7]
+- Para 2016: En 2016 [5], [9], [10]"
+o-002,ambigua,es,¿Cuándo se celebró la COP?,True,True,COP 16 en Colombia,True,True,True,True,True,True,True,2,8416.95,15608.87,8846.61,La COP 16 se celebró del 21 de octubre al 1 de noviembre [1]. La COP que se llevará a cabo en octubre de 2024 en Cali se denomina COP16 [5].,¿A qué COP te refieres?,"La interpretación con mayor respaldo es COP 16 en Colombia: Del 21 de octubre al 1 de noviembre de 2024 [1], [2], [3], [10].
+
+La pregunta tiene varias interpretaciones:
+- Para COP 16 en Colombia: Del 21 de octubre al 1 de noviembre de 2024 [1], [2], [3], [10]
+- Para COP-15 en Montreal: Del 5 al 17 de diciembre [8]"
+o-003,ambigua,es,¿Cuántos municipios fueron afectados por el terremoto?,True,True,Terremoto en Colombia: La respuesta que nace del territorio chocoano,True,True,True,True,True,False,True,2,7287.79,12958.37,6993.9,"El sismo afectó a 472 municipios según los registros oficiales [4]. Otros reportes indican que el terremoto afectó a 437 municipios [2], mientras que otro balance oficial menciona que el sismo afectó a 472 municipios [4]. Además, se menciona que 15 departamentos y 472 municipios fueron afectados [4], y que el terremoto afectó a 15 departamentos y 472 municipios [9].",¿A qué se refiere la cifra de municipios afectados?,"La interpretación con mayor respaldo es 450 municipios: 450 municipios [1], [3].
+
+La pregunta tiene varias interpretaciones:
+- Para 450 municipios: 450 municipios [1], [3]
+- Para 437 municipios: 437 municipios [2]
+- Para 29 municipios: 29 municipios [8]
+- Para Turismo, la otra réplica del terremoto: 14 municipios [5]
+- Para Terremoto en Colombia: La respuesta que nace del territorio chocoano: 472 municipios [6]"
+c-003,no_ambigua,es,¿Qué porcentaje de la contaminación de los océanos es producto de la actividad humana?,False,False,,True,True,False,False,True,False,True,1,11940.18,6389.05,6249.66,"El 80 % de la contaminación de los océanos es producto de la actividad humana, según la Comisión Nacional de Derechos Humanos en México (CNDH) [1]. Además, más del 80% de la contaminación proviene de fuentes terrestres [4].","El 80 % de la contaminación de los océanos es producto de la actividad humana, según la Comisión Nacional de Derechos Humanos en México (CNDH) [1]. Además, más del 80% de la contaminación proviene de fuentes terrestres [4].","El 80 % de la contaminación de los océanos es producto de la actividad humana, según la Comisión Nacional de Derechos Humanos en México (CNDH) [1]. Además, más del 80% de la contaminación proviene de fuentes terrestres [4]."
+c-010,no_ambigua,en,In what year is the Eden Project Portland expected to open?,False,False,,True,True,False,False,True,False,True,1,3439.04,3039.14,2424.25,El Eden Project Portland se espera que abra en 2028 [1].,El Eden Project Portland se espera que abra en 2028 [1].,El Eden Project Portland se espera que abra en 2028 [1].
+c-018,no_ambigua,en,By what percentage has flytipping increased in the UK over the past year?,False,False,,True,True,False,False,True,False,True,1,3962.97,2846.94,2893.99,El vertido ilegal de basura (flytipping) está aumentando en el Reino Unido en un 13% durante el último año [1].,El vertido ilegal de basura (flytipping) está aumentando en el Reino Unido en un 13% durante el último año [1].,El vertido ilegal de basura (flytipping) está aumentando en el Reino Unido en un 13% durante el último año [1].
