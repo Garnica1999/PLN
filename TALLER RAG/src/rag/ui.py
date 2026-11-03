@@ -719,6 +719,38 @@ if "examples" not in st.session_state:
 
 
 def render_assistant(data: dict, position: int) -> None:
+    if data.get("type") == "clarification":
+        st.markdown("<h3 class='m3-card-title'>Aclaración necesaria</h3>", unsafe_allow_html=True)
+        st.markdown(data.get("answer", ""))
+        options = data.get("clarification", {}).get("options", [])
+        for index, option in enumerate(options):
+            if st.button(option.get("label", "Opción"), key=f"clar-{position}-{index}", use_container_width=True):
+                ask(option.get("query", ""), ambiguity_policy="off", skip_gate=True)
+        st.caption("Elige una interpretación para responder con la evidencia de ese caso.")
+        evidence = data.get("evidence", [])
+        if evidence:
+            with st.expander(f"Evidencias ({len(evidence)})"):
+                for index, hit in enumerate(evidence, start=1):
+                    st.markdown(f"**[{index}] {hit.get('title') or 'Sin título'}**")
+                    st.caption((hit.get("text") or "")[:400])
+        return
+    if data.get("type") == "conditional":
+        st.markdown("<h3 class='m3-card-title'>Respuesta condicional</h3>", unsafe_allow_html=True)
+        st.markdown(data.get("answer", ""))
+        for condition in data.get("conditions", []):
+            citations = ", ".join(f"[{index}]" for index in condition.get("citations", []))
+            st.caption(f"{condition.get('label')}: {condition.get('answer')} {citations}")
+        metrics = [f"{data.get('retrieval_ms', 0):.0f} ms recuperación"]
+        metrics.append(f"{data.get('total_ms', 0):.0f} ms total")
+        metrics.append(str(data.get("model")))
+        st.caption(" · ".join(metrics))
+        evidence = data.get("evidence", [])
+        if evidence:
+            with st.expander(f"Evidencias ({len(evidence)})"):
+                for index, hit in enumerate(evidence, start=1):
+                    st.markdown(f"**[{index}] {hit.get('title') or 'Sin título'}**")
+                    st.caption((hit.get("text") or "")[:400])
+        return
     reasoning = data.get("reasoning") or ""
     if reasoning:
         with st.expander("Razonamiento del modelo", expanded=True):
@@ -811,7 +843,7 @@ def resolve_pending() -> None:
     st.rerun()
 
 
-def ask(query: str) -> None:
+def ask(query: str, ambiguity_policy: str = "auto", skip_gate: bool = False) -> None:
     history = [
         {"role": message["role"], "content": message["content"]}
         for message in st.session_state.messages
@@ -829,7 +861,8 @@ def ask(query: str) -> None:
             "collection": collection or None,
             "history": history,
             "think": think,
-            "strict": strict,
+            "strict": strict and not skip_gate,
+            "ambiguity_policy": ambiguity_policy,
         },
         "think": think,
     }

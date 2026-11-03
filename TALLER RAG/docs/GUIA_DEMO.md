@@ -56,6 +56,16 @@ Las tres preguntas de ejemplo se sortean de un banco de nueve preguntas del gold
 
 Si se cambia un interruptor mientras el modelo responde, Streamlit detiene el script en curso. La pregunta queda en `st.session_state.pending` y se reintenta en el siguiente rerun, de modo que la respuesta aparece igual y la conversación no se corta.
 
+## Ambigüedad
+
+Pregunta de ejemplo:
+
+```text
+¿Cuántos votos a favor obtuvo la iniciativa en la Cámara de Representantes?
+```
+
+La interfaz muestra la aclaración y las opciones (paz total, trazabilidad ganadera, servicio social, aguas de lastre, etc.). Al elegir "El Congreso aprueba ley para acabar con la contaminación a los mares", el sistema responde con los 95 votos y la cita. En la API de una pasada, `POST /ask` devuelve la respuesta condicional con todas las interpretaciones.
+
 ## Qué mirar en cada respuesta
 
 - ¿La respuesta usa solo la evidencia?

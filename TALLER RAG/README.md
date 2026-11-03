@@ -143,6 +143,8 @@ make ps
 make down
 ```
 
+El mismo ciclo está en `scripts/up.sh` (`up`, `down`, `status`) para quien prefiera un script a `make`.
+
 El contexto se crea una vez y requiere una clave SSH sin contraseña:
 
 ```bash
@@ -199,10 +201,12 @@ Con `RETRIEVER=sparse` se usa solo BM25. Con `RETRIEVER=hybrid` se fusionan dens
 - `GET /models`: modelos disponibles en Ollama.
 - `GET /stats`: colecciones y conteos.
 - `POST /retrieve`: `{"query": "...", "k": 5, "language": "es"}`.
-- `POST /ask`: `{"query": "...", "model": "gemma2:2b", "k": 5, "temperature": 0.0}`.
-- `POST /chat`: `{"query": "...", "model": "gemma2:2b", "k": 5}`. Camino conversacional con guardarraíles.
+- `POST /ask`: `{"query": "...", "model": "gemma2:2b", "k": 5, "temperature": 0.0, "ambiguity_policy": "auto"}`.
+- `POST /chat`: `{"query": "...", "model": "gemma2:2b", "k": 5, "ambiguity_policy": "auto"}`. Camino conversacional con guardarraíles.
 
 La respuesta de `/ask` incluye `answer`, `evidence`, `retrieval_ms`, `generation_ms`, `total_ms`, `tokens_per_second`, `prompt_version`, `prompt_hash`, `citations` e `invalid_citations`.
+
+El campo `ambiguity_policy` acepta `auto`, `clarify`, `conditional` u `off`. En `auto`, `/chat` clarifica y `/ask` condiciona. La clarificación devuelve `type: "clarification"` con `clarification.options`; el cliente envía la `query` de la opción elegida. La condicional devuelve `type: "conditional"` con `conditions` y una cita por condición.
 
 `/chat` clasifica la intención. Los saludos y la charla se responden sin tocar el corpus. Las preguntas de dominio pasan por el pipeline con evidencia. Si el modelo no cita, si la respuesta introduce entidades o números que no aparecen en el fragmento citado, o si el juez considera que la evidencia no responde la pregunta, se devuelve la abstención. El campo `guardrail` indica qué regla actuó: `charla`, `tool_calling`, `fallback_sin_tools`, `sin_citas`, `sin_respaldo`, `citas_invalidas` o `juez_no`. Los modelos que no soportan tools, como gemma2:2b, usan el pipeline clásico y quedan marcados con `fallback_sin_tools`.
 
@@ -211,6 +215,8 @@ La respuesta de `/ask` incluye `answer`, `evidence`, `retrieval_ms`, `generation
 Abrir `http://localhost:8501`. Permite elegir modelo, k, idioma, rango de fechas y colección, ver la respuesta, las fuentes con enlace y los tiempos por etapa. La interfaz usa `/chat`.
 
 El tema sigue Material 3: escala de forma de 4 a 28 px con botones y barra de entrada completos, escala tipográfica de display a label, superficies tonales en lugar de sombras y capas de estado del 8% al 10%. El esquema claro se genera desde el verde `#1f6b57`; el mensaje del usuario usa `secondary-container`, la respuesta `surface-container-low`, los avisos informativos `tertiary-container` y las abstenciones `error-container`. Los tokens están en `src/rag/ui.py` y el tema nativo en `.streamlit/config.toml`.
+
+Si la pregunta es ambigua, la interfaz muestra las opciones como botones; al elegir una, envía la consulta reescrita y responde con la evidencia de esa interpretación. En `/ask`, la respuesta condicional lista todas las interpretaciones con su cita.
 
 El interruptor `Modo noche` cambia al esquema oscuro de Material 3 sin recargar la página. El panel lateral se oculta y se reabre con el botón circular de la cabecera. Las preguntas de ejemplo se sortean del gold en cada sesión y se vuelven a sortear con `Nueva conversación`.
 
@@ -245,6 +251,8 @@ docker compose exec api python -m src.scripts.metrics --results reports/corridas
 4. Comparación de limpieza, chunking y codificadores: `docs/EXPERIMENTOS.md`.
 5. Pipeline unificado: `python src/scripts/run_evaluation.py`. Corre desempeño, chat y RAGAS; escribe `reports/tablas/evaluacion_comparativa.md`. La fase de desempeño corre en el worker GPU (`ingest-rocm`, perfil `rocm`) para no cargar una segunda copia de los modelos dentro de la API. El contenedor `eval` tiene RAGAS 0.4.3, LangChain 0.3 y `BAAI/bge-m3` en CPU; se levanta con el perfil `eval`.
 
+6. Ambigüedad: `docker compose exec api python -m src.scripts.experimento_ambiguedad`. Escribe `reports/tablas/ambiguedad_resumen.csv` y `ambiguedad_por_pregunta.csv`.
+
 Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`, con Recall@k, P@1, P@5, Hit@k, MRR, MAP, nDCG, cobertura de span, context precision y recall, duplicados, latencias e intervalos por bootstrap.
 
 ## 11. Resultados finales
@@ -258,6 +266,7 @@ Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`
 | RAGAS actual (`gemma4` + `bge-m3`) | 0,952 / 0,840 / 0,881 / 0,921 / 0,657 |
 | RAGAS anterior (`gemma2` + `qwen3`) | 0,925 / 0,798 / 0,760 / 0,842 / 0,705 |
 | Latencia media | 7.938 ms sin razonamiento; 6.834 ms con razonamiento |
+| Ambigüedad | Detector F1 1,0; condicional 12/12; clarificación 11/12; baseline 10/12 |
 
 La arquitectura completa, las capas y la comparación contra la versión anterior están en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md). El informe de métricas está en [reports/informe/metricas_nueva_configuracion.md](reports/informe/metricas_nueva_configuracion.md).
 

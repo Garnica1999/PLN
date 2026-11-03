@@ -142,6 +142,12 @@ En el modo remoto, `etcd`, `minio` y `milvus` corren en un servidor de la red lo
 
 La API y el frontend usan `network_mode: host`. El contenedor `eval` se levanta con el perfil `eval` y monta `src`, `eval`, `reports`, `plan` y la caché de Hugging Face.
 
+### 2.10 Ambigüedad y clarificación
+
+El detector es selectivo: solo se activa con referencias genéricas ("la iniciativa", "el concierto", "la reforma", "el acuerdo", "la COP", etc.). Para esas preguntas recupera una unión profunda de 50 fragmentos densos y 50 de BM25, la reordena y pide al LLM un JSON con la ambigüedad, la pregunta de clarificación y entre dos y seis opciones. Una aumentación determinista añade las cifras de votos y los montos que el modelo omite. La clarificación devuelve opciones con consulta reescrita; la condicional usa las mismas opciones con su cita. La política `auto` clarifica en `/chat` y condiciona en `/ask`.
+
+En 12 preguntas (6 ambiguas y 6 de control), el detector da F1 1,0. El baseline acierta 10 de 12; la clarificación 11 de 12 con 1,5 turnos; la condicional 12 de 12 con un turno. La condicional gana en acierto, turnos y latencia; la clarificación gana en control del usuario. La híbrida usa la mejor política según el contexto.
+
 ## 3. Configuración
 
 | Variable | Valor |

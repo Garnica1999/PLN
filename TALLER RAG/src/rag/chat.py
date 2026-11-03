@@ -314,6 +314,7 @@ def chat(
     history: list[dict] | None = None,
     think: bool = False,
     strict: bool = False,
+    ambiguity_policy: str = "off",
 ) -> dict:
     model = model or settings.llm_model
     k = k or settings.top_k
@@ -368,7 +369,18 @@ def chat(
         hybrid=hybrid,
         think=think,
         domain_gate=strict,
+        ambiguity_policy=ambiguity_policy,
+        interactive=history is not None,
     )
+    if result.get("type") in ("clarification", "conditional"):
+        return {
+            **result,
+            "query": query,
+            "search_query": search_query,
+            "intent": intent,
+            "total_ms": round((time.perf_counter() - started) * 1000, 2),
+        }
+
     context = "\n".join(hit.get("text", "") for hit in result["evidence"])
     answer, citations, invalid, guardrail, abstained = apply_guardrail(
         result["answer"], intent, result["evidence"], context, search_query

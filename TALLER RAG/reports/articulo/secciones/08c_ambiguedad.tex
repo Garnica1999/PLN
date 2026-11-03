@@ -1,0 +1,45 @@
+\section{Ambig\"uedad y clarificaci\'on}
+\label{sec:ambiguedad}
+
+\subsection{Estado del arte}
+
+La ambig\"uedad referencial aparece cuando una pregunta admite varias respuestas v\'alidas sobre el mismo corpus. AmbigQA la formaliza como una pregunta con un conjunto de respuestas \cite{min2020ambigqa}. CLAM muestra que los modelos detectan la ambig\"uedad cuando se les pregunta de forma expl\'icita, pero en modo QA contestan igual; el contexto recuperado reduce a\'un m\'as la probabilidad de pedir una aclaraci\'on \cite{kuhn2022clam}. CLAMBER eval\'ua la detecci\'on y la calidad de las preguntas de clarificaci\'on en cuatro tipos de ambig\"uedad y encuentra que los LLM actuales tienen dificultades para resolverla \cite{zhang2024clamber}. Clarify When Necessary estima la entrop\'ia sobre las intenciones para decidir cu\'ando preguntar \cite{zhang2025clarify}.
+
+En RAG hay dos familias. La clarificaci\'on interactiva pregunta al usuario y reescribe la consulta; ASK elige entre clarificaci\'on basada en documentos y basada en aspectos seg\'un la ambig\"uedad \cite{sahay2025ask}, y Tree of Clarifications construye un \'arbol de subpreguntas y agrega las respuestas \cite{kim2023tree}. La respuesta condicional contesta todas las interpretaciones; DIVA recupera pasajes diversos, verifica su calidad y adapta la respuesta \cite{in2025diva}, y CondAmbigQA introduce condiciones expl\'icitas y reporta una mejora de 11,75\,\% cuando el modelo las considera \cite{li2025condambigqa}. La encuesta de 2025 ordena estas estrategias y se\~nala que la detecci\'on sigue siendo el cuello de botella \cite{tanjim2025survey}.
+
+\subsection{Dise\~no}
+
+El sistema usa un detector selectivo. Solo gasta una llamada al LLM cuando la pregunta contiene una referencia gen\'erica que puede tener varios referentes en el corpus (``la iniciativa'', ``el concierto'', ``la reforma'', ``el acuerdo'', ``la COP'', entre otras). Para esas preguntas recupera una uni\'on profunda de 50 fragmentos densos y 50 de BM25, la reordena y pasa el top-10 al detector. As\'i las opciones no se limitan al top-10 de producci\'on.
+
+El detector pide al LLM un JSON con la ambig\"uedad, la pregunta de clarificaci\'on y entre dos y seis opciones; cada opci\'on lleva etiqueta, consulta reescrita, respuesta y evidencias. Una aumentaci\'on determinista a\~nade las cifras de votos y los montos que el modelo omite, para que la lista cubra interpretaciones que el LLM no propuso. La clarificaci\'on devuelve las opciones a la interfaz; al elegir una, la consulta reescrita se env\'ia con la compuerta desactivada, porque la interpretaci\'on ya est\'a fundamentada. La respuesta condicional usa las mismas opciones como condiciones, cada una con su cita. La pol\'itica h\'ibrida clarifica en \texttt{/chat} y condiciona en \texttt{/ask}.
+
+\subsection{Experimento}
+
+El conjunto tiene 12 preguntas: 6 ambiguas y 6 de control, con la interpretaci\'on pretendida, las opciones, las respuestas condicionales y los alias en espa\~nol e ingl\'es. Se congel\'o antes de ejecutar. Se comparan cuatro pol\'iticas: baseline (respuesta \'unica), clarificaci\'on, condicional e h\'ibrida. La clarificaci\'on se eval\'ua con un usuario oracle que elige la opci\'on cuya respuesta coincide con la interpretaci\'on pretendida; si no existe, se marca como fallo. La Tabla~\ref{tab:ambiguedad} resume.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Ambig\"uedad: 6 preguntas ambiguas y 6 de control. La h\'ibrida reporta clarificaci\'on interactiva y condicional de una pasada.}
+\label{tab:ambiguedad}
+\begin{tabular}{lrrr}
+\toprule
+Pol\'itica & Acierto & Turnos & Latencia \\
+\midrule
+Baseline & 0,833 & 1,0 & 9,25 s \\
+Clarificaci\'on & 0,917 & 1,5 & 13,18 s \\
+Condicional & \textbf{1,000} & \textbf{1,0} & 9,98 s \\
+H\'ibrida & 0,917 / 1,000 & 1 a 2 & 9,98 a 13,18 s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Resultados}
+
+El detector marc\'o las 6 ambiguas y ninguna de las 6 de control: precisi\'on, recall y F1 de 1,0. El conjunto es peque\~no y el resultado es descriptivo, no una estimaci\'on poblacional.
+
+El baseline acierta 10 de 12 (0,833): responde una sola interpretaci\'on y, en las ambiguas, elige la m\'as saliente. La clarificaci\'on ofrece la interpretaci\'on pretendida en las 6 ambiguas y acierta 11 de 12 (0,917); el fallo es una respuesta de seguimiento que no reproduce la cifra. El condicional acierta 12 de 12 (1,000) porque enumera las mismas opciones con su respuesta y su cita. La h\'ibrida iguala al condicional en una pasada y a la clarificaci\'on en modo interactivo.
+
+El condicional gana en acierto, turnos y latencia: 1,0, un turno y 9,98 s, frente a 0,833, un turno y 9,25 s del baseline y 0,917, 1,5 turnos y 13,18 s de la clarificaci\'on. La clarificaci\'on gana en control: el usuario elige la interpretaci\'on y el sistema responde esa, no la que el modelo considere m\'as probable. La h\'ibrida no gana en una m\'etrica \'unica; gana en adecuaci\'on al contexto.
+
+La lista plana tiene un l\'imite. En la pregunta de los votos, el LLM propuso tres iniciativas y ninguna era la de 95 votos; la aumentaci\'on determinista a\~nad\'io las cifras de la evidencia y la interpretaci\'on del gold entr\'o como sexta opci\'on. Para preguntas con muchas interpretaciones, una clarificaci\'on jer\'arquica, que primero pregunte la faceta y despu\'es la opci\'on, es el siguiente paso.

@@ -30,6 +30,7 @@ class AskRequest(RetrieveRequest):
     temperature: float = Field(default=0.0, ge=0, le=1)
     think: bool = False
     strict: bool = False
+    ambiguity_policy: str = "auto"
 
 
 def build_expr(request: RetrieveRequest) -> str | None:
@@ -133,6 +134,7 @@ def chat_endpoint(request: ChatRequest) -> dict:
             history=[turn.model_dump() for turn in request.history],
             think=request.think,
             strict=request.strict,
+            ambiguity_policy=request.ambiguity_policy,
         )
     except ValueError as error:
         raise HTTPException(400, detail=str(error)) from error
@@ -153,6 +155,8 @@ def ask(request: AskRequest) -> dict:
             hybrid=request.hybrid,
             think=request.think,
             domain_gate=request.strict,
+            ambiguity_policy=request.ambiguity_policy,
+            interactive=False,
         )
     except ValueError as error:
         raise HTTPException(400, detail=str(error)) from error

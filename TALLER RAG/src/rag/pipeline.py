@@ -7,6 +7,7 @@ from functools import lru_cache
 
 import requests
 
+from .ambiguity import clarification_payload, conditional_payload, detect as detect_ambiguity, needs_detection
 from .chunking import estimate_tokens
 from .config import settings
 from .domain import domain_probability as domain_probability_score
@@ -248,6 +249,7 @@ def call_llm(
     num_predict: int | None = None,
     num_ctx: int | None = None,
     think: bool = False,
+    format: str | None = None,
 ) -> dict:
     payload = {
         "model": model,
@@ -261,8 +263,9 @@ def call_llm(
             "num_predict": num_predict or settings.max_output_tokens,
         },
     }
-    if think:
-        payload["think"] = True
+    payload["think"] = think
+    if format:
+        payload["format"] = format
     try:
         response = requests.post(
             f"{settings.llm_url.rstrip('/')}/api/generate",
@@ -286,6 +289,8 @@ def generate(
     hybrid: bool | None = None,
     think: bool = False,
     domain_gate: bool = False,
+    ambiguity_policy: str = "off",
+    interactive: bool = False,
 ) -> dict:
     model = model or settings.llm_model
     prompt_version = prompt_version or settings.prompt_version
@@ -311,6 +316,7 @@ def generate(
         "reasoning_ms": 0.0,
         "native_thinking": False,
         "domain_probability": None,
+        "type": "answer",
     }
     if settings.rerank and len(hits) > 1:
         hits = score_hits(query, hits)
@@ -350,6 +356,31 @@ def generate(
             "abstain_reason": f"bajo_umbral:{best:.3f}",
             "evidence": hits,
         }
+
+    if ambiguity_policy != "off" and hits:
+        policy = ambiguity_policy
+        if policy == "auto":
+            policy = "clarify" if interactive else "conditional"
+        ambiguity_started = time.perf_counter()
+        ambiguity_hits = hits
+        if needs_detection(query):
+            deep_hits, deep_ms = retrieve_union(query, dense_k=50, sparse_k=50)
+            ambiguity_hits = rerank_hits(query, score_hits(query, deep_hits))[:10]
+            retrieval_ms = round(retrieval_ms + deep_ms, 2)
+        detection = detect_ambiguity(query, ambiguity_hits, model)
+        if detection.get("ambiguous"):
+            if policy == "clarify":
+                payload = clarification_payload(detection, ambiguity_hits)
+            else:
+                payload = conditional_payload(detection, ambiguity_hits)
+            if payload is not None:
+                ambiguity_ms = round((time.perf_counter() - ambiguity_started) * 1000, 2)
+                return {
+                    **base,
+                    **payload,
+                    "generation_ms": ambiguity_ms,
+                    "total_ms": round(retrieval_ms + ambiguity_ms, 2),
+                }
 
     context, used = build_context(hits, settings.max_context_tokens)
     num_ctx, num_predict = model_limits(model)
