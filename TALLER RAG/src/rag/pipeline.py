@@ -292,6 +292,7 @@ def generate(
     ambiguity_policy: str = "off",
     interactive: bool = False,
     history: list[dict] | None = None,
+    original_query: str | None = None,
 ) -> dict:
     model = model or settings.llm_model
     prompt_version = prompt_version or settings.prompt_version
@@ -364,11 +365,12 @@ def generate(
             policy = "clarify" if interactive else "conditional"
         ambiguity_started = time.perf_counter()
         ambiguity_hits = hits
-        if needs_detection(query, history):
+        detect_query = original_query or query
+        if needs_detection(detect_query, history):
             deep_hits, deep_ms = retrieve_union(query, dense_k=50, sparse_k=50)
             ambiguity_hits = rerank_hits(query, score_hits(query, deep_hits))[:10]
             retrieval_ms = round(retrieval_ms + deep_ms, 2)
-        detection = detect_ambiguity(query, ambiguity_hits, model, history)
+        detection = detect_ambiguity(detect_query, ambiguity_hits, model, history)
         if detection.get("ambiguous"):
             if policy == "clarify":
                 payload = clarification_payload(detection, ambiguity_hits)

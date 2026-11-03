@@ -372,6 +372,7 @@ def chat(
         ambiguity_policy=ambiguity_policy,
         interactive=history is not None,
         history=history,
+        original_query=query,
     )
     if result.get("type") in ("clarification", "conditional"):
         return {
