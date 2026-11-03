@@ -188,3 +188,13 @@ Destino final: `TALLER RAG/docs/DECISIONES.md`.
 - Evidencia: e5-base mide 106,9 chunks/s en la GPU contra 25,5 en CPU. La prueba de extremo a extremo da 66,7 chunks/s, así que el corpus completo baja de 11 a 12 horas a 2 o 3 horas.
 - Alternativas: CPU local (11 a 12 horas), servidor con 16 vCPU (15 a 18 horas y dependencia de red), GPU del servidor con qwen (88 horas).
 - Consecuencias: la imagen ROCm pesa del orden de 30 GB. Los vectores se generan en la GPU y las consultas en CPU con el mismo modelo; las diferencias de coma flotante son despreciables. La GPU se comparte con Ollama, así que no conviene generar texto durante la indexación.
+
+## ADR-021. Capa de datos en Docker Swarm y aplicacion con GPU en compose
+
+- Estado: aceptada.
+- Fecha: 2026-11-03.
+- Contexto: la capa de datos (etcd, MinIO y Milvus) corria en el servidor con un contexto Docker y la estacion abria un tunel SSH a `localhost:19530` para que la API la viera. Se pidio migrar a Docker Swarm para eliminar el tunel y dejar el reparto declarativo.
+- Decision: desplegar `etcd`, `minio` y `milvus` como stack `taller-rag` (`docker-stack.yml`) en un Swarm de un solo nodo en el servidor, con etiqueta `role=data`. Milvus publica el 19530 en modo host. La aplicacion (`api`, `frontend`, `ollama`) sigue en compose en la estacion, con `MILVUS_URI=http://192.168.1.100:19530` y sin tunel.
+- Evidencia: `docker service create --group 983 --group 987 --mount /dev/kfd` falla al abrir el dispositivo con `Operation not permitted`; el cgroup de dispositivos bloquea el nodo aunque se monte y el grupo sea correcto. `docker stack deploy` ignora `privileged`, `devices`, `group_add` y `device_cgroup_rules`. El nodo local no puede crear interfaces vxlan: el kernel en ejecucion `7.3.0-4-cachyos` no tiene modulo `vxlan` y los modulos instalados son de `7.3.1-1`.
+- Alternativas: stack completo con la app en el servidor (usa la GTX 1080 de 8 GB, no la RX 9070 XT); `docker service create --network host` para la app (sigue sin acceso a la GPU); compose remoto con tunel (el estado anterior).
+- Consecuencias: desaparece el tunel SSH y el despliegue de datos queda declarativo. La app conserva la GPU AMD. El Swarm es de un solo nodo; la estacion no se une porque no puede ejecutar tareas overlay hasta reiniciar con el kernel `7.3.1-1`. Milvus queda accesible en la LAN en el 19530 sin autenticacion. El modo compose local de la capa de datos sigue disponible en `docker-compose.data.yml`.

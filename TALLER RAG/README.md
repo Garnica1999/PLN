@@ -65,7 +65,7 @@ Variables principales:
 
 | Variable | Uso | Valor por defecto |
 |---|---|---|
-| `MILVUS_URI` | conexión a Milvus | `http://localhost:19530` |
+| `MILVUS_URI` | conexión a Milvus | `http://192.168.1.100:19530` |
 | `MILVUS_COLLECTION` | colección activa | `rag_full_bge_m3_d1024_v1` |
 | `EMBEDDER` | `bge` en GPU, `e5` o `ollama` como alternativas | `bge` |
 | `EMBEDDINGS_MODEL` | encoder | `BAAI/bge-m3` |
@@ -118,45 +118,35 @@ Servicios y puertos:
 | API | `taller-rag-rocm:local` | 8010 |
 | Streamlit | `taller-rag:local` | 8501 |
 
-### Capa de datos remota
+### Capa de datos en Docker Swarm
 
-La capa de datos (etcd, MinIO y Milvus) puede correr en un servidor de la red local. En ese modo, el API y el frontend se levantan sin los servicios de datos y la conexión va por un túnel SSH:
-
-```bash
-# en el servidor
-docker compose -f docker-compose.data.yml up -d
-
-# en la estación
-ssh -N -L 19530:localhost:19530 carlos@192.168.1.100
-docker compose up -d --no-deps api frontend
-```
-
-No levantes `etcd`, `minio` ni `milvus` locales mientras el túnel use el puerto 19530. Los volúmenes locales quedan como copia de seguridad.
-
-### Un solo comando con contexto Docker
-
-El compose de datos se ejecuta en el servidor con un contexto Docker y el de la estación en local. `make up` levanta ambos y espera a que la API vea Milvus:
+La capa de datos (etcd, MinIO y Milvus) corre como stack de Docker Swarm en el servidor. Milvus publica el 19530 en modo host, así que la aplicación local lo alcanza por LAN y no hace falta túnel SSH:
 
 ```bash
+# servidor: manager del swarm (una sola vez)
+docker --context server swarm init --advertise-addr 192.168.1.100
+docker --context server node update --label-add role=data <nodo>
+
+# estación: datos en Swarm y app con GPU
 make up
 make ps
 make down
 ```
 
-El mismo ciclo está en `scripts/up.sh` (`up`, `down`, `status`) para quien prefiera un script a `make`.
+`scripts/up.sh` despliega el stack y después levanta `api`, `frontend` y `ollama` con compose. El stack está en `docker-stack.yml` y se opera con `docker --context server stack ...`.
 
-El contexto se crea una vez y requiere una clave SSH sin contraseña:
+La aplicación no va en el stack: Docker Swarm no admite paso de dispositivos (`devices`) ni `privileged` en un servicio, y el cgroup bloquea `/dev/kfd` con `Operation not permitted`. Por eso la GPU AMD sigue en compose con `network_mode: host`.
+
+La estación se unió al swarm como worker, pero no puede ejecutar tareas overlay: el kernel en ejecución (`7.3.0-4-cachyos`) no tiene el módulo `vxlan`; los módulos instalados son de `7.3.1-1`. Queda fuera del swarm, que no hace falta para este reparto.
+
+El contexto Docker se crea una vez y requiere una clave SSH sin contraseña:
 
 ```bash
 ssh-copy-id carlos@192.168.1.100
 docker context create server --docker "host=ssh://carlos@192.168.1.100"
 ```
 
-Un solo archivo de Compose no puede repartir servicios entre dos hosts; el contexto ejecuta `docker-compose.data.yml` en el servidor y el `Makefile` coordina los dos proyectos.
-
-El compose usa `network_mode: host` porque este equipo tiene dockerd con `iptables: false` y `bridge: none`. Los servicios se hablan por `localhost`. El Ollama nativo, si existe, se queda en 11434.
-
-La API usa la imagen ROCm y monta `/dev/kfd` y `/dev/dri`. El frontend usa la imagen CPU.
+El compose local usa `network_mode: host` porque este equipo tiene dockerd con `iptables: false` y `bridge: none`. La API usa la imagen ROCm y monta `/dev/kfd` y `/dev/dri`; el frontend usa la imagen CPU.
 
 ## 6. Modelos de generación
 

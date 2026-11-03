@@ -138,7 +138,9 @@ La fase de desempeño corre en el worker GPU (`ingest-rocm`, perfil `rocm`), que
 | `frontend` | Streamlit |
 | `eval` | RAGAS y evaluación aislada |
 
-En el modo remoto, `etcd`, `minio` y `milvus` corren en un servidor de la red local y el API se conecta por un túnel SSH a `localhost:19530`. El compose de la capa de datos está en `docker-compose.data.yml`.
+En el modo principal, `etcd`, `minio` y `milvus` corren como stack de Docker Swarm en el servidor (`docker-stack.yml`, etiqueta `role=data`). Milvus publica el 19530 en modo host y el API se conecta a `http://192.168.1.100:19530` por LAN, sin túnel SSH.
+
+La aplicación no puede ir en el stack: Swarm no admite `devices` ni `privileged` en un servicio, y el cgroup bloquea `/dev/kfd`. `api`, `frontend` y `ollama` se levantan con compose en la estación (etiqueta `role=app` del nodo local, sin uso en el stack) y usan la GPU AMD con `network_mode: host`. `docker-compose.data.yml` queda como modo de datos alternativo.
 
 La API y el frontend usan `network_mode: host`. El contenedor `eval` se levanta con el perfil `eval` y monta `src`, `eval`, `reports`, `plan` y la caché de Hugging Face.
 

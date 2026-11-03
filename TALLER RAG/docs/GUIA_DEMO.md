@@ -9,14 +9,14 @@ curl http://localhost:8010/health
 
 Condiciones: Milvus, LLM y embeddings en verde, y al menos una colección con documentos (`GET /stats`).
 
-Si la capa de datos está en el servidor, comprueba el túnel antes de la demo:
+La capa de datos corre como stack de Swarm en el servidor y Milvus publica el 19530 en la LAN; no hay túnel. Antes de la demo:
 
 ```bash
-ss -ltn | grep 19530
+docker --context server stack services taller-rag
 curl http://localhost:8010/health
 ```
 
-El túnel se abre con `ssh -N -L 19530:localhost:19530 carlos@192.168.1.100`. Si el puerto no escucha, el API no recupera aunque el frontend siga abierto.
+Si `taller-rag_milvus` no está en 1/1, la API no recupera aunque el frontend siga abierto. Se levanta con `make up`.
 
 El servicio `prewarm` del compose ya cargó el generador, el recuperador y el reranker al levantar el stack. Si hiciste `down` y `up`, espera a que el contenedor `prewarm` salga con código 0. Para repetirlo a mano: `docker compose exec -T api python -m src.scripts.prewarm`. Sin precalentamiento, la primera pregunta tarda unos 29 s; con él, la demo arranca en los 6 a 7 s normales.
 

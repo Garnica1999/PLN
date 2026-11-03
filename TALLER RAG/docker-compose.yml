@@ -1,9 +1,12 @@
 name: taller-rag
 
-# La máquina tiene dockerd con "iptables": false y "bridge": "none".
-# Por eso todos los servicios usan red de host y hablan por localhost.
-# En un Docker estándar se pueden quitar los network_mode y usar los nombres
-# de servicio (milvus, ollama) en lugar de localhost.
+# Modo local de respaldo. La via principal es el stack de Swarm
+# (docker-stack.yml) para la capa de datos en el servidor y este compose para
+# la aplicacion con GPU en la estacion.
+#
+# La estacion tiene dockerd con "iptables": false y "bridge": "none", asi que
+# la app usa red de host. Milvus vive en el servidor y se alcanza por LAN
+# (192.168.1.100:19530); no hay tunel SSH.
 
 services:
   etcd:
@@ -137,7 +140,7 @@ services:
       EMBEDDING_DEVICE: cuda
       EMBEDDING_HALF: "true"
       EMBEDDINGS_BATCH: "128"
-      MILVUS_URI: http://localhost:19530
+      MILVUS_URI: http://192.168.1.100:19530
       MILVUS_COLLECTION: rag_full_bge_m3_d1024_v1
       RETRIEVER: hybrid_union
       TOP_K: "10"
@@ -176,7 +179,7 @@ services:
     environment:
       PYTHONPATH: /work
       API_URL: http://localhost:8010
-      MILVUS_URI: http://localhost:19530
+      MILVUS_URI: http://192.168.1.100:19530
       OLLAMA_URL: http://localhost:11435
       EMBEDDER: bge
       EMBEDDINGS_MODEL: BAAI/bge-m3

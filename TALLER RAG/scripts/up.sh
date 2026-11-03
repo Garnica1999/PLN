@@ -1,103 +1,106 @@
 #!/usr/bin/env bash
-# Arranca la capa de datos en el servidor y la aplicacion en la estacion.
-# Uso: scripts/up.sh [up|down|status]
+# Capa de datos en Docker Swarm (servidor) + aplicacion con GPU en la estacion.
+# Uso: scripts/up.sh [up|down|status|logs|prewarm|health]
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-SERVER="${SERVER:-carlos@192.168.1.100}"
+STACK="${STACK:-taller-rag}"
 CONTEXT="${CONTEXT:-server}"
-DATA_COMPOSE=(docker --context "$CONTEXT" compose -f docker-compose.data.yml)
-APP_COMPOSE=(docker compose)
-LOCAL_SERVICES=(api frontend ollama)
+FILE="${FILE:-docker-stack.yml}"
+STACK_CMD=(docker --context "$CONTEXT" stack)
+APP_SERVICES=(api frontend ollama)
 HEALTH_URL="${HEALTH_URL:-http://localhost:8010/health}"
 
 log() { printf '[stack] %s\n' "$*"; }
 die() { printf '[stack] error: %s\n' "$*" >&2; exit 1; }
 
-ensure_context() {
-  if ! docker context inspect "$CONTEXT" >/dev/null 2>&1; then
-    log "creando contexto Docker $CONTEXT -> $SERVER"
-    docker context create "$CONTEXT" --docker "host=ssh://$SERVER" >/dev/null
-  fi
-  ssh -o BatchMode=yes -o ConnectTimeout=5 "$SERVER" true \
-    || die "no hay clave SSH para $SERVER; ejecuta ssh-copy-id $SERVER"
+ensure_swarm() {
+  state="$(docker --context "$CONTEXT" info --format '{{.Swarm.LocalNodeState}}' 2>/dev/null || true)"
+  [ "$state" = "active" ] || die "el nodo $CONTEXT no esta en un swarm; ejecuta docker swarm init"
 }
 
-ensure_tunnel() {
-  if ss -ltn | grep -q ':19530 '; then
-    log "tunel 19530 ya activo"
-    return
-  fi
-  log "abriendo tunel 19530 -> $SERVER"
-  ssh -f -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
-    -L 19530:localhost:19530 "$SERVER"
-  for _ in $(seq 1 15); do
-    ss -ltn | grep -q ':19530 ' && return
-    sleep 1
-  done
-  die "el tunel no abrio el puerto 19530"
-}
-
-wait_remote() {
+wait_data() {
   log "esperando etcd, MinIO y Milvus"
-  for _ in $(seq 1 90); do
-    state="$("${DATA_COMPOSE[@]}" ps --format '{{.Service}} {{.State}}' 2>/dev/null || true)"
-    if grep -q '^etcd running' <<<"$state" \
-       && grep -q '^minio running' <<<"$state" \
-       && grep -q '^milvus running' <<<"$state"; then
+  for _ in $(seq 1 120); do
+    if "${STACK_CMD[@]}" ps "$STACK" --filter desired-state=running \
+        --format '{{.CurrentState}}' 2>/dev/null | grep -c '^Running' | grep -q '^3$'; then
       return
     fi
     sleep 2
   done
-  die "la capa de datos remota no quedo lista"
+  die "la capa de datos no quedo lista; revisa: $0 status"
 }
 
 wait_api() {
   log "esperando la API"
-  for _ in $(seq 1 90); do
+  for _ in $(seq 1 150); do
     if curl -fsS "$HEALTH_URL" 2>/dev/null | grep -q '"milvus":true'; then
       return
     fi
     sleep 2
   done
-  die "la API no ve Milvus; revisa el tunel y los logs"
+  die "la API no ve Milvus; revisa: $0 status"
 }
 
 up() {
-  ensure_context
-  ensure_tunnel
-  log "levantando la capa de datos remota"
-  "${DATA_COMPOSE[@]}" up -d
-  wait_remote
-  log "levantando API, frontend y Ollama"
-  "${APP_COMPOSE[@]}" up -d --no-deps "${LOCAL_SERVICES[@]}"
+  ensure_swarm
+  log "desplegando la capa de datos en $CONTEXT"
+  # Tras un stack rm la red overlay tarda en desaparecer y el deploy puede
+  # fallar con "network not found"; se reintenta.
+  for attempt in 1 2 3; do
+    if "${STACK_CMD[@]}" deploy -c "$FILE" "$STACK"; then
+      break
+    fi
+    [ "$attempt" -eq 3 ] && die "no se pudo desplegar $STACK"
+    log "reintentando el despliegue en 5 s"
+    sleep 5
+  done
+  wait_data
+  log "levantando API, frontend y Ollama con GPU"
+  docker compose up -d --no-deps "${APP_SERVICES[@]}"
   wait_api
   log "listo: http://localhost:8501  API http://localhost:8010/health"
 }
 
 down() {
-  log "deteniendo la app local"
-  "${APP_COMPOSE[@]}" stop "${LOCAL_SERVICES[@]}"
-  log "deteniendo la capa de datos remota"
-  "${DATA_COMPOSE[@]}" stop
-  log "detenido (el tunel sigue abierto)"
+  log "deteniendo la aplicacion local"
+  docker compose stop "${APP_SERVICES[@]}"
+  log "eliminando los servicios del stack (los volumenes se conservan)"
+  "${STACK_CMD[@]}" rm "$STACK"
 }
 
 status() {
-  echo "== servidor =="
-  "${DATA_COMPOSE[@]}" ps
-  echo "== estacion =="
-  "${APP_COMPOSE[@]}" ps
+  echo "== servicios del stack =="
+  "${STACK_CMD[@]}" services "$STACK"
+  echo "== tareas del stack =="
+  "${STACK_CMD[@]}" ps "$STACK"
+  echo "== aplicacion local =="
+  docker compose ps
   echo "== salud =="
   curl -s "$HEALTH_URL" || true
   echo
 }
 
+logs() {
+  local service="${1:-milvus}"
+  case "$service" in
+    api|frontend|ollama|prewarm) docker compose logs --tail=80 "$service" ;;
+    *) docker --context "$CONTEXT" service logs --tail=80 "${STACK}_${service}" ;;
+  esac
+}
+
+prewarm() { docker compose run --rm prewarm; }
+
+health() { curl -s "$HEALTH_URL"; echo; }
+
 case "${1:-up}" in
   up) up ;;
   down) down ;;
   status|ps) status ;;
-  *) echo "uso: $0 [up|down|status]" >&2; exit 1 ;;
+  logs) shift; logs "$@" ;;
+  prewarm) prewarm ;;
+  health) health ;;
+  *) echo "uso: $0 [up|down|status|logs <servicio>|prewarm|health]" >&2; exit 1 ;;
 esac
