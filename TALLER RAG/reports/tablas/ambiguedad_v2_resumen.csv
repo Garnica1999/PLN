@@ -1,2 +1,2 @@
 n,n_ambiguous,n_control,detector_precision,detector_recall,detector_f1,baseline_accuracy,clarification_accuracy,clarification_intended_offered,clarification_turns,conditional_accuracy,conditional_intended_covered,conditional_recommendation_accuracy,conditional_recommendation_coverage,conditional_recommendation_precision,hybrid_accuracy,baseline_ms,clarification_ms,conditional_ms
-42,25,17,0.96,0.96,0.96,0.69,0.714,0.84,1.52,0.857,0.84,0.0,0.0,0.0,0.714,6088.6,9463.3,6206.6
+42,25,17,0.962,1.0,0.98,0.69,0.69,0.88,1.55,0.857,0.88,0.0,0.0,0.0,0.69,6387.7,10091.4,6375.9

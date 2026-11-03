@@ -241,7 +241,7 @@ docker compose exec api python -m src.scripts.metrics --results reports/corridas
 4. Comparación de limpieza, chunking y codificadores: `docs/EXPERIMENTOS.md`.
 5. Pipeline unificado: `python src/scripts/run_evaluation.py`. Corre desempeño, chat y RAGAS; escribe `reports/tablas/evaluacion_comparativa.md`. La fase de desempeño corre en el worker GPU (`ingest-rocm`, perfil `rocm`) para no cargar una segunda copia de los modelos dentro de la API. El contenedor `eval` tiene RAGAS 0.4.3, LangChain 0.3 y `BAAI/bge-m3` en CPU; se levanta con el perfil `eval`.
 
-6. Ambigüedad: `docker compose exec api python -m src.scripts.experimento_ambiguedad`. Escribe `reports/tablas/ambiguedad_resumen.csv` y `ambiguedad_por_pregunta.csv`.
+6. Ambigüedad: `docker compose exec api python -m src.scripts.experimento_ambiguedad`. Escribe `reports/tablas/ambiguedad_resumen.csv` y `ambiguedad_por_pregunta.csv`. La doble anotación humana del gold v2 tiene hojas y protocolo en `eval/anotacion/`; el acuerdo se calcula con `python -m src.scripts.conciliar_anotacion`.
 
 Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`, con Recall@k, P@1, P@5, Hit@k, MRR, MAP, nDCG, cobertura de span, context precision y recall, duplicados, latencias e intervalos por bootstrap.
 
@@ -256,7 +256,7 @@ Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`
 | RAGAS actual (`gemma4` + `bge-m3`) | 0,952 / 0,840 / 0,881 / 0,921 / 0,657 |
 | RAGAS anterior (`gemma2` + `qwen3`) | 0,925 / 0,798 / 0,760 / 0,842 / 0,705 |
 | Latencia media | 7.938 ms sin razonamiento; 6.834 ms con razonamiento |
-| Ambigüedad | Detector F1 0,96 en v2 (42 preguntas); condicional 36/42 vs baseline 29/42 (p=0,039); clarificación 30/42 (p=1,0); recomendación retirada |
+| Ambigüedad | Detector F1 0,98 en v2 (42 preguntas); condicional 36/42 vs baseline 29/42 (p=0,039); clarificación 29/42 (p=1,0); recomendación retirada |
 
 La arquitectura completa, las capas y la comparación contra la versión anterior están en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md). El informe de métricas está en [reports/informe/metricas_nueva_configuracion.md](reports/informe/metricas_nueva_configuracion.md).
 

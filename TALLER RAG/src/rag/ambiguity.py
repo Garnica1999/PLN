@@ -65,6 +65,8 @@ def needs_detection(question: str, history: list[dict] | None = None) -> bool:
         unit in text for unit in ("cuesta", "precio", "hectarea", "kilo", "dolar", "peso", "euro")
     ):
         return True
+    if re.search(r"\b(cual es el porcentaje|what is the percentage)\b", text):
+        return True
     if history and (len(text.split()) <= 8 or text.startswith("y ")):
         return True
     return False
