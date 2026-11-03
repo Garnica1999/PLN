@@ -20,6 +20,7 @@ Cada tabla del artículo se respalda en un artefacto. El verificador debe compar
 | Respuesta final (37/38, 25/37, F1, latencia) | `reports/tablas/metricas_final_sin.csv` y `metricas_final_con.csv` del commit `125bbc7`: 7.938/6.834 ms, 25/37 de match estricto. La corrida limpia de 6.788/6.482 ms no conserva CSV y no se usa como referencia |
 | Conjunto reservado híbrido (recall, respuesta, compuerta, latencia) | `reports/tablas/reservado_hibrida_resumen.csv`, `reservado_hibrida_por_pregunta.csv`; `reports/corridas/reservado_hibrida_raw.jsonl` |
 | Capa de datos remota | `docker-compose.data.yml`; el API se conecta por un túnel SSH a `localhost:19530` |
+| Profundidad de la unión | `reports/tablas/reservado_union_depth.csv`, `reservado_union_depth_resumen.csv` |
 | Modelos y versiones | `docker-compose.yml`, manifiestos de Ollama y `docs/ARQUITECTURA.md` §3; tabla XVIII del artículo |
 | Reranker p50 | `reports/tablas/mejoras_recuperacion.csv` (rerank5 1.297 ms, rerank20 5.460 ms) |
 | Chat (11/14, 14/14) | `reports/tablas/chat_eval_final_*.csv` |

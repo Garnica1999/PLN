@@ -133,6 +133,25 @@ docker compose up -d --no-deps api frontend
 
 No levantes `etcd`, `minio` ni `milvus` locales mientras el túnel use el puerto 19530. Los volúmenes locales quedan como copia de seguridad.
 
+### Un solo comando con contexto Docker
+
+El compose de datos se ejecuta en el servidor con un contexto Docker y el de la estación en local. `make up` levanta ambos y espera a que la API vea Milvus:
+
+```bash
+make up
+make ps
+make down
+```
+
+El contexto se crea una vez y requiere una clave SSH sin contraseña:
+
+```bash
+ssh-copy-id carlos@192.168.1.100
+docker context create server --docker "host=ssh://carlos@192.168.1.100"
+```
+
+Un solo archivo de Compose no puede repartir servicios entre dos hosts; el contexto ejecuta `docker-compose.data.yml` en el servidor y el `Makefile` coordina los dos proyectos.
+
 El compose usa `network_mode: host` porque este equipo tiene dockerd con `iptables: false` y `bridge: none`. Los servicios se hablan por `localhost`. El Ollama nativo, si existe, se queda en 11434.
 
 La API usa la imagen ROCm y monta `/dev/kfd` y `/dev/dri`. El frontend usa la imagen CPU.
