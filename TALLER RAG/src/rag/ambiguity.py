@@ -11,10 +11,11 @@ GENERIC_REFERENCES = (
     "la iniciativa", "el concierto", "la reforma", "el proyecto", "el acuerdo",
     "la cumbre", "la cop", "el partido", "la empresa", "el presidente",
     "el ministro", "la ley", "el programa", "el plan", "la campana",
-    "el terremoto", "el sismo", "la cumbre", "el tratado",
+    "el terremoto", "el sismo", "la cumbre", "el tratado", "el estudio", "el informe",
     "the initiative", "the concert", "the reform", "the project", "the agreement",
     "the summit", "the cop", "the match", "the company", "the president",
     "the minister", "the law", "the program", "the plan", "the campaign",
+    "the study", "the report",
 )
 
 DETECTION_PROMPT = """Eres un analista de ambiguedad en preguntas sobre un corpus de noticias.
@@ -38,6 +39,8 @@ Reglas:
 - Si la pregunta pide una unidad o medida, incluye la unidad y la escala en la answer.
 - Si la pregunta compara, incluye el ano, la region o la fuente en la label y en la query.
 - Si hay historial, usalo para resolver el sujeto omitido.
+- Si la referencia generica ya viene acotada por un nombre propio, una fecha, un lugar o una clausula relativa (por ejemplo, "el proyecto Triangulo del Puma", "el terremoto que sacudio Colombia", "la iniciativa en la Camara"), la pregunta no es ambigua por referencia.
+- Si el historial fija un tema, cada opcion debe responder a ese mismo tema para el nuevo sujeto, no a un tema lateral de la evidencia.
 
 PREGUNTA: {question}
 HISTORIAL:
@@ -60,7 +63,7 @@ def needs_detection(question: str, history: list[dict] | None = None) -> bool:
     if re.search(r"\b(mayor|menor|mejor|peor|mas|menos|highest|lowest|best|worst)\b", text) and len(text.split()) <= 16:
         return True
     if re.search(r"\b(cuanto|cuanta|how much)\b", text) and any(
-        unit in text for unit in ("cuesta", "precio", "porcentaje", "hectarea", "kilo", "dolar", "peso", "euro")
+        unit in text for unit in ("cuesta", "precio", "hectarea", "kilo", "dolar", "peso", "euro")
     ):
         return True
     if history and (len(text.split()) <= 8 or text.startswith("y ")):

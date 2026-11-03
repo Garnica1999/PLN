@@ -23,8 +23,9 @@ Cada tabla del artículo se respalda en un artefacto. El verificador debe compar
 | Profundidad de la unión | `reports/tablas/reservado_union_depth.csv`, `reservado_union_depth_resumen.csv` |
 | Ambigüedad (detección y políticas) | `eval/gold/gold_ambiguedad.jsonl`; `reports/tablas/ambiguedad_resumen.csv`, `ambiguedad_por_pregunta.csv` |
 | Ambigüedad en otros escenarios | `eval/gold/gold_ambiguedad_otros.jsonl`; `reports/tablas/ambiguedad_otros_resumen.csv`, `ambiguedad_otros_por_pregunta.csv` |
-| Ambigüedad v2 (45 preguntas) | `eval/gold/gold_ambiguedad_v2.jsonl`; `reports/tablas/ambiguedad_v2_resumen.csv`, `ambiguedad_v2_por_pregunta.csv` |
+| Ambigüedad v2 (42 preguntas) | `eval/gold/gold_ambiguedad_v2.jsonl`; `reports/tablas/ambiguedad_v2_resumen.csv`, `ambiguedad_v2_por_pregunta.csv` |
 | Recomendación por margen (retirada) | `reports/tablas/recomendacion_margen.csv` |
+| Material suplementario | `reports/articulo/suplemento.pdf` (tablas S1-S6 y figuras S1-S4) |
 | Modelos y versiones | `docker-compose.yml`, manifiestos de Ollama y `docs/ARQUITECTURA.md` §3; tabla XVIII del artículo |
 | Reranker p50 | `reports/tablas/mejoras_recuperacion.csv` (rerank5 1.297 ms, rerank20 5.460 ms) |
 | Chat (11/14, 14/14) | `reports/tablas/chat_eval_final_*.csv` |
