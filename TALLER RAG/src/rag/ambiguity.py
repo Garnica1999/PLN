@@ -35,8 +35,13 @@ Reglas:
 - La query debe resolver la ambiguedad, ser una pregunta completa y no mencionar "opcion", "el texto", "la evidencia" ni numeros de evidencia.
 - No inventes interpretaciones que no aparezcan en las evidencias.
 - La respuesta debe ser corta, de 1 a 12 palabras, e incluir la cifra o entidad exacta que responde, no una parafrasis.
+- Si la pregunta pide una unidad o medida, incluye la unidad y la escala en la answer.
+- Si la pregunta compara, incluye el ano, la region o la fuente en la label y en la query.
+- Si hay historial, usalo para resolver el sujeto omitido.
 
 PREGUNTA: {question}
+HISTORIAL:
+{history}
 EVIDENCIAS:
 {evidence}
 """
@@ -47,10 +52,20 @@ def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def needs_detection(question: str) -> bool:
-    """Solo gasta una llamada al LLM en preguntas con referencia generica."""
+def needs_detection(question: str, history: list[dict] | None = None) -> bool:
+    """Solo gasta una llamada al LLM cuando hay una senal de ambiguedad."""
     text = normalize(question)
-    return any(reference in text for reference in GENERIC_REFERENCES)
+    if any(reference in text for reference in GENERIC_REFERENCES):
+        return True
+    if re.search(r"\b(mayor|menor|mejor|peor|mas|menos|highest|lowest|best|worst)\b", text) and len(text.split()) <= 16:
+        return True
+    if re.search(r"\b(cuanto|cuanta|how much)\b", text) and any(
+        unit in text for unit in ("cuesta", "precio", "porcentaje", "hectarea", "kilo", "dolar", "peso", "euro")
+    ):
+        return True
+    if history and (len(text.split()) <= 8 or text.startswith("y ")):
+        return True
+    return False
 
 
 def evidence_block(hits: list[dict], limit: int = 10, chars: int = 600) -> str:
@@ -226,12 +241,16 @@ def augment_amount_options(question: str, hits: list[dict], options: list[dict])
         existing.add(mention["number"])
     return options
 
-def detect(question: str, hits: list[dict], model: str | None = None) -> dict:
+def detect(question: str, hits: list[dict], model: str | None = None, history: list[dict] | None = None, force: bool = False) -> dict:
     """Devuelve la ambiguedad detectada y las opciones, o una respuesta vacia."""
-    if not hits or not needs_detection(question):
+    if not hits or (not force and not needs_detection(question, history)):
         return {"ambiguous": False, "options": []}
     model = model or settings.llm_model
-    prompt = DETECTION_PROMPT.format(question=question, evidence=evidence_block(hits))
+    history_text = ""
+    if history:
+        turns = history[-3:]
+        history_text = "\n".join(f"{turn.get('role')}: {turn.get('content')}" for turn in turns)
+    prompt = DETECTION_PROMPT.format(question=question, evidence=evidence_block(hits), history=history_text or "(sin historial)")
     try:
         data = parse_json(_llm(prompt, model).get("response") or "")
     except Exception:
@@ -286,20 +305,7 @@ def conditional_payload(detection: dict, hits: list[dict]) -> dict | None:
         for option in options
     ]
 
-    def support(condition: dict) -> float:
-        scores = [
-            float(hits[index - 1].get("rerank_score") or hits[index - 1].get("score") or 0.0)
-            for index in condition["citations"]
-            if 1 <= index <= len(hits)
-        ]
-        return max(scores) if scores else 0.0
-
-    best = max(conditions, key=support) if conditions else None
     lines = []
-    if best is not None:
-        cites = ", ".join(f"[{index}]" for index in best["citations"])
-        lines.append(f"La interpretación con mayor respaldo es {best['label']}: {best['answer']} {cites}.")
-        lines.append("")
     lines.append("La pregunta tiene varias interpretaciones:")
     for condition in conditions:
         cites = ", ".join(f"[{index}]" for index in condition["citations"])
@@ -309,7 +315,7 @@ def conditional_payload(detection: dict, hits: list[dict]) -> dict | None:
         "type": "conditional",
         "answer": "\n".join(lines),
         "conditions": conditions,
-        "recommendation": best,
+        "recommendation": None,
         "evidence": hits[:10],
         "abstained": False,
         "abstain_reason": None,

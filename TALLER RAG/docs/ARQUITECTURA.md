@@ -146,7 +146,7 @@ La API y el frontend usan `network_mode: host`. El contenedor `eval` se levanta 
 
 El detector es selectivo: solo se activa con referencias genéricas ("la iniciativa", "el concierto", "la reforma", "el acuerdo", "la COP", etc.). Para esas preguntas recupera una unión profunda de 50 fragmentos densos y 50 de BM25, la reordena y pide al LLM un JSON con la ambigüedad, la pregunta de clarificación y entre dos y seis opciones. Una aumentación determinista añade las cifras de votos y los montos que el modelo omite. La clarificación devuelve opciones con consulta reescrita; la condicional usa las mismas opciones con su cita. La política `auto` clarifica en `/chat` y condiciona en `/ask`.
 
-En 18 preguntas (12 ambiguas y 6 de control, referencial y temporal/alcance), el detector da F1 1,0. El baseline acierta 16 de 18; la clarificación 17 de 18 con 1,5 turnos; la condicional 18 de 18 con un turno. La recomendación por puntuación de la evidencia acierta 3 de 9; no se usa como respuesta única, solo como pista. La condicional gana en acierto, turnos y latencia; la clarificación gana en control del usuario. La híbrida usa la mejor política según el contexto.
+En 18 preguntas humanas, el detector da F1 1,0 y el condicional 18/18 frente a 16/18. En el conjunto v2 de 45 preguntas asistidas por LLM (24 ambiguas y 21 de control), el detector baja a F1 0,84; el baseline acierta 29 de 45; la clarificación 31 de 45 y no se separa (McNemar p=0,73); el condicional 39 de 45 y sí se separa (p=0,006). Por tipo, el condicional acierta 1,0 en temporal, alcance, unidad y comparación, 0,88 en referencial y 0,33 en conversacional. La recomendación por margen se retiró. La híbrida usa la mejor política según el contexto.
 
 ## 3. Configuración
 

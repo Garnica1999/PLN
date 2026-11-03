@@ -27,11 +27,11 @@ def run(gold_path: Path = GOLD, raw_path: Path = RAW, summary_path: Path = SUMMA
         ambiguous = row["type"] == "ambigua"
         aliases = row.get("intended_aliases") or [row.get("reference_answer") or ""]
 
-        baseline = chat(question, ambiguity_policy="off")
+        baseline = chat(question, ambiguity_policy="off", history=row.get("history"))
         baseline_answer = baseline.get("answer") or ""
         baseline_correct = (not baseline.get("abstained")) and matches(baseline_answer, aliases)
 
-        clarification = chat(question, ambiguity_policy="clarify")
+        clarification = chat(question, ambiguity_policy="clarify", history=row.get("history"))
         detected = clarification.get("type") == "clarification"
         intended_offered = False
         clarification_correct = False
@@ -54,11 +54,12 @@ def run(gold_path: Path = GOLD, raw_path: Path = RAW, summary_path: Path = SUMMA
             clarification_answer = clarification.get("answer") or ""
             clarification_correct = (not clarification.get("abstained")) and matches(clarification_answer, aliases)
 
-        conditional = chat(question, ambiguity_policy="conditional")
+        conditional = chat(question, ambiguity_policy="conditional", history=row.get("history"))
         conditional_detected = conditional.get("type") == "conditional"
         conditional_covered = False
         conditional_correct = False
         recommendation_correct = False
+        recommendation_present = False
         if conditional_detected:
             conditional_covered = any(
                 matches(condition.get("answer") or "", aliases)
@@ -66,7 +67,8 @@ def run(gold_path: Path = GOLD, raw_path: Path = RAW, summary_path: Path = SUMMA
             )
             conditional_correct = conditional_covered
             recommendation = conditional.get("recommendation") or {}
-            recommendation_correct = bool(recommendation) and matches(recommendation.get("answer") or "", aliases)
+            recommendation_present = bool(recommendation)
+            recommendation_correct = recommendation_present and matches(recommendation.get("answer") or "", aliases)
         else:
             conditional_answer = conditional.get("answer") or ""
             conditional_correct = (not conditional.get("abstained")) and matches(conditional_answer, aliases)
@@ -86,7 +88,10 @@ def run(gold_path: Path = GOLD, raw_path: Path = RAW, summary_path: Path = SUMMA
                 "conditional_detected": conditional_detected,
                 "conditional_covered": conditional_covered,
                 "conditional_correct": conditional_correct,
+                "conditional_recommendation_present": recommendation_present,
                 "conditional_recommendation_correct": recommendation_correct,
+                "split": row.get("split"),
+                "subtype": row.get("subtype"),
                 "hybrid_correct": hybrid_correct,
                 "clarification_turns": clarification_turns,
                 "baseline_ms": baseline.get("total_ms"),
@@ -135,6 +140,8 @@ def run(gold_path: Path = GOLD, raw_path: Path = RAW, summary_path: Path = SUMMA
         "conditional_accuracy": round(float(frame["conditional_correct"].mean()), 3),
         "conditional_intended_covered": round(float(ambiguous["conditional_covered"].mean()), 3),
         "conditional_recommendation_accuracy": round(float(ambiguous["conditional_recommendation_correct"].mean()), 3),
+        "conditional_recommendation_coverage": round(float(ambiguous["conditional_recommendation_present"].mean()), 3),
+        "conditional_recommendation_precision": round(float(ambiguous.loc[ambiguous["conditional_recommendation_present"], "conditional_recommendation_correct"].mean()), 3) if ambiguous["conditional_recommendation_present"].any() else 0.0,
         "hybrid_accuracy": round(float(frame["hybrid_correct"].mean()), 3),
         "baseline_ms": round(float(frame["baseline_ms"].mean()), 1),
         "clarification_ms": round(float(frame["clarification_ms"].mean()), 1),

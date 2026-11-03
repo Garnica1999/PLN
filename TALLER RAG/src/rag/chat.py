@@ -371,6 +371,7 @@ def chat(
         domain_gate=strict,
         ambiguity_policy=ambiguity_policy,
         interactive=history is not None,
+        history=history,
     )
     if result.get("type") in ("clarification", "conditional"):
         return {
