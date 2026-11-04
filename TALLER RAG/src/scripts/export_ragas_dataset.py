@@ -15,7 +15,7 @@ OUT = Path("reports/ragas/dataset.jsonl")
 NEGATIVES = Path("reports/ragas/negatives.jsonl")
 
 
-def post(question: str, k: int = 5) -> dict:
+def post(question: str, k: int = 5, hybrid: str = "auto") -> dict:
     response = requests.post(
         f"{API}/chat",
         json={
@@ -24,6 +24,7 @@ def post(question: str, k: int = 5) -> dict:
             "k": k,
             "collection": COLLECTION,
             "strict": False,
+            "hybrid": None if hybrid == "auto" else hybrid == "true",
             "think": False,
         },
         timeout=900,
@@ -36,12 +37,13 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--k", type=int, default=5)
     parser.add_argument("--out", type=Path, default=OUT)
+    parser.add_argument("--hybrid", choices=["auto", "true", "false"], default="auto")
     args = parser.parse_args()
     silver = [json.loads(line) for line in SILVER.read_text(encoding="utf-8").splitlines() if line.strip()]
     samples = []
     negatives = []
     for index, row in enumerate(silver, start=1):
-        data = post(row["question"], args.k)
+        data = post(row["question"], args.k, args.hybrid)
         item = {
             "id": row["id"],
             "type": row["type"],

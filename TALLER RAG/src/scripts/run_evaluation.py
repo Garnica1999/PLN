@@ -59,7 +59,17 @@ def chat() -> None:
 
 
 def ragas() -> None:
-    run([sys.executable, "src/scripts/export_ragas_dataset.py"])
+    """Reproduce la fila hibrida (k=10). La fila densa k=5 exige RETRIEVER=dense,
+    TOP_K=5 en la API y exportar con --k 5 --hybrid false."""
+    run(
+        [
+            sys.executable,
+            "src/scripts/export_ragas_dataset.py",
+            "--k", "10",
+            "--out", "reports/ragas/dataset_hibrido.jsonl",
+            "--hybrid", "true",
+        ]
+    )
     run(
         [
             "docker", "compose", "--profile", "eval", "run", "--rm", "-T",
@@ -67,7 +77,8 @@ def ragas() -> None:
             "-e", "RAGAS_EMBEDDINGS_PROVIDER=hf",
             "-e", "RAGAS_EMBEDDINGS=BAAI/bge-m3",
             "-e", "RAGAS_LIMIT=0",
-            "-e", "RAGAS_OUT=reports/tablas/ragas_gemma4-e4b_bge-m3.csv",
+            "-e", "RAGAS_DATASET=/eval/reports/ragas/dataset_hibrido.jsonl",
+            "-e", "RAGAS_OUT=reports/tablas/ragas_hibrido.csv",
             "eval",
         ],
         check=False,
@@ -104,12 +115,12 @@ def summarize() -> None:
         add("Recuperacion", "Recall@10", f"{c['recall_at_10']:.3f}", f"{p['recall_at_10']:.3f}")
         add("Recuperacion", "nDCG@10", f"{c['ndcg_at_10']:.3f}", f"{p['ndcg_at_10']:.3f}")
         add("Recuperacion", "P@1", f"{c['p_at_1']:.3f}", f"{p['p_at_1']:.3f}")
-        add("Recuperacion", "P@5", f"{c['p_at_5']:.3f}", f"{p['p_at_5']:.3f}")
+        add("Recuperacion", "Hit@5", f"{c['p_at_5']:.3f}", f"{p['p_at_5']:.3f}")
         add("Respuesta", "Entregadas", f"{int(c['delivered_direct'])}/38", f"{int(p['delivered_direct'])}/38")
         add("Respuesta", "Abstenciones directas", int(c["abstained_direct"]), int(p["abstained_direct"]))
         add(
             "Respuesta",
-            "Match estricto",
+            "Cobertura de tokens",
             f"{int(c['strict_match_direct'])}/{int(c['delivered_direct'])} ({c['strict_match_rate']*100:.1f}%)",
             f"{int(p['strict_match_direct'])}/{int(p['delivered_direct'])} ({p['strict_match_rate']*100:.1f}%)",
         )
@@ -129,7 +140,7 @@ def summarize() -> None:
             add("Recuperacion top-5", "nDCG con reranker", f"{r['ndcg']:.3f}", f"{d['ndcg']:.3f}")
             add("Recuperacion top-5", "P@1 con reranker", f"{r['p_at_1']:.3f}", f"{d['p_at_1']:.3f}")
             add("Recuperacion top-5", "Recall", f"{r['recall']:.3f}", f"{d['recall']:.3f}")
-            add("Recuperacion top-5", "P@5", f"{r['p_at_5']:.3f}", f"{d['p_at_5']:.3f}")
+            add("Recuperacion top-5", "Hit@5", f"{r['p_at_5']:.3f}", f"{d['p_at_5']:.3f}")
     if manual is not None:
         counts = manual["categoria"].value_counts()
         correct = int(counts.get("correcta", 0))

@@ -3,7 +3,7 @@
 
 \subsection{Por qu\'e el piloto enga\~na}
 
-La ca\'ida de Recall@10 de 0,947 a 0,684 al pasar del piloto al corpus completo (Tabla~\ref{tab:e6}) no es un fallo de configuraci\'on: es el efecto de la competencia. Con 1.932 documentos, el fragmento relevante compite contra pocos vecinos; con 161.868, compite contra cientos de fragmentos que comparten vocabulario gen\'erico. El texto sin cierre terminal (32,7\,\%) agrava el problema cuando el corte elimina la frase que responde, y el chunking fijo puede partir la evidencia en dos fragmentos que se disputan el mismo puesto. Ninguna de esas causas se puede medir con una muestra peque\~na. La consecuencia pr\'actica es que un piloto sirve para depurar el pipeline, no para elegir codificador, chunking o $k$. Esa elecci\'on hay que hacerla a la escala final, aunque cueste horas de GPU.
+La ca\'ida de Recall@10 de 0,947 a 0,684 al pasar del piloto al corpus completo (Tabla~\ref{tab:e6}) es consistente con un efecto de competencia: con 1.932 documentos, el fragmento relevante compite contra pocos vecinos; con 161.868, contra cientos de fragmentos que comparten vocabulario gen\'erico. El texto sin cierre terminal (32,7\,\%) y el chunking fijo podr\'ian agravarla, pero el experimento no separa competencia, truncamiento y segmentaci\'on. La consecuencia pr\'actica es que un piloto sirve para depurar el pipeline, no para elegir codificador, chunking o $k$. Esa elecci\'on hay que hacerla a la escala final, aunque cueste horas de GPU.
 
 \subsection{El coste del orden}
 
@@ -21,9 +21,9 @@ El acuerdo humano tambi\'en delimita lo que se puede afirmar. La correcci\'on (0
 
 \subsection{Lo que mostr\'o el conjunto reservado}
 
-El conjunto reservado cambia el diagn\'ostico: la ca\'ida de recuperaci\'on se confirma fuera del piloto y la uni\'on con BM25 recupera parte de lo perdido. La mejora no viene de reordenar m\'as: viene de recuperar entidades que el denso no trae. Quedan tres fallos de respuesta: r-006 se abstiene, r-012 enumera varias iniciativas en lugar de responder la organizaci\'on y r-016 es una pregunta ambigua. El sistema sabe decir que no, pero todav\'ia no siempre elige la evidencia correcta cuando hay varias.
+El conjunto reservado cambia el diagn\'ostico: la ca\'ida de recuperaci\'on se confirma fuera del piloto y la uni\'on con BM25 recupera parte de lo perdido. La mejora no viene de reordenar m\'as: viene de recuperar entidades que el denso no trae. Quedan tres fallos de respuesta en la corrida sin compuerta: r-006 se abstiene, r-012 enumera iniciativas y r-016 es ambigua. El sistema sabe decir que no, pero todav\'ia no siempre elige la evidencia correcta cuando hay varias.
 
-La compuerta anterior tampoco generalizaba el cero: rechazaba 4 de 5 negativas nuevas y dejaba entrar una con 0,579, que el guardarra\'il deten\'ia despu\'es. La compuerta nueva, con la puntuaci\'on del cross-encoder, rechaza las 5 y baja los falsos rechazos de 6 a 3. Dos de los tres que quedan (r-012 y r-014) son preguntas que la recuperaci\'on h\'ibrida s\'i puede responder, pero la compuerta solo ve el top-5 denso. El 0/9 del conjunto anterior era una muestra demasiado peque\~na para sostener una tasa nula. La lecci\'on no es retirar la compuerta, sino alinearla con el conjunto que ve el generador y reportar su tasa con el denominador.
+La compuerta anterior tampoco generalizaba el cero. La compuerta nueva, con la puntuaci\'on del cross-encoder, rechaza las 5 y baja los falsos rechazos de 6 a 3. Dos de los tres que quedan (r-012 y r-014) son preguntas que la recuperaci\'on h\'ibrida s\'i puede responder, pero la compuerta solo ve el top-5 denso. El 0/9 del conjunto anterior era una muestra demasiado peque\~na para sostener una tasa nula. La lecci\'on no es retirar la compuerta, sino alinearla con el conjunto que ve el generador y reportar su tasa con el denominador.
 
 El conjunto reservado tambi\'en muestra que el silver exploratorio no era representativo en idioma: el ingl\'es, que parec\'ia el punto d\'ebil, recupera mejor en la muestra nueva. Con 8 y 12 preguntas, las diferencias no son concluyentes, pero bastan para no tratar el idioma como una conclusi\'on cerrada.
 

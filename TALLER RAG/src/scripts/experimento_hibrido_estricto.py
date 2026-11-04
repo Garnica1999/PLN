@@ -12,12 +12,25 @@ from pathlib import Path
 
 import requests
 
+from src.rag.config import settings
 from src.scripts.eval_configuracion_final import contains_reference
 
 API = os.getenv("API_URL", "http://localhost:8010").rstrip("/")
 SILVER = Path("eval/silver/silver_reservado.jsonl")
 RAW = Path("reports/corridas/reservado_hibrido_estricto_raw.jsonl")
 SUMMARY = Path("reports/tablas/reservado_hibrido_estricto_resumen.csv")
+CONFIG = {
+    "model": "gemma4:e4b",
+    "k": 10,
+    "strict": True,
+    "ambiguity_policy": "off",
+    "retriever": settings.retriever,
+    "top_k": settings.top_k,
+    "domain_classifier_path": settings.domain_classifier_path,
+    "domain_threshold": settings.domain_threshold,
+    "judge_model": os.getenv("JUDGE_MODEL", "gemma2:2b"),
+    "collection": settings.collection,
+}
 
 
 def post(question: str) -> dict:
@@ -53,6 +66,7 @@ def main() -> None:
             "total_ms": data.get("total_ms"),
             "retrieval_ms": data.get("retrieval_ms"),
             "generation_ms": data.get("generation_ms"),
+            "config": CONFIG,
         }
         records.append(record)
         print(

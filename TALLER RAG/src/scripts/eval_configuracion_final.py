@@ -147,7 +147,7 @@ def figures(frame: pd.DataFrame, summary: dict, outdir: Path) -> None:
         ("Recall@10", summary["recall_at_10"]),
         ("nDCG@10", summary["ndcg_at_10"]),
         ("P@1", summary["p_at_1"]),
-        ("P@5", summary["p_at_5"]),
+        ("Hit@5", summary["p_at_5"]),
         ("span hit", summary["span_hit"]),
     ]
     fig, ax = plt.subplots(figsize=(5.2, 2.8))
@@ -173,7 +173,7 @@ def figures(frame: pd.DataFrame, summary: dict, outdir: Path) -> None:
         ) / len(delivered)
     rates = [
         ("Entrega directas", len(delivered) / len(direct)),
-        ("Match estricto", delivered["strict_match"].mean()),
+        ("Cobertura de tokens", delivered["strict_match"].mean()),
         ("Abstención negativas", negative["abstained"].mean()),
         ("Con cita", delivered["citations"].apply(len).gt(0).mean()),
     ]

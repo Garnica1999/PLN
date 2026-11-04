@@ -19,6 +19,8 @@ Cada tabla del artículo se respalda en un artefacto. El verificador debe compar
 | MTP (Tabla) | `docs/ARQUITECTURA.md` §4.7 |
 | Respuesta final (37/38, 25/37, F1, latencia) | `reports/tablas/metricas_final_sin.csv` y `metricas_final_con.csv` del commit `125bbc7`: 7.938/6.834 ms, 25/37 de cobertura de tokens. La corrida limpia de 6.788/6.482 ms no conserva CSV y no se usa como referencia |
 | Conjunto reservado híbrido (recall, respuesta, compuerta, latencia) | `reports/tablas/reservado_hibrida_resumen.csv`, `reservado_hibrida_por_pregunta.csv`; `reports/corridas/reservado_hibrida_raw.jsonl` |
+| Flujo conjunto con compuerta (`strict=True`) | `reports/corridas/reservado_hibrido_estricto_raw.jsonl`; `reports/tablas/reservado_hibrido_estricto_resumen.csv` |
+| g-031 y g-046 sobre el híbrido | `reports/tablas/errores_hibrido.csv` |
 | Capa de datos remota | `docker-stack.yml`; el API se conecta por LAN a `http://192.168.1.100:19530`, sin túnel |
 | Profundidad de la unión | `reports/tablas/reservado_union_depth.csv`, `reservado_union_depth_resumen.csv` |
 | Ambigüedad (detección y políticas) | `eval/silver/silver_ambiguedad.jsonl`; `reports/tablas/ambiguedad_resumen.csv`, `ambiguedad_por_pregunta.csv` |

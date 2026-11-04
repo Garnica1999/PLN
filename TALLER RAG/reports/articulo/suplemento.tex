@@ -77,12 +77,12 @@ MMR con reranker 0,7 & 0,816 & 0,818 & \textbf{0,868} & 0,921 & Rechazada \\
 
 \section*{Conjunto reservado}
 
-La Tabla~\ref{tab:s3} reporta el conjunto reservado de 25 preguntas, congelado antes de evaluar la compuerta. La recuperaci\'on h\'ibrida se eligi\'o despu\'es con ese mismo conjunto, as\'i que las m\'etricas de recuperaci\'on y respuesta son de desarrollo.
+La Tabla~\ref{tab:s3} reporta el conjunto reservado de 25 preguntas, congelado antes de evaluar la compuerta. La recuperaci\'on h\'ibrida se eligi\'o despu\'es con ese mismo conjunto, as\'i que las m\'etricas de recuperaci\'on y respuesta son de desarrollo. Las filas sin compuerta y las predicciones de la compuerta son mediciones separadas; la corrida conjunta con \texttt{strict=True} est\'a en \texttt{reservado\_hibrido\_estricto\_resumen.csv}.
 
 \begin{table}[H]
 \centering
 \footnotesize
-\caption{Conjunto reservado: 20 preguntas directas y 5 sin respuesta, congelado antes de ejecutar.}
+\caption{Conjunto reservado: 20 preguntas directas y 5 sin respuesta, congelado antes de ejecutar; la compuerta se evalu\'o antes de elegir el h\'ibrido.}
 \label{tab:s3}
 \begin{tabular}{lrr}
 \toprule
@@ -101,6 +101,10 @@ Con cita & 1,000 & 19 \\
 Abstenciones en sin respuesta & 5 & 5 \\
 Compuerta rechaza & 5 & 5 \\
 Latencia media & 6,2 s & 25 \\
+Entregadas con compuerta (strict) & 15 & 20 \\
+Cobertura de tokens con compuerta & 13 & 15 \\
+Rechazos de compuerta & 3 & 20 \\
+Rechazos del juez & 2 & 20 \\
 \bottomrule
 \end{tabular}
 \end{table}
