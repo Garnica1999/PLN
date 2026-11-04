@@ -4,15 +4,17 @@ El gold v2 actual (`eval/gold/gold_ambiguedad_v2.jsonl`) es asistido por LLM y a
 
 ## Material
 
-| Archivo | Uso |
+Un solo archivo: `eval/anotacion/anotacion_v2.xlsx`.
+
+| Hoja | Uso |
 |---|---|
-| `eval/anotacion/anotacion_v2_anotador_1.csv` | Hoja del anotador 1 |
-| `eval/anotacion/anotacion_v2_anotador_2.csv` | Hoja del anotador 2 |
-| `src/scripts/conciliar_anotacion.py` | Calcula el acuerdo y consolida |
+| `Instrucciones` | Definición y pasos, resumidos |
+| `Anotador 1` | Hoja del primer anotador |
+| `Anotador 2` | Hoja del segundo anotador |
+| `Acuerdo` | Calcula coincidencias, acuerdo observado y kappa de Cohen con fórmulas |
+| `Consolidado` | Etiqueta final y marca `revisar` donde las dos etiquetas no coinciden |
 
-Las dos hojas son idénticas y tienen 42 filas. Columnas: `n` (orden), `id`, `pregunta`, `historial`, `es_ambigua`, `interpretacion_1`, `respuesta_1`, `interpretacion_2`, `respuesta_2` y `notas`.
-
-El archivo está en UTF-8 con BOM y separado por punto y coma, para que Excel y LibreOffice en español lo abran en columnas y con los acentos correctos. Si se edita en Excel, guardar como «CSV UTF-8 (delimitado por punto y coma)».
+No hace falta ejecutar ningún script para anotar ni para ver el acuerdo. El libro se abre en Excel o LibreOffice Calc.
 
 ## Definición operativa
 
@@ -33,9 +35,9 @@ Casos que no cuentan:
 
 ## Procedimiento
 
-1. Abrir la hoja propia con LibreOffice Calc o Excel. No consultar la del otro anotador ni la salida del sistema.
+1. Abrir `anotacion_v2.xlsx` en la hoja propia. No mirar la hoja del otro anotador.
 2. Para cada fila, leer la pregunta y, si hay historial, el turno anterior.
-3. Marcar `es_ambigua` con `si` o `no`.
+3. En la columna `es_ambigua`, elegir `si` o `no` en la lista desplegable.
 4. Si es ambigua, escribir dos interpretaciones en `interpretacion_1` e `interpretacion_2`, cada una con su respuesta corta en `respuesta_1` y `respuesta_2`. La respuesta debe incluir la cifra o entidad exacta, no una paráfrasis.
 5. Si no es ambigua, dejar las interpretaciones vacías.
 6. Usar `notas` solo para dudas que el otro anotador deba conocer al conciliar.
@@ -44,13 +46,7 @@ Tiempo estimado: 40 a 60 minutos por anotador. Se puede hacer en dos sesiones.
 
 ## Acuerdo y consolidación
 
-```bash
-python -m src.scripts.conciliar_anotacion \
-  --uno eval/anotacion/anotacion_v2_anotador_1.csv \
-  --dos eval/anotacion/anotacion_v2_anotador_2.csv
-```
-
-El script reporta el acuerdo observado y el kappa de Cohen sobre `es_ambigua`, y escribe `reports/tablas/anotacion_acuerdo.csv` con la etiqueta de cada anotador y si coinciden.
+La hoja `Acuerdo` se actualiza sola: cuenta las preguntas etiquetadas, las coincidencias, el acuerdo observado y el kappa de Cohen. La hoja `Consolidado` marca `revisar` en naranja donde las dos etiquetas no coinciden.
 
 Regla de consolidación:
 
@@ -58,7 +54,13 @@ Regla de consolidación:
 - Discrepan: decide un tercer anotador y se registra en `notas`.
 - Las interpretaciones se toman del anotador 1; si el anotador 2 propone una tercera, se añade como opción extra.
 
-Con `--escribir` se genera `eval/gold/gold_ambiguedad_v2_humano.jsonl`. Ese archivo no sustituye al gold asistido hasta que las dos hojas estén completas y el kappa esté reportado.
+Cuando las dos hojas estén completas, el gold humano se genera con:
+
+```bash
+python -m src.scripts.conciliar_anotacion --escribir
+```
+
+Ese comando lee el libro, escribe `reports/tablas/anotacion_acuerdo.csv` y `eval/gold/gold_ambiguedad_v2_humano.jsonl`. El gold asistido no se sobrescribe.
 
 ## Qué se reporta en el artículo
 

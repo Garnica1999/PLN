@@ -241,7 +241,7 @@ docker compose exec api python -m src.scripts.metrics --results reports/corridas
 4. Comparación de limpieza, chunking y codificadores: `docs/EXPERIMENTOS.md`.
 5. Pipeline unificado: `python src/scripts/run_evaluation.py`. Corre desempeño, chat y RAGAS; escribe `reports/tablas/evaluacion_comparativa.md`. La fase de desempeño corre en el worker GPU (`ingest-rocm`, perfil `rocm`) para no cargar una segunda copia de los modelos dentro de la API. El contenedor `eval` tiene RAGAS 0.4.3, LangChain 0.3 y `BAAI/bge-m3` en CPU; se levanta con el perfil `eval`.
 
-6. Ambigüedad: `docker compose exec api python -m src.scripts.experimento_ambiguedad`. Escribe `reports/tablas/ambiguedad_resumen.csv` y `ambiguedad_por_pregunta.csv`. La doble anotación humana del gold v2 tiene hojas y protocolo en `eval/anotacion/`; el acuerdo se calcula con `python -m src.scripts.conciliar_anotacion`.
+6. Ambigüedad: `docker compose exec api python -m src.scripts.experimento_ambiguedad`. Escribe `reports/tablas/ambiguedad_resumen.csv` y `ambiguedad_por_pregunta.csv`. La doble anotación humana del gold v2 está en `eval/anotacion/anotacion_v2.xlsx`: dos hojas con lista desplegable y una hoja que calcula el kappa sola. `src/scripts/conciliar_anotacion.py` lee el libro y genera el gold humano en JSONL.
 
 Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`, con Recall@k, P@1, P@5, Hit@k, MRR, MAP, nDCG, cobertura de span, context precision y recall, duplicados, latencias e intervalos por bootstrap.
 

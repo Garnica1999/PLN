@@ -1,8 +1,9 @@
-"""Concilia la anotacion humana doble del gold v2 de ambiguedad.
+"""Concilia la doble anotacion del gold v2 leyendo el libro de Excel.
 
-Lee las dos hojas, calcula el acuerdo y el kappa de Cohen sobre la etiqueta
-de ambiguedad, escribe un informe por pregunta y, si se pide, genera el gold
-consolidado. No sobrescribe el gold asistido por LLM.
+Lee las hojas «Anotador 1» y «Anotador 2» de eval/anotacion/anotacion_v2.xlsx,
+calcula el acuerdo y el kappa de Cohen sobre la etiqueta de ambiguedad,
+escribe un informe por pregunta y, si se pide, genera el gold consolidado.
+No sobrescribe el gold asistido por LLM.
 """
 from __future__ import annotations
 
@@ -11,24 +12,28 @@ import csv
 import json
 from pathlib import Path
 
-UNO = Path("eval/anotacion/anotacion_v2_anotador_1.csv")
-DOS = Path("eval/anotacion/anotacion_v2_anotador_2.csv")
+from openpyxl import load_workbook
+
+LIBRO = Path("eval/anotacion/anotacion_v2.xlsx")
 INFORME = Path("reports/tablas/anotacion_acuerdo.csv")
 SALIDA = Path("eval/gold/gold_ambiguedad_v2_humano.jsonl")
 GOLD = Path("eval/gold/gold_ambiguedad_v2.jsonl")
 
 
-def leer(path: Path) -> dict[str, dict]:
-    """Lee la hoja aceptando coma o punto y coma y BOM de Excel."""
-    text = path.read_text(encoding="utf-8-sig")
-    first = text.splitlines()[0] if text.splitlines() else ""
-    delimiter = ";" if ";" in first else ","
-    rows = list(csv.DictReader(text.splitlines(), delimiter=delimiter))
-    return {row["id"]: row for row in rows}
+def leer(libro: Path, hoja: str) -> dict[str, dict]:
+    """Devuelve las filas de una hoja indexadas por id."""
+    sheet = load_workbook(libro, data_only=True)[hoja]
+    header = [cell.value for cell in sheet[1]]
+    rows = {}
+    for values in sheet.iter_rows(min_row=2, values_only=True):
+        row = dict(zip(header, values))
+        if row.get("id"):
+            rows[str(row["id"])] = row
+    return rows
 
 
 def etiqueta(row: dict) -> str | None:
-    value = (row.get("es_ambigua") or "").strip().lower()
+    value = str(row.get("es_ambigua") or "").strip().lower()
     if value in {"si", "sí", "s", "1", "true"}:
         return "si"
     if value in {"no", "n", "0", "false"}:
@@ -67,17 +72,20 @@ def consolidar(uno: dict[str, dict], dos: dict[str, dict], etiquetas: dict[str, 
             row = uno[qid]
             opciones = []
             for index in (1, 2):
-                label = (row.get(f"interpretacion_{index}") or "").strip()
-                answer = (row.get(f"respuesta_{index}") or "").strip()
+                label = str(row.get(f"interpretacion_{index}") or "").strip()
+                answer = str(row.get(f"respuesta_{index}") or "").strip()
                 if label and answer:
                     opciones.append({"label": label, "query": label, "answer": answer, "evidence": []})
             base.update(
                 {
                     "type": "ambigua",
-                    "intended_answer": (row.get("respuesta_1") or "").strip(),
+                    "intended_answer": str(row.get("respuesta_1") or "").strip(),
                     "intended_aliases": [
                         value
-                        for value in [(row.get("respuesta_1") or "").strip(), (row.get("respuesta_2") or "").strip()]
+                        for value in [
+                            str(row.get("respuesta_1") or "").strip(),
+                            str(row.get("respuesta_2") or "").strip(),
+                        ]
                         if value
                     ],
                     "options": opciones,
@@ -92,19 +100,19 @@ def consolidar(uno: dict[str, dict], dos: dict[str, dict], etiquetas: dict[str, 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--uno", type=Path, default=UNO)
-    parser.add_argument("--dos", type=Path, default=DOS)
+    parser.add_argument("--libro", type=Path, default=LIBRO)
     parser.add_argument("--informe", type=Path, default=INFORME)
     parser.add_argument("--salida", type=Path, default=SALIDA)
     parser.add_argument("--escribir", action="store_true", help="genera el gold humano consolidado")
     args = parser.parse_args()
 
-    uno, dos = leer(args.uno), leer(args.dos)
+    uno = leer(args.libro, "Anotador 1")
+    dos = leer(args.libro, "Anotador 2")
     if set(uno) != set(dos):
         raise SystemExit("las dos hojas no tienen los mismos ids")
     faltan = [qid for qid in uno if etiqueta(uno[qid]) is None or etiqueta(dos[qid]) is None]
     if faltan:
-        raise SystemExit(f"faltan etiquetas en {len(faltan)} filas: {', '.join(faltan[:8])}")
+        raise SystemExit(f"faltan etiquetas en {len(faltan)} filas: {', '.join(sorted(faltan)[:8])}")
 
     etiquetas = {qid: (etiqueta(uno[qid]), etiqueta(dos[qid])) for qid in uno}
     pares = list(etiquetas.values())
@@ -121,7 +129,7 @@ def main() -> None:
     print(f"n {len(pares)}")
     print(f"acuerdo {acuerdo}/{len(pares)} ({acuerdo / len(pares):.3f})")
     print(f"kappa {valor_kappa:.3f}")
-    discrepancias = [qid for qid, (a, b) in etiquetas.items() if a != b]
+    discrepancias = sorted(qid for qid, (a, b) in etiquetas.items() if a != b)
     print(f"discrepancias {len(discrepancias)}: {', '.join(discrepancias) or 'ninguna'}")
 
     if args.escribir:
