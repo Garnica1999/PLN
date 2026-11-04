@@ -48,7 +48,7 @@ La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una int
 
 \textbf{Ingesta.} Los documentos se limpian, se fragmentan y se codifican una sola vez. La colecci\'on se valida contra la etiqueta del codificador activo para no mezclar espacios vectoriales. Se eligi\'o un pipeline idempotente y reanudable porque el corpus cambia y la codificaci\'on es la etapa m\'as costosa: la ingesta completa desde documentos tard\'o 2 h 41 min y reindexar 618.286 fragmentos ya troceados con bge-m3 tard\'o 27,3 min.
 
-\textbf{\'Indice vectorial.} Milvus se eligi\'o por tres razones: soporta HNSW con par\'ametro de exploraci\'on ajustable \cite{malkov2020hnsw}, filtra por metadatos (idioma, fecha, colecci\'on) sin salir del motor y mantiene 618.286 fragmentos con latencias de milisegundos. Una base local en memoria no habr\'ia permitido filtrar ni auditar la procedencia.
+\textbf{\'Indice vectorial.} Milvus se eligi\'o por tres razones: soporta HNSW con par\'ametro de exploraci\'on ajustable \cite{malkov2020hnsw}, filtra por metadatos (idioma, fecha, colecci\'on) sin salir del motor y mantiene 618.286 fragmentos con latencias de milisegundos.
 
 \textbf{Codificaci\'on.} bge-m3 produce vectores densos de 1024 dimensiones, es multiling\"ue y rinde bien sin ajuste fino \cite{chen2024bge}. Se compar\'o con e5-base y con qwen3-embedding sobre el mismo corpus y el mismo protocolo, con un \'indice por modelo; la decisi\'on se reporta en la Secci\'on~\ref{sec:experimentos}.
 

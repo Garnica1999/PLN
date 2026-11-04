@@ -49,11 +49,11 @@ Fidelidad & 0,12 \\
 
 \textbf{Recuperaci\'on.} Recall@k mide la fracci\'on de documentos de referencia recuperados en el top-k; nDCG@k usa relevancia binaria; P@1 mide precisi\'on en el primer corte; Hit@5 indica si al menos un documento relevante aparece en el top-5; MRR mide la posici\'on del primer acierto; y la cobertura de span indica si al menos un fragmento recuperado contiene el texto exacto que responde. Esta \'ultima es la m\'as cercana a lo que necesita el generador.
 
-\textbf{Respuesta.} Se reportan las preguntas entregadas, las abstenciones, la cobertura de tokens de la referencia (todos sus tokens aparecen en la respuesta) y una revisi\'on humana de las respuestas que no la superaron; la revisi\'on no cubre las que s\'i la superaron, el F1 por tokens, la tasa de citas, el contexto medio en tokens y la latencia por etapa. La revisi\'on manual clasifica cada respuesta como correcta, parcial o incorrecta.
+\textbf{Respuesta.} Se reportan las preguntas entregadas, las abstenciones, la cobertura de tokens de la referencia (todos sus tokens aparecen en la respuesta), el F1 por tokens, la tasa de citas, el contexto medio en tokens y la latencia por etapa. La revisi\'on humana se aplica solo a las respuestas que no superaron la cobertura y las clasifica como correctas, parciales o incorrectas; no cubre las que s\'i la superaron.
 
 \textbf{Conversaci\'on.} Catorce casos: seis saludos, cuatro de dominio y cuatro de fuera. Cada uno tiene un resultado esperado y se marca como correcto o incorrecto. Se ejecutan con y sin Modo estricto, y con y sin razonamiento.
 
-\textbf{RAGAS.} Se reportan fidelidad, relevancia de la respuesta, precisi\'on del contexto, cobertura del contexto y correcci\'on de la respuesta \cite{es2023ragas}. Para cada m\'etrica se informa cu\'antas muestras tienen valor, porque el juez falla en algunas y una media con cuatro valores no es comparable con una con 38.
+\textbf{RAGAS.} Se reportan fidelidad, relevancia de la respuesta, precisi\'on del contexto, cobertura del contexto y correcci\'on de la respuesta \cite{es2023ragas}. Para cada m\'etrica se informa cu\'antas muestras tienen valor, porque el juez falla en algunas y una media con cuatro valores no es comparable con una con 38. La corrida de referencia es densa con $k=5$; la comparaci\'on con el h\'ibrido y con la arquitectura anterior est\'a en la Secci\'on~\ref{sec:experimentos}.
 
 \textbf{Compuerta.} Precisi\'on, recall y F1 en dev y test, falsos rechazos de dominio (preguntas del corpus rechazadas) y falsos aceptados de fuera (preguntas ajenas aceptadas).
 

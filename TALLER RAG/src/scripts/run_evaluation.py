@@ -102,8 +102,8 @@ def summarize() -> None:
     chat_free = read_csv(TABLES / "chat_eval_final_sin_libre.csv")
     chat_strict_con = read_csv(TABLES / "chat_eval_final_con_strict.csv")
     chat_previous = read_csv(TABLES / "chat_eval_k15_sin.csv")
-    ragas_current = read_csv(TABLES / "ragas_gemma4-e4b_bge-m3.csv")
-    ragas_previous = read_csv(TABLES / "ragas_gemma2-2b.csv")
+    ragas_current = read_csv(TABLES / "ragas_hibrido.csv")
+    ragas_previous = read_csv(TABLES / "ragas_gemma4-e4b_bge-m3.csv")
 
     rows: list[dict] = []
 
@@ -145,11 +145,13 @@ def summarize() -> None:
         counts = manual["categoria"].value_counts()
         correct = int(counts.get("correcta", 0))
         partial = int(counts.get("parcial", 0))
-        equivalent = (25 + correct) / 37 * 100
-        with_partial = (25 + correct + partial) / 37 * 100
-        add("Revision manual", "Equivalentes", f"{25 + correct}/37 ({equivalent:.1f}%)", "32/37 (86.5%)")
-        add("Revision manual", "Con parciales", f"{25 + correct + partial}/37 ({with_partial:.1f}%)", "35/37 (94.6%)")
-        add("Revision manual", "Correctas / parciales / incorrectas", f"{correct}/{partial}/{int(counts.get('incorrecta', 0))}", "7/3/2")
+        incorrect = int(counts.get("incorrecta", 0))
+        add(
+            "Revision manual (12 sin cobertura)",
+            "Correctas / parciales / incorrectas",
+            f"{correct}/{partial}/{incorrect}",
+            "7/3/2",
+        )
     if chat_strict is not None:
         add("Chat", "Con Modo estricto", f"{int(chat_strict['correcto'].sum())}/{len(chat_strict)}", f"{int(chat_previous['correcto'].sum()) if chat_previous is not None else 9}/12")
     if chat_free is not None:
