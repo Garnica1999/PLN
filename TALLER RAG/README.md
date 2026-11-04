@@ -256,7 +256,7 @@ Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`
 | RAGAS actual (`gemma4` + `bge-m3`) | 0,952 / 0,840 / 0,881 / 0,921 / 0,657 |
 | RAGAS anterior (`gemma2` + `qwen3`) | 0,925 / 0,798 / 0,760 / 0,842 / 0,705 |
 | Latencia media | 7.938 ms sin razonamiento; 6.834 ms con razonamiento |
-| Ambigüedad | Gold humano de 42: detector F1 0,894; condicional 32/38 vs baseline 29/38 (p=0,375); clarificación 28/38 (p=1,0). Gold asistido: condicional 36/42 (p=0,039). Recomendación retirada |
+| Ambigüedad | Gold humano de 42: detector F1 0,894; condicional 33/40 vs baseline 30/40 (p=0,375); clarificación 29/40 (p=1,0). Gold asistido: condicional 36/42 (p=0,039). Recomendación retirada |
 
 La arquitectura completa, las capas y la comparación contra la versión anterior están en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md). El informe de métricas está en [reports/informe/metricas_nueva_configuracion.md](reports/informe/metricas_nueva_configuracion.md).
 
