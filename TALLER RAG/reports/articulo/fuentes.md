@@ -15,7 +15,7 @@ Cada tabla del artículo se respalda en un artefacto. El verificador debe compar
 | E4 (modelos y kappa) | `docs/EXPERIMENTOS.md` §11; `reports/tablas/e4_kappa.csv`, `e4_h1.csv` |
 | E5 (inyección) | `docs/EXPERIMENTOS.md` §15 |
 | Compuerta (Tabla) | `reports/tablas/gate_reranker_metrics.csv`, `gate_reranker_reservado.csv` y `gate_reranker_cv.csv`; modelo `modelos/domain_classifier_v2.json`. Los artefactos anteriores (`domain_classifier_metrics.csv`, `domain_classifier_predictions.csv`) quedan como historia |
-| RAGAS (Tabla) | `reports/tablas/ragas_gemma4-e4b_bge-m3.csv` (media y n por métrica) |
+| RAGAS (Tabla) | `reports/tablas/ragas_hibrido.csv` (híbrido, k=10), `ragas_gemma4-e4b_bge-m3.csv` (denso k=5) y `ragas_gemma2-2b.csv` (anterior); media y n por métrica |
 | MTP (Tabla) | `docs/ARQUITECTURA.md` §4.7 |
 | Respuesta final (37/38, 25/37, F1, latencia) | `reports/tablas/metricas_final_sin.csv` y `metricas_final_con.csv` del commit `125bbc7`: 7.938/6.834 ms, 25/37 de cobertura de tokens. La corrida limpia de 6.788/6.482 ms no conserva CSV y no se usa como referencia |
 | Conjunto reservado híbrido (recall, respuesta, compuerta, latencia) | `reports/tablas/reservado_hibrida_resumen.csv`, `reservado_hibrida_por_pregunta.csv`; `reports/corridas/reservado_hibrida_raw.jsonl` |

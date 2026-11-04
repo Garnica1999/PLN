@@ -232,15 +232,15 @@ La ampliación añadió 40 negativos duros: entidades inventadas, eventos futuro
 
 ### 4.5 RAGAS
 
-| Métrica | Actual (`gemma4` + `bge-m3`) | Anterior (`gemma2` + `qwen3`) |
-|---|---|---|
-| Faithfulness | 0,952 (n=38) | 0,925 (n=36) |
-| Answer relevancy | 0,840 (n=38) | 0,798 (n=38) |
-| Context precision | 0,881 (n=34) | 0,760 (n=36) |
-| Context recall | 0,921 (n=38) | 0,842 (n=38) |
-| Answer correctness | 0,657 (n=38) | 0,705 (n=37) |
+| Métrica | Híbrido (`gemma4` + `bge-m3`) | Denso k=5 (`gemma4` + `bge-m3`) | Anterior (`gemma2` + `qwen3`) |
+|---|---|---|---|
+| Faithfulness | 0,845 (n=38) | 0,952 (n=38) | 0,925 (n=36) |
+| Answer relevancy | 0,678 (n=38) | 0,840 (n=38) | 0,798 (n=38) |
+| Context precision | 0,826 (n=36) | 0,881 (n=34) | 0,760 (n=36) |
+| Context recall | 0,947 (n=38) | 0,921 (n=38) | 0,842 (n=38) |
+| Answer correctness | 0,553 (n=38) | 0,657 (n=38) | 0,705 (n=37) |
 
-El juez y el embedding cambiaron, así que la comparación no es completamente equivalente. La arquitectura actual gana en faithfulness, answer relevancy, context precision y context recall; pierde en answer correctness. La corrida de referencia usa `RAGAS_TIMEOUT=900` y `RAGAS_WORKERS=6`: con el timeout por defecto de 180 s, `context precision` quedaba con 4 valores de 38 y no era comparable. La mejora pendiente es la corrección de respuesta.
+El híbrido sube context recall y baja las demás métricas frente al denso k=5; el contexto extra no es gratis. La comparación con la arquitectura anterior cambia juez y embedding, así que no es causal. La corrida de referencia usa `RAGAS_TIMEOUT=900` y `RAGAS_WORKERS=6`: con el timeout por defecto de 180 s, `context precision` quedaba con 4 valores de 38 y no era comparable. La mejora pendiente es la corrección de respuesta.
 
 ### 4.6 Arquitectura anterior contra actual
 

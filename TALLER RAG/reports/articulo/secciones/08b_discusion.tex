@@ -15,7 +15,7 @@ La compuerta cuesta milisegundos y rechaza las 5 preguntas sin respuesta; el jue
 
 \subsection{La evaluaci\'on}
 
-El episodio de RAGAS (Secci\'on~\ref{sec:experimentos}) deja dos reglas. La comparaci\'on entre arquitecturas cambia juez y embedding, as\'i que se reporta como observaci\'on y no como mejora causal. La primera: reportar $n$ junto a cada media y no comparar m\'etricas con cobertura distinta. La segunda: el ruido del juez no es aleatorio, se concentra en contextos largos y en fallos de parser, as\'i que un timeout m\'as generoso y menos concurrencia lo reducen.
+El episodio de RAGAS (Secci\'on~\ref{sec:experimentos}) deja dos reglas. La comparaci\'on entre arquitecturas cambia juez y embedding, as\'i que se reporta como observaci\'on y no como mejora causal. La corrida del h\'ibrido confirma el intercambio: m\'as cobertura del contexto, menos correcci\'on. La primera: reportar $n$ junto a cada media y no comparar m\'etricas con cobertura distinta. La segunda: el ruido del juez no es aleatorio, se concentra en contextos largos y en fallos de parser, as\'i que un timeout m\'as generoso y menos concurrencia lo reducen.
 
 El acuerdo humano tambi\'en delimita lo que se puede afirmar. La correcci\'on (0,95) y las citas (0,90) son fiables; la abstenci\'on (0,72) es aceptable; la fidelidad (0,12) no. Usar la fidelidad para elegir modelo habr\'ia sido elegir con ruido. La r\'ubrica de fidelidad mezcla errores factuales con abstenciones injustificadas, y los anotadores no comparten el criterio. Un eje que no alcanza acuerdo no debe decidir, y eso es una lecci\'on de dise\~no de la evaluaci\'on, no un defecto de los anotadores.
 
@@ -29,6 +29,6 @@ El conjunto reservado tambi\'en muestra que el silver exploratorio no era repres
 
 \subsection{Qu\'e se llevar\'ia a producci\'on}
 
-La configuraci\'on que se llevar\'ia es la de la Tabla~\ref{tab:config-final}: bge-m3 con \texttt{ef}=800, uni\'on densa top-10 + BM25 top-20, reranker en GPU, $k=10$, gemma4:e4b con MTP, prompt v2 y compuerta con cross-encoder y umbral 0,4. Es la que mejor equilibra cobertura, orden, latencia y coste en este corpus. Las deudas t\'ecnicas son r-006 y r-016, la alineaci\'on de la compuerta con el conjunto reordenado y la correcci\'on de la respuesta. La primera exige una consulta o un \'indice distinto; la segunda es un l\'imite del conjunto; la tercera, ver el mismo top-10 que el generador. Ninguna se resuelve con m\'as reordenamiento.
+La configuraci\'on que se llevar\'ia es la de la Tabla~\ref{tab:config-final}: uni\'on densa y BM25, reranker en GPU, $k=10$, gemma4:e4b con MTP y compuerta con umbral 0,4. Las deudas son r-006, r-016, la alineaci\'on de la compuerta con el conjunto reordenado y la correcci\'on de la respuesta.
 
 El monitoreo que acompa\~nar\'ia el despliegue tiene cuatro se\~nales: recall en una muestra fija del silver, tasa de abstenci\'on, tasa de citas v\'alidas y latencia p95. Las cuatro se pueden calcular con la infraestructura actual y detectan las regresiones que importan: que el \'indice cambie, que el modelo se actualice, que el prompt se rompa o que el hardware se quede sin memoria. La compuerta se monitorea aparte, con un conjunto fijo de preguntas de fuera, porque su deriva no se ve en las m\'etricas de respuesta.

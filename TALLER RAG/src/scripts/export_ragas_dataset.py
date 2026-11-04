@@ -1,6 +1,7 @@
 """Exporta el dataset de RAGAS con la configuracion final del RAG."""
 from __future__ import annotations
 
+import argparse
 import json
 import os
 from pathlib import Path
@@ -14,13 +15,13 @@ OUT = Path("reports/ragas/dataset.jsonl")
 NEGATIVES = Path("reports/ragas/negatives.jsonl")
 
 
-def post(question: str) -> dict:
+def post(question: str, k: int = 5) -> dict:
     response = requests.post(
         f"{API}/chat",
         json={
             "query": question,
             "model": "gemma4:e4b",
-            "k": 5,
+            "k": k,
             "collection": COLLECTION,
             "strict": False,
             "think": False,
@@ -32,11 +33,15 @@ def post(question: str) -> dict:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--k", type=int, default=5)
+    parser.add_argument("--out", type=Path, default=OUT)
+    args = parser.parse_args()
     silver = [json.loads(line) for line in SILVER.read_text(encoding="utf-8").splitlines() if line.strip()]
     samples = []
     negatives = []
     for index, row in enumerate(silver, start=1):
-        data = post(row["question"])
+        data = post(row["question"], args.k)
         item = {
             "id": row["id"],
             "type": row["type"],
@@ -53,8 +58,8 @@ def main() -> None:
             negatives.append(item)
         print(f"{index}/{len(silver)} {row['id']} abst={item['abstained']} ctx={len(item['retrieved_contexts'])}", flush=True)
 
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    with OUT.open("w", encoding="utf-8") as handle:
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    with args.out.open("w", encoding="utf-8") as handle:
         for item in samples:
             handle.write(json.dumps(item, ensure_ascii=False) + "\n")
     with NEGATIVES.open("w", encoding="utf-8") as handle:

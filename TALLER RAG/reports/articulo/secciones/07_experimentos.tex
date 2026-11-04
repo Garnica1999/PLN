@@ -152,22 +152,22 @@ Reservado & 25 & 20 & 5 & 1,000 & 0,850 & 0,919 \\
 
 \subsection{RAGAS}
 
-La Tabla~\ref{tab:ragas} compara la configuraci\'on final con la anterior. Son dos comparaciones distintas y conviene no mezclarlas. La primera es una repetici\'on del mismo sistema con timeout de 900 s y 6 workers frente a la corrida por defecto, que dejaba la precisi\'on del contexto con 4 valores de 38; la repetici\'on tiene 34. La segunda es la comparaci\'on entre arquitecturas, que cambia juez, embedding y recuperador, as\'i que es observacional y no causal. En esa comparaci\'on la configuraci\'on actual gana en fidelidad, relevancia, precisi\'on y cobertura del contexto, y pierde en correcci\'on de la respuesta. La corrida final usa juez gemma4:e4b y embeddings bge-m3; la anterior, gemma2:2b y qwen3. El artefacto se midi\'o antes del h\'ibrido, con $k=5$ y sin compuerta, as\'i que describe esa configuraci\'on y no la ruta desplegada.
+La Tabla~\ref{tab:ragas} compara tres configuraciones. El h\'ibrido es la ruta desplegada: uni\'on densa y BM25, $k=10$ y sin compuerta. El denso $k=5$ es la configuraci\'on anterior, medida con timeout de 900 s y 6 workers; la corrida por defecto dejaba la precisi\'on del contexto con 4 valores de 38. La tercera columna cambia juez y embeddings, as\'i que es observacional. El h\'ibrido sube la cobertura del contexto (0,947 frente a 0,921) pero baja fidelidad, relevancia, precisi\'on y correcci\'on: el contexto extra no es gratis. La comparaci\'on con la arquitectura anterior no es causal.
 
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{RAGAS: repetici\'on del mismo sistema contra la configuraci\'on anterior, con $n$ entre par\'entesis. Final: juez gemma4:e4b, embeddings bge-m3, densa con $k=5$ y sin compuerta, antes del h\'ibrido. Anterior: juez gemma2:2b y embeddings qwen3. Cambian juez y embeddings.}
+\caption{RAGAS: h\'ibrido desplegado, denso con $k=5$ y configuraci\'on anterior, con $n$ entre par\'entesis. H\'ibrido y denso usan juez gemma4:e4b y embeddings bge-m3; la anterior usa gemma2:2b y qwen3. La comparaci\'on con la anterior es observacional.}
 \label{tab:ragas}
-\begin{tabular}{lrr}
+\begin{tabular}{lrrr}
 \toprule
-M\'etrica & Final & Anterior \\
+M\'etrica & H\'ibrido & Denso $k=5$ & Anterior \\
 \midrule
-Fidelidad & \textbf{0,952} (38) & 0,925 (36) \\
-Relevancia & \textbf{0,840} (38) & 0,798 (38) \\
-Precisi\'on del contexto & \textbf{0,881} (34) & 0,760 (36) \\
-Cobertura del contexto & \textbf{0,921} (38) & 0,842 (38) \\
-Correcci\'on & 0,657 (38) & \textbf{0,705} (37) \\
+Fidelidad & 0,845 (38) & \textbf{0,952} (38) & 0,925 (36) \\
+Relevancia & 0,678 (38) & \textbf{0,840} (38) & 0,798 (38) \\
+Precisi\'on del contexto & 0,826 (36) & \textbf{0,881} (34) & 0,760 (36) \\
+Cobertura del contexto & \textbf{0,947} (38) & 0,921 (38) & 0,842 (38) \\
+Correcci\'on & 0,553 (38) & 0,657 (38) & \textbf{0,705} (37) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -199,7 +199,7 @@ La corrida de referencia de la configuraci\'on anterior (densa y reranker en CPU
 
 El silver exploratorio se us\'o para elegir la configuraci\'on densa, as\'i que no mide generalizaci\'on. Se construy\'o un conjunto reservado de 25 preguntas: 20 directas y 5 sin respuesta, 15 en espa\~nol y 10 en ingl\'es, 14 de prensa y 6 de Bluesky. El conjunto se congel\'o antes de evaluar la compuerta y se us\'o para esa evaluaci\'on. Despu\'es se us\'o tambi\'en para elegir la recuperaci\'on h\'ibrida, as\'i que las m\'etricas de recuperaci\'on y respuesta de esta secci\'on son de desarrollo; la compuerta se midi\'o antes de esa elecci\'on, pero el mismo conjunto se us\'o despu\'es para elegir el h\'ibrido, as\'i que sus cifras tambi\'en son de desarrollo. Una prueba independiente de la recuperaci\'on exige un conjunto nuevo. La Tabla~S3 del suplemento muestra el resultado.
 
-Las m\'etricas de respuesta se midieron sin la compuerta estricta; las predicciones de la compuerta se calcularon en una pasada aparte. El recall@10 es 0,700 y el nDCG 0,612, por debajo del 0,912 y 0,818 del silver exploratorio, pero por encima del 0,600 y 0,477 de la recuperaci\'on densa. La uni\'on con BM25 recupera r-012 y r-014, que el denso dejaba fuera, y conserva los aciertos del denso en r-009 y r-013. Seis de las 20 preguntas no recuperan el documento de referencia en el top-10; cuatro se responden correctamente con otro documento que contiene el mismo dato (r-005, r-008, r-017, r-019), una termina en abstenci\'on (r-006) y una es ambigua (r-016). El recall con un solo documento de referencia subestima la recuperaci\'on \'util: la mitad de los fallos de recall no son fallos de respuesta. La profundidad de la uni\'on no es monot\'onica: 20/20 y 30/30 suben el recall@10 a 0,750; 50/50 lo sube a 0,850 y recupera r-006, pero baja las entregas a 18 de 20 y la cobertura de tokens a 16 de 20, porque desplaza evidencia que el modelo usaba bien en r-009 y r-012. La configuraci\'on se queda en 10/20.
+Las m\'etricas de respuesta se midieron sin la compuerta estricta; las predicciones de la compuerta se calcularon en una pasada aparte. Con la compuerta activa (\texttt{strict=True}), el flujo conjunto entrega 15 de 20 directas y se abstiene en las 5 negativas: tres directas se rechazan por dominio (r-011, r-012 y r-014) y dos por el juez de evidencia (r-005 y r-006). La cobertura de tokens de las 15 entregadas es 13/15 (0,867). La diferencia con las 19 entregas sin compuerta mide el coste del filtro, no una mejora de recuperaci\'on. El recall@10 es 0,700 y el nDCG 0,612, por debajo del 0,912 y 0,818 del silver exploratorio, pero por encima del 0,600 y 0,477 de la recuperaci\'on densa. La uni\'on con BM25 recupera r-012 y r-014, que el denso dejaba fuera, y conserva los aciertos del denso en r-009 y r-013. Seis de las 20 preguntas no recuperan el documento de referencia en el top-10; cuatro se responden correctamente con otro documento que contiene el mismo dato (r-005, r-008, r-017, r-019), una termina en abstenci\'on (r-006) y una es ambigua (r-016). El recall con un solo documento de referencia subestima la recuperaci\'on \'util: la mitad de los fallos de recall no son fallos de respuesta. La profundidad de la uni\'on no es monot\'onica: 20/20 y 30/30 suben el recall@10 a 0,750; 50/50 lo sube a 0,850 y recupera r-006, pero baja las entregas a 18 de 20 y la cobertura de tokens a 16 de 20, porque desplaza evidencia que el modelo usaba bien en r-009 y r-012. La configuraci\'on se queda en 10/20.
 
 La cobertura de tokens entre las entregadas es 17 de 19 (89,5\,\%), y sobre las 20 directas, 17 de 20 (85\,\%). La diferencia con la recuperaci\'on densa est\'a en la uni\'on: recupera las entidades que el denso no trae. En ingl\'es el recall es 0,875 y el nDCG 0,829; en espa\~nol, 0,583 y 0,468. El ingl\'es recupera mejor, al contrario de lo que suger\'ia el silver exploratorio.
 
