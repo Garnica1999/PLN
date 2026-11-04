@@ -176,7 +176,7 @@ Destino final: `TALLER RAG/docs/DECISIONES.md`.
 - Evidencia E2: k=3, 5 y 10 dan exactamente las mismas métricas de calidad (P@1 0,833, recall 0,900, nDCG 0,875); todos los relevantes están en el top 3. La diferencia pareada de calidad es 0,000; solo cambia la latencia en 1,6 ms.
 - Evidencia del gold: sobre la colección `rag_pilot_e5base_d768_v2_v1`, 38 preguntas respondibles dan recall@10 0,947, MRR 0,908 y nDCG@10 0,918 (IC [0,870; 0,959]). Los dos fallos son preguntas reales, no referencias rotas.
 - Alternativas: oraciones (peor estimación puntual y más lento), k=3 (misma calidad, menos contexto), k=10 (sin ganancia medible, más contexto).
-- Consecuencias: el gold está generado por LLM y pendiente de validación humana (`validated: false`). No tiene preguntas comparativas y solo 5 de Bluesky y 10 en inglés; el informe debe declararlo. Las 5 preguntas sin respuesta se evalúan por abstención, no por Recall@k.
+- Consecuencias: el gold está generado por LLM y revisado por cuatro anotadores (Carlos, Julian, Oscar y Erika); las 43 filas quedan con `validated: true`. La cuarta revisión aprobó 35 filas, marcó 5 como no aplicables (3 enlaces roscos, una pregunta duplicada y una respuesta por cambiar) y corrigió la respuesta y el span de g-003; dos filas quedaron señaladas sin reemplazo. No tiene preguntas comparativas y solo 5 de Bluesky y 10 en inglés; el informe debe declararlo. Las 5 preguntas sin respuesta se evalúan por abstención, no por Recall@k.
 
 
 ## ADR-020. Ingesta del corpus completo en la GPU local con ROCm

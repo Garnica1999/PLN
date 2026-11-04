@@ -20,6 +20,17 @@ SALIDA = Path("eval/gold/gold_ambiguedad_v2_humano.jsonl")
 GOLD = Path("eval/gold/gold_ambiguedad_v2.jsonl")
 
 
+def hoja_con_datos(libro: Path) -> str:
+    """Primera hoja de anotacion que tenga etiquetas."""
+    wb = load_workbook(libro, data_only=True)
+    for name in ("Anotador 1", "Anotador 2"):
+        if name in wb.sheetnames:
+            ws = wb[name]
+            if any(ws.cell(row=row, column=5).value for row in range(2, ws.max_row + 1)):
+                return name
+    raise SystemExit(f"{libro} no tiene etiquetas en ninguna hoja de anotacion")
+
+
 def leer(libro: Path, hoja: str) -> dict[str, dict]:
     """Devuelve las filas de una hoja indexadas por id."""
     sheet = load_workbook(libro, data_only=True)[hoja]
@@ -93,7 +104,16 @@ def consolidar(uno: dict[str, dict], dos: dict[str, dict], etiquetas: dict[str, 
                 }
             )
         else:
-            base.update({"type": "no_ambigua", "source": "v2_humano"})
+            base.update(
+                {
+                    "type": "no_ambigua",
+                    "intended_answer": "",
+                    "intended_aliases": [],
+                    "options": [],
+                    "conditional_answers": [],
+                    "source": "v2_humano",
+                }
+            )
         filas.append(base)
     return filas
 
@@ -101,13 +121,19 @@ def consolidar(uno: dict[str, dict], dos: dict[str, dict], etiquetas: dict[str, 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--libro", type=Path, default=LIBRO)
+    parser.add_argument("--uno", type=Path, help="libro del anotador 1")
+    parser.add_argument("--dos", type=Path, help="libro del anotador 2")
     parser.add_argument("--informe", type=Path, default=INFORME)
     parser.add_argument("--salida", type=Path, default=SALIDA)
     parser.add_argument("--escribir", action="store_true", help="genera el gold humano consolidado")
     args = parser.parse_args()
 
-    uno = leer(args.libro, "Anotador 1")
-    dos = leer(args.libro, "Anotador 2")
+    if args.uno and args.dos:
+        uno = leer(args.uno, hoja_con_datos(args.uno))
+        dos = leer(args.dos, hoja_con_datos(args.dos))
+    else:
+        uno = leer(args.libro, "Anotador 1")
+        dos = leer(args.libro, "Anotador 2")
     if set(uno) != set(dos):
         raise SystemExit("las dos hojas no tienen los mismos ids")
     faltan = [qid for qid in uno if etiqueta(uno[qid]) is None or etiqueta(dos[qid]) is None]

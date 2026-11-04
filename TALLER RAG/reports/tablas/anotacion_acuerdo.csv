@@ -1,0 +1,43 @@
+﻿id;anotador_1;anotador_2;coincide;pregunta
+a-004;si;si;si;¿En qué ciudad se celebró la COP?
+a-005;si;si;si;¿Qué dijo el presidente sobre la reforma tributaria?
+a-006;si;si;si;¿En qué ciudad se firmó el acuerdo de paz?
+o-001;si;si;si;¿Cuándo se firmó el acuerdo de paz?
+o-002;si;si;si;¿Cuándo se celebró la COP?
+o-003;si;si;si;¿Cuántos municipios fueron afectados por el terremoto?
+r-006;si;si;si;¿Cuántos votos a favor obtuvo la iniciativa en la Cámara de Representantes?
+r-012;si;si;si;Which organization led the initiative to restore trees?
+r-016;si;si;si;¿En qué ciudad se llevará a cabo el concierto?
+v-001;si;si;si;¿Cuánto cuesta el proyecto de energía eólica?
+v-002;si;si;si;¿Cuál es el porcentaje de inflación en Colombia?
+v-003;no;no;si;¿Cuánto cuesta el pasaje de TransMilenio?
+v-004;si;si;si;¿Qué país tiene la mayor inflación?
+v-005;si;si;si;¿Qué ciudad tiene el mejor clima?
+v-006;si;si;si;¿Qué empresa tiene más ingresos?
+v-007;si;si;si;¿Y el de agosto?
+v-008;no;no;si;¿Y Duque?
+v-009;no;no;si;¿Y la COP29?
+v-010;si;si;si;¿Qué empresa lidera el proyecto de energía eólica?
+v-011;si;si;si;¿Cuándo se aprobó la reforma pensional?
+v-012;no;no;si;¿Cuántos votos obtuvo la reforma pensional?
+v-013;si;si;si;¿Qué universidad realizó el estudio?
+v-014;si;si;si;¿Cuándo se aprobó la reforma tributaria?
+v-015;si;si;si;¿Cuántos empleos creó el proyecto?
+c-003;no;no;si;¿Qué porcentaje de la contaminación de los océanos es producto de la actividad humana?
+c-004;no;no;si;¿Qué porcentaje de las aguas del Valle de Aburrá está siendo saneado?
+c-007;no;no;si;¿Cuántos municipios Zomac hay en el Tolima?
+c-010;no;no;si;In what year is the Eden Project Portland expected to open?
+c-018;no;no;si;By what percentage has flytipping increased in the UK over the past year?
+c-020;no;no;si;Which phenomenon is likely to cause a wetter and warmer-than-normal autumn?
+v-r-001;no;no;si;¿En qué ciudad se celebrará la Asamblea del Banco Interamericano de Desarrollo?
+v-r-002;no;no;si;¿Cuántos helicópteros Black Hawk llegaron al país?
+v-r-005;no;no;si;¿En qué departamento se encuentra la Zona de Ubicación Temporal?
+v-r-008;no;no;si;¿En qué ciudad se celebrará la COP16?
+v-r-009;no;no;si;¿Cuántas firmas ha reunido el precandidato?
+v-r-011;no;no;si;In what year did they sell Cellarmasters to the Fosters group?
+v-r-013;no;no;si;In what year did Birkenhead Park first open?
+v-r-014;no;no;si;In which city is Forest Hills Elementary School located?
+v-r-015;no;no;si;¿Qué región busca proteger el proyecto Triángulo del Puma?
+v-r-017;si;si;si;¿Qué magnitud tuvo el terremoto que sacudió Colombia?
+v-r-019;no;no;si;Which type of hornet is mentioned in the warning?
+v-g-001;no;no;si;¿Cuántos municipios han reportado la presencia del Retamo Espinoso en el departamento?

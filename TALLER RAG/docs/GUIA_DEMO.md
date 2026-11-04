@@ -68,7 +68,7 @@ La interfaz muestra la aclaración y las opciones (paz total, trazabilidad ganad
 
 Otra prueba de alcance: "¿Cuántos municipios fueron afectados por el terremoto?" ofrece 472, 437 y 450; la respuesta condicional las lista con su cita.
 
-En el conjunto v2 de 42 preguntas, el condicional acierta 36 y el baseline 29 (McNemar p=0,039); la conversación sigue siendo el punto débil (2 de 3).
+En el conjunto v2 de 42 preguntas con doble anotación humana, el condicional acierta 32 de 38 evaluables y el baseline 29 (McNemar p=0,375); sobre el gold asistido, 36 de 42 (p=0,039). La conversación sigue siendo el punto débil (2 de 3).
 
 ## Qué mirar en cada respuesta
 
