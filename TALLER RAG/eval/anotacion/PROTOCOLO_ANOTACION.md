@@ -1,6 +1,6 @@
-# Protocolo de anotación humana del gold v2
+# Protocolo de anotación humana del silver v2
 
-El gold v2 actual (`eval/gold/gold_ambiguedad_v2.jsonl`) es asistido por LLM y auditado contra la evidencia. Este protocolo produce su versión humana con doble anotación independiente, que es la deuda pendiente del artículo.
+El silver v2 actual (`eval/silver/silver_ambiguedad_v2.jsonl`) es asistido por LLM y auditado contra la evidencia. Este protocolo produce su versión humana con doble anotación independiente, que es la deuda pendiente del artículo.
 
 ## Material
 
@@ -65,18 +65,18 @@ Regla de consolidación:
 - Discrepan: decide un tercer anotador y se registra en `notas`.
 - Las interpretaciones se toman del anotador 1; si el anotador 2 propone una tercera, se añade como opción extra.
 
-Cuando las dos hojas estén completas, el gold humano se genera con:
+Cuando las dos hojas estén completas, el silver humano se genera con:
 
 ```bash
 python -m src.scripts.conciliar_anotacion --escribir
 ```
 
-Ese comando lee el libro, escribe `reports/tablas/anotacion_acuerdo.csv` y `eval/gold/gold_ambiguedad_v2_humano.jsonl`. El gold asistido no se sobrescribe.
+Ese comando lee el libro, escribe `reports/tablas/anotacion_acuerdo.csv` y `eval/silver/silver_ambiguedad_v2_humano.jsonl`. El silver asistido no se sobrescribe.
 
 ## Qué se reporta en el artículo
 
 - Kappa de Cohen sobre la etiqueta de ambigüedad.
 - Número de discrepancias y cómo se resolvieron.
-- Métricas del detector y del condicional sobre el gold humano, junto a las del gold asistido.
+- Métricas del detector y del condicional sobre el silver humano, junto a las del silver asistido.
 
-Mientras no existan las dos hojas, el artículo mantiene el gold asistido y lo declara como límite.
+Mientras no existan las dos hojas, el artículo mantiene el silver asistido y lo declara como límite.

@@ -61,21 +61,21 @@ def metrics(hits: list[dict], question: dict, variant: str, ef: int, elapsed: fl
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
+    parser.add_argument("--silver", type=Path, default=Path("eval/silver/silver_standard.jsonl"))
     parser.add_argument("--collection", default="rag_full_bge_m3_d1024_v1")
     parser.add_argument("--outdir", type=Path, default=Path("reports/tablas"))
     parser.add_argument("--reps", type=int, default=3)
     args = parser.parse_args()
 
-    gold = [json.loads(line) for line in args.gold.read_text(encoding="utf-8").splitlines() if line.strip()]
-    gold = [row for row in gold if row.get("reference_doc_ids")]
+    silver = [json.loads(line) for line in args.silver.read_text(encoding="utf-8").splitlines() if line.strip()]
+    silver = [row for row in silver if row.get("reference_doc_ids")]
     embedder = SentenceTransformer("BAAI/bge-m3", device="cuda")
     embedder.half()
     reranker = CrossEncoder("BAAI/bge-reranker-base", device="cuda")
     client = MilvusClient(uri="http://localhost:19530")
 
     results = []
-    for question in gold:
+    for question in silver:
         for _ in range(args.reps):
             vector = embedder.encode([question["question"]], normalize_embeddings=True)[0]
             dense = {}

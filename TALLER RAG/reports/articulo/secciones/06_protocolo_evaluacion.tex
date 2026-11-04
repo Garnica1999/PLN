@@ -1,14 +1,14 @@
 \section{Protocolo de evaluaci\'on}
 \label{sec:evaluacion}
 
-\subsection{Gold est\'andar}
+\subsection{Silver est\'andar}
 
-El silver standard tiene 43 preguntas: 19 en desarrollo y 24 en prueba, 38 respondibles y 5 sin respuesta. Lo llamamos silver standard y no gold porque lo gener\'o un LLM y lo revisaron los autores, no expertos independientes. Cada fila guarda el identificador, la pregunta, el idioma, el tipo, el split, los documentos y fragmentos de referencia, el span literal que responde, la respuesta de referencia, el criterio de correcci\'on y el estado de validaci\'on. La Tabla~\ref{tab:gold} resume la composici\'on. Las preguntas sin respuesta no entran en Recall@k: se eval\'uan por abstenci\'on.
+El silver standard tiene 43 preguntas: 19 en desarrollo y 24 en prueba, 38 respondibles y 5 sin respuesta. Lo llamamos silver standard y no silver porque lo gener\'o un LLM y lo revisaron los autores, no expertos independientes. Cada fila guarda el identificador, la pregunta, el idioma, el tipo, el split, los documentos y fragmentos de referencia, el span literal que responde, la respuesta de referencia, el criterio de correcci\'on y el estado de validaci\'on. La Tabla~\ref{tab:silver} resume la composici\'on. Las preguntas sin respuesta no entran en Recall@k: se eval\'uan por abstenci\'on.
 
 \begin{table}[t]
 \centering
 \caption{Composici\'on del silver standard.}
-\label{tab:gold}
+\label{tab:silver}
 \begin{tabular}{lrrr}
 \toprule
 Split & Respondibles & Sin respuesta & Total \\
@@ -59,7 +59,7 @@ Fidelidad & 0,12 \\
 
 \subsection{Estad\'istica}
 
-Las comparaciones de recuperaci\'on usan bootstrap pareado por pregunta con 1.000 remuestreos e intervalos de confianza al 95\,\%. En la comparaci\'on de limpieza se aplica correcci\'on de Bonferroni por comparaciones m\'ultiples. La configuraci\'on se eligi\'o inspeccionando las 43 preguntas del gold, as\'i que los resultados sobre las 38 respondibles son exploratorios. No se dispone de un conjunto de prueba independiente; una evaluaci\'on futura debe reservar preguntas nuevas. Las diferencias que no excluyen cero se reportan como no concluyentes, aunque la media favorezca a una variante. Los intervalos pareados se calcularon para limpieza, E1 y E2; las comparaciones de codificadores, reordenamiento y fusi\'on se reportan como estimaciones puntuales sobre 38 preguntas, sin intervalo, y as\'i se indica en cada tabla.
+Las comparaciones de recuperaci\'on usan bootstrap pareado por pregunta con 1.000 remuestreos e intervalos de confianza al 95\,\%. En la comparaci\'on de limpieza se aplica correcci\'on de Bonferroni por comparaciones m\'ultiples. La configuraci\'on se eligi\'o inspeccionando las 43 preguntas del silver, as\'i que los resultados sobre las 38 respondibles son exploratorios. No se dispone de un conjunto de prueba independiente; una evaluaci\'on futura debe reservar preguntas nuevas. Las diferencias que no excluyen cero se reportan como no concluyentes, aunque la media favorezca a una variante. Los intervalos pareados se calcularon para limpieza, E1 y E2; las comparaciones de codificadores, reordenamiento y fusi\'on se reportan como estimaciones puntuales sobre 38 preguntas, sin intervalo, y as\'i se indica en cada tabla.
 
 \subsection{Configuraci\'on de RAGAS}
 

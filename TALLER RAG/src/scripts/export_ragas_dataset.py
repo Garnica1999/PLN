@@ -9,7 +9,7 @@ import requests
 
 API = os.getenv("API_URL", "http://localhost:8010").rstrip("/")
 COLLECTION = os.getenv("COLLECTION", "rag_full_bge_m3_d1024_v1")
-GOLD = Path("eval/gold/silver_standard_ampliado.jsonl")
+SILVER = Path("eval/silver/silver_standard_ampliado.jsonl")
 OUT = Path("reports/ragas/dataset.jsonl")
 NEGATIVES = Path("reports/ragas/negatives.jsonl")
 
@@ -32,10 +32,10 @@ def post(question: str) -> dict:
 
 
 def main() -> None:
-    gold = [json.loads(line) for line in GOLD.read_text(encoding="utf-8").splitlines() if line.strip()]
+    silver = [json.loads(line) for line in SILVER.read_text(encoding="utf-8").splitlines() if line.strip()]
     samples = []
     negatives = []
-    for index, row in enumerate(gold, start=1):
+    for index, row in enumerate(silver, start=1):
         data = post(row["question"])
         item = {
             "id": row["id"],
@@ -51,7 +51,7 @@ def main() -> None:
             samples.append(item)
         else:
             negatives.append(item)
-        print(f"{index}/{len(gold)} {row['id']} abst={item['abstained']} ctx={len(item['retrieved_contexts'])}", flush=True)
+        print(f"{index}/{len(silver)} {row['id']} abst={item['abstained']} ctx={len(item['retrieved_contexts'])}", flush=True)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", encoding="utf-8") as handle:

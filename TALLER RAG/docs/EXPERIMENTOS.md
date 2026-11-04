@@ -110,7 +110,7 @@ Diagnóstico:
 
 - El crawler dejó 7.378 documentos (4,36% del corpus) con la misma página de error ("Haz excedido el máximo de peticiones", "Error 505"). Esos textos casi idénticos dominaban el top-10 en cualquier consulta. Se filtran en la ingesta con `src/rag/quality.py` y se cuentan como `descartados_por_calidad`.
 - El índice HNSW con `ef=64` perdía recall. Ablación sobre las 50 preguntas: ef=64 → 0,880; ef=128 → 0,920; ef=200 → 0,960; ef=400 → 0,960. Se fija `SEARCH_EF=200`.
-- 15 preguntas se excluyeron por criterio explícito: tasas de cambio respondidas por varios documentos, referencias vagas ("el país", "la medida", "la empresa AG"), una pregunta en ruso sobre un documento en ucraniano y una generada desde el boilerplate del portal. La lista y la razón están en `eval/gold/questions_smoke.jsonl`.
+- 15 preguntas se excluyeron por criterio explícito: tasas de cambio respondidas por varios documentos, referencias vagas ("el país", "la medida", "la empresa AG"), una pregunta en ruso sobre un documento en ucraniano y una generada desde el boilerplate del portal. La lista y la razón están en `eval/silver/questions_smoke.jsonl`.
 - Las 3 repeticiones dan el mismo top-10 tras el flush y con ef=200.
 
 Conclusión: el pipeline recupera correctamente en el conjunto de humo. No es una prueba de calidad a escala; es la compuerta para escalar al piloto.
@@ -168,7 +168,7 @@ Lectura:
 
 ## 8. Experimento pareado de limpieza (2026-10-31)
 
-Diseño: una colección por variante, mismo encoder (e5-base, 768), mismo chunking (1000/150), mismo índice (HNSW, `ef=200`), mismas 30 preguntas (25 de prensa y 5 de Bluesky), 3 repeticiones, k=10. El gold de humo no se usó porque su muestra de 600 documentos no es subconjunto del piloto de 2.000: sus referencias no existen en estas colecciones. Esa separación se detectó al medir y queda como lección de diseño.
+Diseño: una colección por variante, mismo encoder (e5-base, 768), mismo chunking (1000/150), mismo índice (HNSW, `ef=200`), mismas 30 preguntas (25 de prensa y 5 de Bluesky), 3 repeticiones, k=10. El silver de humo no se usó porque su muestra de 600 documentos no es subconjunto del piloto de 2.000: sus referencias no existen en estas colecciones. Esa separación se detectó al medir y queda como lección de diseño.
 
 ### 8.1 Índices
 
@@ -218,13 +218,13 @@ Ninguna comparación de calidad excluye cero. V2 tiene la mejor estimación punt
 | Inglés | 9 | 0,381 | 0,444 | 0,667 | 0,556 |
 | Directas | 30 | 0,790 | 0,809 | 0,875 | 0,842 |
 
-Lectura: la ganancia de V2 se concentra en prensa y en inglés. En español el nDCG no cambia porque V0 ya estaba en 0,965. El subconjunto de Bluesky tiene 5 preguntas, tres de ellas vagas, y no permite concluir. No hay preguntas comparativas, ambiguas ni sin respuesta en este gold.
+Lectura: la ganancia de V2 se concentra en prensa y en inglés. En español el nDCG no cambia porque V0 ya estaba en 0,965. El subconjunto de Bluesky tiene 5 preguntas, tres de ellas vagas, y no permite concluir. No hay preguntas comparativas, ambiguas ni sin respuesta en este silver.
 
 ### 8.5 Exclusiones y límites
 
 - 12 preguntas de desarrollo se descartaron por referencias no únicas (tasas de cambio, procesos amplios, conteos globales) o por duplicar otra pregunta.
 - 5 preguntas de Bluesky se conservaron; 3 de ellas son vagas y explican el nDCG bajo de esa colección.
-- El gold de humo (38 preguntas) no se usó por pertenecer a otra muestra.
+- El silver de humo (38 preguntas) no se usó por pertenecer a otra muestra.
 - La cobertura de span no se reporta como métrica principal porque el span anotado viene del texto crudo y V2 modifica el texto indexado.
 - V4 (normalización agresiva) no se ejecutó: es un control negativo de costo conocido y el presupuesto de tiempo se destinó a completar V0 a V3.
 
@@ -241,7 +241,7 @@ Mismas 30 preguntas del piloto, 3 repeticiones, e5-base, limpieza V2, HNSW con `
 
 Bootstrap pareado con Bonferroni sobre 7 pruebas (oraciones menos fijo): nDCG -0,071 con IC [-0,221; 0,025], recall -0,067 con IC [-0,233; 0,000], P@1 -0,067 con IC [-0,233; 0,114]. Ninguna diferencia de calidad excluye cero. La latencia sí: el fijo es 3,65 ms más rápido (IC [2,25; 4,97]).
 
-Decisión: se mantiene el chunking fijo de 1000 caracteres con 150 de solape. Tiene mejores estimaciones puntuales, genera más chunks pero recupera igual o mejor, y es más rápido. Las oraciones no aportan con este gold.
+Decisión: se mantiene el chunking fijo de 1000 caracteres con 150 de solape. Tiene mejores estimaciones puntuales, genera más chunks pero recupera igual o mejor, y es más rápido. Las oraciones no aportan con este silver.
 
 ### 9.2 E2, ablación de k
 
@@ -253,11 +253,11 @@ Decisión: se mantiene el chunking fijo de 1000 caracteres con 150 de solape. Ti
 
 Las tres configuraciones devuelven exactamente las mismas métricas de calidad: el documento relevante está siempre en el top 3. La única diferencia significativa es la latencia: k=3 tarda 1,64 ms menos que k=10 (IC de la diferencia [-2,85; -0,57]) y k=5 tarda 0,94 ms menos (IC [-1,76; -0,15]). Son milisegundos, no un cambio de calidad.
 
-Decisión: k=3 basta para este gold. Para el sistema final se fija k=5 como margen para preguntas comparativas que no están en este conjunto, sabiendo que con el gold actual no hay ganancia medible de 3 a 5 ni de 5 a 10. El costo de k=5 es mayor contexto en generación, no más latencia de recuperación.
+Decisión: k=3 basta para este silver. Para el sistema final se fija k=5 como margen para preguntas comparativas que no están en este conjunto, sabiendo que con el silver actual no hay ganancia medible de 3 a 5 ni de 5 a 10. El costo de k=5 es mayor contexto en generación, no más latencia de recuperación.
 
 ## 10. Silver standard consolidado y validado (2026-10-31)
 
-Archivos: `eval/gold/silver_standard.jsonl` (fuente de verdad), `.csv`, `.md` y `.xlsx` (plantilla y copias por revisor).
+Archivos: `eval/silver/silver_standard.jsonl` (fuente de verdad), `.csv`, `.md` y `.xlsx` (plantilla y copias por revisor).
 
 | Corte | Total | Respondibles | Sin respuesta |
 |---|---|---|---|
@@ -269,7 +269,7 @@ Composición: 38 directas, 0 ambiguas, 5 sin respuesta. 34 en español y 9 en in
 
 Validación: Carlos revisó las 43 filas. Marcó 31 con Sí y 12 con Corregir. Las 12 correcciones se aplicaron (respuesta de g-003; fragmentos de g-009, g-012, g-031, g-040, g-042 y g-047; URLs de Wayback para g-022, g-025 y g-032; idioma de g-039; reformulación de g-036 y g-042) y cada una quedó con `review_note`.
 
-Segunda revisión (Julián, 2026-10-31): revisó 40 de las 43. Marcó 30 con Sí, 8 con Corregir y 2 con No. Se aplicaron los 7 spans y la reformulación de g-017. No se aplicaron g-036 ni g-045: el texto indexado respalda "entre 1996 y 2002" y "near Kendal". Tres preguntas (g-022, g-025, g-032) no se pudieron verificar por enlaces caídos. Erika y Óscar no revisaron. El gold anterior quedó en `eval/gold/silver_standard_pre_julian.jsonl`.
+Segunda revisión (Julián, 2026-10-31): revisó 40 de las 43. Marcó 30 con Sí, 8 con Corregir y 2 con No. Se aplicaron los 7 spans y la reformulación de g-017. No se aplicaron g-036 ni g-045: el texto indexado respalda "entre 1996 y 2002" y "near Kendal". Tres preguntas (g-022, g-025, g-032) no se pudieron verificar por enlaces caídos. Erika y Óscar no revisaron. El silver anterior quedó en `eval/silver/silver_standard_pre_julian.jsonl`.
 
 Verificación sobre `rag_pilot_e5base_d768_v2_v1`, k=10, 3 repeticiones:
 
@@ -284,9 +284,9 @@ Verificación sobre `rag_pilot_e5base_d768_v2_v1`, k=10, 3 repeticiones:
 
 Los dos fallos son g-045 y g-046. Ambos documentos están en la colección; son fallos reales de recuperación, no referencias rotas.
 
-El gold ya no tiene preguntas ambiguas: g-036 se reformuló a directa. Las URLs 404 de g-022, g-025 y g-032 se reemplazaron por instantáneas de Wayback.
+El silver ya no tiene preguntas ambiguas: g-036 se reformuló a directa. Las URLs 404 de g-022, g-025 y g-032 se reemplazaron por instantáneas de Wayback.
 
-Límites: sin preguntas comparativas; solo 2 de Bluesky y 9 en inglés; dos revisores parciales (Carlos 43/43, Julián 40/43) y Erika y Óscar sin revisar. El JSONL consolidado es la fuente de verdad: no se debe regenerar con `build_gold_standard` o se perderían las correcciones.
+Límites: sin preguntas comparativas; solo 2 de Bluesky y 9 en inglés; dos revisores parciales (Carlos 43/43, Julián 40/43) y Erika y Óscar sin revisar. El JSONL consolidado es la fuente de verdad: no se debe regenerar con `build_silver_standard` o se perderían las correcciones.
 
 ## 11. E4: comparación de los cuatro modelos (2026-10-31)
 
@@ -431,15 +431,15 @@ Con bge-m3 se probaron el parámetro `ef` del índice HNSW y la fusión con BM25
 
 El sistema final usa la fusión 0,5/0,5 con `ef=800`: Recall@10 0,895, nDCG 0,807 y P@1 0,684. La latencia de `/retrieve`, incluida la codificación de la consulta, es de unos 165 ms. El reranker no se adopta. Artefactos: `reports/tablas/bench_final_tuning.csv` y `bench_final_tuning_raw.csv`.
 
-## 20. E12: gold ampliado y configuración final (2026-11-01)
+## 20. E12: silver ampliado y configuración final (2026-11-01)
 
 Dos anotadores revisaron 76 candidatos, dos por pregunta. Kappa 0,626, 12 discrepancias. Se añadieron 17 documentos de consenso. Catorce preguntas quedaron con dos o más relevantes.
 
-| Método | Gold | Recall@10 | nDCG@10 | P@1 | P@5 | Span |
+| Método | Silver | Recall@10 | nDCG@10 | P@1 | P@5 | Span |
 |---|---|---|---|---|---|---|
 | Denso ef=800 | 38 | 0,895 | 0,738 | 0,553 | 0,868 | 0,816 |
 | Híbrido 0,5/0,5 | 38 | 0,895 | 0,807 | 0,684 | 0,895 | 0,868 |
 | Denso ef=800 | ampliado | 0,921 | 0,827 | 0,737 | 0,947 | 0,816 |
 | Híbrido 0,5/0,5 | ampliado | 0,890 | 0,804 | 0,737 | 0,947 | 0,868 |
 
-Con el gold ampliado el dense supera a la fusión. El sistema final usa `BAAI/bge-m3` con `ef=800`, `RETRIEVER=dense`: Recall@10 0,921 y nDCG@10 0,827. Artefactos: `eval/gold/silver_standard_ampliado.jsonl`, `reports/tablas/ampliado/bench_final_tuning.csv` y `bench_ampliado_global.csv`.
+Con el silver ampliado el dense supera a la fusión. El sistema final usa `BAAI/bge-m3` con `ef=800`, `RETRIEVER=dense`: Recall@10 0,921 y nDCG@10 0,827. Artefactos: `eval/silver/silver_standard_ampliado.jsonl`, `reports/tablas/ampliado/bench_final_tuning.csv` y `bench_ampliado_global.csv`.

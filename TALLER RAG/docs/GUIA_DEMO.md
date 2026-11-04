@@ -50,7 +50,7 @@ Los colores salen del verde `#1f6b57`: `primary-container` para acentos, `second
 
 Las 22 combinaciones de texto y fondo de ambos esquemas pasan WCAG AA. El mínimo es 4,21:1 en el borde de campo, que exige 3:1. Se comprueba con `python src/scripts/check_contrast.py`.
 
-Las tres preguntas de ejemplo se sortean de un banco de nueve preguntas del gold en cada sesión. `Nueva conversación` vacía el historial y vuelve a sortearlas.
+Las tres preguntas de ejemplo se sortean de un banco de nueve preguntas del silver en cada sesión. `Nueva conversación` vacía el historial y vuelve a sortearlas.
 
 `Razonamiento`, `Modo estricto` y `Modo noche` se guardan en `config/ui_prefs.json` y se recuperan al recargar la página. De fábrica, `Razonamiento` y `Modo estricto` vienen activos; `Modo noche` viene apagado. El archivo está montado en el contenedor `frontend` como `./config:/work/config`.
 
@@ -68,7 +68,7 @@ La interfaz muestra la aclaración y las opciones (paz total, trazabilidad ganad
 
 Otra prueba de alcance: "¿Cuántos municipios fueron afectados por el terremoto?" ofrece 472, 437 y 450; la respuesta condicional las lista con su cita.
 
-En el conjunto v2 de 42 preguntas con doble anotación humana, el condicional acierta 33 de 40 evaluables y el baseline 30 (McNemar p=0,375); sobre el gold asistido, 36 de 42 (p=0,039). La conversación sigue siendo el punto débil (2 de 3).
+En el conjunto v2 de 42 preguntas con doble anotación humana, el condicional acierta 33 de 40 evaluables y el baseline 30 (McNemar p=0,375); sobre el silver asistido, 36 de 42 (p=0,039). La conversación sigue siendo el punto débil (2 de 3).
 
 ## Qué mirar en cada respuesta
 
@@ -81,9 +81,9 @@ En el conjunto v2 de 42 preguntas con doble anotación humana, el condicional ac
 ## Frases para el cierre
 
 - La evidencia recuperada es idéntica entre modelos; lo que cambia es el generador.
-- El corpus completo tiene 618.286 chunks; la recuperación es más difícil que en el piloto, por eso la demo usa preguntas del gold validado.
+- El corpus completo tiene 618.286 chunks; la recuperación es más difícil que en el piloto, por eso la demo usa preguntas del silver validado.
 - `gemma4:e4b` con MTP draft 3 es el generador final: 217 tok/s y 6,8 s de latencia media.
-- El sistema entrega 37 de 38 preguntas del gold, se abstiene en las 5 sin respuesta y acierta 26 de 37 en match estricto.
+- El sistema entrega 37 de 38 preguntas del silver, se abstiene en las 5 sin respuesta y acierta 26 de 37 en match estricto.
 - Con `Modo estricto` el chat da 14 de 14; sin la compuerta, 11 de 14.
 - RAGAS actual: faithfulness 0,952; answer relevancy 0,840; context precision 0,881; context recall 0,921; answer correctness 0,657.
 - Toda cifra del informe sale de `reports/corridas/` y `reports/tablas/`.

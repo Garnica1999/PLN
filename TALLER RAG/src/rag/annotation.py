@@ -16,12 +16,12 @@ def blind_id(model: str, question_id: str, rep: int) -> str:
     return hashlib.sha1(f"{model}|{question_id}|{rep}".encode()).hexdigest()[:10]
 
 
-def load_items(run_path: Path, gold_path: Path) -> tuple[dict, list[dict]]:
-    gold = {
+def load_items(run_path: Path, silver_path: Path) -> tuple[dict, list[dict]]:
+    silver = {
         row["id"]: row
-        for row in (json.loads(line) for line in gold_path.read_text(encoding="utf-8").splitlines() if line.strip())
+        for row in (json.loads(line) for line in silver_path.read_text(encoding="utf-8").splitlines() if line.strip())
     }
-    answerable = {key for key, row in gold.items() if row.get("reference_doc_ids")}
+    answerable = {key for key, row in silver.items() if row.get("reference_doc_ids")}
     records = [json.loads(line) for line in run_path.read_text(encoding="utf-8").splitlines() if line.strip()]
     records = [
         r
@@ -34,7 +34,7 @@ def load_items(run_path: Path, gold_path: Path) -> tuple[dict, list[dict]]:
     ]
     records.sort(key=lambda r: (r["question_id"], r["model"]))
     random.Random(SEED).shuffle(records)
-    return gold, records
+    return silver, records
 
 
 def write_key(records: list[dict], out_dir: Path) -> Path:

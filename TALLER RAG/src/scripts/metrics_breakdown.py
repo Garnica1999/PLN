@@ -27,7 +27,7 @@ def load_records(paths: list[str]) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def load_gold(paths: list[str]) -> pd.DataFrame:
+def load_silver(paths: list[str]) -> pd.DataFrame:
     rows = []
     for path in paths:
         for line in Path(path).read_text(encoding="utf-8").splitlines():
@@ -67,15 +67,15 @@ def paired_bootstrap(variant: pd.Series, baseline: pd.Series, rng: np.random.Gen
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results", nargs="+", required=True)
-    parser.add_argument("--gold", nargs="+", default=["eval/gold/questions_smoke.jsonl", "eval/gold/questions_dev.jsonl"])
+    parser.add_argument("--silver", nargs="+", default=["eval/silver/questions_smoke.jsonl", "eval/silver/questions_dev.jsonl"])
     parser.add_argument("--outdir", default="reports/tablas")
     parser.add_argument("--figdir", default="reports/figuras")
     args = parser.parse_args()
 
     frame = load_records(args.results)
-    gold = load_gold(args.gold)
+    silver = load_silver(args.silver)
     frame["variant"] = frame["run"].str.extract(r"(v[0-4])$")[0].fillna(frame["run"])
-    merged = frame.merge(gold, on="question_id", how="left")
+    merged = frame.merge(silver, on="question_id", how="left")
     outdir = Path(args.outdir)
     figdir = Path(args.figdir)
     outdir.mkdir(parents=True, exist_ok=True)

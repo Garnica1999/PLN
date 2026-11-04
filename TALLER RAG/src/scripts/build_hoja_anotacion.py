@@ -1,4 +1,4 @@
-"""Genera el libro de Excel para la doble anotacion del gold v2.
+"""Genera el libro de Excel para la doble anotacion del silver v2.
 
 El libro tiene dos hojas de anotacion con lista desplegable, una hoja que
 calcula el acuerdo y el kappa de Cohen con formulas, y una hoja consolidada.
@@ -16,7 +16,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 
-GOLD = Path("eval/gold/gold_ambiguedad_v2.jsonl")
+SILVER = Path("eval/silver/silver_ambiguedad_v2.jsonl")
 SALIDA = Path("eval/anotacion/anotacion_v2.xlsx")
 
 CABECERA = PatternFill("solid", fgColor="1F3864")
@@ -55,7 +55,7 @@ def orden(qid: str) -> tuple[int, int, str]:
 def filas() -> list[dict]:
     rows = [
         json.loads(line)
-        for line in GOLD.read_text(encoding="utf-8").splitlines()
+        for line in SILVER.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
     rows.sort(key=lambda row: orden(row["id"]))
@@ -242,7 +242,7 @@ def hoja_instrucciones(book: Workbook) -> None:
     sheet.column_dimensions["A"].width = 110
     ajustar_impresion(sheet)
     lineas = [
-        ("Anotación humana del gold v2 de ambigüedad", True),
+        ("Anotación humana del silver v2 de ambigüedad", True),
         ("", False),
         ("Una pregunta es ambigua si, con el corpus del proyecto, admite más de una respuesta válida o más de una interpretación razonable.", False),
         ("No es ambigua si una persona con acceso al corpus puede responderla sin preguntar nada más.", False),

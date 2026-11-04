@@ -1,4 +1,4 @@
-"""Consolida la tercera revision del gold (Oscar).
+"""Consolida la tercera revision del silver (Oscar).
 
 Aplica solo los spans que se pueden verificar literalmente en el texto indexado.
 Las propuestas sin respaldo o ya resueltas por revisiones anteriores quedan con
@@ -13,11 +13,11 @@ from pathlib import Path
 import pyarrow.parquet as pq
 from openpyxl import load_workbook
 
-GOLD_FILES = [
-    Path("eval/gold/silver_standard.jsonl"),
-    Path("eval/gold/silver_standard_ampliado.jsonl"),
+SILVER_FILES = [
+    Path("eval/silver/silver_standard.jsonl"),
+    Path("eval/silver/silver_standard_ampliado.jsonl"),
 ]
-REVIEW = Path("eval/gold/silver_standard_oscar.xlsx")
+REVIEW = Path("eval/silver/silver_standard_oscar.xlsx")
 CORPUS = Path("Dataset/documentos_rag.parquet")
 
 SPANS = {
@@ -58,7 +58,7 @@ SIN_VERIFICAR = {
 
 
 def load_review() -> dict[str, dict]:
-    sheet = load_workbook(REVIEW, data_only=True)["Gold"]
+    sheet = load_workbook(REVIEW, data_only=True)["Silver"]
     headers = [cell.value for cell in sheet[1]]
     return {
         row[0]: dict(zip(headers, row))
@@ -81,10 +81,10 @@ def verify_spans(rows: list[dict]) -> None:
 
 def main() -> None:
     review = load_review()
-    first = [json.loads(line) for line in GOLD_FILES[0].read_text(encoding="utf-8").splitlines() if line.strip()]
+    first = [json.loads(line) for line in SILVER_FILES[0].read_text(encoding="utf-8").splitlines() if line.strip()]
     verify_spans(first)
 
-    for path in GOLD_FILES:
+    for path in SILVER_FILES:
         backup = path.with_name(path.stem + "_pre_oscar.jsonl")
         if not backup.exists():
             shutil.copy2(path, backup)

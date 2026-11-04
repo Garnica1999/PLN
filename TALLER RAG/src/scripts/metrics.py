@@ -196,17 +196,17 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results", nargs="+", required=True)
     parser.add_argument("--annotations", nargs="*", default=[])
-    parser.add_argument("--gold", default=None)
+    parser.add_argument("--silver", default=None)
     parser.add_argument("--outdir", default="reports/tablas")
     args = parser.parse_args()
 
-    gold = {}
-    if args.gold:
-        gold = {
+    silver = {}
+    if args.silver:
+        silver = {
             row["id"]: row
             for row in (
                 json.loads(line)
-                for line in Path(args.gold).read_text(encoding="utf-8").splitlines()
+                for line in Path(args.silver).read_text(encoding="utf-8").splitlines()
                 if line.strip()
             )
         }
@@ -216,8 +216,8 @@ def main() -> None:
             if not line.strip():
                 continue
             record = json.loads(line)
-            if record.get("question_id") in gold:
-                reference = gold[record["question_id"]]
+            if record.get("question_id") in silver:
+                reference = silver[record["question_id"]]
                 record["reference_span"] = reference.get("reference_span") or record.get("reference_span")
                 record["reference_doc_ids"] = reference.get("reference_doc_ids") or record.get("reference_doc_ids")
             records.append(row_metrics(record))

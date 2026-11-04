@@ -1,8 +1,8 @@
 """Construye el set de 160 preguntas para la compuerta de dominio.
 
-60 de dominio: 38 directas del gold, 11 variantes de entidades del gold y 11
+60 de dominio: 38 directas del silver, 11 variantes de entidades del silver y 11
 nuevas sacadas de titulos del corpus. 100 de fuera: 4 del chat, 5 sin respuesta
-del gold, 51 de conocimiento general y 40 negativos duros nuevos (entidades
+del silver, 51 de conocimiento general y 40 negativos duros nuevos (entidades
 inventadas, eventos futuros y conocimiento general fuera del corpus).
 """
 from __future__ import annotations
@@ -16,7 +16,7 @@ import requests
 
 API = os.getenv("API_URL", "http://localhost:8010").rstrip("/")
 COLLECTION = os.getenv("COLLECTION", "rag_full_bge_m3_d1024_v1")
-GOLD = Path("eval/gold/silver_standard_ampliado.jsonl")
+SILVER = Path("eval/silver/silver_standard_ampliado.jsonl")
 OUT_JSONL = Path("eval/domain/domain_questions.jsonl")
 OUT_CSV = Path("eval/domain/domain_questions.csv")
 
@@ -175,11 +175,11 @@ def retrieve_evidence(question: str) -> tuple[str, str]:
 
 
 def main() -> None:
-    gold = [json.loads(line) for line in GOLD.read_text(encoding="utf-8").splitlines() if line.strip()]
-    direct = [row for row in gold if row.get("type") == "directa"]
-    negative = [row for row in gold if row.get("type") == "sin_respuesta"]
+    silver = [json.loads(line) for line in SILVER.read_text(encoding="utf-8").splitlines() if line.strip()]
+    direct = [row for row in silver if row.get("type") == "directa"]
+    negative = [row for row in silver if row.get("type") == "sin_respuesta"]
     if len(direct) != 38 or len(negative) != 5:
-        raise SystemExit(f"gold inesperado: {len(direct)} directas y {len(negative)} sin respuesta")
+        raise SystemExit(f"silver inesperado: {len(direct)} directas y {len(negative)} sin respuesta")
 
     rows: list[dict] = []
     for index, row in enumerate(direct):
@@ -188,8 +188,8 @@ def main() -> None:
                 "question": row["question"],
                 "label": "dominio",
                 "subtype": "directa",
-                "source": "gold",
-                "group": f"gold_{row['id']}",
+                "source": "silver",
+                "group": f"silver_{row['id']}",
                 "split": "train" if index < 28 else "dev",
                 "reference_answer": row.get("reference_answer") or "",
                 "reference_doc_ids": row.get("reference_doc_ids") or [],
@@ -203,7 +203,7 @@ def main() -> None:
                 "question": row["question"],
                 "label": "fuera",
                 "subtype": "sin_respuesta",
-                "source": "gold",
+                "source": "silver",
                 "group": f"sin_respuesta_{row['id']}",
                 "split": "test",
                 "reference_answer": "",

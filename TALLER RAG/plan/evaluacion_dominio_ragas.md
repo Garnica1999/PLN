@@ -46,10 +46,10 @@ Composición:
 
 | Grupo | n | Etiqueta |
 |---|---|---|
-| Directas del gold | 38 | dominio |
+| Directas del silver | 38 | dominio |
 | Nuevas de dominio desde títulos y entidades del corpus | 22 | dominio |
 | Fuera del chat | 4 | fuera |
-| Sin respuesta del gold | 5 | fuera |
+| Sin respuesta del silver | 5 | fuera |
 | Conocimiento general nuevo | 51 | fuera |
 | Negativos duros nuevos (entidades inventadas, futuros, general) | 40 | fuera |
 | Total | 160 | |
@@ -136,7 +136,7 @@ La referencia es el top-5 con reranker: recall 0,895; P@5 0,947; nDCG 0,865; P@1
 - Python 3.14 puede no tener wheels para todas las dependencias de RAGAS.
 - RAGAS puede actualizar `langchain`, `pydantic` u `openai` en el venv del host.
 - Con 160 preguntas, el test tiene 20 y los intervalos de confianza siguen siendo amplios.
-- El clasificador puede sobreajustar a las entidades del gold si el split no es por entidad.
+- El clasificador puede sobreajustar a las entidades del silver si el split no es por entidad.
 - RAGAS con `gemma4` puede tardar una hora o más.
 
 ## Fase 7. Diversidad

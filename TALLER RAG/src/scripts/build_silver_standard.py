@@ -33,16 +33,16 @@ def assign_split(frame: pd.DataFrame) -> pd.DataFrame:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", nargs="+", required=True)
+    parser.add_argument("--silver", nargs="+", required=True)
     parser.add_argument("--unanswerable", default=None)
-    parser.add_argument("--outdir", default="eval/gold")
+    parser.add_argument("--outdir", default="eval/silver")
     parser.add_argument("--prefix", default="g")
     parser.add_argument("--parquet", default="data/documentos_rag.parquet")
     parser.add_argument("--exclude-ids", default="", help="IDs separados por coma")
     parser.add_argument("--reset-validation", action="store_true", help="Borra reviewer y validated")
     args = parser.parse_args()
 
-    frame = assign_split(load(args.gold))
+    frame = assign_split(load(args.silver))
     if args.unanswerable:
         extra = load([args.unanswerable])
         extra["source"] = "sin_respuesta"

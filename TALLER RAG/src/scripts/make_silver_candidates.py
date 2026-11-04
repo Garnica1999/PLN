@@ -1,4 +1,4 @@
-"""Propone candidatos de preguntas para el gold. La validación final es humana."""
+"""Propone candidatos de preguntas para el silver. La validación final es humana."""
 from __future__ import annotations
 
 import argparse
@@ -63,8 +63,8 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", default=settings.parquet_path)
     parser.add_argument("--sample", default="eval/pilot_docs.parquet")
-    parser.add_argument("--out", default="eval/gold/candidates.jsonl")
-    parser.add_argument("--gold-out", default=None, help="Escribe un gold listo para evaluar")
+    parser.add_argument("--out", default="eval/silver/candidates.jsonl")
+    parser.add_argument("--silver-out", default=None, help="Escribe un silver listo para evaluar")
     parser.add_argument("--split", default="smoke")
     parser.add_argument("--n", type=int, default=60)
     parser.add_argument("--model", default=settings.llm_model)
@@ -95,7 +95,7 @@ def main() -> None:
     sample = table.sample(min(args.n, len(table)), random_state=args.seed)
 
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    gold_handle = Path(args.gold_out).open("w", encoding="utf-8") if args.gold_out else None  # noqa: SIM115  # se cierra en el finally
+    silver_handle = Path(args.silver_out).open("w", encoding="utf-8") if args.silver_out else None  # noqa: SIM115  # se cierra en el finally
     written = 0
     rejected = 0
     try:
@@ -127,8 +127,8 @@ def main() -> None:
                     "validated": False,
                 }
                 handle.write(json.dumps(record, ensure_ascii=False) + "\n")
-                if gold_handle:
-                    gold = {
+                if silver_handle:
+                    silver = {
                         "id": f"{args.split}-{written:03d}",
                         "question": record["question"],
                         "lang": normalize_language(row["language"]),
@@ -141,11 +141,11 @@ def main() -> None:
                         "criteria": "La respuesta debe coincidir con el span de referencia.",
                         "validated": False,
                     }
-                    gold_handle.write(json.dumps(gold, ensure_ascii=False) + "\n")
+                    silver_handle.write(json.dumps(silver, ensure_ascii=False) + "\n")
                 print(f"{written}: {record['question'][:100]}")
     finally:
-        if gold_handle:
-            gold_handle.close()
+        if silver_handle:
+            silver_handle.close()
     print(json.dumps({"candidatos": written, "rechazados": rejected, "salida": args.out}, ensure_ascii=False))
 
 

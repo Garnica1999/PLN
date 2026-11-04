@@ -23,19 +23,19 @@ st.title("Anotación de respuestas")
 with st.sidebar:
     annotator = st.text_input("Anotador", value="")
     run_file = st.text_input("Archivo de corrida", value="reports/corridas/e4_test.jsonl")
-    gold_file = st.text_input("Gold", value="eval/gold/silver_standard.jsonl")
+    silver_file = st.text_input("Silver", value="eval/silver/silver_standard.jsonl")
 
 if not annotator.strip():
     st.info("Escribe el nombre del anotador para empezar.")
     st.stop()
 
 run_path = Path(run_file)
-gold_path = Path(gold_file)
-if not run_path.exists() or not gold_path.exists():
-    st.error("No se encontró el archivo de corrida o el gold.")
+silver_path = Path(silver_file)
+if not run_path.exists() or not silver_path.exists():
+    st.error("No se encontró el archivo de corrida o el silver.")
     st.stop()
 
-gold, records = load_items(run_path, gold_path)
+silver, records = load_items(run_path, silver_path)
 try:
     write_key(records, OUT_DIR)
 except ValueError as error:
@@ -60,7 +60,7 @@ if "index" not in st.session_state:
 index = min(st.session_state.index, len(pending) - 1)
 record = pending[index]
 item_id = blind_id(record["model"], record["question_id"], int(record["rep"]))
-question = gold.get(record["question_id"], {})
+question = silver.get(record["question_id"], {})
 response = record["response"]
 
 st.progress(index / max(len(pending), 1), text=f"{index + 1} de {len(pending)}")

@@ -9,7 +9,7 @@ import pandas as pd
 from src.rag.chat import chat
 from src.scripts.eval_configuracion_final import contains_reference
 
-GOLD = Path("eval/gold/gold_ambiguedad.jsonl")
+SILVER = Path("eval/silver/silver_ambiguedad.jsonl")
 RAW = Path("reports/corridas/ambiguedad_raw.jsonl")
 SUMMARY = Path("reports/tablas/ambiguedad_resumen.csv")
 PER_QUESTION = Path("reports/tablas/ambiguedad_por_pregunta.csv")
@@ -19,8 +19,8 @@ def matches(text: str, aliases: list[str]) -> bool:
     return any(contains_reference(alias, text) for alias in aliases)
 
 
-def run(gold_path: Path = GOLD, raw_path: Path = RAW, summary_path: Path = SUMMARY, per_question_path: Path = PER_QUESTION) -> None:
-    rows = [json.loads(line) for line in gold_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+def run(silver_path: Path = SILVER, raw_path: Path = RAW, summary_path: Path = SUMMARY, per_question_path: Path = PER_QUESTION) -> None:
+    rows = [json.loads(line) for line in silver_path.read_text(encoding="utf-8").splitlines() if line.strip()]
     results = []
     for index, row in enumerate(rows, start=1):
         question = row["question"]

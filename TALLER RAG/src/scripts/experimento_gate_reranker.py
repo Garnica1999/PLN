@@ -26,7 +26,7 @@ from src.rag.domain import question_type, retrieval_features
 from src.rag.pipeline import get_reranker, search_hits
 
 DATA = Path("eval/domain/domain_questions.jsonl")
-RESERVED = Path("eval/gold/gold_reservado.jsonl")
+RESERVED = Path("eval/silver/silver_reservado.jsonl")
 MODEL_OUT = Path("modelos/domain_classifier_v2.json")
 TABLE_DIR = Path("reports/tablas")
 COLLECTION = "rag_full_bge_m3_d1024_v1"

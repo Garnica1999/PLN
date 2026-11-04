@@ -16,7 +16,7 @@ Fecha: 2026-11-01
 | Condensador | `gemma2:2b` |
 | Razonamiento | nativo de gemma4, opcional |
 
-Gold: 43 preguntas, 38 directas y 5 sin respuesta.
+Silver: 43 preguntas, 38 directas y 5 sin respuesta.
 
 ## MTP
 
@@ -139,7 +139,7 @@ Corrida del 2026-11-02 en el worker GPU con el host cargado (2 GB libres): 7.938
 ## Limitaciones
 
 - La revisión manual la hizo un solo anotador.
-- El gold tiene 43 preguntas; los intervalos de confianza no se reportan.
+- El silver tiene 43 preguntas; los intervalos de confianza no se reportan.
 - La compuerta rechaza los 5 casos sin respuesta, con probabilidades de 0,293 a 0,436; el RAG también se abstiene en los 5.
 - RAGAS actual usa `gemma4` y `bge-m3`; la comparación con la corrida anterior cambia juez y embedding.
 - El contexto de 116K usa 13,9 GB de VRAM y deja 3,2 GB libres.
@@ -164,7 +164,7 @@ Corrida del 2026-11-02 en el worker GPU con el host cargado (2 GB libres): 7.938
 
 ## Fase 6. Mejoras del RAG
 
-Se probaron cuatro hipótesis sobre las 38 preguntas del gold. La referencia es el top-5 con reranker: recall 0,895; P@5 0,947; nDCG 0,865; P@1 0,868; 1,30 s.
+Se probaron cuatro hipótesis sobre las 38 preguntas del silver. La referencia es el top-5 con reranker: recall 0,895; P@5 0,947; nDCG 0,865; P@1 0,868; 1,30 s.
 
 | Hipótesis | Resultado | Decisión |
 |---|---|---|

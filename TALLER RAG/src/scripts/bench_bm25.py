@@ -1,7 +1,7 @@
 """Prueba de concepto: BM25 en memoria y fusión RRF con el dense sobre el corpus completo.
 
 No reindexa Milvus. Descarga los chunks, construye el índice BM25 y compara
-dense, BM25 y RRF con las mismas preguntas y el mismo gold.
+dense, BM25 y RRF con las mismas preguntas y el mismo silver.
 """
 from __future__ import annotations
 
@@ -61,15 +61,15 @@ def rrf(dense_ids: list[str], bm25_ids: list[str], k: int = 60, top: int = 10) -
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
+    parser.add_argument("--silver", type=Path, default=Path("eval/silver/silver_standard.jsonl"))
     parser.add_argument("--dense", type=Path, default=Path("reports/corridas/bench_ef200_k10.jsonl"))
     parser.add_argument("--collection", default=settings.collection)
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--outdir", type=Path, default=Path("reports/tablas"))
     args = parser.parse_args()
 
-    gold = [json.loads(line) for line in args.gold.read_text(encoding="utf-8").splitlines() if line.strip()]
-    gold = [row for row in gold if row.get("reference_doc_ids")]
+    silver = [json.loads(line) for line in args.silver.read_text(encoding="utf-8").splitlines() if line.strip()]
+    silver = [row for row in silver if row.get("reference_doc_ids")]
     dense = load_dense(args.dense)
 
     print(f"Descargando chunks de {args.collection}", flush=True)
@@ -83,7 +83,7 @@ def main() -> None:
     retriever.index(corpus_tokens)
 
     results = []
-    for question in gold:
+    for question in silver:
         for rep in (1, 2, 3):
             dense_hits = dense.get((question["id"], rep), [])
             query_tokens = bm25s.tokenize([question["question"]], stopwords=None, return_ids=True, show_progress=False)

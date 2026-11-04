@@ -6,11 +6,11 @@ import sys
 
 from openpyxl import load_workbook
 
-from src.scripts.export_gold_excel import main
+from src.scripts.export_silver_excel import main
 
 
 def test_validado_se_refleja(tmp_path, monkeypatch) -> None:
-    gold = tmp_path / "gold.jsonl"
+    silver = tmp_path / "silver.jsonl"
     record = {
         "id": "g-001",
         "split": "dev",
@@ -26,9 +26,9 @@ def test_validado_se_refleja(tmp_path, monkeypatch) -> None:
         "reviewer": "",
         "validated": True,
     }
-    gold.write_text(json.dumps(record, ensure_ascii=False) + "\n", encoding="utf-8")
-    out = tmp_path / "gold.xlsx"
-    monkeypatch.setattr(sys, "argv", ["export", "--gold", str(gold), "--out", str(out)])
+    silver.write_text(json.dumps(record, ensure_ascii=False) + "\n", encoding="utf-8")
+    out = tmp_path / "silver.xlsx"
+    monkeypatch.setattr(sys, "argv", ["export", "--silver", str(silver), "--out", str(out)])
     main()
-    sheet = load_workbook(out)["Gold"]
+    sheet = load_workbook(out)["Silver"]
     assert sheet["L2"].value == "Sí"

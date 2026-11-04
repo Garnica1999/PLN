@@ -103,13 +103,13 @@ TALLER RAG/
 │   │   ├── build_sample.py
 │   │   ├── ingest.py
 │   │   ├── neighbors.py
-│   │   ├── make_gold_candidates.py
+│   │   ├── make_silver_candidates.py
 │   │   ├── evaluate.py
 │   │   └── metrics.py
 │   └── tests/
 ├── eval/
-│   ├── gold/questions.jsonl
-│   ├── gold/README.md
+│   ├── silver/questions.jsonl
+│   ├── silver/README.md
 │   ├── pilot_docs.parquet
 │   ├── annotations/
 │   └── results/
@@ -166,7 +166,7 @@ muestra de humo 300 docs -> indice base -> COMPUERTA de recuperacion
 piloto 2.000 docs -> dos chunkings -> encoder -> Milvus piloto -> metricas IR completas
       |
       v
-API + Streamlit -> gold 40 -> 4 modelos -> metricas -> ganador
+API + Streamlit -> silver 40 -> 4 modelos -> metricas -> ganador
       |
       v
 corpus completo con el ganador -> verificacion de escala -> informe y demo
@@ -267,7 +267,7 @@ ssh carlos@192.168.1.100 'cd ~/taller-rag && docker compose exec ollama-embeddin
 Objetivo: comprobar que el pipeline recupera la evidencia correcta antes de invertir horas en el piloto y en la comparación de modelos. Es una compuerta de correctitud, no una evaluación de calidad final.
 
 - Conjunto de humo: 600 documentos, 350 de prensa y 250 de Bluesky, con español e inglés, muestreados con semilla fija.
-- Al menos 40 preguntas de humo, una por documento, con `reference_doc_ids` y `reference_span` (el fragmento exacto que responde). Las preguntas se generan con el LLM desde el documento y se verifican contra el texto; la validación humana queda para el gold final.
+- Al menos 40 preguntas de humo, una por documento, con `reference_doc_ids` y `reference_span` (el fragmento exacto que responde). Las preguntas se generan con el LLM desde el documento y se verifican contra el texto; la validación humana queda para el silver final.
 - Tres ejecuciones con el mismo encoder y la misma k para comprobar determinismo.
 - Métricas: Recall@5 y @10, Recall@5 de fragmento, cobertura de respuesta en top-5, MRR@10, nDCG@10, MAP@10, hit@10, tasa de duplicados, tasa de recuperaciones vacías y latencia p50/p95.
 - Compuerta, todas obligatorias:
@@ -319,10 +319,10 @@ Objetivo: comprobar que el pipeline recupera la evidencia correcta antes de inve
 - Balance entre Bluesky y prensa, español e inglés, fechas de 2024 a 2026.
 - Tipos: directas, comparativas, ambiguas y sin respuesta documental suficiente.
 - Cada pregunta lleva `id`, `question`, `lang`, `type`, `split`, `reference_doc_ids`, `reference_chunk_ids`, `reference_span`, `reference_answer` y `criteria`.
-- `make_gold_candidates.py` propone candidatos con `document_id` real y texto de respaldo; la validación y la redacción son humanas.
+- `make_silver_candidates.py` propone candidatos con `document_id` real y texto de respaldo; la validación y la redacción son humanas.
 - Dos anotadores revisan una submuestra y se reporta el acuerdo.
 - Compuerta: ninguna pregunta de prueba se usa para ajustar prompts o umbrales, y toda referencia existe en el piloto y en el corpus completo.
-- Gold consolidado: `eval/gold/silver_standard.jsonl`, 43 preguntas (19 desarrollo, 24 prueba, 38 respondibles y 5 sin respuesta). Validado por Carlos; segunda revisión pendiente.
+- Silver consolidado: `eval/silver/silver_standard.jsonl`, 43 preguntas (19 desarrollo, 24 prueba, 38 respondibles y 5 sin respuesta). Validado por Carlos; segunda revisión pendiente.
 
 ### F5. Comparación de los cuatro modelos y ablaciones (día 10 a 16)
 
@@ -355,7 +355,7 @@ Hipótesis H1: llama3.2:3b tendrá mayor fidelidad y corrección que qwen2.5:1.5
 - Si el rendimiento medido en el piloto no permite terminar en 12 horas, se indexan 50.000 y la desviación se documenta con el número real.
 - E6: mismas 20 preguntas de prueba sobre 2.000, 10.000 y corpus completo, solo recuperación, para medir la degradación por escala.
 - Verificar conteos, persistencia tras reinicio y búsqueda con filtros en cada nivel.
-- Compuerta: el conteo coincide con lo planificado, las referencias del gold siguen apareciendo y la latencia de recuperación queda registrada en los tres niveles.
+- Compuerta: el conteo coincide con lo planificado, las referencias del silver siguen apareciendo y la latencia de recuperación queda registrada en los tres niveles.
 
 ### F7. Anotación y análisis (día 16 a 24)
 
@@ -395,8 +395,8 @@ Hipótesis H1: llama3.2:3b tendrá mayor fidelidad y corrección que qwen2.5:1.5
 | Ollama del servidor sin autenticación | el puerto 11435 responde a toda la LAN | no exponerlo a internet y documentarlo en el README |
 | Ollama nativo del servidor ocupa 11434 | `bind: address already in use` | el contenedor publica 11435 y el nativo se queda intacto |
 | Choque de puertos | `bind: address already in use` | 11435 para Ollama Docker y 8010 para la API |
-| Duplicados inflan métricas | mismos textos en top-k | deduplicación por `text_sha256` y gold sin duplicados |
-| Gold sesgado | preguntas concentradas en un dominio | muestreo estratificado y dos anotadores |
+| Duplicados inflan métricas | mismos textos en top-k | deduplicación por `text_sha256` y silver sin duplicados |
+| Silver sesgado | preguntas concentradas en un dominio | muestreo estratificado y dos anotadores |
 | Inyección de instrucciones | el modelo obedece texto del documento | delimitadores, instrucción explícita y colección de prueba separada |
 | Fuga de datos a Git | `git status` muestra el Parquet | `.gitignore` desde el primer commit y revisión antes de publicar |
 | Resultados inventados | tablas sin JSONL de respaldo | toda cifra se genera desde `eval/results` |
@@ -428,7 +428,7 @@ Hipótesis H1: llama3.2:3b tendrá mayor fidelidad y corrección que qwen2.5:1.5
 | Experimento principal solo cambia el LLM; cuantización y amenazas a la validez | E4 |
 | Ablaciones de una dimensión; colección nueva al cambiar encoder | E1, E2 y E3 |
 | Tres repeticiones, frío/caliente, hardware, semilla, versiones, tokens, memoria, fecha | E4 |
-| Gold de 40, ambas colecciones, idiomas, fechas, tipos, referencia, dev/test | F4 |
+| Silver de 40, ambas colecciones, idiomas, fechas, tipos, referencia, dev/test | F4 |
 | Compuerta de correctitud antes de escalar (600 documentos, 40+ preguntas) | F1.5 |
 | Métricas de recuperación: Recall, Precision, Hit, MRR, MAP, nDCG, fragmento, contexto, duplicados e IC bootstrap | F1.5, E0, E1, E2, E3 y E6 |
 | Métricas de generación | E4 |
@@ -447,7 +447,7 @@ Hipótesis H1: llama3.2:3b tendrá mayor fidelidad y corrección que qwen2.5:1.5
 - 15 puntos, arquitectura: `docs/ARQUITECTURA.md` con diagrama propio y un ADR por cada decisión costosa.
 - 20 puntos, chunking, embeddings y Milvus: dos estrategias comparadas, offsets, IDs estables, deduplicación trazable, colección e índice documentados, conteos y persistencia verificados.
 - 15 puntos, API, interfaz y despliegue: compose único, `.env.example`, README desde cero, UI con modelo, k, fuentes y estados.
-- 15 puntos, diseño experimental y gold: 40 preguntas, dev y prueba separados, referencia verificable.
+- 15 puntos, diseño experimental y silver: 40 preguntas, dev y prueba separados, referencia verificable.
 - 20 puntos, comparación de LLM: cuatro modelos, evidencia constante, métricas de recuperación, generación, latencia y recursos, análisis de errores.
 - 5 puntos, documentación y pruebas: tests que corren sin Milvus y README con solución de problemas.
 

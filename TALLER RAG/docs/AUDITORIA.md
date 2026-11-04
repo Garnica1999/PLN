@@ -79,7 +79,7 @@ El software es sólido para la carga prevista: una demo y una consulta a la vez.
 ## No revisado
 
 - `src/scripts/ingest_variant.py`, `cleaning.py` y `chunking.py` a fondo.
-- `annotate.py` y `export_gold_excel.py`.
+- `annotate.py` y `export_silver_excel.py`.
 - La interfaz en un navegador real; solo se comprobó por HTTP y con `AppTest`.
 - No hay archivo de diapositivas en el repositorio; las figuras del informe son la referencia visual.
 
@@ -94,13 +94,13 @@ Pendientes: 10 (helpers duplicados en los benchmarks) y 11 (test de `count` con 
 
 **Qué pasaba.** El juez por defecto era `llama3.2:3b` con un prompt de una línea. En el caso "¿Y en qué departamento?" la recuperación traía el documento correcto en rank 1 y `gemma2:2b` respondía "En el departamento de Boyacá [1]". El juez devolvía `NO` y el sistema se abstenía con `juez_no`.
 
-**Alcance.** Sobre las 43 preguntas del gold ampliado, `llama3.2:3b` aceptó 2 de 27 respuestas con cita válida. `qwen2.5:1.5b` y `gemma2:2b` aceptaron las 27. En 10 casos adversariales (negación, cuantificador, causal, atribución, contradicción y cruce de números), `gemma2:2b` atrapó 8 y `qwen2.5:1.5b` 5. No es un problema de un documento: es del modelo juez.
+**Alcance.** Sobre las 43 preguntas del silver ampliado, `llama3.2:3b` aceptó 2 de 27 respuestas con cita válida. `qwen2.5:1.5b` y `gemma2:2b` aceptaron las 27. En 10 casos adversariales (negación, cuantificador, causal, atribución, contradicción y cruce de números), `gemma2:2b` atrapó 8 y `qwen2.5:1.5b` 5. No es un problema de un documento: es del modelo juez.
 
 **Arreglo.** El generador es `gemma4:e4b`; `JUDGE_MODEL` y `CONDENSE_MODEL` pasan a `gemma2:2b`. `qwen2.5:1.5b` y `llama3.2:3b` dejan de ser necesarios en el camino conversacional. El veredicto se parsea con `^s[ií]\b`.
 
-**Guardarraíl.** Se corrigieron los arranques de frase ("Hay"), los números con separador ("1.000" contra "1000"), las citas múltiples ("[2, 3, 4]"), los metadatos del chunk citado (título, fecha, URL) y la cobertura léxica cuando el chunk está en otro idioma. Las abstenciones directas del gold bajaron de 12 a 5 y luego a 1 con el reranker; las 5 preguntas sin respuesta se siguen absteniendo.
+**Guardarraíl.** Se corrigieron los arranques de frase ("Hay"), los números con separador ("1.000" contra "1000"), las citas múltiples ("[2, 3, 4]"), los metadatos del chunk citado (título, fecha, URL) y la cobertura léxica cuando el chunk está en otro idioma. Las abstenciones directas del silver bajaron de 12 a 5 y luego a 1 con el reranker; las 5 preguntas sin respuesta se siguen absteniendo.
 
-**Límite.** Quedan 5 abstenciones directas (g-017, g-018, g-023, g-028 y g-040). Salvo g-017, que es una respuesta incorrecta, las otras son respuestas correctas cuya cita apunta a otro chunk. El recuperador no es el problema: 36 de 38 documentos de referencia están en top-5. El juez verifica respaldo en la evidencia citada, no corrección contra el gold; si la recuperación trae el documento equivocado, acepta una respuesta sustentada por ese documento.
+**Límite.** Quedan 5 abstenciones directas (g-017, g-018, g-023, g-028 y g-040). Salvo g-017, que es una respuesta incorrecta, las otras son respuestas correctas cuya cita apunta a otro chunk. El recuperador no es el problema: 36 de 38 documentos de referencia están en top-5. El juez verifica respaldo en la evidencia citada, no corrección contra el silver; si la recuperación trae el documento equivocado, acepta una respuesta sustentada por ese documento.
 
 
 ## Estado actual de la arquitectura

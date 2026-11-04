@@ -47,7 +47,7 @@ def evidence_text(response: dict) -> str:
     return safe("\n\n".join(parts), 3000)
 
 
-def build_workbook(gold: dict, records: list[dict]) -> Workbook:
+def build_workbook(silver: dict, records: list[dict]) -> Workbook:
     book = Workbook()
     guide = book.active
     guide.title = "Instrucciones"
@@ -89,7 +89,7 @@ def build_workbook(gold: dict, records: list[dict]) -> Workbook:
         sheet.column_dimensions[cell.column_letter].width = width
 
     for row, record in enumerate(records, start=2):
-        question = gold.get(record["question_id"], {})
+        question = silver.get(record["question_id"], {})
         response = record["response"]
         values = [
             record["item_id"],
@@ -122,16 +122,16 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", type=Path, default=Path("eval/annotations/Julian_Carrillo.xlsx"))
     parser.add_argument("--run", type=Path, default=Path("reports/corridas/e4_test.jsonl"))
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
+    parser.add_argument("--silver", type=Path, default=Path("eval/silver/silver_standard.jsonl"))
     parser.add_argument("--annotations-dir", type=Path, default=Path("eval/annotations"))
     args = parser.parse_args()
 
-    gold, records = load_items(args.run, args.gold)
+    silver, records = load_items(args.run, args.silver)
     for record in records:
         record["item_id"] = blind_id(record["model"], record["question_id"], int(record["rep"]))
     write_key(records, args.annotations_dir)
 
-    book = build_workbook(gold, records)
+    book = build_workbook(silver, records)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     book.save(args.out)
     print(f"{len(records)} respuestas en {args.out}")

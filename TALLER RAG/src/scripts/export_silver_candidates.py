@@ -1,4 +1,4 @@
-"""Genera el Excel de candidatos para ampliar el gold con más documentos relevantes."""
+"""Genera el Excel de candidatos para ampliar el silver con más documentos relevantes."""
 from __future__ import annotations
 
 import argparse
@@ -14,20 +14,20 @@ from sentence_transformers import SentenceTransformer
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
-    parser.add_argument("--out", type=Path, default=Path("eval/gold/ampliacion_candidatos.xlsx"))
+    parser.add_argument("--silver", type=Path, default=Path("eval/silver/silver_standard.jsonl"))
+    parser.add_argument("--out", type=Path, default=Path("eval/silver/ampliacion_candidatos.xlsx"))
     parser.add_argument("--collection", default="rag_full_bge_m3_d1024_v1")
     parser.add_argument("--candidates", type=int, default=2)
     args = parser.parse_args()
 
-    gold = [json.loads(line) for line in args.gold.read_text(encoding="utf-8").splitlines() if line.strip()]
-    gold = [row for row in gold if row.get("reference_doc_ids")]
+    silver = [json.loads(line) for line in args.silver.read_text(encoding="utf-8").splitlines() if line.strip()]
+    silver = [row for row in silver if row.get("reference_doc_ids")]
     model = SentenceTransformer("BAAI/bge-m3", device="cuda")
     model.half()
     client = MilvusClient(uri="http://localhost:19530")
 
     rows = []
-    for question in gold:
+    for question in silver:
         vector = model.encode([question["question"]], normalize_embeddings=True)[0]
         response = client.search(
             collection_name=args.collection,
@@ -66,9 +66,9 @@ def main() -> None:
     guide.title = "Instrucciones"
     guide.column_dimensions["A"].width = 110
     lines = [
-        ("Ampliación del gold: documentos candidatos", True),
+        ("Ampliación del silver: documentos candidatos", True),
         ("", False),
-        ("Para cada pregunta se proponen dos documentos recuperados por bge-m3 que no están en el gold actual.", False),
+        ("Para cada pregunta se proponen dos documentos recuperados por bge-m3 que no están en el silver actual.", False),
         ("Marca 'Sí' en la columna 'responde' si el documento contiene la respuesta a la pregunta.", False),
         ("Marca 'No' si solo menciona el tema, una entidad relacionada o un dato distinto.", False),
         ("Si dudas, usa la nota. No cambies el id ni el documento.", False),

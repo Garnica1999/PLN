@@ -68,7 +68,7 @@ Implicación: el filtro temporal solo es fiable en el tramo 2024 a 2026, y el in
 
 Defecto detectado: el campo mezcla códigos ISO con locales y variantes de mayúsculas, y `language_base` no se normaliza de forma consistente. Hay 13.137 documentos sin idioma. La normalización se hace al vuelo en la ingesta y el archivo original no se toca.
 
-Implicación: los filtros de idioma y el gold deben construirse sobre el idioma normalizado, no sobre el campo crudo. El húngaro (4.108) es una bolsa que conviene revisar antes de tratarla como idioma del corpus.
+Implicación: los filtros de idioma y el silver deben construirse sobre el idioma normalizado, no sobre el campo crudo. El húngaro (4.108) es una bolsa que conviene revisar antes de tratarla como idioma del corpus.
 
 ## 6. Sesgos de recolección
 
@@ -140,7 +140,7 @@ Se corrigieron 18 hallazgos de la auditoría y 4 del revisor independiente:
 - El `chunk_id` incluye solape y parámetros de segmentación; la ingesta quedó en un solo bucle en `src/rag/ingest_variant.py` y `src/scripts/ingest.py` es un envoltorio de la variante v1.
 - La API valida idioma y fechas, rechaza colecciones de otro encoder y responde 400/422 con mensaje.
 - `store` verifica la dimensión de la colección, cuenta sin flush y devuelve el `chunk_id` real en cada hit.
-- El gold preserva `reviewer`, `validated` y `split` al regenerarse; el Excel refleja `validated` y calcula los contadores reales.
+- El silver preserva `reviewer`, `validated` y `split` al regenerarse; el Excel refleja `validated` y calcula los contadores reales.
 - Las métricas usan P@1 y P@5, reportan `n_registros` y `n_preguntas`, y aplican Bonferroni en las comparaciones. `precision@k` se retiró del resumen.
 - El healthcheck de Ollama apunta a 11435. La imagen se reconstruyó con `openpyxl`.
 - 37 pruebas en verde y gate de QA 12/12.

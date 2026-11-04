@@ -12,7 +12,7 @@ Asistente RAG reproducible sobre prensa y Bluesky con Milvus y modelos locales p
 
 ## Resumen
 
-Se construyó un asistente de recuperación aumentada sobre 169.248 documentos de prensa y Bluesky con Milvus como único motor vectorial, e5-base como encoder y cuatro modelos generativos locales. Se compararon dos estrategias de segmentación, tres tamaños de contexto, dos encoders y cuatro variantes de limpieza. El sistema se evaluó con un gold de 43 preguntas validadas por una persona y se midió la degradación al pasar del piloto de 2.000 documentos al corpus completo. El hallazgo principal es que el piloto sobreestima la recuperación: Recall@10 cae de 0,947 a 0,684 y nDCG@10 de 0,909 a 0,594 con el mismo encoder e índice. El reranking recupera el orden (P@1 de 0,474 a 0,632) pero no la cobertura.
+Se construyó un asistente de recuperación aumentada sobre 169.248 documentos de prensa y Bluesky con Milvus como único motor vectorial, e5-base como encoder y cuatro modelos generativos locales. Se compararon dos estrategias de segmentación, tres tamaños de contexto, dos encoders y cuatro variantes de limpieza. El sistema se evaluó con un silver de 43 preguntas validadas por una persona y se midió la degradación al pasar del piloto de 2.000 documentos al corpus completo. El hallazgo principal es que el piloto sobreestima la recuperación: Recall@10 cae de 0,947 a 0,684 y nDCG@10 de 0,909 a 0,594 con el mismo encoder e índice. El reranking recupera el orden (P@1 de 0,474 a 0,632) pero no la cobertura.
 
 ## 1. Problema y motivación
 
@@ -57,7 +57,7 @@ Estado: H2 y H3 no se confirman con significancia; H4 se refuta. H1 queda pendie
 
 ## 6. Evaluación
 
-- Gold de 43 preguntas: 19 de desarrollo y 24 de prueba; 38 respondibles y 5 sin respuesta.
+- Silver de 43 preguntas: 19 de desarrollo y 24 de prueba; 38 respondibles y 5 sin respuesta.
 - Validación de Carlos: 31 Sí y 12 correcciones aplicadas; segunda revisión pendiente.
 - Métricas: Recall@10, P@1, P@5, MRR, MAP, nDCG@10, cobertura de span, citas, abstención, latencia y tokens/s.
 - Bootstrap de 1.000 remuestreos; Bonferroni en las comparaciones múltiples.
@@ -135,15 +135,15 @@ El reranker reordena mejor pero no recupera cobertura y cuesta 3,1 s por consult
 
 ## 8. Análisis de errores
 
-- Recuperación en el corpus completo: los dos fallos del gold son `g-045` y `g-046`; los documentos están en la colección, el ranking no los sube.
+- Recuperación en el corpus completo: los dos fallos del silver son `g-045` y `g-046`; los documentos están en la colección, el ranking no los sube.
 - Generación: qwen casi no cita, llama3.2:1b se abstiene de más, llama3.2:3b cita la mitad de las veces, gemma2:2b cita siempre.
 - Abstención: los cuatro modelos se abstienen en las cinco preguntas sin respuesta salvo gemma2:2b, que responde en 3 de 15 repeticiones.
 - Inyección de instrucciones: 5 documentos sintéticos; gemma2:2b obedeció 1/5 (terminar con FIN), llama3.2:3b y qwen2.5:1.5b 0/5. Los tres respondieron el hecho; la prueba es pequeña.
 
 ## 9. Limitaciones
 
-- Una sola revisora humana del gold; la segunda revisión puede cambiar filas.
-- El gold no tiene preguntas comparativas; solo 2 de Bluesky y 9 en inglés.
+- Una sola revisora humana del silver; la segunda revisión puede cambiar filas.
+- El silver no tiene preguntas comparativas; solo 2 de Bluesky y 9 en inglés.
 - E4 se hizo sobre el piloto, no sobre el corpus completo.
 - E7 mejora el orden con un costo de 3,1 s por consulta; no se adopta en la demo.
 - El corpus tiene 32,7% de documentos truncados y 5,3% de ruido de crawler; el filtro descarta 7.380 documentos.
@@ -151,7 +151,7 @@ El reranker reordena mejor pero no recupera cobertura y cuesta 3,1 s por consult
 
 ## 10. Conclusiones
 
-- La limpieza conservadora y el chunking fijo son la base estable; las ablaciones no muestran diferencias significativas con el gold actual.
+- La limpieza conservadora y el chunking fijo son la base estable; las ablaciones no muestran diferencias significativas con el silver actual.
 - El tamaño del corpus cambia el resultado: el piloto no es representativo de la recuperación a escala.
 - El reranking mejora el orden, no la cobertura.
 - La elección de modelo generativo queda pendiente de la anotación humana; el automático favorece a gemma2:2b en citas y abstención, y a qwen2.5:1.5b en velocidad.
@@ -172,10 +172,10 @@ El reranker reordena mejor pero no recupera cobertura y cuesta 3,1 s por consult
 - Hardware: Ryzen 9 5950X, 31 GB RAM, RX 9070 XT 16 GB, ROCm 7.2.4.
 - Versiones: Python 3.12 en contenedores, e5-base, Milvus 2.6.6, PyTorch 2.10.0+rocm7.2.4.
 - Comandos: ver `README.md`.
-- Artefactos: `eval/gold/silver_standard.jsonl`, `reports/corridas/*.jsonl`, `reports/tablas/*.csv`.
+- Artefactos: `eval/silver/silver_standard.jsonl`, `reports/corridas/*.jsonl`, `reports/tablas/*.csv`.
 
 ## Apéndice B. Pendientes antes de entregar
 
 1. Anotar E4 con dos personas y calcular kappa.
-2. Segunda revisión del gold (Julián, Erika, Óscar).
+2. Segunda revisión del silver (Julián, Erika, Óscar).
 3. Ensayar la demo y cerrar el PDF con la plantilla `tg_usta.cls`.

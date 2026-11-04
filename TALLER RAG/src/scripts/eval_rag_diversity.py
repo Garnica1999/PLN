@@ -18,7 +18,7 @@ from src.rag.embeddings import get_embedder
 from src.rag.pipeline import rerank_hits, search_hits
 from src.scripts.metrics import ranked_docs, row_metrics
 
-GOLD = Path("eval/gold/silver_standard_ampliado.jsonl")
+SILVER = Path("eval/silver/silver_standard_ampliado.jsonl")
 OUT = Path("reports/tablas/mejoras_diversidad.csv")
 COLLECTION = settings.collection
 MISSES = ("g-031", "g-046")
@@ -111,11 +111,11 @@ def diagnose(question: str, reference: set[str], embedder) -> str:
 
 
 def main() -> None:
-    gold = [json.loads(line) for line in GOLD.read_text(encoding="utf-8").splitlines() if line.strip()]
-    gold = [row for row in gold if row.get("reference_doc_ids")]
+    silver = [json.loads(line) for line in SILVER.read_text(encoding="utf-8").splitlines() if line.strip()]
+    silver = [row for row in silver if row.get("reference_doc_ids")]
     embedder = get_embedder()
     rows = []
-    for index, row in enumerate(gold, start=1):
+    for index, row in enumerate(silver, start=1):
         found = variants(row["question"], embedder)
         for variant, (hits, elapsed) in found.items():
             record = {
@@ -138,7 +138,7 @@ def main() -> None:
         if row["id"] in MISSES:
             print(f"{row['id']} {row['question'][:60]}", flush=True)
             print("  " + diagnose(row["question"], set(row["reference_doc_ids"]), embedder), flush=True)
-        print(f"{index}/{len(gold)}", flush=True)
+        print(f"{index}/{len(silver)}", flush=True)
 
     frame = pd.DataFrame(rows)
     summary = (

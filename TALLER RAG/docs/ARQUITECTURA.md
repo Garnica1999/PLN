@@ -118,7 +118,7 @@ El tema sigue Material 3. Los tokens de color, forma, tipografía, elevación y 
 
 | Componente | Qué mide |
 |---|---|
-| `eval_configuracion_final.py` | recuperación y respuesta sobre el gold |
+| `eval_configuracion_final.py` | recuperación y respuesta sobre el silver |
 | `eval_chat_cases.py` | 12 casos de chat, con y sin `Modo estricto` |
 | `export_ragas_dataset.py` | exporta pregunta, respuesta, contextos y ground truth |
 | `eval_ragas.py` | RAGAS con juez y embedding configurables |
@@ -148,7 +148,7 @@ La API y el frontend usan `network_mode: host`. El contenedor `eval` se levanta 
 
 El detector es selectivo: solo se activa con referencias genéricas ("la iniciativa", "el concierto", "la reforma", "el acuerdo", "la COP", etc.). Para esas preguntas recupera una unión profunda de 50 fragmentos densos y 50 de BM25, la reordena y pide al LLM un JSON con la ambigüedad, la pregunta de clarificación y entre dos y seis opciones. Una aumentación determinista añade las cifras de votos y los montos que el modelo omite. La clarificación devuelve opciones con consulta reescrita; la condicional usa las mismas opciones con su cita. La política `auto` clarifica en `/chat` y condiciona en `/ask`.
 
-En 15 preguntas humanas (los conjuntos de 12 y 6 comparten tres controles), el detector da F1 1,0, el condicional 14/15 y la clarificación 13/15 frente a 13/15 del baseline. El conjunto v2 tiene 42 preguntas con doble anotación humana: 21 ambiguas y 21 de control, con las dos hojas idénticas (kappa 1,000, consistencia y no acuerdo independiente). El detector da F1 0,894 (precisión 0,81 y recall 1,0) con cinco falsos positivos. Dos controles no tienen respuesta verificable en el corpus, así que la exactitud se mide sobre 40: baseline 30/40 (0,750), clarificación 29/40 (0,725, McNemar p=1,0) y condicional 33/40 (0,825, p=0,375). Sobre el gold asistido por LLM, el condicional sube a 36/42 (p=0,039). La recomendación por margen se retiró. La híbrida usa la mejor política según el contexto. La doble anotación humana del v2 está consolidada en `eval/gold/gold_ambiguedad_v2_humano.jsonl` (42/42 etiquetas idénticas, kappa 1.000); el libro con las hojas y el cálculo del kappa está en `eval/anotacion/anotacion_v2.xlsx`.
+En 15 preguntas humanas (los conjuntos de 12 y 6 comparten tres controles), el detector da F1 1,0, el condicional 14/15 y la clarificación 13/15 frente a 13/15 del baseline. El conjunto v2 tiene 42 preguntas con doble anotación humana: 21 ambiguas y 21 de control, con las dos hojas idénticas (kappa 1,000, consistencia y no acuerdo independiente). El detector da F1 0,894 (precisión 0,81 y recall 1,0) con cinco falsos positivos. Dos controles no tienen respuesta verificable en el corpus, así que la exactitud se mide sobre 40: baseline 30/40 (0,750), clarificación 29/40 (0,725, McNemar p=1,0) y condicional 33/40 (0,825, p=0,375). Sobre el silver asistido por LLM, el condicional sube a 36/42 (p=0,039). La recomendación por margen se retiró. La híbrida usa la mejor política según el contexto. La doble anotación humana del v2 está consolidada en `eval/silver/silver_ambiguedad_v2_humano.jsonl` (42/42 etiquetas idénticas, kappa 1.000); el libro con las hojas y el cálculo del kappa está en `eval/anotacion/anotacion_v2.xlsx`.
 
 ## 3. Configuración
 
@@ -244,7 +244,7 @@ El juez y el embedding cambiaron, así que la comparación no es completamente e
 
 ### 4.6 Arquitectura anterior contra actual
 
-| Frente | Densa (gold exploratorio) | Anterior |
+| Frente | Densa (silver exploratorio) | Anterior |
 |---|---|---|
 | Recuperación | k=5, reranker top-5 | k=15, sin reranker |
 | Entregadas | 37 de 38 | 33 de 38 |
@@ -270,7 +270,7 @@ El MTP ya estaba activo. La mayor ganancia de latencia vino de alinear el contex
 ## 5. Limitaciones
 
 - La revisión manual la hizo un solo anotador.
-- El gold tiene 43 preguntas; los intervalos de confianza no se reportan.
+- El silver tiene 43 preguntas; los intervalos de confianza no se reportan.
 - RAGAS con el timeout por defecto de 180 s dejaba `context precision` con 4 valores de 38. La corrida de referencia usa 900 s y 6 workers.
 - La compuerta rechaza los 5 casos sin respuesta, con probabilidades de 0,293 a 0,436; el RAG también se abstiene en los 5.
 - El contexto de 116K usa 13,9 GB de VRAM y deja 3,2 GB libres.
@@ -293,7 +293,7 @@ El MTP ya estaba activo. La mayor ganancia de latencia vino de alinear el contex
 
 ## 7. Fase 6. Mejoras probadas
 
-Se probaron cuatro mejoras sobre el gold de 38 preguntas. La referencia es el top-5 con reranker y el prompt v2.
+Se probaron cuatro mejoras sobre el silver de 38 preguntas. La referencia es el top-5 con reranker y el prompt v2.
 
 | Mejora | Resultado | Decisión |
 |---|---|---|

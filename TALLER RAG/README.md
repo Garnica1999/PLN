@@ -25,7 +25,7 @@ TALLER RAG/
 │   ├── rag/                pipeline, API, chat, Streamlit
 │   ├── scripts/            perfilado, ingesta, evaluación y métricas
 │   └── tests/
-├── eval/                   gold, anotaciones y muestra del piloto
+├── eval/                   silver, anotaciones y muestra del piloto
 ├── reports/                artículo IEEE, informe, figuras, tablas y corridas
 ├── reports/articulo/       artículo en LaTeX por secciones y PDF compilado
 ├── docs/                   arquitectura, decisiones, hallazgos y experimentos
@@ -208,7 +208,7 @@ El tema sigue Material 3: escala de forma de 4 a 28 px con botones y barra de en
 
 Si la pregunta es ambigua, la interfaz muestra las opciones como botones; al elegir una, envía la consulta reescrita y responde con la evidencia de esa interpretación. En `/ask`, la respuesta condicional lista todas las interpretaciones con su cita.
 
-El interruptor `Modo noche` cambia al esquema oscuro de Material 3 sin recargar la página. El panel lateral se oculta y se reabre con el botón circular de la cabecera. Las preguntas de ejemplo se sortean del gold en cada sesión y se vuelven a sortear con `Nueva conversación`.
+El interruptor `Modo noche` cambia al esquema oscuro de Material 3 sin recargar la página. El panel lateral se oculta y se reabre con el botón circular de la cabecera. Las preguntas de ejemplo se sortean del silver en cada sesión y se vuelven a sortear con `Nueva conversación`.
 
 `Razonamiento`, `Modo estricto` y `Modo noche` se guardan en `config/ui_prefs.json` (volumen `./config`) y se recuperan al recargar la página. Si se cambia un interruptor mientras el modelo responde, la pregunta queda pendiente y se reintenta en el siguiente rerun, así que la conversación no se pierde.
 
@@ -222,12 +222,12 @@ docker compose exec -e API_URL=http://localhost:8010 api streamlit run src/rag/a
 
 ## 10. Evaluación
 
-1. Silver standard: `eval/gold/silver_standard.jsonl` con 43 preguntas (19 de desarrollo, 24 de prueba, 5 sin respuesta) y `eval/gold/silver_standard_ampliado.jsonl` con 17 documentos adicionales validados por dos anotadores.
+1. Silver standard: `eval/silver/silver_standard.jsonl` con 43 preguntas (19 de desarrollo, 24 de prueba, 5 sin respuesta) y `eval/silver/silver_standard_ampliado.jsonl` con 17 documentos adicionales validados por dos anotadores.
 2. Recuperación final:
 
 ```bash
 docker compose --profile rocm run --rm -T ingest-rocm python -m src.scripts.bench_final_tuning \
-  --gold eval/gold/silver_standard_ampliado.jsonl --outdir reports/tablas/ampliado
+  --silver eval/silver/silver_standard_ampliado.jsonl --outdir reports/tablas/ampliado
 ```
 
 3. Métricas desde los JSONL:
@@ -241,7 +241,7 @@ docker compose exec api python -m src.scripts.metrics --results reports/corridas
 4. Comparación de limpieza, chunking y codificadores: `docs/EXPERIMENTOS.md`.
 5. Pipeline unificado: `python src/scripts/run_evaluation.py`. Corre desempeño, chat y RAGAS; escribe `reports/tablas/evaluacion_comparativa.md`. La fase de desempeño corre en el worker GPU (`ingest-rocm`, perfil `rocm`) para no cargar una segunda copia de los modelos dentro de la API. El contenedor `eval` tiene RAGAS 0.4.3, LangChain 0.3 y `BAAI/bge-m3` en CPU; se levanta con el perfil `eval`.
 
-6. Ambigüedad: `docker compose exec api python -m src.scripts.experimento_ambiguedad`. Escribe `reports/tablas/ambiguedad_resumen.csv` y `ambiguedad_por_pregunta.csv`. La doble anotación humana del gold v2 está en `eval/anotacion/anotacion_v2.xlsx`: dos hojas con lista desplegable y una hoja que calcula el kappa sola. `src/scripts/conciliar_anotacion.py` lee el libro y genera el gold humano en JSONL.
+6. Ambigüedad: `docker compose exec api python -m src.scripts.experimento_ambiguedad`. Escribe `reports/tablas/ambiguedad_resumen.csv` y `ambiguedad_por_pregunta.csv`. La doble anotación humana del silver v2 está en `eval/anotacion/anotacion_v2.xlsx`: dos hojas con lista desplegable y una hoja que calcula el kappa sola. `src/scripts/conciliar_anotacion.py` lee el libro y genera el silver humano en JSONL.
 
 Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`, con Recall@k, P@1, P@5, Hit@k, MRR, MAP, nDCG, cobertura de span, context precision y recall, duplicados, latencias e intervalos por bootstrap.
 
@@ -256,7 +256,7 @@ Salidas: `reports/tablas/metricas.csv`, `metricas.md` y `resultados_detalle.csv`
 | RAGAS actual (`gemma4` + `bge-m3`) | 0,952 / 0,840 / 0,881 / 0,921 / 0,657 |
 | RAGAS anterior (`gemma2` + `qwen3`) | 0,925 / 0,798 / 0,760 / 0,842 / 0,705 |
 | Latencia media | 7.938 ms sin razonamiento; 6.834 ms con razonamiento |
-| Ambigüedad | Gold humano de 42: detector F1 0,894; condicional 33/40 vs baseline 30/40 (p=0,375); clarificación 29/40 (p=1,0). Gold asistido: condicional 36/42 (p=0,039). Recomendación retirada |
+| Ambigüedad | Silver humano de 42: detector F1 0,894; condicional 33/40 vs baseline 30/40 (p=0,375); clarificación 29/40 (p=1,0). Silver asistido: condicional 36/42 (p=0,039). Recomendación retirada |
 
 La arquitectura completa, las capas y la comparación contra la versión anterior están en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md). El informe de métricas está en [reports/informe/metricas_nueva_configuracion.md](reports/informe/metricas_nueva_configuracion.md).
 

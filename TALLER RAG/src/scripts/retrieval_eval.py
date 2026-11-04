@@ -28,7 +28,7 @@ def build_embedder(name: str, url: str | None, dims: int | None):
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", default="eval/gold/questions_dev.jsonl")
+    parser.add_argument("--silver", default="eval/silver/questions_dev.jsonl")
     parser.add_argument("--split", default="dev", choices=["dev", "test", "clean", "smoke", "all"])
     parser.add_argument("--collection", required=True)
     parser.add_argument("--embedder", choices=["e5", "ollama"], default="e5")
@@ -40,7 +40,7 @@ def main() -> None:
     parser.add_argument("--outdir", default="reports/corridas")
     args = parser.parse_args()
 
-    questions = [json.loads(line) for line in Path(args.gold).read_text(encoding="utf-8").splitlines() if line.strip()]
+    questions = [json.loads(line) for line in Path(args.silver).read_text(encoding="utf-8").splitlines() if line.strip()]
     questions = [
         q
         for q in questions

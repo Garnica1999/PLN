@@ -1,9 +1,9 @@
-"""El split del gold no debe repetir una pregunta."""
+"""El split del silver no debe repetir una pregunta."""
 from __future__ import annotations
 
 import pandas as pd
 
-from src.scripts.build_gold_standard import assign_split
+from src.scripts.build_silver_standard import assign_split
 
 
 def test_split_balanceado_y_sin_solapamiento() -> None:
@@ -25,9 +25,9 @@ def test_builder_preserva_el_split(tmp_path, monkeypatch) -> None:
     import json
     import sys
 
-    from src.scripts.build_gold_standard import main
+    from src.scripts.build_silver_standard import main
 
-    source = tmp_path / "gold.jsonl"
+    source = tmp_path / "silver.jsonl"
     records = [
         {"id": "x1", "question": "q1", "lang": "es", "type": "directa", "reference_doc_ids": ["url_crawls:1"], "reference_answer": "a", "reference_span": "a"},
         {"id": "x2", "question": "q2", "lang": "es", "type": "directa", "reference_doc_ids": ["url_crawls:2"], "reference_answer": "b", "reference_span": "b"},
@@ -36,7 +36,7 @@ def test_builder_preserva_el_split(tmp_path, monkeypatch) -> None:
     ]
     source.write_text("\n".join(json.dumps(r) for r in records) + "\n", encoding="utf-8")
     out = tmp_path / "out"
-    argv = ["builder", "--gold", str(source), "--outdir", str(out), "--parquet", str(tmp_path / "none.parquet")]
+    argv = ["builder", "--silver", str(source), "--outdir", str(out), "--parquet", str(tmp_path / "none.parquet")]
     monkeypatch.setattr(sys, "argv", argv)
     main()
     first = {

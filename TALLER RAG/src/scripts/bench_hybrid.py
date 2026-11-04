@@ -1,6 +1,6 @@
 """Benchmark de fusión dense + BM25 con pesos y RRF sobre top-50.
 
-Compara dense solo, BM25 solo y tres pesos de fusión, en el gold original y en
+Compara dense solo, BM25 solo y tres pesos de fusión, en el silver original y en
 un conjunto de preguntas parafraseadas para medir el sobreajuste al enunciado.
 """
 from __future__ import annotations
@@ -40,14 +40,14 @@ def load_dense(path: Path) -> dict[tuple[str, int], list[dict]]:
 
 
 def evaluate(
-    gold: list[dict],
+    silver: list[dict],
     dense: dict[tuple[str, int], list[dict]],
     rows: list[dict],
     retriever,
     collection: str,
 ) -> pd.DataFrame:
     results = []
-    for question in gold:
+    for question in silver:
         for rep in (1, 2, 3):
             dense_hits = dense.get((question["id"], rep))
             if dense_hits is None:
@@ -110,15 +110,15 @@ def summarize(frame: pd.DataFrame) -> pd.DataFrame:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
-    parser.add_argument("--paraphrases", type=Path, default=Path("eval/gold/paraphrases.jsonl"))
+    parser.add_argument("--silver", type=Path, default=Path("eval/silver/silver_standard.jsonl"))
+    parser.add_argument("--paraphrases", type=Path, default=Path("eval/silver/paraphrases.jsonl"))
     parser.add_argument("--dense", type=Path, default=Path("reports/corridas/bench_ef200_k50.jsonl"))
     parser.add_argument("--collection", default=settings.collection)
     parser.add_argument("--outdir", type=Path, default=Path("reports/tablas"))
     args = parser.parse_args()
 
-    gold = [json.loads(line) for line in args.gold.read_text(encoding="utf-8").splitlines() if line.strip()]
-    gold = [row for row in gold if row.get("reference_doc_ids")]
+    silver = [json.loads(line) for line in args.silver.read_text(encoding="utf-8").splitlines() if line.strip()]
+    silver = [row for row in silver if row.get("reference_doc_ids")]
     dense = load_dense(args.dense)
     rows = load_chunks(args.collection)
     print(f"{len(rows)} chunks", flush=True)
@@ -127,11 +127,11 @@ def main() -> None:
     retriever.index(corpus_tokens)
     print("BM25 indexado", flush=True)
 
-    original = evaluate(gold, dense, rows, retriever, args.collection)
+    original = evaluate(silver, dense, rows, retriever, args.collection)
     original.to_csv(args.outdir / "bench_hybrid_raw.csv", index=False)
     summary = summarize(original)
     summary.to_csv(args.outdir / "bench_hybrid.csv", index=False)
-    print("\nGold original")
+    print("\nSilver original")
     print(summary.round(3).to_string(index=False))
 
     if args.paraphrases.exists():

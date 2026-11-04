@@ -14,7 +14,7 @@ import pandas as pd
 
 from src.rag.pipeline import retrieve
 
-GOLD = Path("eval/gold/gold_reservado.jsonl")
+SILVER = Path("eval/silver/silver_reservado.jsonl")
 OUT = Path("reports/tablas/reservado_ranking.csv")
 COLLECTION = "rag_full_bge_m3_d1024_v1"
 EF_VALUES = (800, 1600, 3200)
@@ -24,7 +24,7 @@ K = 100
 def main() -> None:
     questions = [
         row
-        for row in (json.loads(line) for line in GOLD.read_text(encoding="utf-8").splitlines() if line.strip())
+        for row in (json.loads(line) for line in SILVER.read_text(encoding="utf-8").splitlines() if line.strip())
         if row["type"] == "directa"
     ]
     rows = []

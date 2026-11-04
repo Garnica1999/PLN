@@ -1,7 +1,7 @@
 """Compara encoders en el piloto: calidad de recuperación y throughput.
 
 Codifica los chunks del piloto y las consultas, calcula similitud coseno y mide
-Recall, nDCG y span_hit con el gold original y las paráfrasis. No reindexa.
+Recall, nDCG y span_hit con el silver original y las paráfrasis. No reindexa.
 """
 from __future__ import annotations
 
@@ -67,7 +67,7 @@ def encode(model_name: str, rows: list[dict], queries: list[str], device: str, h
 
 
 def evaluate(
-    gold: list[dict],
+    silver: list[dict],
     rows: list[dict],
     passages: np.ndarray,
     vectors: np.ndarray,
@@ -76,7 +76,7 @@ def evaluate(
     offset: int = 0,
 ) -> pd.DataFrame:
     results = []
-    for index, question in enumerate(gold):
+    for index, question in enumerate(silver):
         scores = passages @ vectors[offset + index]
         top = np.argsort(-scores)[:10]
         hits = [
@@ -110,8 +110,8 @@ def evaluate(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--collection", default="rag_pilot_e5base_d768_v2_v1")
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
-    parser.add_argument("--paraphrases", type=Path, default=Path("eval/gold/paraphrases.jsonl"))
+    parser.add_argument("--silver", type=Path, default=Path("eval/silver/silver_standard.jsonl"))
+    parser.add_argument("--paraphrases", type=Path, default=Path("eval/silver/paraphrases.jsonl"))
     parser.add_argument("--models", default="intfloat/multilingual-e5-base,BAAI/bge-m3,Snowflake/snowflake-arctic-embed-m-v2.0,Alibaba-NLP/gte-multilingual-base")
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--half", action="store_true")
@@ -119,8 +119,8 @@ def main() -> None:
     parser.add_argument("--outdir", type=Path, default=Path("reports/tablas"))
     args = parser.parse_args()
 
-    gold = [json.loads(line) for line in args.gold.read_text(encoding="utf-8").splitlines() if line.strip()]
-    gold = [row for row in gold if row.get("reference_doc_ids")]
+    silver = [json.loads(line) for line in args.silver.read_text(encoding="utf-8").splitlines() if line.strip()]
+    silver = [row for row in silver if row.get("reference_doc_ids")]
     paraphrases = [
         json.loads(line) for line in args.paraphrases.read_text(encoding="utf-8").splitlines() if line.strip()
     ]
@@ -131,11 +131,11 @@ def main() -> None:
     frames = []
     for model_name in [name.strip() for name in args.models.split(",") if name.strip()]:
         print(f"Codificando {model_name}", flush=True)
-        queries = [row["question"] for row in gold + paraphrases]
+        queries = [row["question"] for row in silver + paraphrases]
         passages, vectors, throughput = encode(model_name, rows, queries, args.device, args.half, args.batch)
         print(f"  {throughput:.1f} chunks/s", flush=True)
-        frames.append(evaluate(gold, rows, passages, vectors, model_name, "gold"))
-        frames.append(evaluate(paraphrases, rows, passages, vectors, model_name, "paraphrases", offset=len(gold)))
+        frames.append(evaluate(silver, rows, passages, vectors, model_name, "silver"))
+        frames.append(evaluate(paraphrases, rows, passages, vectors, model_name, "paraphrases", offset=len(silver)))
         frames[-1]["throughput"] = throughput
         frames[-2]["throughput"] = throughput
         del passages, vectors

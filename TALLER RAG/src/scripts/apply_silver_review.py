@@ -2,7 +2,7 @@
 
 Aplica las 12 correcciones que Carlos dejó en la columna comentario de
 silver_standard_carlos.xlsx, marca las 43 filas como revisadas y regenera
-JSONL, CSV y Markdown. No vuelve a generar el gold desde los archivos fuente.
+JSONL, CSV y Markdown. No vuelve a generar el silver desde los archivos fuente.
 """
 from __future__ import annotations
 
@@ -83,20 +83,20 @@ def normalize(text: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--reviewer-xlsx", default="eval/gold/silver_standard_carlos.xlsx")
-    parser.add_argument("--gold", default="eval/gold/silver_standard.jsonl")
+    parser.add_argument("--reviewer-xlsx", default="eval/silver/silver_standard_carlos.xlsx")
+    parser.add_argument("--silver", default="eval/silver/silver_standard.jsonl")
     parser.add_argument("--parquet", default="data/documentos_rag.parquet")
-    parser.add_argument("--outdir", default="eval/gold")
+    parser.add_argument("--outdir", default="eval/silver")
     parser.add_argument("--reviewer", default="Carlos")
     args = parser.parse_args()
 
-    sheet = load_workbook(args.reviewer_xlsx)["Gold"]
+    sheet = load_workbook(args.reviewer_xlsx)["Silver"]
     marks = {}
     for row in sheet.iter_rows(min_row=2, values_only=True):
         if row[0]:
             marks[row[0]] = (row[11] or "", row[12] or "")
 
-    records = [json.loads(line) for line in Path(args.gold).read_text(encoding="utf-8").splitlines() if line.strip()]
+    records = [json.loads(line) for line in Path(args.silver).read_text(encoding="utf-8").splitlines() if line.strip()]
     by_id = {record["id"]: record for record in records}
     doc_ids = {record["id"]: record["reference_doc_ids"][0] for record in records if record["reference_doc_ids"]}
     meta = pq.read_table(args.parquet, columns=["document_id", "text"]).to_pandas()

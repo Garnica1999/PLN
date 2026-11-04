@@ -1,4 +1,4 @@
-"""Ejecuta el gold contra la API y guarda resultados crudos en JSONL."""
+"""Ejecuta el silver contra la API y guarda resultados crudos en JSONL."""
 from __future__ import annotations
 
 import argparse
@@ -21,7 +21,7 @@ def post(path: str, payload: dict) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", default="eval/gold/questions.jsonl")
+    parser.add_argument("--silver", default="eval/silver/questions.jsonl")
     parser.add_argument("--split", default="test", choices=["dev", "test", "smoke", "all"])
     parser.add_argument("--mode", default="ask", choices=["ask", "retrieve"])
     parser.add_argument("--models", default="")
@@ -33,7 +33,7 @@ def main() -> None:
     parser.add_argument("--outdir", default="reports/corridas")
     args = parser.parse_args()
 
-    questions = [json.loads(line) for line in Path(args.gold).read_text(encoding="utf-8").splitlines() if line.strip()]
+    questions = [json.loads(line) for line in Path(args.silver).read_text(encoding="utf-8").splitlines() if line.strip()]
     if args.split != "all":
         questions = [q for q in questions if q.get("split") == args.split]
     questions = [q for q in questions if not q.get("excluded")]

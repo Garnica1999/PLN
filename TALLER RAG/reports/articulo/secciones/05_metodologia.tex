@@ -11,7 +11,7 @@ Se usa chunking fijo de 1000 caracteres con 150 de solape (\texttt{fixed\_v2}). 
 
 \subsection{Codificaci\'on e \'indice}
 
-Los fragmentos se codifican con BAAI/bge-m3 en la GPU, en fp16 y por lotes. La colecci\'on se llama \texttt{rag\_full\_bge\_m3\_d1024\_v1} y usa HNSW con \texttt{ef}=800 en la b\'usqueda. El par\'ametro se eligi\'o con una rejilla sobre el gold: por debajo de 800 el recall cae y por encima la latencia sube sin ganancia apreciable. En paralelo se mantiene una colecci\'on BM25 sobre los mismos fragmentos, \texttt{rag\_full\_e5base\_d768\_v2\_bm25\_v1}, que alimenta la recuperaci\'on dispersa.
+Los fragmentos se codifican con BAAI/bge-m3 en la GPU, en fp16 y por lotes. La colecci\'on se llama \texttt{rag\_full\_bge\_m3\_d1024\_v1} y usa HNSW con \texttt{ef}=800 en la b\'usqueda. El par\'ametro se eligi\'o con una rejilla sobre el silver: por debajo de 800 el recall cae y por encima la latencia sube sin ganancia apreciable. En paralelo se mantiene una colecci\'on BM25 sobre los mismos fragmentos, \texttt{rag\_full\_e5base\_d768\_v2\_bm25\_v1}, que alimenta la recuperaci\'on dispersa.
 
 \subsection{Recuperaci\'on y reordenamiento}
 

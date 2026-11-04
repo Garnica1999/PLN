@@ -39,12 +39,12 @@ Cada línea de `questions.jsonl` es un objeto:
 ## Silver standard consolidado
 
 - `silver_standard.xlsx`: plantilla para compartir. Una sola columna `revisor`, una columna `validado` con desplegable Sí/No/Corregir, enlaces clicables y hoja de resumen con el avance.
-- `silver_standard_<nombre>.xlsx`: copia por revisor, con su nombre ya escrito en la columna `revisor`. Se genera con `python -m src.scripts.export_gold_excel --reviewer Nombre`.
+- `silver_standard_<nombre>.xlsx`: copia por revisor, con su nombre ya escrito en la columna `revisor`. Se genera con `python -m src.scripts.export_silver_excel --reviewer Nombre`.
 - `silver_standard.jsonl`: 43 preguntas (19 desarrollo, 24 prueba), 38 respondibles y 5 sin respuesta. Campo `validated` en falso hasta la revisión humana.
 - `silver_standard.csv`: la misma información en texto plano.
 - `silver_standard.md`: tabla legible por split.
 
-Para validar: cada persona abre su copia `silver_standard_<nombre>.xlsx`, revisa cada fila contra el documento citado y marca `validado` con Sí, No o Corregir. Al final se comparan las copias por `id`: una fila es válida cuando dos revisores marcan Sí. Esa decisión se consolida en `silver_standard.jsonl` (`reviewer` y `validated`) y se regeneran el CSV y el Markdown con `python -m src.scripts.build_gold_standard`.
+Para validar: cada persona abre su copia `silver_standard_<nombre>.xlsx`, revisa cada fila contra el documento citado y marca `validado` con Sí, No o Corregir. Al final se comparan las copias por `id`: una fila es válida cuando dos revisores marcan Sí. Esa decisión se consolida en `silver_standard.jsonl` (`reviewer` y `validated`) y se regeneran el CSV y el Markdown con `python -m src.scripts.build_silver_standard`.
 
 Las preguntas sin respuesta no entran en Recall@k: se evalúan por abstención.
 
@@ -58,8 +58,8 @@ Las preguntas sin respuesta no entran en Recall@k: se evalúan por abstención.
 | Óscar | 40 | 26 | 6 | 8 | 5 spans |
 | Erika | 0 | 0 | 0 | 0 | pendiente |
 
-Óscar dejó 12 comentarios: 5 spans corregidos contra el texto indexado (g-009, g-012, g-028, g-031, g-042), 3 enlaces rotos ya marcados como sin verificar, 3 casos ya resueltos o no aplicables y las 5 preguntas sin respuesta, que no tienen documento que validar. La consolidación está en `src/scripts/apply_gold_review_oscar.py` y los respaldos en `silver_standard_pre_oscar.jsonl` y `silver_standard_ampliado_pre_oscar.jsonl`.
+Óscar dejó 12 comentarios: 5 spans corregidos contra el texto indexado (g-009, g-012, g-028, g-031, g-042), 3 enlaces rotos ya marcados como sin verificar, 3 casos ya resueltos o no aplicables y las 5 preguntas sin respuesta, que no tienen documento que validar. La consolidación está en `src/scripts/apply_silver_review_oscar.py` y los respaldos en `silver_standard_pre_oscar.jsonl` y `silver_standard_ampliado_pre_oscar.jsonl`.
 
 Falta la revisión de Erika, que dejó comentarios pero no marcó el campo `validado`.
 
-El `silver_standard.jsonl` consolidado es la fuente de verdad. No ejecutes `build_gold_standard` después de la revisión: regeneraría el gold desde los archivos fuente y perdería las correcciones. Para cambiar una fila, edita el JSONL y vuelve a exportar el Excel con `export_gold_excel`.
+El `silver_standard.jsonl` consolidado es la fuente de verdad. No ejecutes `build_silver_standard` después de la revisión: regeneraría el silver desde los archivos fuente y perdería las correcciones. Para cambiar una fila, edita el JSONL y vuelve a exportar el Excel con `export_silver_excel`.

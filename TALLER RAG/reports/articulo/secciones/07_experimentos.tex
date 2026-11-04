@@ -1,7 +1,7 @@
 \section{Experimentos y resultados}
 \label{sec:experimentos}
 
-Los experimentos usan el silver standard de 43 preguntas; E12 usa la versi\'on ampliada con 17 documentos adicionales y cada tabla lo indica. La configuraci\'on se eligi\'o con el gold completo, as\'i que los resultados son exploratorios. Cada subsecci\'on reporta el montaje en una frase, la tabla y la decisi\'on; el detalle del montaje est\'a en la Secci\'on~\ref{sec:metodo}.
+Los experimentos usan el silver standard de 43 preguntas; E12 usa la versi\'on ampliada con 17 documentos adicionales y cada tabla lo indica. La configuraci\'on se eligi\'o con el silver completo, as\'i que los resultados son exploratorios. Cada subsecci\'on reporta el montaje en una frase, la tabla y la decisi\'on; el detalle del montaje est\'a en la Secci\'on~\ref{sec:metodo}.
 
 \subsection{Limpieza}
 
@@ -44,12 +44,12 @@ Oraciones 384/1 & 0,767 & 0,833 & 0,833 & 0,804 & 42,1 ms \\
 \end{tabular}
 \end{table}
 
-E2 ablacion\'o el n\'umero de fragmentos. Con el gold del piloto, el documento relevante est\'a siempre en el top-3, as\'i que $k=3$, 5 y 10 devuelven las mismas m\'etricas de calidad. La \'unica diferencia significativa es la latencia: $k=3$ tarda 1,64 ms menos que $k=10$ y $k=5$ tarda 0,94 ms menos. Se fija $k=5$ como margen para preguntas comparativas que no est\'an en el conjunto, sabiendo que el coste es m\'as contexto en generaci\'on, no m\'as latencia de recuperaci\'on.
+E2 ablacion\'o el n\'umero de fragmentos. Con el silver del piloto, el documento relevante est\'a siempre en el top-3, as\'i que $k=3$, 5 y 10 devuelven las mismas m\'etricas de calidad. La \'unica diferencia significativa es la latencia: $k=3$ tarda 1,64 ms menos que $k=10$ y $k=5$ tarda 0,94 ms menos. Se fija $k=5$ como margen para preguntas comparativas que no est\'an en el conjunto, sabiendo que el coste es m\'as contexto en generaci\'on, no m\'as latencia de recuperaci\'on.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.8\textwidth]{escala_e6_e7.png}
-\caption{Recuperaci\'on con e5-base sobre el gold de 38 preguntas respondibles: piloto (1.932 documentos), corpus completo (161.868 documentos) y corpus con reranker sobre el top-50. El piloto y el corpus usan \'indices separados.}
+\caption{Recuperaci\'on con e5-base sobre el silver de 38 preguntas respondibles: piloto (1.932 documentos), corpus completo (161.868 documentos) y corpus con reranker sobre el top-50. El piloto y el corpus usan \'indices separados.}
 \label{fig:escala}
 \end{figure*}
 
@@ -92,7 +92,7 @@ bge-m3 & \textbf{0,842} & 0,553 & \textbf{0,816} & 0,708 & 56 ms \\
 \end{tabular}
 \end{table}
 
-E11 ajust\'o \texttt{ef} y prob\'o la fusi\'on con BM25. \texttt{ef}=800 sube el recall 2,6 puntos y el nDCG 1,3 con 6 ms m\'as. La fusi\'on 0,5/0,5 empata en recall y sube nDCG 6,9, P@1 13,2 y cobertura de span 5,3. Con el gold de un solo relevante la fusi\'on parec\'ia ganar. E12 repiti\'o la comparaci\'on con el gold ampliado: el denso recupera m\'as documentos nuevos (Recall@10 0,921 contra 0,890 y nDCG 0,827 contra 0,804). La configuraci\'on final es densa, \texttt{ef}=800, sin fusi\'on.
+E11 ajust\'o \texttt{ef} y prob\'o la fusi\'on con BM25. \texttt{ef}=800 sube el recall 2,6 puntos y el nDCG 1,3 con 6 ms m\'as. La fusi\'on 0,5/0,5 empata en recall y sube nDCG 6,9, P@1 13,2 y cobertura de span 5,3. Con el silver de un solo relevante la fusi\'on parec\'ia ganar. E12 repiti\'o la comparaci\'on con el silver ampliado: el denso recupera m\'as documentos nuevos (Recall@10 0,921 contra 0,890 y nDCG 0,827 contra 0,804). La configuraci\'on final es densa, \texttt{ef}=800, sin fusi\'on.
 
 \subsection{Reordenamiento}
 
@@ -197,11 +197,11 @@ La corrida de referencia de la configuraci\'on anterior (densa y reranker en CPU
 \subsection{Conjunto reservado}
 \label{sec:reservado}
 
-El gold exploratorio se us\'o para elegir la configuraci\'on densa, as\'i que no mide generalizaci\'on. Se construy\'o un conjunto reservado de 25 preguntas: 20 directas y 5 sin respuesta, 15 en espa\~nol y 10 en ingl\'es, 14 de prensa y 6 de Bluesky. El conjunto se congel\'o antes de evaluar la compuerta y se us\'o para esa evaluaci\'on. Despu\'es se us\'o tambi\'en para elegir la recuperaci\'on h\'ibrida, as\'i que las m\'etricas de recuperaci\'on y respuesta de esta secci\'on son de desarrollo; la compuerta conserva su car\'acter externo porque se midi\'o antes de esa elecci\'on. Una prueba independiente de la recuperaci\'on exige un conjunto nuevo. La Tabla~S3 del suplemento muestra el resultado.
+El silver exploratorio se us\'o para elegir la configuraci\'on densa, as\'i que no mide generalizaci\'on. Se construy\'o un conjunto reservado de 25 preguntas: 20 directas y 5 sin respuesta, 15 en espa\~nol y 10 en ingl\'es, 14 de prensa y 6 de Bluesky. El conjunto se congel\'o antes de evaluar la compuerta y se us\'o para esa evaluaci\'on. Despu\'es se us\'o tambi\'en para elegir la recuperaci\'on h\'ibrida, as\'i que las m\'etricas de recuperaci\'on y respuesta de esta secci\'on son de desarrollo; la compuerta conserva su car\'acter externo porque se midi\'o antes de esa elecci\'on. Una prueba independiente de la recuperaci\'on exige un conjunto nuevo. La Tabla~S3 del suplemento muestra el resultado.
 
-El recall@10 es 0,700 y el nDCG 0,612, por debajo del 0,912 y 0,818 del gold exploratorio, pero por encima del 0,600 y 0,477 de la recuperaci\'on densa. La uni\'on con BM25 recupera r-012 y r-014, que el denso dejaba fuera, y conserva los aciertos del denso en r-009 y r-013. Seis de las 20 preguntas no recuperan el documento de referencia en el top-10; cuatro se responden correctamente con otro documento que contiene el mismo dato (r-005, r-008, r-017, r-019), una termina en abstenci\'on (r-006) y una es ambigua (r-016). El recall con un solo documento de referencia subestima la recuperaci\'on \'util: la mitad de los fallos de recall no son fallos de respuesta. La profundidad de la uni\'on no es monot\'onica: 20/20 y 30/30 suben el recall@10 a 0,750; 50/50 lo sube a 0,850 y recupera r-006, pero baja las entregas a 18 de 20 y las exactas a 16 de 20, porque desplaza evidencia que el modelo usaba bien en r-009 y r-012. La configuraci\'on se queda en 10/20.
+El recall@10 es 0,700 y el nDCG 0,612, por debajo del 0,912 y 0,818 del silver exploratorio, pero por encima del 0,600 y 0,477 de la recuperaci\'on densa. La uni\'on con BM25 recupera r-012 y r-014, que el denso dejaba fuera, y conserva los aciertos del denso en r-009 y r-013. Seis de las 20 preguntas no recuperan el documento de referencia en el top-10; cuatro se responden correctamente con otro documento que contiene el mismo dato (r-005, r-008, r-017, r-019), una termina en abstenci\'on (r-006) y una es ambigua (r-016). El recall con un solo documento de referencia subestima la recuperaci\'on \'util: la mitad de los fallos de recall no son fallos de respuesta. La profundidad de la uni\'on no es monot\'onica: 20/20 y 30/30 suben el recall@10 a 0,750; 50/50 lo sube a 0,850 y recupera r-006, pero baja las entregas a 18 de 20 y las exactas a 16 de 20, porque desplaza evidencia que el modelo usaba bien en r-009 y r-012. La configuraci\'on se queda en 10/20.
 
-El match estricto entre las entregadas es 17 de 19 (89,5\,\%), y sobre las 20 directas, 17 de 20 (85\,\%). La diferencia con la recuperaci\'on densa est\'a en la uni\'on: recupera las entidades que el denso no trae. En ingl\'es el recall es 0,875 y el nDCG 0,829; en espa\~nol, 0,583 y 0,468. El ingl\'es recupera mejor, al contrario de lo que suger\'ia el gold exploratorio.
+El match estricto entre las entregadas es 17 de 19 (89,5\,\%), y sobre las 20 directas, 17 de 20 (85\,\%). La diferencia con la recuperaci\'on densa est\'a en la uni\'on: recupera las entidades que el denso no trae. En ingl\'es el recall es 0,875 y el nDCG 0,829; en espa\~nol, 0,583 y 0,468. El ingl\'es recupera mejor, al contrario de lo que suger\'ia el silver exploratorio.
 
 Las cinco preguntas sin respuesta se rechazan por la compuerta. En las 20 directas, la compuerta rechaza 3: r-011, r-012 y r-014. r-012 y r-014 son preguntas que la recuperaci\'on h\'ibrida s\'i puede responder, pero la compuerta solo ve el top-5 denso; es una deuda de dise\~no, no un fallo de recuperaci\'on. r-011 s\'i recupera el documento y es un falso rechazo del clasificador. La compuerta nueva baja los falsos rechazos de 6 a 3 y los falsos aceptados de 1 a 0 respecto de la anterior. El 0/9 del conjunto anterior no se confirma como tasa nula, pero el 0/5 tampoco la demuestra.
 

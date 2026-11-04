@@ -17,13 +17,13 @@ from src.rag.store import get_client
 from src.scripts.metrics import normalize, row_metrics
 
 
-def load_gold(path: Path) -> list[dict]:
+def load_silver(path: Path) -> list[dict]:
     rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
     return [row for row in rows if row.get("reference_doc_ids")]
 
 
 def run_config(
-    gold: list[dict],
+    silver: list[dict],
     collection: str,
     ef: int,
     k: int,
@@ -32,7 +32,7 @@ def run_config(
 ) -> pd.DataFrame:
     run = f"bench_ef{ef}_k{k}"
     records = []
-    for question in gold:
+    for question in silver:
         for rep in range(1, reps + 1):
             hits, elapsed = retrieve(question["question"], k=k, collection=collection, ef=ef)
             record = {
@@ -78,10 +78,10 @@ def summarize(frame: pd.DataFrame) -> pd.Series:
     )
 
 
-def check_failures(gold: list[dict], collection: str) -> None:
+def check_failures(silver: list[dict], collection: str) -> None:
     client = get_client()
     failures = []
-    for question in gold:
+    for question in silver:
         hits, _ = retrieve(question["question"], k=10, collection=collection, ef=200)
         docs = {hit.get("document_id") for hit in hits}
         if not (docs & set(question["reference_doc_ids"])):
@@ -107,19 +107,19 @@ def check_failures(gold: list[dict], collection: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
+    parser.add_argument("--silver", type=Path, default=Path("eval/silver/silver_standard.jsonl"))
     parser.add_argument("--collection", default=settings.collection)
     parser.add_argument("--reps", type=int, default=3)
     parser.add_argument("--outdir", type=Path, default=Path("reports/tablas"))
     parser.add_argument("--failures", action="store_true")
     args = parser.parse_args()
 
-    gold = load_gold(args.gold)
+    silver = load_silver(args.silver)
     args.outdir.mkdir(parents=True, exist_ok=True)
     configs = [(200, 10), (400, 10), (800, 10), (1600, 10), (200, 20), (200, 50)]
     rows = []
     for ef, k in configs:
-        frame = run_config(gold, args.collection, ef, k, args.reps, args.outdir.parent / "corridas")
+        frame = run_config(silver, args.collection, ef, k, args.reps, args.outdir.parent / "corridas")
         summary = summarize(frame)
         summary["ef"] = ef
         summary["k"] = k
@@ -148,7 +148,7 @@ def main() -> None:
     print("\n" + summary.round(4).to_string(index=False))
 
     if args.failures:
-        check_failures(gold, args.collection)
+        check_failures(silver, args.collection)
 
 
 if __name__ == "__main__":

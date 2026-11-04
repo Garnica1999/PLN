@@ -6,7 +6,7 @@ from src.scripts.experimento_ambiguedad import run
 
 def main() -> None:
     run(
-        Path("eval/gold/gold_ambiguedad_otros.jsonl"),
+        Path("eval/silver/silver_ambiguedad_otros.jsonl"),
         Path("reports/corridas/ambiguedad_otros_raw.jsonl"),
         Path("reports/tablas/ambiguedad_otros_resumen.csv"),
         Path("reports/tablas/ambiguedad_otros_por_pregunta.csv"),

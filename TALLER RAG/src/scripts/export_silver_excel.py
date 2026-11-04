@@ -17,8 +17,8 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.properties import PageSetupProperties
 
-GOLD = Path("eval/gold/silver_standard.jsonl")
-OUT = Path("eval/gold/silver_standard.xlsx")
+SILVER = Path("eval/silver/silver_standard.jsonl")
+OUT = Path("eval/silver/silver_standard.xlsx")
 
 HEADER_FILL = PatternFill("solid", fgColor="335C81")
 HEADER_FONT = Font(bold=True, color="FFFFFF", size=11)
@@ -78,7 +78,7 @@ def build_instructions(ws, reviewer: str, records: list[dict]) -> None:
         (f"{total} preguntas para revisar. {subtitle}", BODY_FONT),
         ("No modifiques la columna id.", BODY_FONT),
         ("", BODY_FONT),
-        ("Qué hay en la hoja Gold", Font(bold=True, size=12)),
+        ("Qué hay en la hoja Silver", Font(bold=True, size=12)),
         (f"{dev} preguntas de desarrollo y {test} de prueba. {answerable} respondibles y {no_answer} sin respuesta.", BODY_FONT),
         (f"{spanish} en español, {english} en inglés. {press} de prensa y {bluesky} de Bluesky.", BODY_FONT),
         ("", BODY_FONT),
@@ -99,7 +99,7 @@ def build_instructions(ws, reviewer: str, records: list[dict]) -> None:
         ("No se evalúan con Recall@k: se evalúan por abstención.", BODY_FONT),
         ("", BODY_FONT),
         ("Varias revisiones", Font(bold=True, size=12)),
-        ("Cada persona crea su copia con python -m src.scripts.export_gold_excel --reviewer NOMBRE.", BODY_FONT),
+        ("Cada persona crea su copia con python -m src.scripts.export_silver_excel --reviewer NOMBRE.", BODY_FONT),
         ("Así hay un archivo por revisor, todos con la misma estructura y una sola columna revisor.", BODY_FONT),
         ("Al final se comparan las copias: una fila es válida cuando dos revisores marcan Sí.", BODY_FONT),
         ("", BODY_FONT),
@@ -108,7 +108,7 @@ def build_instructions(ws, reviewer: str, records: list[dict]) -> None:
         ("Verde: validado con Sí. Naranja: Corregir. Gris: No.", BODY_FONT),
         ("", BODY_FONT),
         ("Regenerar", Font(bold=True, size=12)),
-        ("python -m src.scripts.build_gold_standard ... y luego python -m src.scripts.export_gold_excel --reviewer NOMBRE", BODY_FONT),
+        ("python -m src.scripts.build_silver_standard ... y luego python -m src.scripts.export_silver_excel --reviewer NOMBRE", BODY_FONT),
     ]
     for index, (text, font) in enumerate(rows, start=1):
         cell = ws.cell(row=index, column=1, value=text)
@@ -119,15 +119,15 @@ def build_instructions(ws, reviewer: str, records: list[dict]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--reviewer", default="", help="Nombre del revisor para esta copia")
-    parser.add_argument("--gold", default=str(GOLD))
+    parser.add_argument("--silver", default=str(SILVER))
     parser.add_argument("--ignore-validation", action="store_true", help="Deja validado vacío para otra persona")
     parser.add_argument("--out", default="")
     args = parser.parse_args()
 
-    records = [json.loads(line) for line in Path(args.gold).read_text(encoding="utf-8").splitlines() if line.strip()]
+    records = [json.loads(line) for line in Path(args.silver).read_text(encoding="utf-8").splitlines() if line.strip()]
     reviewer = args.reviewer.strip()
     out = Path(args.out) if args.out else (
-        Path(f"eval/gold/silver_standard_{slug(reviewer)}.xlsx") if reviewer else OUT
+        Path(f"eval/silver/silver_standard_{slug(reviewer)}.xlsx") if reviewer else OUT
     )
 
     workbook = Workbook()
@@ -135,7 +135,7 @@ def main() -> None:
     instructions.title = "Instrucciones"
     build_instructions(instructions, reviewer, records)
 
-    sheet = workbook.create_sheet("Gold")
+    sheet = workbook.create_sheet("Silver")
     for column, (title, width) in enumerate(HEADERS, start=1):
         cell = sheet.cell(row=1, column=column, value=title)
         cell.fill = HEADER_FILL
@@ -199,7 +199,7 @@ def main() -> None:
     summary = workbook.create_sheet("Resumen")
     summary.column_dimensions["A"].width = 32
     summary.column_dimensions["B"].width = 12
-    summary["A1"] = "Resumen del gold"
+    summary["A1"] = "Resumen del silver"
     summary["A1"].font = Font(bold=True, size=14)
     summary["A2"] = "Revisor"
     summary["A2"].font = Font(bold=True)
@@ -223,11 +223,11 @@ def main() -> None:
     start = len(counts) + 6
     summary.cell(row=start, column=1, value="Avance de esta copia").font = Font(bold=True, size=12)
     summary.cell(row=start + 1, column=1, value="Filas asignadas").font = BODY_FONT
-    summary.cell(row=start + 1, column=2, value=f'=COUNTA(Gold!K2:K{last_row})')
+    summary.cell(row=start + 1, column=2, value=f'=COUNTA(Silver!K2:K{last_row})')
     summary.cell(row=start + 2, column=1, value="Validadas con Sí").font = BODY_FONT
-    summary.cell(row=start + 2, column=2, value=f'=COUNTIF(Gold!L2:L{last_row},"Sí")')
+    summary.cell(row=start + 2, column=2, value=f'=COUNTIF(Silver!L2:L{last_row},"Sí")')
     summary.cell(row=start + 3, column=1, value="Pendientes").font = BODY_FONT
-    summary.cell(row=start + 3, column=2, value=f'=COUNTA(Gold!A2:A{last_row})-COUNTIF(Gold!L2:L{last_row},"Sí")')
+    summary.cell(row=start + 3, column=2, value=f'=COUNTA(Silver!A2:A{last_row})-COUNTIF(Silver!L2:L{last_row},"Sí")')
 
     for worksheet in (instructions, sheet, summary):
         worksheet.page_setup.orientation = "landscape"

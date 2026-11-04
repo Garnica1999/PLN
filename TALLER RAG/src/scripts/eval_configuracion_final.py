@@ -1,6 +1,6 @@
 """Mide recuperación y respuesta con la configuración final del taller.
 
-Recuperación: bge-m3 denso, ef=800, k=10 sobre el gold ampliado.
+Recuperación: bge-m3 denso, ef=800, k=10 sobre el silver ampliado.
 Respuesta: gemma2:2b, k=5, juez y condensador gemma2, guardarraíl estricto.
 """
 from __future__ import annotations
@@ -49,10 +49,10 @@ def contains_reference(reference: str, answer: str) -> bool:
     return bool(ref) and all(token in pred for token in ref)
 
 
-def evaluate(gold_path: Path, collection: str, model: str, k_retrieval: int, k_answer: int, think: bool = False) -> pd.DataFrame:
-    gold = [json.loads(line) for line in gold_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+def evaluate(silver_path: Path, collection: str, model: str, k_retrieval: int, k_answer: int, think: bool = False) -> pd.DataFrame:
+    silver = [json.loads(line) for line in silver_path.read_text(encoding="utf-8").splitlines() if line.strip()]
     rows = []
-    for index, question in enumerate(gold, start=1):
+    for index, question in enumerate(silver, start=1):
         hits, retrieval_ms = retrieve(question["question"], k=k_retrieval, collection=collection)
         record = {
             "run": "configuracion_final",
@@ -101,7 +101,7 @@ def evaluate(gold_path: Path, collection: str, model: str, k_retrieval: int, k_a
             }
         )
         print(
-            f"{index}/{len(gold)} {question['id']} recall={retrieval['recall']:.2f} "
+            f"{index}/{len(silver)} {question['id']} recall={retrieval['recall']:.2f} "
             f"abst={answer.get('abstained')} match={rows[-1]['strict_match']}",
             flush=True,
         )
@@ -158,7 +158,7 @@ def figures(frame: pd.DataFrame, summary: dict, outdir: Path) -> None:
         ax.text(value + 0.015, bar.get_y() + bar.get_height() / 2, f"{value:.3f}", va="center", color=MUTED, fontsize=8)
     ax.set_xlim(0, 1.05)
     ax.set_xlabel("valor")
-    ax.set_title("Recuperación sobre el gold ampliado")
+    ax.set_title("Recuperación sobre el silver ampliado")
     save_figure(fig, outdir / "metricas_recuperacion.png")
 
     direct = frame[frame["type"] == "directa"]
@@ -202,7 +202,7 @@ def figures(frame: pd.DataFrame, summary: dict, outdir: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard_ampliado.jsonl"))
+    parser.add_argument("--silver", type=Path, default=Path("eval/silver/silver_standard_ampliado.jsonl"))
     parser.add_argument("--collection", default="rag_full_bge_m3_d1024_v1")
     parser.add_argument("--model", default="gemma4:e4b")
     parser.add_argument("--k-retrieval", type=int, default=10)
@@ -227,7 +227,7 @@ def main() -> None:
             span_hit=("retrieval_span_hit", "mean"),
         ).reset_index()
     else:
-        frame = evaluate(args.gold, args.collection, args.model, args.k_retrieval, args.k_answer, args.think)
+        frame = evaluate(args.silver, args.collection, args.model, args.k_retrieval, args.k_answer, args.think)
         args.raw.parent.mkdir(parents=True, exist_ok=True)
         with args.raw.open("w", encoding="utf-8") as handle:
             for row in frame.to_dict(orient="records"):

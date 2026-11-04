@@ -7,7 +7,7 @@ Alcance: revision de titulos y abstracts en arXiv, mas documentacion tecnica. No
 ## Preguntas
 
 1. Que estrategias de chunking mejoran Recall y cobertura de span en noticias y redes.
-2. Que tratamiento de documentos casi duplicados reduce la competencia en el top-k sin perder la copia que el gold referencia.
+2. Que tratamiento de documentos casi duplicados reduce la competencia en el top-k sin perder la copia que el silver referencia.
 3. Que limpieza y normalizacion son seguras con idiomas mezclados, truncamiento y boilerplate.
 
 ## Hallazgo del diagnostico
@@ -37,11 +37,11 @@ Lectura: el chunking fijo no explica los fallos actuales. Las dos variantes que 
 |---|---|---|---|---|---|
 | Hash exacto | Proyecto | Eliminar duplicados exactos | Ya implementado | Nulo | Ninguno |
 | SimHash o MinHash | Practica de IR | Detectar casi duplicados por shingles | Alta, ya se usa para medir | Bajo | Umbral dificil |
-| Dedup semantica | arXiv:2303.09540 | Agrupar por embeddings y eliminar redundancia | Media | Medio | Puede borrar la copia del gold |
+| Dedup semantica | arXiv:2303.09540 | Agrupar por embeddings y eliminar redundancia | Media | Medio | Puede borrar la copia del silver |
 | Extraccion de contenido principal | arXiv:2111.10864 | Quitar boilerplate antes de comparar | Alta | Bajo | Requiere parser por medio |
 | Dedup en recuperacion | Practica de IR | Diversificar el top-k con MMR o clusters | Alta | Bajo | Baja el Recall si es agresiva |
 
-Lectura: la dedup en recuperacion es la primera opcion porque no reindexa y conserva el `document_id` del gold. La dedup en indexacion se prueba solo si la anterior no basta. La extraccion de contenido principal ataca el boilerplate que infla la similitud entre notas sindicadas.
+Lectura: la dedup en recuperacion es la primera opcion porque no reindexa y conserva el `document_id` del silver. La dedup en indexacion se prueba solo si la anterior no basta. La extraccion de contenido principal ataca el boilerplate que infla la similitud entre notas sindicadas.
 
 ## Tratamiento de texto
 
@@ -55,7 +55,7 @@ Lectura: la dedup en recuperacion es la primera opcion porque no reindexa y cons
 
 1. **Hibrido BM25 + dense con RRF.** Ataca nombres propios y terminos exactos, que es donde el dense falla en ingles. Advertencia: arXiv:2610.30612 muestra que la fusion no siempre ayuda y propone evaluar "no fusionar" como resultado de primera clase. Hay que medir por consulta, no solo el promedio.
 2. **Encoder multilingue mas fuerte.** Arctic-Embed 2.0 (arXiv:2412.04506), bge-m3 o e5-large. Medir primero en el piloto y en las 9 preguntas en ingles.
-3. **Dedup en recuperacion.** SimHash o MMR sobre el top-50. Barato, sin reindexar, conserva el gold.
+3. **Dedup en recuperacion.** SimHash o MMR sobre el top-50. Barato, sin reindexar, conserva el silver.
 4. **Padre e hijo.** Solo si el span se parte. Hoy 11 de 12 spans ya estan en un chunk, asi que no es prioritario.
 
 ## Referencias

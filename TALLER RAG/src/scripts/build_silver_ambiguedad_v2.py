@@ -1,7 +1,7 @@
-"""Construye el gold v2 de ambiguedad con tipos nuevos y controles.
+"""Construye el silver v2 de ambiguedad con tipos nuevos y controles.
 
 La anotacion es asistida por el LLM y validada contra la evidencia. No sustituye
-una anotacion humana doble; se documenta como gold exploratorio v2.
+una anotacion humana doble; se documenta como silver exploratorio v2.
 """
 from __future__ import annotations
 
@@ -12,11 +12,11 @@ from src.rag.ambiguity import detect
 from src.rag.chat import condense_query
 from src.rag.pipeline import rerank_hits, retrieve_union, score_hits
 
-GOLD_A = Path("eval/gold/gold_ambiguedad.jsonl")
-GOLD_B = Path("eval/gold/gold_ambiguedad_otros.jsonl")
-RESERVED = Path("eval/gold/gold_reservado.jsonl")
-STANDARD = Path("eval/gold/silver_standard.jsonl")
-OUT = Path("eval/gold/gold_ambiguedad_v2.jsonl")
+SILVER_A = Path("eval/silver/silver_ambiguedad.jsonl")
+SILVER_B = Path("eval/silver/silver_ambiguedad_otros.jsonl")
+RESERVED = Path("eval/silver/silver_reservado.jsonl")
+STANDARD = Path("eval/silver/silver_standard.jsonl")
+OUT = Path("eval/silver/silver_ambiguedad_v2.jsonl")
 
 CANDIDATES = [
     {"id": "v-001", "type": "unidad", "question": "¿Cuánto cuesta el proyecto de energía eólica?"},
@@ -49,7 +49,7 @@ def span_for(text: str, answer: str) -> str:
 
 def main() -> None:
     existing = []
-    for path in (GOLD_A, GOLD_B):
+    for path in (SILVER_A, SILVER_B):
         existing.extend(json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
     ambiguous = [row for row in existing if row["type"] == "ambigua"]
     controls = []
@@ -94,7 +94,7 @@ def main() -> None:
         )
         print("ok", candidate["id"], candidate["type"], "|", intended, "|", len(options), "opciones")
 
-    # controles adicionales del gold reservado y del estandar
+    # controles adicionales del silver reservado y del estandar
     reserved = [json.loads(line) for line in RESERVED.read_text(encoding="utf-8").splitlines() if line.strip()]
     standard = [json.loads(line) for line in STANDARD.read_text(encoding="utf-8").splitlines() if line.strip()]
     used = {row["question"] for row in controls}

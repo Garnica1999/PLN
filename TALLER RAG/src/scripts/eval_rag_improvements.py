@@ -16,7 +16,7 @@ from src.rag.config import settings
 from src.rag.pipeline import call_llm, rerank_hits, search_hits, weighted_rrf
 from src.scripts.metrics import ranked_docs, row_metrics
 
-GOLD = Path("eval/gold/silver_standard_ampliado.jsonl")
+SILVER = Path("eval/silver/silver_standard_ampliado.jsonl")
 OUT = Path("reports/tablas/mejoras_recuperacion.csv")
 OUT_LANG = Path("reports/tablas/mejoras_recuperacion_por_idioma.csv")
 COLLECTION = settings.collection
@@ -71,10 +71,10 @@ def variants(question: str) -> dict[str, tuple[list[dict], float]]:
 
 
 def main() -> None:
-    gold = [json.loads(line) for line in GOLD.read_text(encoding="utf-8").splitlines() if line.strip()]
-    gold = [row for row in gold if row.get("reference_doc_ids")]
+    silver = [json.loads(line) for line in SILVER.read_text(encoding="utf-8").splitlines() if line.strip()]
+    silver = [row for row in silver if row.get("reference_doc_ids")]
     rows = []
-    for index, row in enumerate(gold, start=1):
+    for index, row in enumerate(silver, start=1):
         found = variants(row["question"])
         for variant, (hits, elapsed) in found.items():
             record = {
@@ -100,7 +100,7 @@ def main() -> None:
             for variant, (hits, _) in found.items():
                 rank = next((i + 1 for i, doc in enumerate(ranked_docs(hits)) if doc in set(row["reference_doc_ids"])), None)
                 print(f"  {variant:20} rank={rank}")
-        print(f"{index}/{len(gold)}", flush=True)
+        print(f"{index}/{len(silver)}", flush=True)
 
     frame = pd.DataFrame(rows)
     summary = frame.groupby("variant").agg(

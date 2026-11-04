@@ -1,9 +1,9 @@
-"""Concilia la doble anotacion del gold v2 leyendo el libro de Excel.
+"""Concilia la doble anotacion del silver v2 leyendo el libro de Excel.
 
 Lee las hojas «Anotador 1» y «Anotador 2» de eval/anotacion/anotacion_v2.xlsx,
 calcula el acuerdo y el kappa de Cohen sobre la etiqueta de ambiguedad,
-escribe un informe por pregunta y, si se pide, genera el gold consolidado.
-No sobrescribe el gold asistido por LLM.
+escribe un informe por pregunta y, si se pide, genera el silver consolidado.
+No sobrescribe el silver asistido por LLM.
 """
 from __future__ import annotations
 
@@ -16,8 +16,8 @@ from openpyxl import load_workbook
 
 LIBRO = Path("eval/anotacion/anotacion_v2.xlsx")
 INFORME = Path("reports/tablas/anotacion_acuerdo.csv")
-SALIDA = Path("eval/gold/gold_ambiguedad_v2_humano.jsonl")
-GOLD = Path("eval/gold/gold_ambiguedad_v2.jsonl")
+SALIDA = Path("eval/silver/silver_ambiguedad_v2_humano.jsonl")
+SILVER = Path("eval/silver/silver_ambiguedad_v2.jsonl")
 
 
 def hoja_con_datos(libro: Path) -> str:
@@ -72,7 +72,7 @@ def consolidar(uno: dict[str, dict], dos: dict[str, dict], etiquetas: dict[str, 
         row["id"]: row
         for row in (
             json.loads(line)
-            for line in GOLD.read_text(encoding="utf-8").splitlines()
+            for line in SILVER.read_text(encoding="utf-8").splitlines()
             if line.strip()
         )
     }
@@ -125,7 +125,7 @@ def main() -> None:
     parser.add_argument("--dos", type=Path, help="libro del anotador 2")
     parser.add_argument("--informe", type=Path, default=INFORME)
     parser.add_argument("--salida", type=Path, default=SALIDA)
-    parser.add_argument("--escribir", action="store_true", help="genera el gold humano consolidado")
+    parser.add_argument("--escribir", action="store_true", help="genera el silver humano consolidado")
     args = parser.parse_args()
 
     if args.uno and args.dos:
@@ -164,7 +164,7 @@ def main() -> None:
             "\n".join(json.dumps(row, ensure_ascii=False) for row in filas) + "\n",
             encoding="utf-8",
         )
-        print(f"gold humano escrito en {args.salida}")
+        print(f"silver humano escrito en {args.salida}")
 
 
 if __name__ == "__main__":

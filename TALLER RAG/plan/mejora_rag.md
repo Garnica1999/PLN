@@ -1,6 +1,6 @@
 # Plan de mejora del RAG
 
-Estado: Plan completado. Recall final 0,921 con dense bge-m3 ef=800 y gold ampliado. Ultima actualizacion: 2026-11-01.
+Estado: Plan completado. Recall final 0,921 con dense bge-m3 ef=800 y silver ampliado. Ultima actualizacion: 2026-11-01.
 
 ## Objetivo
 
@@ -87,14 +87,14 @@ Los 12 fallos: 11 tienen el span dentro de un chunk del documento de referencia,
 Preguntas:
 
 1. Que estrategias de chunking mejoran Recall y cobertura de span en noticias y redes.
-2. Que tratamiento de documentos casi duplicados reduce la competencia sin perder la copia del gold.
+2. Que tratamiento de documentos casi duplicados reduce la competencia sin perder la copia del silver.
 3. Que limpieza y normalizacion son seguras con idiomas mezclados, truncamiento y boilerplate.
 
 Fuentes: arXiv, Semantic Scholar, ACL Anthology, documentacion de Milvus, LlamaIndex, LangChain y Anthropic. Solo entran referencias verificables.
 
 Chunking a revisar: fijo, recursivo, semantico, padre e hijo, proposicional, contextual y late chunking.
 
-Documentos similares a revisar: hash exacto, MinHash y LSH, SimHash, dedup semantica, canonicalizacion de URL, sindicacion, dedup en indexacion contra dedup en recuperacion, MMR y conservacion del `document_id` del gold.
+Documentos similares a revisar: hash exacto, MinHash y LSH, SimHash, dedup semantica, canonicalizacion de URL, sindicacion, dedup en indexacion contra dedup en recuperacion, MMR y conservacion del `document_id` del silver.
 
 Texto a revisar: boilerplate de prensa, truncamiento, deteccion de idioma, NFKC, HTML, URLs, fechas y entidades.
 
@@ -106,7 +106,7 @@ Revision dirigida con 11 referencias verificadas en arXiv y una fuente tecnica. 
 
 - El chunking no es la causa de la caida actual: 11 de 12 spans ya estan en un chunk.
 - Las variantes que valen la pena en el piloto son padre e hijo y late chunking. La contextual y la proposicional no caben en 618.286 chunks.
-- La dedup en recuperacion es la primera opcion para documentos similares, porque no reindexa y conserva el gold.
+- La dedup en recuperacion es la primera opcion para documentos similares, porque no reindexa y conserva el silver.
 - El hibrido BM25 es el candidato principal para el ingles, con la advertencia de arXiv:2610.30612 sobre fusiones que no ayudan.
 - Arctic-Embed 2.0, bge-m3 y e5-large son los candidatos de encoder multilingue.
 
@@ -129,7 +129,7 @@ Criterio: Recall +3 puntos o span_hit +5 en desarrollo, con IC que excluya cero 
 
 Variantes: sin dedup, exacta, SimHash o MinHash en recuperacion, semantica en recuperacion, y dedup en indexacion solo si las anteriores no bastan.
 
-Metricas: near-dups en top-10, documentos unicos, Recall@10, nDCG@10 y supervivencia del `document_id` del gold.
+Metricas: near-dups en top-10, documentos unicos, Recall@10, nDCG@10 y supervivencia del `document_id` del silver.
 
 Criterio: bajar near-dups en top-10 sin perder mas de 1 punto de Recall.
 
@@ -158,7 +158,7 @@ Lectura:
 
 - BM25 supera al dense en los dos idiomas, sobre todo en ingles: duplica el Recall (0,111 a 0,222) y el span (0,111 a 0,333).
 - El RRF 50/50 no mejora a BM25 solo. En ingles el dense arrastra el ranking y deja P@1 en cero. Es el caso que describe arXiv:2610.30612: la fusion no siempre suma.
-- El gold actual tiene preguntas directas con spans literales, lo que favorece a BM25. No se puede concluir que BM25 sea mejor en general sin un test con preguntas parafraseadas.
+- El silver actual tiene preguntas directas con spans literales, lo que favorece a BM25. No se puede concluir que BM25 sea mejor en general sin un test con preguntas parafraseadas.
 - El ingles sigue por debajo de 0,25. BM25 ayuda, pero no resuelve el problema.
 
 Decision inicial: la Fase 1 no se implementa como RRF 50/50. Se prueba RRF con top-50 y pesos, y BM25 solo como referencia.
@@ -167,7 +167,7 @@ Decision inicial: la Fase 1 no se implementa como RRF 50/50. Se prueba RRF con t
 
 Fusion RRF con top-50 de dense y BM25, k=60, top-10 final. Veinte preguntas parafraseadas, once en espanol y nueve en ingles, con las mismas referencias.
 
-Gold original, Recall@10 por idioma:
+Silver original, Recall@10 por idioma:
 
 | Pesos dense/BM25 | Ingles | Espanol | Global |
 |---|---|---|---|
@@ -191,12 +191,12 @@ Combinado, 38 originales mas 20 parafrasis: BM25 solo 0,793, hibrido 0,3/0,7 y 0
 
 Lectura:
 
-- BM25 solo gana el gold original y el espanol.
+- BM25 solo gana el silver original y el espanol.
 - El hibrido 0,3/0,7 y 0,5/0,5 gana el ingles y empata en el combinado.
 - El nDCG del hibrido en espanol es peor que BM25 solo: 0,815 contra 0,857 en el original y 0,804 contra 0,900 en parafrasis.
 - No hay ganador claro. El empate en el combinado deja la decision en costo y robustez, no en metrica.
 
-Decision pendiente de confirmacion: adoptar el hibrido 0,3/0,7, que sube el ingles, o BM25 solo, que gana el espanol y el gold actual. Cualquiera de las dos exige reindexar 618.286 chunks en una coleccion nueva.
+Decision pendiente de confirmacion: adoptar el hibrido 0,3/0,7, que sube el ingles, o BM25 solo, que gana el espanol y el silver actual. Cualquiera de las dos exige reindexar 618.286 chunks en una coleccion nueva.
 
 Stopper: ninguno de los metodos probados alcanza el objetivo de Recall@10 0,80. El maximo combinado es 0,793. El cuello es la representacion en ingles, no la fusion. Antes de reindexar para el hibrido hay que decidir si se acepta ese techo o se pasa al encoder mas fuerte.
 
@@ -226,10 +226,10 @@ Dos modelos comparables en la RX 9070. Arctic-Embed 2.0 y gte-multilingual-base 
 
 | Modelo | Dataset | Idioma | Recall@10 | nDCG@10 | P@1 | chunks/s | Horas para 618k |
 |---|---|---|---|---|---|---|---|
-| e5-base | gold | en | 1,000 | 0,896 | 0,778 | 63,7 | 2,7 |
-| bge-m3 | gold | en | 1,000 | 1,000 | 1,000 | 15,0 | 11,5 |
-| e5-base | gold | es | 1,000 | 0,962 | 0,897 | 63,7 | 2,7 |
-| bge-m3 | gold | es | 1,000 | 0,976 | 0,966 | 15,0 | 11,5 |
+| e5-base | silver | en | 1,000 | 0,896 | 0,778 | 63,7 | 2,7 |
+| bge-m3 | silver | en | 1,000 | 1,000 | 1,000 | 15,0 | 11,5 |
+| e5-base | silver | es | 1,000 | 0,962 | 0,897 | 63,7 | 2,7 |
+| bge-m3 | silver | es | 1,000 | 0,976 | 0,966 | 15,0 | 11,5 |
 | e5-base | parafrasis | es | 1,000 | 0,933 | 0,818 | 63,7 | 2,7 |
 | bge-m3 | parafrasis | es | 1,000 | 1,000 | 1,000 | 15,0 | 11,5 |
 
@@ -270,7 +270,7 @@ El objetivo de Recall 0,80 no se alcanza. El techo con BM25 es 0,763. La Fase 3 
 
 El reranker empeora el orden y multiplica la latencia por 100. No se adopta. La cobertura no cambia, como era de esperar. El plan se cierra con BM25 sparse como sistema final y un techo de Recall 0,763.
 
-Para superar 0,80 queda una via no probada: ampliar el gold con mas documentos relevantes por pregunta. Si el corpus tiene documentos validos que no se anotaron, el Recall sube sin tocar el sistema.
+Para superar 0,80 queda una via no probada: ampliar el silver con mas documentos relevantes por pregunta. Si el corpus tiene documentos validos que no se anotaron, el Recall sube sin tocar el sistema.
 
 ### Fase 4: reindexacion con bge-m3
 
@@ -292,7 +292,7 @@ bge-m3 cumple el objetivo: Recall 0,842 y nDCG 0,708. Sube el ingles de 0,111 a 
 
 - Sobreajuste con 19 preguntas de desarrollo.
 - Costo de reindexacion y espacio en disco.
-- Dedup agresiva que elimine la copia del gold.
+- Dedup agresiva que elimine la copia del silver.
 - Truncamiento del 32,7% de los documentos: limite de datos.
 - Regresion de `/ask` y de la interfaz.
 
@@ -316,29 +316,29 @@ bge-m3 cumple el objetivo: Recall 0,842 y nDCG 0,708. Sube el ingles de 0,111 a 
 
 El sistema final usa el hibrido 0,5/0,5 con ef=800. Supera el objetivo de Recall 0,80 y nDCG 0,70. El reranker no se adopta. La latencia de `/retrieve` con codificacion es de unos 165 ms.
 
-Queda pendiente la ampliacion del gold con mas documentos relevantes, que requiere anotacion humana.
+Queda pendiente la ampliacion del silver con mas documentos relevantes, que requiere anotacion humana.
 
 
-## Cierre con gold ampliado
+## Cierre con silver ampliado
 
 Dos anotadores revisaron 76 candidatos. Kappa 0,626. Se añadieron 17 documentos de consenso.
 
-| Metodo | Gold | Recall@10 | nDCG@10 | P@1 | P@5 |
+| Metodo | Silver | Recall@10 | nDCG@10 | P@1 | P@5 |
 |---|---|---|---|---|---|
 | Denso ef=800 | 38 | 0,895 | 0,738 | 0,553 | 0,868 |
 | Hibrido 0,5/0,5 | 38 | 0,895 | 0,807 | 0,684 | 0,895 |
 | Denso ef=800 | ampliado | 0,921 | 0,827 | 0,737 | 0,947 |
 | Hibrido 0,5/0,5 | ampliado | 0,890 | 0,804 | 0,737 | 0,947 |
 
-El sistema final usa bge-m3 con ef=800 y sin fusion: Recall 0,921, nDCG 0,827. El gold ampliado confirma que el techo no era la metrica.
+El sistema final usa bge-m3 con ef=800 y sin fusion: Recall 0,921, nDCG 0,827. El silver ampliado confirma que el techo no era la metrica.
 
 
 ## Juez y guardarraíl (2026-11-01)
 
-El caso "¿Y en qué departamento?" no era recuperación: el documento salía rank 1 y gemma2 respondía "Boyacá [1]"; el juez llama3.2:3b decía NO. Sobre el gold, el juez aceptó 2 de 27 respuestas con cita.
+El caso "¿Y en qué departamento?" no era recuperación: el documento salía rank 1 y gemma2 respondía "Boyacá [1]"; el juez llama3.2:3b decía NO. Sobre el silver, el juez aceptó 2 de 27 respuestas con cita.
 
 Se probaron tres jueces. qwen2.5:1.5b aceptó 27 de 27 y atrapó 5 de 10 adversariales. gemma2:2b aceptó 27 de 27 y atrapó 8 de 10 (negación, cuantificador, causal, atribución, contradicción y cruce de números). Un solo modelo hace generación, juicio y condensación; no hacen falta qwen ni llama3.2.
 
-Guardarraíl: se corrigieron los arranques de frase ("Hay"), los números con separador ("1.000" contra "1000"), las citas múltiples ("[2, 3, 4]") y se añadieron los metadatos del chunk citado (título, fecha, URL) y el salto de cobertura léxica cuando el chunk está en otro idioma. Las abstenciones directas del gold bajan de 12 a 5, sin entregar ninguna de las 5 preguntas sin respuesta.
+Guardarraíl: se corrigieron los arranques de frase ("Hay"), los números con separador ("1.000" contra "1000"), las citas múltiples ("[2, 3, 4]") y se añadieron los metadatos del chunk citado (título, fecha, URL) y el salto de cobertura léxica cuando el chunk está en otro idioma. Las abstenciones directas del silver bajan de 12 a 5, sin entregar ninguna de las 5 preguntas sin respuesta.
 
 Quedan 5 abstenciones directas: g-017 (respuesta incorrecta), g-018 (dato parcial), g-023, g-028 y g-040 (la cita apunta a otro chunk). Son errores de selección de cita del generador, no del recuperador: 36 de 38 documentos de referencia están en top-5.

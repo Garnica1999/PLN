@@ -17,7 +17,7 @@ from src.rag.pipeline import retrieve_union, score_hits
 from src.scripts.eval_configuracion_final import contains_reference, token_f1
 from src.scripts.metrics import row_metrics
 
-GOLD = Path("eval/gold/gold_reservado.jsonl")
+SILVER = Path("eval/silver/silver_reservado.jsonl")
 RAW = Path("reports/corridas/reservado_hibrida_raw.jsonl")
 SUMMARY = Path("reports/tablas/reservado_hibrida_resumen.csv")
 PER_QUESTION = Path("reports/tablas/reservado_hibrida_por_pregunta.csv")
@@ -25,7 +25,7 @@ THRESHOLD = 0.4
 
 
 def main() -> None:
-    rows = [json.loads(line) for line in GOLD.read_text(encoding="utf-8").splitlines() if line.strip()]
+    rows = [json.loads(line) for line in SILVER.read_text(encoding="utf-8").splitlines() if line.strip()]
     results = []
     for index, row in enumerate(rows, start=1):
         output = chat(row["question"])

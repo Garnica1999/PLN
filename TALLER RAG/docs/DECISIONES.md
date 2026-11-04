@@ -61,7 +61,7 @@ Destino final: `TALLER RAG/docs/DECISIONES.md`.
 
 - Estado: aceptada.
 - Fecha: 2026-10-30.
-- Contexto: la guía pide gold de 40 preguntas, separar desarrollo y prueba, tres repeticiones y dos anotadores en una submuestra.
+- Contexto: la guía pide silver de 40 preguntas, separar desarrollo y prueba, tres repeticiones y dos anotadores en una submuestra.
 - Decisión: 20 preguntas de desarrollo y 20 de prueba. Ablaciones de recuperación sobre el piloto fijo de 2.000 documentos. Comparación de los cuatro LLM sobre las 20 preguntas de prueba con evidencia idéntica, temperatura 0 y tres repeticiones; la repetición 1 se anota y las otras dos miden latencia y estabilidad. Rúbrica humana de 0 a 3 en corrección, fidelidad, citas y abstención. Dos anotadores sobre las 80 respuestas de prueba.
 - Alternativas: juez automático único (la guía lo permite solo como complemento), una sola repetición (no permite separar ruido de efecto), anotar las tres repeticiones (triplica el trabajo humano sin mejorar la comparación).
 - Consecuencias: 80 respuestas anotadas, más 60 corridas extra para latencia. La selección del ganador usa las mismas 20 preguntas de prueba, y esa limitación se declara en el informe; el conjunto de desarrollo se reserva para prompts, umbrales y ablaciones.
@@ -71,7 +71,7 @@ Destino final: `TALLER RAG/docs/DECISIONES.md`.
 - Estado: aceptada.
 - Fecha: 2026-10-30.
 - Contexto: 14.771 filas comparten texto. La guía prohíbe alterar el archivo de forma silenciosa y pide trazabilidad de duplicados.
-- Decisión: el Parquet se lee en solo lectura y no se modifica. La ingesta guarda `text_sha256` en cada chunk. La recuperación descarta chunks con el mismo hash antes de armar el contexto. El gold no usa documentos duplicados como referencia.
+- Decisión: el Parquet se lee en solo lectura y no se modifica. La ingesta guarda `text_sha256` en cada chunk. La recuperación descarta chunks con el mismo hash antes de armar el contexto. El silver no usa documentos duplicados como referencia.
 - Alternativas: borrar duplicados en la ingesta (pierde procedencia), dejarlos (infla el top-k y las métricas).
 - Consecuencias: el top-k efectivo puede ser menor que k cuando hay duplicados. Se reporta la tasa de descarte.
 
@@ -98,7 +98,7 @@ Destino final: `TALLER RAG/docs/DECISIONES.md`.
 - Estado: aceptada.
 - Fecha: 2026-10-30.
 - Contexto: Carlos pidió probar con pocos datos, suficientes para comprobar que la recuperación funciona, recorrer los cuatro modelos del taller y elegir el mejor antes de construir el RAG final. Indexar 169.248 documentos antes de saber si el pipeline recupera bien cuesta horas por configuración.
-- Decisión: el desarrollo, el gold, las ablaciones y la comparación de modelos se hacen sobre un piloto estratificado de 2.000 documentos. El corpus completo se indexa una sola vez, al final, con la configuración ganadora, y se valida con E6 (mismas 20 preguntas de prueba, solo recuperación).
+- Decisión: el desarrollo, el silver, las ablaciones y la comparación de modelos se hacen sobre un piloto estratificado de 2.000 documentos. El corpus completo se indexa una sola vez, al final, con la configuración ganadora, y se valida con E6 (mismas 20 preguntas de prueba, solo recuperación).
 - Alternativas: indexar el corpus completo desde el inicio (realimentación lenta y costo alto por cada cambio de chunking o encoder), quedarse en el piloto (el informe no muestra comportamiento a escala).
 - Consecuencias: la comparación de modelos ocurre en un corpus pequeño y la degradación por escala se mide y se reporta. Si el ganador cambia al escalar, se documenta como hallazgo, no se oculta.
 
@@ -164,19 +164,19 @@ Destino final: `TALLER RAG/docs/DECISIONES.md`.
 - Decisión: adoptar V2 para el RAG final por consistencia de las estimaciones puntuales y costo nulo, sin afirmar superioridad estadística con 30 preguntas. No adoptar V3: elimina 159 chunks y no supera a V2 en ninguna métrica.
 - Evidencia: V2 obtiene P@1 0,833 contra 0,733 de V0, P@5 0,900 contra 0,833, recall@10 0,900 contra 0,833 y nDCG@10 0,875 contra 0,790. Con corrección de Bonferroni sobre 21 pruebas, el bootstrap pareado da P@1 +0,100 con IC [0,000; 0,267], recall +0,067 con IC [0,000; 0,233] y nDCG +0,086 con IC [0,000; 0,252]. Ninguna diferencia de calidad excluye cero con 30 preguntas. La precisión@10 se descartó como evidencia porque con un solo documento relevante por pregunta está acotada por 1/k. V1 sola no mueve el recall (0,833) y su ganancia de nDCG (+0,019) no es concluyente. V3 queda por debajo de V2 en todas las métricas.
 - Alternativas: V0 (texto crudo), V1 (solo filtro), V3 (filtro + normalización + dedup de chunks), V4 (normalización agresiva, no ejecutada por ser un control negativo de costo conocido).
-- Consecuencias: la limpieza se aplica al texto de cada chunk en el momento de indexar; `position` y `end_offset` siguen referidos al texto original, y `text_sha256` es el del texto limpio. La métrica de cobertura de span es menos fiable en variantes limpias porque el span anotado viene del texto crudo. El subconjunto de Bluesky (5 preguntas) es demasiado pequeño para concluir; las 5 son de tipo directa, así que el desglose por tipo no aporta. El gold final debe ser humano e incluir preguntas comparativas, ambiguas y sin respuesta.
+- Consecuencias: la limpieza se aplica al texto de cada chunk en el momento de indexar; `position` y `end_offset` siguen referidos al texto original, y `text_sha256` es el del texto limpio. La métrica de cobertura de span es menos fiable en variantes limpias porque el span anotado viene del texto crudo. El subconjunto de Bluesky (5 preguntas) es demasiado pequeño para concluir; las 5 son de tipo directa, así que el desglose por tipo no aporta. El silver final debe ser humano e incluir preguntas comparativas, ambiguas y sin respuesta.
 
 ## ADR-019. Chunking fijo, k=5 y silver standard de 43 preguntas
 
 - Estado: aceptada.
 - Fecha: 2026-10-31.
 - Contexto: E1 comparó chunking fijo (1000/150) contra oraciones (384 tokens, solape de una oración) con limpieza V2, 30 preguntas, 3 repeticiones, e5-base y `ef=200`. E2 comparó k=3, 5 y 10 sobre la mejor colección. Además se consolidó un silver standard de 43 preguntas.
-- Decisión: mantener el chunking fijo de 1000 caracteres con 150 de solape. Fijar k=5 en el sistema final, sabiendo que k=3 da la misma calidad en este gold y que k=5 deja margen para preguntas comparativas. Usar `eval/gold/silver_standard.jsonl` como gold de evaluación, con 43 preguntas (38 respondibles y 5 sin respuesta), 19 de desarrollo y 24 de prueba.
+- Decisión: mantener el chunking fijo de 1000 caracteres con 150 de solape. Fijar k=5 en el sistema final, sabiendo que k=3 da la misma calidad en este silver y que k=5 deja margen para preguntas comparativas. Usar `eval/silver/silver_standard.jsonl` como silver de evaluación, con 43 preguntas (38 respondibles y 5 sin respuesta), 19 de desarrollo y 24 de prueba.
 - Evidencia E1: fijo P@1 0,833, P@5 0,900, recall 0,900, nDCG 0,875, 38,5 ms; oraciones P@1 0,767, P@5 0,833, recall 0,833, nDCG 0,804, 42,1 ms. Con Bonferroni, la diferencia pareada de nDCG es -0,071 con IC [-0,221; 0,025]; no es concluyente, pero el fijo gana en estimación puntual y es 3,65 ms más rápido (IC [2,25; 4,97]).
 - Evidencia E2: k=3, 5 y 10 dan exactamente las mismas métricas de calidad (P@1 0,833, recall 0,900, nDCG 0,875); todos los relevantes están en el top 3. La diferencia pareada de calidad es 0,000; solo cambia la latencia en 1,6 ms.
-- Evidencia del gold: sobre la colección `rag_pilot_e5base_d768_v2_v1`, 38 preguntas respondibles dan recall@10 0,947, MRR 0,908 y nDCG@10 0,918 (IC [0,870; 0,959]). Los dos fallos son preguntas reales, no referencias rotas.
+- Evidencia del silver: sobre la colección `rag_pilot_e5base_d768_v2_v1`, 38 preguntas respondibles dan recall@10 0,947, MRR 0,908 y nDCG@10 0,918 (IC [0,870; 0,959]). Los dos fallos son preguntas reales, no referencias rotas.
 - Alternativas: oraciones (peor estimación puntual y más lento), k=3 (misma calidad, menos contexto), k=10 (sin ganancia medible, más contexto).
-- Consecuencias: el gold está generado por LLM y revisado por cuatro anotadores (Carlos, Julian, Oscar y Erika); las 43 filas quedan con `validated: true`. La cuarta revisión aprobó 35 filas, marcó 5 como no aplicables (3 enlaces roscos, una pregunta duplicada y una respuesta por cambiar) y corrigió la respuesta y el span de g-003; dos filas quedaron señaladas sin reemplazo. No tiene preguntas comparativas y solo 5 de Bluesky y 10 en inglés; el informe debe declararlo. Las 5 preguntas sin respuesta se evalúan por abstención, no por Recall@k.
+- Consecuencias: el silver está generado por LLM y revisado por cuatro anotadores (Carlos, Julian, Oscar y Erika); las 43 filas quedan con `validated: true`. La cuarta revisión aprobó 35 filas, marcó 5 como no aplicables (3 enlaces roscos, una pregunta duplicada y una respuesta por cambiar) y corrigió la respuesta y el span de g-003; dos filas quedaron señaladas sin reemplazo. No tiene preguntas comparativas y solo 5 de Bluesky y 10 en inglés; el informe debe declararlo. Las 5 preguntas sin respuesta se evalúan por abstención, no por Recall@k.
 
 
 ## ADR-020. Ingesta del corpus completo en la GPU local con ROCm
