@@ -110,7 +110,7 @@ def evaluate(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--collection", default="rag_pilot_e5base_d768_v2_v1")
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/gold_standard.jsonl"))
+    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
     parser.add_argument("--paraphrases", type=Path, default=Path("eval/gold/paraphrases.jsonl"))
     parser.add_argument("--models", default="intfloat/multilingual-e5-base,BAAI/bge-m3,Snowflake/snowflake-arctic-embed-m-v2.0,Alibaba-NLP/gte-multilingual-base")
     parser.add_argument("--device", default="cuda")

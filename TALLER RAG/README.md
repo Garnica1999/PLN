@@ -222,12 +222,12 @@ docker compose exec -e API_URL=http://localhost:8010 api streamlit run src/rag/a
 
 ## 10. Evaluación
 
-1. Gold: `eval/gold/gold_standard.jsonl` con 43 preguntas (19 de desarrollo, 24 de prueba, 5 sin respuesta) y `eval/gold/gold_standard_ampliado.jsonl` con 17 documentos adicionales validados por dos anotadores.
+1. Silver standard: `eval/gold/silver_standard.jsonl` con 43 preguntas (19 de desarrollo, 24 de prueba, 5 sin respuesta) y `eval/gold/silver_standard_ampliado.jsonl` con 17 documentos adicionales validados por dos anotadores.
 2. Recuperación final:
 
 ```bash
 docker compose --profile rocm run --rm -T ingest-rocm python -m src.scripts.bench_final_tuning \
-  --gold eval/gold/gold_standard_ampliado.jsonl --outdir reports/tablas/ampliado
+  --gold eval/gold/silver_standard_ampliado.jsonl --outdir reports/tablas/ampliado
 ```
 
 3. Métricas desde los JSONL:

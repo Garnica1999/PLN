@@ -1,4 +1,4 @@
-"""Exporta el gold standard a Excel con una sola columna de revisor.
+"""Exporta el silver standard a Excel con una sola columna de revisor.
 
 Cada persona genera su propia copia con --reviewer. Así conviven varias
 versiones del mismo archivo sin columnas duplicadas.
@@ -17,8 +17,8 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.properties import PageSetupProperties
 
-GOLD = Path("eval/gold/gold_standard.jsonl")
-OUT = Path("eval/gold/gold_standard.xlsx")
+GOLD = Path("eval/gold/silver_standard.jsonl")
+OUT = Path("eval/gold/silver_standard.xlsx")
 
 HEADER_FILL = PatternFill("solid", fgColor="335C81")
 HEADER_FONT = Font(bold=True, color="FFFFFF", size=11)
@@ -74,7 +74,7 @@ def build_instructions(ws, reviewer: str, records: list[dict]) -> None:
     spanish = sum(1 for record in records if record["lang"] == "es")
     english = sum(1 for record in records if record["lang"] == "en")
     rows = [
-        ("Gold standard del Taller RAG", Font(bold=True, size=16)),
+        ("Silver standard del Taller RAG", Font(bold=True, size=16)),
         (f"{total} preguntas para revisar. {subtitle}", BODY_FONT),
         ("No modifiques la columna id.", BODY_FONT),
         ("", BODY_FONT),
@@ -127,7 +127,7 @@ def main() -> None:
     records = [json.loads(line) for line in Path(args.gold).read_text(encoding="utf-8").splitlines() if line.strip()]
     reviewer = args.reviewer.strip()
     out = Path(args.out) if args.out else (
-        Path(f"eval/gold/gold_standard_{slug(reviewer)}.xlsx") if reviewer else OUT
+        Path(f"eval/gold/silver_standard_{slug(reviewer)}.xlsx") if reviewer else OUT
     )
 
     workbook = Workbook()

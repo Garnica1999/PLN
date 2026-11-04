@@ -202,7 +202,7 @@ def figures(frame: pd.DataFrame, summary: dict, outdir: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/gold_standard_ampliado.jsonl"))
+    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard_ampliado.jsonl"))
     parser.add_argument("--collection", default="rag_full_bge_m3_d1024_v1")
     parser.add_argument("--model", default="gemma4:e4b")
     parser.add_argument("--k-retrieval", type=int, default=10)

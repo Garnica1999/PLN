@@ -110,7 +110,7 @@ def summarize(frame: pd.DataFrame) -> pd.DataFrame:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/gold_standard.jsonl"))
+    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
     parser.add_argument("--paraphrases", type=Path, default=Path("eval/gold/paraphrases.jsonl"))
     parser.add_argument("--dense", type=Path, default=Path("reports/corridas/bench_ef200_k50.jsonl"))
     parser.add_argument("--collection", default=settings.collection)

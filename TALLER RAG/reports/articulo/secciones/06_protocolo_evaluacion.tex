@@ -3,11 +3,11 @@
 
 \subsection{Gold est\'andar}
 
-El gold tiene 43 preguntas: 19 en desarrollo y 24 en prueba, 38 respondibles y 5 sin respuesta. Cada fila guarda el identificador, la pregunta, el idioma, el tipo, el split, los documentos y fragmentos de referencia, el span literal que responde, la respuesta de referencia, el criterio de correcci\'on y el estado de validaci\'on. La Tabla~\ref{tab:gold} resume la composici\'on. Las preguntas sin respuesta no entran en Recall@k: se eval\'uan por abstenci\'on.
+El silver standard tiene 43 preguntas: 19 en desarrollo y 24 en prueba, 38 respondibles y 5 sin respuesta. Lo llamamos silver standard y no gold porque lo gener\'o un LLM y lo revisaron los autores, no expertos independientes. Cada fila guarda el identificador, la pregunta, el idioma, el tipo, el split, los documentos y fragmentos de referencia, el span literal que responde, la respuesta de referencia, el criterio de correcci\'on y el estado de validaci\'on. La Tabla~\ref{tab:gold} resume la composici\'on. Las preguntas sin respuesta no entran en Recall@k: se eval\'uan por abstenci\'on.
 
 \begin{table}[t]
 \centering
-\caption{Composici\'on del gold est\'andar.}
+\caption{Composici\'on del silver standard.}
 \label{tab:gold}
 \begin{tabular}{lrrr}
 \toprule
@@ -21,11 +21,11 @@ Total & 38 & 5 & 43 \\
 \end{tabular}
 \end{table}
 
-El gold se ampli\'o con 17 documentos adicionales marcados por consenso de dos anotadores (kappa 0,626). Con esa ampliaci\'on, 14 preguntas quedaron con dos o m\'as documentos relevantes, lo que hace que Recall@k y nDCG no dependan de un \'unico pasaje.
+El silver standard se ampli\'o con 17 documentos adicionales marcados por consenso de dos anotadores (kappa 0,626). Con esa ampliaci\'on, 14 preguntas quedaron con dos o m\'as documentos relevantes, lo que hace que Recall@k y nDCG no dependan de un \'unico pasaje.
 
 \subsection{Revisi\'on humana}
 
-Cuatro personas revisaron el gold contra el documento citado. Carlos revis\'o las 43 y dej\'o 12 correcciones; Juli\'an aport\'o 7 spans y una reformulaci\'on; \'Oscar aport\'o 5 spans corregidos y marc\'o 3 enlaces rotos; Erika revis\'o las 43, aprob\'o 35, marc\'o 5 como no aplicables y corrigi\'o la respuesta y el span de g-003. Cada propuesta se aplic\'o solo si el span aparec\'ia literalmente en el texto indexado. Las que no se pudieron verificar quedaron con nota.
+Cuatro personas revisaron el silver standard contra el documento citado. Carlos revis\'o las 43 y dej\'o 12 correcciones; Juli\'an aport\'o 7 spans y una reformulaci\'on; \'Oscar aport\'o 5 spans corregidos y marc\'o 3 enlaces rotos; Erika revis\'o las 43, aprob\'o 35, marc\'o 5 como no aplicables y corrigi\'o la respuesta y el span de g-003. Cada propuesta se aplic\'o solo si el span aparec\'ia literalmente en el texto indexado. Las que no se pudieron verificar quedaron con nota.
 
 Para la comparaci\'on de modelos se anotaron 72 respuestas de 4 modelos, ciegas y en orden barajado, con r\'ubrica de 0 a 3 en correcci\'on, fidelidad, citas y abstenci\'on. Dos anotadores calificaron las mismas respuestas. La Tabla~\ref{tab:kappa} reporta el acuerdo. La fidelidad no alcanz\'o acuerdo suficiente y no se usa para el veredicto; la correcci\'on y las citas s\'i.
 

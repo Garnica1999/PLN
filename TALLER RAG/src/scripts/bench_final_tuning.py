@@ -61,7 +61,7 @@ def metrics(hits: list[dict], question: dict, variant: str, ef: int, elapsed: fl
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/gold_standard.jsonl"))
+    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
     parser.add_argument("--collection", default="rag_full_bge_m3_d1024_v1")
     parser.add_argument("--outdir", type=Path, default=Path("reports/tablas"))
     parser.add_argument("--reps", type=int, default=3)

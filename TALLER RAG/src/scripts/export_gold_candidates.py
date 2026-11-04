@@ -14,7 +14,7 @@ from sentence_transformers import SentenceTransformer
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/gold_standard.jsonl"))
+    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
     parser.add_argument("--out", type=Path, default=Path("eval/gold/ampliacion_candidatos.xlsx"))
     parser.add_argument("--collection", default="rag_full_bge_m3_d1024_v1")
     parser.add_argument("--candidates", type=int, default=2)

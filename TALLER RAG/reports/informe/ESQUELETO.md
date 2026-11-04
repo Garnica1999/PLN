@@ -172,7 +172,7 @@ El reranker reordena mejor pero no recupera cobertura y cuesta 3,1 s por consult
 - Hardware: Ryzen 9 5950X, 31 GB RAM, RX 9070 XT 16 GB, ROCm 7.2.4.
 - Versiones: Python 3.12 en contenedores, e5-base, Milvus 2.6.6, PyTorch 2.10.0+rocm7.2.4.
 - Comandos: ver `README.md`.
-- Artefactos: `eval/gold/gold_standard.jsonl`, `reports/corridas/*.jsonl`, `reports/tablas/*.csv`.
+- Artefactos: `eval/gold/silver_standard.jsonl`, `reports/corridas/*.jsonl`, `reports/tablas/*.csv`.
 
 ## Apéndice B. Pendientes antes de entregar
 

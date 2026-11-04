@@ -17,7 +17,7 @@ from src.rag.store import get_client, search
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", default="eval/gold/gold_standard.jsonl")
+    parser.add_argument("--gold", default="eval/gold/silver_standard.jsonl")
     parser.add_argument("--split", default="all", choices=["dev", "test", "all"])
     parser.add_argument("--collection", default="rag_full_e5base_d768_v2_v1")
     parser.add_argument("--top-n", type=int, default=50)

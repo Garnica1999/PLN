@@ -13,7 +13,7 @@ from src.scripts.metrics import row_metrics
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/gold_standard.jsonl"))
+    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
     parser.add_argument("--outdir", type=Path, default=Path("reports/tablas"))
     parser.add_argument("--reps", type=int, default=3)
     args = parser.parse_args()

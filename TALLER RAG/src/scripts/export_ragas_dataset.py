@@ -9,7 +9,7 @@ import requests
 
 API = os.getenv("API_URL", "http://localhost:8010").rstrip("/")
 COLLECTION = os.getenv("COLLECTION", "rag_full_bge_m3_d1024_v1")
-GOLD = Path("eval/gold/gold_standard_ampliado.jsonl")
+GOLD = Path("eval/gold/silver_standard_ampliado.jsonl")
 OUT = Path("reports/ragas/dataset.jsonl")
 NEGATIVES = Path("reports/ragas/negatives.jsonl")
 

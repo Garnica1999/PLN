@@ -1,4 +1,4 @@
-"""Consolida el gold standard: deduplica, asigna split balanceado y exporta JSONL, CSV y Markdown."""
+"""Consolida el silver standard: deduplica, asigna split balanceado y exporta JSONL, CSV y Markdown."""
 from __future__ import annotations
 
 import argparse
@@ -55,7 +55,7 @@ def main() -> None:
     if excluded:
         frame = frame[~frame["id"].isin(excluded)].reset_index(drop=True)
     previous: dict[str, tuple[str, bool, str]] = {}
-    previous_path = Path(args.outdir) / "gold_standard.jsonl"
+    previous_path = Path(args.outdir) / "silver_standard.jsonl"
     if previous_path.exists() and not args.reset_validation:
         for line in previous_path.read_text(encoding="utf-8").splitlines():
             if line.strip():
@@ -104,16 +104,16 @@ def main() -> None:
         "validated",
     ]
     records = frame.to_dict(orient="records")
-    with (outdir / "gold_standard.jsonl").open("w", encoding="utf-8") as handle:
+    with (outdir / "silver_standard.jsonl").open("w", encoding="utf-8") as handle:
         for record in records:
             handle.write(json.dumps(record, ensure_ascii=False) + "\n")
 
     flat = frame.copy()
     flat["reference_doc_ids"] = flat["reference_doc_ids"].map(lambda ids: ";".join(ids) if isinstance(ids, list) else "")
-    flat[columns].to_csv(outdir / "gold_standard.csv", index=False)
+    flat[columns].to_csv(outdir / "silver_standard.csv", index=False)
 
     lines = [
-        "# Gold standard",
+        "# Silver standard",
         "",
         "Validación humana pendiente: `validated` está en falso en todas las filas.",
         "",
@@ -132,7 +132,7 @@ def main() -> None:
                 f"| {row.id} | {row.type} | {row.lang} | {row.question} | {row.reference_answer} | {doc} | {row.reviewer or ''} | {'sí' if row.validated else ''} |"
             )
         lines.append("")
-    (outdir / "gold_standard.md").write_text("\n".join(lines), encoding="utf-8")
+    (outdir / "silver_standard.md").write_text("\n".join(lines), encoding="utf-8")
 
     print(
         json.dumps(

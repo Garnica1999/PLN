@@ -16,7 +16,7 @@ from src.rag.config import settings
 from src.rag.pipeline import call_llm, rerank_hits, search_hits, weighted_rrf
 from src.scripts.metrics import ranked_docs, row_metrics
 
-GOLD = Path("eval/gold/gold_standard_ampliado.jsonl")
+GOLD = Path("eval/gold/silver_standard_ampliado.jsonl")
 OUT = Path("reports/tablas/mejoras_recuperacion.csv")
 OUT_LANG = Path("reports/tablas/mejoras_recuperacion_por_idioma.csv")
 COLLECTION = settings.collection

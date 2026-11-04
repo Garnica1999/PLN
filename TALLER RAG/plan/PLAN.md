@@ -313,7 +313,7 @@ Objetivo: comprobar que el pipeline recupera la evidencia correcta antes de inve
 - Estados de carga, vacío y error visibles, no solo por color.
 - Compuerta: los cuatro modelos aparecen en el selector, la misma pregunta con la misma k devuelve la misma evidencia, y ninguna respuesta sin evidencia se presenta como respuesta.
 
-### F4. Gold estándar (día 7 a 12, trabajo humano)
+### F4. Silver standard (día 7 a 12, trabajo humano)
 
 - 40 preguntas mínimo sobre documentos del piloto: 20 desarrollo y 20 prueba.
 - Balance entre Bluesky y prensa, español e inglés, fechas de 2024 a 2026.
@@ -322,7 +322,7 @@ Objetivo: comprobar que el pipeline recupera la evidencia correcta antes de inve
 - `make_gold_candidates.py` propone candidatos con `document_id` real y texto de respaldo; la validación y la redacción son humanas.
 - Dos anotadores revisan una submuestra y se reporta el acuerdo.
 - Compuerta: ninguna pregunta de prueba se usa para ajustar prompts o umbrales, y toda referencia existe en el piloto y en el corpus completo.
-- Gold consolidado: `eval/gold/gold_standard.jsonl`, 43 preguntas (19 desarrollo, 24 prueba, 38 respondibles y 5 sin respuesta). Validado por Carlos; segunda revisión pendiente.
+- Gold consolidado: `eval/gold/silver_standard.jsonl`, 43 preguntas (19 desarrollo, 24 prueba, 38 respondibles y 5 sin respuesta). Validado por Carlos; segunda revisión pendiente.
 
 ### F5. Comparación de los cuatro modelos y ablaciones (día 10 a 16)
 

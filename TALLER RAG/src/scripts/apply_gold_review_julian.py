@@ -13,9 +13,9 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-GOLD = Path("eval/gold/gold_standard.jsonl")
-BACKUP = Path("eval/gold/gold_standard_pre_julian.jsonl")
-REVIEW = Path("eval/gold/gold_standard_julian.xlsx")
+GOLD = Path("eval/gold/silver_standard.jsonl")
+BACKUP = Path("eval/gold/silver_standard_pre_julian.jsonl")
+REVIEW = Path("eval/gold/silver_standard_julian.xlsx")
 
 SPAN_IDS = {"g-009", "g-012", "g-016", "g-031", "g-040", "g-042", "g-047"}
 REFORMULADA = {

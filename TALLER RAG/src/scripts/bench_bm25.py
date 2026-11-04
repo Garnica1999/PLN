@@ -61,7 +61,7 @@ def rrf(dense_ids: list[str], bm25_ids: list[str], k: int = 60, top: int = 10) -
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/gold_standard.jsonl"))
+    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
     parser.add_argument("--dense", type=Path, default=Path("reports/corridas/bench_ef200_k10.jsonl"))
     parser.add_argument("--collection", default=settings.collection)
     parser.add_argument("--limit", type=int, default=None)

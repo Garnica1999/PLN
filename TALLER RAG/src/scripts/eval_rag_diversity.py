@@ -18,7 +18,7 @@ from src.rag.embeddings import get_embedder
 from src.rag.pipeline import rerank_hits, search_hits
 from src.scripts.metrics import ranked_docs, row_metrics
 
-GOLD = Path("eval/gold/gold_standard_ampliado.jsonl")
+GOLD = Path("eval/gold/silver_standard_ampliado.jsonl")
 OUT = Path("reports/tablas/mejoras_diversidad.csv")
 COLLECTION = settings.collection
 MISSES = ("g-031", "g-046")

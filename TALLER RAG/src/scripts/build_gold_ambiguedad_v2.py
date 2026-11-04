@@ -15,7 +15,7 @@ from src.rag.pipeline import rerank_hits, retrieve_union, score_hits
 GOLD_A = Path("eval/gold/gold_ambiguedad.jsonl")
 GOLD_B = Path("eval/gold/gold_ambiguedad_otros.jsonl")
 RESERVED = Path("eval/gold/gold_reservado.jsonl")
-STANDARD = Path("eval/gold/gold_standard.jsonl")
+STANDARD = Path("eval/gold/silver_standard.jsonl")
 OUT = Path("eval/gold/gold_ambiguedad_v2.jsonl")
 
 CANDIDATES = [

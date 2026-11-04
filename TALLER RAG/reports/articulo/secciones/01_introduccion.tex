@@ -22,7 +22,7 @@ Este trabajo construye y eval\'ua esa cadena completa sobre un corpus de 169.248
 \item Un pipeline reproducible de extremo a extremo, con Docker Compose, Milvus, Ollama, FastAPI y Streamlit, que se levanta con un comando y no depende de servicios de pago.
 \item Un an\'alisis exploratorio y una textometr\'ia del corpus que cuantifican el texto sin cierre terminal (32,7\,\%, un proxy de truncamiento), ruido de rastreo, duplicados exactos y near-duplicates, y que justifican una limpieza conservadora.
 \item Una comparaci\'on pareada de cuatro variantes de limpieza, dos estrategias de segmentaci\'on, tres codificadores, recuperaci\'on densa, dispersa e h\'ibrida, y tres alcances de reordenamiento, con intervalos de confianza por bootstrap.
-\item Un gold de 43 preguntas con revisi\'on de cuatro anotadores y acuerdo entre anotadores reportado, y una evaluaci\'on autom\'atica con RAGAS que distingue el ruido del juez de una mejora real.
+\item Un silver standard de 43 preguntas con revisi\'on de cuatro anotadores y acuerdo entre anotadores reportado, y una evaluaci\'on autom\'atica con RAGAS que distingue el ruido del juez de una mejora real.
 \item Una compuerta de dominio entrenada con 160 preguntas que rechaza las preguntas sin respuesta del conjunto de prueba y las 5 del conjunto reservado, con 3 falsos rechazos en 20 preguntas de dominio, y una interfaz que expone la evidencia, las citas y la abstenci\'on.
 \end{enumerate}
 

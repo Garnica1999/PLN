@@ -41,22 +41,22 @@ def test_builder_preserva_el_split(tmp_path, monkeypatch) -> None:
     main()
     first = {
         json.loads(line)["question"]: json.loads(line)["split"]
-        for line in (out / "gold_standard.jsonl").read_text(encoding="utf-8").splitlines()
+        for line in (out / "silver_standard.jsonl").read_text(encoding="utf-8").splitlines()
     }
     changed = []
-    for line in (out / "gold_standard.jsonl").read_text(encoding="utf-8").splitlines():
+    for line in (out / "silver_standard.jsonl").read_text(encoding="utf-8").splitlines():
         record = json.loads(line)
         record["split"] = "test" if record["split"] == "dev" else "dev"
         changed.append(record)
     flipped = {record["question"]: record["split"] for record in changed}
-    (out / "gold_standard.jsonl").write_text(
+    (out / "silver_standard.jsonl").write_text(
         "\n".join(json.dumps(r) for r in changed) + "\n", encoding="utf-8"
     )
     monkeypatch.setattr(sys, "argv", argv)
     main()
     second = {
         json.loads(line)["question"]: json.loads(line)["split"]
-        for line in (out / "gold_standard.jsonl").read_text(encoding="utf-8").splitlines()
+        for line in (out / "silver_standard.jsonl").read_text(encoding="utf-8").splitlines()
     }
     assert second == flipped
     assert first != second

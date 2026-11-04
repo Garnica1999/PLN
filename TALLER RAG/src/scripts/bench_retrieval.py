@@ -107,7 +107,7 @@ def check_failures(gold: list[dict], collection: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/gold_standard.jsonl"))
+    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
     parser.add_argument("--collection", default=settings.collection)
     parser.add_argument("--reps", type=int, default=3)
     parser.add_argument("--outdir", type=Path, default=Path("reports/tablas"))

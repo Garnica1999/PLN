@@ -166,12 +166,12 @@ Destino final: `TALLER RAG/docs/DECISIONES.md`.
 - Alternativas: V0 (texto crudo), V1 (solo filtro), V3 (filtro + normalización + dedup de chunks), V4 (normalización agresiva, no ejecutada por ser un control negativo de costo conocido).
 - Consecuencias: la limpieza se aplica al texto de cada chunk en el momento de indexar; `position` y `end_offset` siguen referidos al texto original, y `text_sha256` es el del texto limpio. La métrica de cobertura de span es menos fiable en variantes limpias porque el span anotado viene del texto crudo. El subconjunto de Bluesky (5 preguntas) es demasiado pequeño para concluir; las 5 son de tipo directa, así que el desglose por tipo no aporta. El gold final debe ser humano e incluir preguntas comparativas, ambiguas y sin respuesta.
 
-## ADR-019. Chunking fijo, k=5 y gold standard de 43 preguntas
+## ADR-019. Chunking fijo, k=5 y silver standard de 43 preguntas
 
 - Estado: aceptada.
 - Fecha: 2026-10-31.
-- Contexto: E1 comparó chunking fijo (1000/150) contra oraciones (384 tokens, solape de una oración) con limpieza V2, 30 preguntas, 3 repeticiones, e5-base y `ef=200`. E2 comparó k=3, 5 y 10 sobre la mejor colección. Además se consolidó un gold standard de 43 preguntas.
-- Decisión: mantener el chunking fijo de 1000 caracteres con 150 de solape. Fijar k=5 en el sistema final, sabiendo que k=3 da la misma calidad en este gold y que k=5 deja margen para preguntas comparativas. Usar `eval/gold/gold_standard.jsonl` como gold de evaluación, con 43 preguntas (38 respondibles y 5 sin respuesta), 19 de desarrollo y 24 de prueba.
+- Contexto: E1 comparó chunking fijo (1000/150) contra oraciones (384 tokens, solape de una oración) con limpieza V2, 30 preguntas, 3 repeticiones, e5-base y `ef=200`. E2 comparó k=3, 5 y 10 sobre la mejor colección. Además se consolidó un silver standard de 43 preguntas.
+- Decisión: mantener el chunking fijo de 1000 caracteres con 150 de solape. Fijar k=5 en el sistema final, sabiendo que k=3 da la misma calidad en este gold y que k=5 deja margen para preguntas comparativas. Usar `eval/gold/silver_standard.jsonl` como gold de evaluación, con 43 preguntas (38 respondibles y 5 sin respuesta), 19 de desarrollo y 24 de prueba.
 - Evidencia E1: fijo P@1 0,833, P@5 0,900, recall 0,900, nDCG 0,875, 38,5 ms; oraciones P@1 0,767, P@5 0,833, recall 0,833, nDCG 0,804, 42,1 ms. Con Bonferroni, la diferencia pareada de nDCG es -0,071 con IC [-0,221; 0,025]; no es concluyente, pero el fijo gana en estimación puntual y es 3,65 ms más rápido (IC [2,25; 4,97]).
 - Evidencia E2: k=3, 5 y 10 dan exactamente las mismas métricas de calidad (P@1 0,833, recall 0,900, nDCG 0,875); todos los relevantes están en el top 3. La diferencia pareada de calidad es 0,000; solo cambia la latencia en 1,6 ms.
 - Evidencia del gold: sobre la colección `rag_pilot_e5base_d768_v2_v1`, 38 preguntas respondibles dan recall@10 0,947, MRR 0,908 y nDCG@10 0,918 (IC [0,870; 0,959]). Los dos fallos son preguntas reales, no referencias rotas.

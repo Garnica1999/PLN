@@ -255,9 +255,9 @@ Las tres configuraciones devuelven exactamente las mismas métricas de calidad: 
 
 Decisión: k=3 basta para este gold. Para el sistema final se fija k=5 como margen para preguntas comparativas que no están en este conjunto, sabiendo que con el gold actual no hay ganancia medible de 3 a 5 ni de 5 a 10. El costo de k=5 es mayor contexto en generación, no más latencia de recuperación.
 
-## 10. Gold standard consolidado y validado (2026-10-31)
+## 10. Silver standard consolidado y validado (2026-10-31)
 
-Archivos: `eval/gold/gold_standard.jsonl` (fuente de verdad), `.csv`, `.md` y `.xlsx` (plantilla y copias por revisor).
+Archivos: `eval/gold/silver_standard.jsonl` (fuente de verdad), `.csv`, `.md` y `.xlsx` (plantilla y copias por revisor).
 
 | Corte | Total | Respondibles | Sin respuesta |
 |---|---|---|---|
@@ -269,7 +269,7 @@ Composición: 38 directas, 0 ambiguas, 5 sin respuesta. 34 en español y 9 en in
 
 Validación: Carlos revisó las 43 filas. Marcó 31 con Sí y 12 con Corregir. Las 12 correcciones se aplicaron (respuesta de g-003; fragmentos de g-009, g-012, g-031, g-040, g-042 y g-047; URLs de Wayback para g-022, g-025 y g-032; idioma de g-039; reformulación de g-036 y g-042) y cada una quedó con `review_note`.
 
-Segunda revisión (Julián, 2026-10-31): revisó 40 de las 43. Marcó 30 con Sí, 8 con Corregir y 2 con No. Se aplicaron los 7 spans y la reformulación de g-017. No se aplicaron g-036 ni g-045: el texto indexado respalda "entre 1996 y 2002" y "near Kendal". Tres preguntas (g-022, g-025, g-032) no se pudieron verificar por enlaces caídos. Erika y Óscar no revisaron. El gold anterior quedó en `eval/gold/gold_standard_pre_julian.jsonl`.
+Segunda revisión (Julián, 2026-10-31): revisó 40 de las 43. Marcó 30 con Sí, 8 con Corregir y 2 con No. Se aplicaron los 7 spans y la reformulación de g-017. No se aplicaron g-036 ni g-045: el texto indexado respalda "entre 1996 y 2002" y "near Kendal". Tres preguntas (g-022, g-025, g-032) no se pudieron verificar por enlaces caídos. Erika y Óscar no revisaron. El gold anterior quedó en `eval/gold/silver_standard_pre_julian.jsonl`.
 
 Verificación sobre `rag_pilot_e5base_d768_v2_v1`, k=10, 3 repeticiones:
 
@@ -442,4 +442,4 @@ Dos anotadores revisaron 76 candidatos, dos por pregunta. Kappa 0,626, 12 discre
 | Denso ef=800 | ampliado | 0,921 | 0,827 | 0,737 | 0,947 | 0,816 |
 | Híbrido 0,5/0,5 | ampliado | 0,890 | 0,804 | 0,737 | 0,947 | 0,868 |
 
-Con el gold ampliado el dense supera a la fusión. El sistema final usa `BAAI/bge-m3` con `ef=800`, `RETRIEVER=dense`: Recall@10 0,921 y nDCG@10 0,827. Artefactos: `eval/gold/gold_standard_ampliado.jsonl`, `reports/tablas/ampliado/bench_final_tuning.csv` y `bench_ampliado_global.csv`.
+Con el gold ampliado el dense supera a la fusión. El sistema final usa `BAAI/bge-m3` con `ef=800`, `RETRIEVER=dense`: Recall@10 0,921 y nDCG@10 0,827. Artefactos: `eval/gold/silver_standard_ampliado.jsonl`, `reports/tablas/ampliado/bench_final_tuning.csv` y `bench_ampliado_global.csv`.

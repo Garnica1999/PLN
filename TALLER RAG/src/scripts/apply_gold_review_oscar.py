@@ -14,10 +14,10 @@ import pyarrow.parquet as pq
 from openpyxl import load_workbook
 
 GOLD_FILES = [
-    Path("eval/gold/gold_standard.jsonl"),
-    Path("eval/gold/gold_standard_ampliado.jsonl"),
+    Path("eval/gold/silver_standard.jsonl"),
+    Path("eval/gold/silver_standard_ampliado.jsonl"),
 ]
-REVIEW = Path("eval/gold/gold_standard_oscar.xlsx")
+REVIEW = Path("eval/gold/silver_standard_oscar.xlsx")
 CORPUS = Path("Dataset/documentos_rag.parquet")
 
 SPANS = {

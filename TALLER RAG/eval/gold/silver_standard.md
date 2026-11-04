@@ -1,4 +1,4 @@
-# Gold standard
+# Silver standard
 
 Revisión de Carlos: 43 de 43 filas validadas. La segunda revisión está pendiente.
 

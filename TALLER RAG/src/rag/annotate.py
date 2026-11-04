@@ -23,7 +23,7 @@ st.title("Anotación de respuestas")
 with st.sidebar:
     annotator = st.text_input("Anotador", value="")
     run_file = st.text_input("Archivo de corrida", value="reports/corridas/e4_test.jsonl")
-    gold_file = st.text_input("Gold", value="eval/gold/gold_standard.jsonl")
+    gold_file = st.text_input("Gold", value="eval/gold/silver_standard.jsonl")
 
 if not annotator.strip():
     st.info("Escribe el nombre del anotador para empezar.")

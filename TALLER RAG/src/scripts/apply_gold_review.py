@@ -1,7 +1,7 @@
-"""Consolida la revisión de Carlos sobre el gold standard.
+"""Consolida la revisión de Carlos sobre el silver standard.
 
 Aplica las 12 correcciones que Carlos dejó en la columna comentario de
-gold_standard_carlos.xlsx, marca las 43 filas como revisadas y regenera
+silver_standard_carlos.xlsx, marca las 43 filas como revisadas y regenera
 JSONL, CSV y Markdown. No vuelve a generar el gold desde los archivos fuente.
 """
 from __future__ import annotations
@@ -83,8 +83,8 @@ def normalize(text: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--reviewer-xlsx", default="eval/gold/gold_standard_carlos.xlsx")
-    parser.add_argument("--gold", default="eval/gold/gold_standard.jsonl")
+    parser.add_argument("--reviewer-xlsx", default="eval/gold/silver_standard_carlos.xlsx")
+    parser.add_argument("--gold", default="eval/gold/silver_standard.jsonl")
     parser.add_argument("--parquet", default="data/documentos_rag.parquet")
     parser.add_argument("--outdir", default="eval/gold")
     parser.add_argument("--reviewer", default="Carlos")
@@ -122,16 +122,16 @@ def main() -> None:
 
     outdir = Path(args.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
-    with (outdir / "gold_standard.jsonl").open("w", encoding="utf-8") as handle:
+    with (outdir / "silver_standard.jsonl").open("w", encoding="utf-8") as handle:
         for record in records:
             handle.write(json.dumps(record, ensure_ascii=False) + "\n")
 
     flat = pd.DataFrame(records)
     flat["reference_doc_ids"] = flat["reference_doc_ids"].map(lambda ids: ";".join(ids) if isinstance(ids, list) else "")
-    flat[COLUMNS].to_csv(outdir / "gold_standard.csv", index=False)
+    flat[COLUMNS].to_csv(outdir / "silver_standard.csv", index=False)
 
     lines = [
-        "# Gold standard",
+        "# Silver standard",
         "",
         f"Revisión de {args.reviewer}: {validated} de {len(records)} filas validadas. La segunda revisión está pendiente.",
         "",
@@ -145,7 +145,7 @@ def main() -> None:
             f"{record['question']} | {record['reference_answer']} | {document} | "
             f"{record['reviewer']} | {'sí' if record['validated'] else ''} |"
         )
-    (outdir / "gold_standard.md").write_text("\n".join(lines), encoding="utf-8")
+    (outdir / "silver_standard.md").write_text("\n".join(lines), encoding="utf-8")
 
     print(
         json.dumps(

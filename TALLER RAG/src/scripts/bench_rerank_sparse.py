@@ -15,7 +15,7 @@ from src.scripts.metrics import row_metrics
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gold", type=Path, default=Path("eval/gold/gold_standard.jsonl"))
+    parser.add_argument("--gold", type=Path, default=Path("eval/gold/silver_standard.jsonl"))
     parser.add_argument("--model", default="BAAI/bge-reranker-base")
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--outdir", type=Path, default=Path("reports/tablas"))
