@@ -56,7 +56,7 @@ La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una int
 
 \textbf{Reordenamiento.} Un cross-encoder multiling\"ue reordena la uni\'on en GPU y el resultado se recorta a 10 \cite{nogueira2019passage}. El reordenador comparte la pasada con la compuerta, que usa la puntuaci\'on del top-5. El coste medido es de 0,68 s para 50 pares en GPU, frente a 1,30 s para 5 pares en CPU; la GPU deja m\'as margen porque el generador usa el resto de la VRAM.
 
-\textbf{Generaci\'on.} gemma4:e4b es un modelo de 7,5B cuantizado a Q4\_K\_M con 116.384 tokens de contexto y MTP nativo. Se eligi\'o por tres motivos: cabe en 16 GB de VRAM, soporta contextos largos y el MTP con draft 3 acelera la decodificaci\'on sin cambiar la distribuci\'on del modelo. Los modelos peque\~nos comparados en E4 quedaron por debajo en correcci\'on y citas.
+\textbf{Generaci\'on.} gemma4:e4b es un modelo de 7,5B cuantizado a Q4\_K\_M con 116.384 tokens de contexto y MTP nativo. Se eligi\'o por tres motivos: cabe en 16 GB de VRAM, soporta contextos largos y el MTP con draft 3 acelera la decodificaci\'on sin cambiar la distribuci\'on del modelo. gemma4:e4b no particip\'o en E4: se eligi\'o por contexto y MTP, no por una comparaci\'on directa. En E4, el mejor de los modelos peque\~nos fue gemma2:2b en correcci\'on y citas.
 
 \textbf{Conversaci\'on.} Un condensador reescribe la \'ultima pregunta con el historial para que la recuperaci\'on no dependa de pronombres. Se usa gemma2:2b para no cargar dos veces el modelo grande. Si el condensador pierde el tema, se antepone la primera pregunta del usuario.
 

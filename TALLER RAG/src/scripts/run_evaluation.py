@@ -107,8 +107,16 @@ def summarize() -> None:
 
     rows: list[dict] = []
 
-    def add(family: str, metric: str, actual, before) -> None:
-        rows.append({"familia": family, "metrica": metric, "actual": actual, "anterior": before})
+    def add(family: str, metric: str, actual, before, config: str = "final 125bbc7 vs k=15") -> None:
+        rows.append(
+            {
+                "familia": family,
+                "metrica": metric,
+                "configuracion": config,
+                "actual": actual,
+                "anterior": before,
+            }
+        )
 
     if current is not None and previous is not None:
         c, p = current.iloc[0], previous.iloc[0]
@@ -151,6 +159,7 @@ def summarize() -> None:
             "Correctas / parciales / incorrectas",
             f"{correct}/{partial}/{incorrect}",
             "7/3/2",
+            "12 sin cobertura vs historico",
         )
     if chat_strict is not None:
         add("Chat", "Con Modo estricto", f"{int(chat_strict['correcto'].sum())}/{len(chat_strict)}", f"{int(chat_previous['correcto'].sum()) if chat_previous is not None else 9}/12")
@@ -161,7 +170,15 @@ def summarize() -> None:
     if ragas_current is not None and ragas_previous is not None:
         for metric in ("faithfulness", "answer_relevancy", "context_precision", "context_recall", "answer_correctness"):
             if metric in ragas_current.columns and metric in ragas_previous.columns:
-                add("RAGAS", metric, f"{ragas_current[metric].mean():.3f}", f"{ragas_previous[metric].mean():.3f}")
+                n_current = int(ragas_current[metric].notna().sum())
+                n_previous = int(ragas_previous[metric].notna().sum())
+                add(
+                    "RAGAS",
+                    metric,
+                    f"{ragas_current[metric].mean():.3f} (n={n_current})",
+                    f"{ragas_previous[metric].mean():.3f} (n={n_previous})",
+                    "hibrido k=10 vs denso k=5",
+                )
     elif ragas_previous is not None:
         for metric in ("faithfulness", "answer_relevancy", "context_precision", "context_recall", "answer_correctness"):
             if metric in ragas_previous.columns:
@@ -169,9 +186,20 @@ def summarize() -> None:
 
     frame = pd.DataFrame(rows)
     frame.to_csv(TABLES / "evaluacion_comparativa.csv", index=False)
-    lines = ["# Evaluacion comparativa", "", "| Familia | Metrica | Actual | Anterior |", "|---|---|---|---|"]
+    lines = [
+        "# Evaluacion comparativa",
+        "",
+        "| Familia | Metrica | Configuracion | Actual | Anterior |",
+        "|---|---|---|---|---|",
+    ]
     for row in rows:
-        lines.append(f"| {row['familia']} | {row['metrica']} | {row['actual']} | {row['anterior']} |")
+        lines.append(
+            f"| {row['familia']} | {row['metrica']} | {row['configuracion']} | {row['actual']} | {row['anterior']} |"
+        )
+    lines.append("")
+    lines.append(
+        "La columna Anterior de RAGAS es la corrida densa k=5; la Tabla XII del articulo incluye ademas la configuracion Gemma2/Qwen3."
+    )
     (TABLES / "evaluacion_comparativa.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines), flush=True)
 
