@@ -16,6 +16,17 @@ Un solo archivo: `eval/anotacion/anotacion_v2.xlsx`.
 
 No hace falta ejecutar ningún script para anotar ni para ver el acuerdo. El libro se abre en Excel o LibreOffice Calc.
 
+## Cómo repartir el libro
+
+Para que la anotación sea ciega, no compartas el mismo archivo abierto entre los dos:
+
+1. Envía una copia del libro a cada anotador.
+2. Cada uno llena solo su hoja; la otra puede quedar vacía.
+3. Cuando devuelvan las copias, pega la columna `E` de la copia del anotador 2 en la hoja `Anotador 2` del libro maestro. Si quieres conservar las interpretaciones, pega también `F:J`.
+4. La hoja `Acuerdo` del libro maestro calcula el kappa sola.
+
+No hace falta ejecutar nada para este paso; es copiar y pegar una columna.
+
 ## Definición operativa
 
 Una pregunta es **ambigua** si, con el corpus del proyecto, admite más de una respuesta válida o más de una interpretación razonable. No es ambigua si una persona con acceso al corpus puede responderla sin preguntar nada más.
