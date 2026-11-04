@@ -24,6 +24,7 @@ def post(question: str, k: int = 5, hybrid: str = "auto") -> dict:
             "k": k,
             "collection": COLLECTION,
             "strict": False,
+            "ambiguity_policy": "off",
             "hybrid": None if hybrid == "auto" else hybrid == "true",
             "think": False,
         },
@@ -38,6 +39,7 @@ def main() -> None:
     parser.add_argument("--k", type=int, default=5)
     parser.add_argument("--out", type=Path, default=OUT)
     parser.add_argument("--hybrid", choices=["auto", "true", "false"], default="auto")
+    parser.add_argument("--negatives", type=Path, default=NEGATIVES)
     args = parser.parse_args()
     silver = [json.loads(line) for line in SILVER.read_text(encoding="utf-8").splitlines() if line.strip()]
     samples = []
@@ -64,12 +66,12 @@ def main() -> None:
     with args.out.open("w", encoding="utf-8") as handle:
         for item in samples:
             handle.write(json.dumps(item, ensure_ascii=False) + "\n")
-    with NEGATIVES.open("w", encoding="utf-8") as handle:
+    with args.negatives.open("w", encoding="utf-8") as handle:
         for item in negatives:
             handle.write(json.dumps(item, ensure_ascii=False) + "\n")
     abstained = sum(1 for item in negatives if item["abstained"])
     print(f"directas {len(samples)} -> {OUT}")
-    print(f"sin respuesta {len(negatives)} -> {NEGATIVES}; se abstienen {abstained}/{len(negatives)}")
+    print(f"sin respuesta {len(negatives)} -> {args.negatives}; se abstienen {abstained}/{len(negatives)}")
 
 
 if __name__ == "__main__":

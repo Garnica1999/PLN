@@ -103,7 +103,7 @@ def summarize() -> None:
     chat_strict_con = read_csv(TABLES / "chat_eval_final_con_strict.csv")
     chat_previous = read_csv(TABLES / "chat_eval_k15_sin.csv")
     ragas_current = read_csv(TABLES / "ragas_hibrido.csv")
-    ragas_previous = read_csv(TABLES / "ragas_gemma4-e4b_bge-m3.csv")
+    ragas_previous = read_csv(TABLES / "ragas_denso_k10.csv")
 
     rows: list[dict] = []
 
@@ -177,7 +177,7 @@ def summarize() -> None:
                     metric,
                     f"{ragas_current[metric].mean():.3f} (n={n_current})",
                     f"{ragas_previous[metric].mean():.3f} (n={n_previous})",
-                    "hibrido k=10 vs denso k=5",
+                    "hibrido k=10 vs denso k=10",
                 )
     elif ragas_previous is not None:
         for metric in ("faithfulness", "answer_relevancy", "context_precision", "context_recall", "answer_correctness"):
@@ -198,7 +198,7 @@ def summarize() -> None:
         )
     lines.append("")
     lines.append(
-        "La columna Anterior de RAGAS es la corrida densa k=5; la Tabla XII del articulo incluye ademas la configuracion Gemma2/Qwen3."
+        "La columna Anterior de RAGAS es la corrida densa k=10; el articulo incluye ademas denso k=5 y la configuracion Gemma2/Qwen3."
     )
     (TABLES / "evaluacion_comparativa.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines), flush=True)

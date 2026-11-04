@@ -23,10 +23,10 @@
 | Chat | Con Modo estricto | final 125bbc7 vs k=15 | 14/14 | 9/12 |
 | Chat | Sin Modo estricto | final 125bbc7 vs k=15 | 11/14 | 9/12 |
 | Chat con razonamiento | Con Modo estricto | final 125bbc7 vs k=15 | 14/14 | 9/12 |
-| RAGAS | faithfulness | hibrido k=10 vs denso k=5 | 0.845 (n=38) | 0.952 (n=38) |
-| RAGAS | answer_relevancy | hibrido k=10 vs denso k=5 | 0.678 (n=38) | 0.840 (n=38) |
-| RAGAS | context_precision | hibrido k=10 vs denso k=5 | 0.826 (n=36) | 0.881 (n=34) |
-| RAGAS | context_recall | hibrido k=10 vs denso k=5 | 0.947 (n=38) | 0.921 (n=38) |
-| RAGAS | answer_correctness | hibrido k=10 vs denso k=5 | 0.553 (n=38) | 0.657 (n=38) |
+| RAGAS | faithfulness | hibrido k=10 vs denso k=10 | 0.920 (n=38) | 0.932 (n=38) |
+| RAGAS | answer_relevancy | hibrido k=10 vs denso k=10 | 0.788 (n=38) | 0.765 (n=38) |
+| RAGAS | context_precision | hibrido k=10 vs denso k=10 | 0.867 (n=36) | 0.810 (n=36) |
+| RAGAS | context_recall | hibrido k=10 vs denso k=10 | 0.947 (n=38) | 0.947 (n=38) |
+| RAGAS | answer_correctness | hibrido k=10 vs denso k=10 | 0.607 (n=38) | 0.569 (n=38) |
 
-La columna Anterior de RAGAS es la corrida densa k=5; la Tabla XII del articulo incluye ademas la configuracion Gemma2/Qwen3.
+La columna Anterior de RAGAS es la corrida densa k=10; el articulo incluye ademas denso k=5 y la configuracion Gemma2/Qwen3.

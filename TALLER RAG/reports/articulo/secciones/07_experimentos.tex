@@ -152,24 +152,26 @@ Reservado & 25 & 20 & 5 & 1,000 & 0,850 & 0,919 \\
 
 \subsection{RAGAS}
 
-La Tabla~\ref{tab:ragas} compara tres configuraciones. El h\'ibrido es la ruta desplegada: uni\'on densa y BM25, $k=10$ y sin compuerta. El denso $k=5$ es la configuraci\'on anterior, medida con timeout de 900 s y 6 workers; la corrida por defecto dejaba la precisi\'on del contexto con 4 valores de 38. La tercera columna cambia juez y embeddings, as\'i que es observacional. El h\'ibrido sube la cobertura del contexto (0,947 frente a 0,921) y baja fidelidad, relevancia, precisi\'on y correcci\'on. La comparaci\'on cambia recuperador y $k$, as\'i que es descriptiva y no atribuye la diferencia al contexto.
+La Tabla~\ref{tab:ragas} compara cuatro configuraciones. El h\'ibrido es la ruta desplegada: uni\'on densa y BM25, $k=10$ y sin compuerta. El denso $k=10$ comparte $k$ con el h\'ibrido, as\'i que su diferencia a\'isla el recuperador: el h\'ibrido gana relevancia, precisi\'on y correcci\'on, y pierde fidelidad, con la misma cobertura. El denso $k=5$, con menos contexto, gana fidelidad, relevancia, precisi\'on y correcci\'on, y pierde cobertura: el efecto de $k$ es mayor que el del recuperador. La \'ultima columna cambia juez y embeddings, as\'i que es observacional. Las diferencias entre las tres primeras son descriptivas.
 
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{RAGAS: h\'ibrido desplegado, denso con $k=5$ y configuraci\'on anterior, con $n$ entre par\'entesis. H\'ibrido y denso usan juez gemma4:e4b y embeddings bge-m3; la anterior usa gemma2:2b y qwen3. La comparaci\'on con la anterior es observacional.}
+\caption{RAGAS: h\'ibrido, denso con $k=10$, denso con $k=5$ y configuraci\'on anterior, con $n$ entre par\'entesis. Las tres primeras usan juez gemma4:e4b y embeddings bge-m3; la \'ultima cambia juez y embeddings, as\'i que su comparaci\'on es observacional.}
 \label{tab:ragas}
-\begin{tabular}{lrrr}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lrrrr}
 \toprule
-M\'etrica & H\'ibrido & Denso $k=5$ & Anterior \\
+M\'etrica & H\'ibrido $k=10$ & Denso $k=10$ & Denso $k=5$ & Anterior \\
 \midrule
-Fidelidad & 0,845 (38) & \textbf{0,952} (38) & 0,925 (36) \\
-Relevancia & 0,678 (38) & \textbf{0,840} (38) & 0,798 (38) \\
-Precisi\'on del contexto & 0,826 (36) & \textbf{0,881} (34) & 0,760 (36) \\
-Cobertura del contexto & \textbf{0,947} (38) & 0,921 (38) & 0,842 (38) \\
-Correcci\'on & 0,553 (38) & 0,657 (38) & \textbf{0,705} (37) \\
+Fidelidad & 0,920 (38) & 0,932 (38) & \textbf{0,952} (38) & 0,925 (36) \\
+Relevancia & 0,788 (38) & 0,765 (38) & \textbf{0,840} (38) & 0,798 (38) \\
+Precisi\'on del contexto & 0,867 (36) & 0,810 (36) & \textbf{0,881} (34) & 0,760 (36) \\
+Cobertura del contexto & \textbf{0,947} (38) & \textbf{0,947} (38) & 0,921 (38) & 0,842 (38) \\
+Correcci\'on & 0,607 (38) & 0,569 (38) & \textbf{0,657} (38) & 0,705 (37) \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
 \subsection{Latencia y MTP}
