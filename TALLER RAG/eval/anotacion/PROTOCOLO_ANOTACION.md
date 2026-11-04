@@ -10,7 +10,9 @@ El gold v2 actual (`eval/gold/gold_ambiguedad_v2.jsonl`) es asistido por LLM y a
 | `eval/anotacion/anotacion_v2_anotador_2.csv` | Hoja del anotador 2 |
 | `src/scripts/conciliar_anotacion.py` | Calcula el acuerdo y consolida |
 
-Las dos hojas son idénticas y tienen 42 filas: `id`, `pregunta`, `historial` y cinco columnas vacías.
+Las dos hojas son idénticas y tienen 42 filas. Columnas: `n` (orden), `id`, `pregunta`, `historial`, `es_ambigua`, `interpretacion_1`, `respuesta_1`, `interpretacion_2`, `respuesta_2` y `notas`.
+
+El archivo está en UTF-8 con BOM y separado por punto y coma, para que Excel y LibreOffice en español lo abran en columnas y con los acentos correctos. Si se edita en Excel, guardar como «CSV UTF-8 (delimitado por punto y coma)».
 
 ## Definición operativa
 
@@ -31,7 +33,7 @@ Casos que no cuentan:
 
 ## Procedimiento
 
-1. Abrir la hoja propia. No consultar la del otro anotador ni la salida del sistema.
+1. Abrir la hoja propia con LibreOffice Calc o Excel. No consultar la del otro anotador ni la salida del sistema.
 2. Para cada fila, leer la pregunta y, si hay historial, el turno anterior.
 3. Marcar `es_ambigua` con `si` o `no`.
 4. Si es ambigua, escribir dos interpretaciones en `interpretacion_1` e `interpretacion_2`, cada una con su respuesta corta en `respuesta_1` y `respuesta_2`. La respuesta debe incluir la cifra o entidad exacta, no una paráfrasis.

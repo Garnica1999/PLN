@@ -19,8 +19,11 @@ GOLD = Path("eval/gold/gold_ambiguedad_v2.jsonl")
 
 
 def leer(path: Path) -> dict[str, dict]:
-    with path.open(encoding="utf-8", newline="") as handle:
-        rows = list(csv.DictReader(handle))
+    """Lee la hoja aceptando coma o punto y coma y BOM de Excel."""
+    text = path.read_text(encoding="utf-8-sig")
+    first = text.splitlines()[0] if text.splitlines() else ""
+    delimiter = ";" if ";" in first else ","
+    rows = list(csv.DictReader(text.splitlines(), delimiter=delimiter))
     return {row["id"]: row for row in rows}
 
 
@@ -109,8 +112,8 @@ def main() -> None:
     valor_kappa = kappa(pares)
 
     args.informe.parent.mkdir(parents=True, exist_ok=True)
-    with args.informe.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.writer(handle)
+    with args.informe.open("w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.writer(handle, delimiter=";", lineterminator="\n")
         writer.writerow(["id", "anotador_1", "anotador_2", "coincide", "pregunta"])
         for qid, (a, b) in etiquetas.items():
             writer.writerow([qid, a, b, "si" if a == b else "no", uno[qid]["pregunta"]])
