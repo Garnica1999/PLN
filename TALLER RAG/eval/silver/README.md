@@ -56,10 +56,10 @@ Las preguntas sin respuesta no entran en Recall@k: se evalúan por abstención.
 | Carlos | 43 | 43 | 12 comentarios | 0 | 12 correcciones |
 | Julián | 40 | 30 | 8 | 2 | 7 spans y 1 pregunta |
 | Óscar | 40 | 26 | 6 | 8 | 5 spans |
-| Erika | 0 | 0 | 0 | 0 | pendiente |
+| Erika | 43 | 35 | 5 | 3 | completada |
 
 Óscar dejó 12 comentarios: 5 spans corregidos contra el texto indexado (g-009, g-012, g-028, g-031, g-042), 3 enlaces rotos ya marcados como sin verificar, 3 casos ya resueltos o no aplicables y las 5 preguntas sin respuesta, que no tienen documento que validar. La consolidación está en `src/scripts/apply_silver_review_oscar.py` y los respaldos en `silver_standard_pre_oscar.jsonl` y `silver_standard_ampliado_pre_oscar.jsonl`.
 
-Falta la revisión de Erika, que dejó comentarios pero no marcó el campo `validado`.
+La revisión de Erika está registrada en el JSONL (`revisor_4`): 35 aprobadas, 5 no aplicables y 3 solicitudes de corrección; la corrección de g-003 se aplicó.
 
 El `silver_standard.jsonl` consolidado es la fuente de verdad. No ejecutes `build_silver_standard` después de la revisión: regeneraría el silver desde los archivos fuente y perdería las correcciones. Para cambiar una fila, edita el JSONL y vuelve a exportar el Excel con `export_silver_excel`.

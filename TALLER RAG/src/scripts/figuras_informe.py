@@ -11,7 +11,7 @@ from src.rag.plotting import ACCENT, INK, PALETTE, apply_theme, save_figure
 
 TABLES = Path("reports/tablas")
 FIGURES = Path("reports/figuras")
-METRICS = [("p_at_1", "P@1"), ("p_at_5", "P@5"), ("recall", "Recall@10"), ("ndcg", "nDCG@10")]
+METRICS = [("p_at_1", "P@1"), ("p_at_5", "Hit@5"), ("recall", "Recall@10"), ("ndcg", "nDCG@10")]
 
 
 def grouped(path: Path, title: str, out: str) -> None:
@@ -51,10 +51,10 @@ def limpieza() -> None:
 
 
 def escala() -> None:
-    labels = ["Recall@10", "P@1", "P@5", "nDCG@10"]
+    labels = ["Recall@10", "P@1", "Hit@5", "nDCG@10"]
     series = {
         "Piloto, 1.932 docs": [0.947, 0.842, 0.947, 0.909],
-        "Corpus, 161.868 docs": [0.684, 0.500, 0.658, 0.604],
+        "Corpus, 161.868 docs": [0.684, 0.474, 0.658, 0.594],
         "Corpus + rerank e5 top-50": [0.684, 0.632, 0.684, 0.661],
     }
     positions = np.arange(len(labels))

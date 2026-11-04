@@ -19,7 +19,7 @@
 
 \begin{document}
 
-\title{Material suplementario: asistente RAG sobre prensa colombiana}
+\title{Material suplementario: asistente RAG sobre prensa colombiana e internacional y Bluesky}
 \author{Erika Valeria Rivera Jimenez, Julian Guillermo Carrillo Meneses,\\
 Carlos Andres Garnica Salazar, Oscar Andres Prieto Moreno}
 
@@ -27,11 +27,11 @@ Carlos Andres Garnica Salazar, Oscar Andres Prieto Moreno}
 
 \section*{Presentaci\'on}
 
-Este suplemento re\'une las tablas y figuras que el cuerpo del art\'iculo referencia como S1 a S5. Se separaron para mantener el cuerpo en 16 p\'aginas; los datos, las corridas y los artefactos son los mismos y se describen en la secci\'on de reproducibilidad del art\'iculo.
+Este suplemento re\'une las tablas y figuras que el cuerpo del art\'iculo referencia como S1 a S6. Se separaron para mantener el cuerpo en 16 p\'aginas; los datos, las corridas y los artefactos son los mismos y se describen en la secci\'on de reproducibilidad del art\'iculo.
 
 \section*{Reordenamiento con bge-m3}
 
-La Tabla~\ref{tab:s1} mide el reordenador en CPU sobre 38 preguntas. El top-5 mantiene el recall y sube el nDCG y el P@1; el top-20 pierde P@5 y multiplica la latencia.
+La Tabla~\ref{tab:s1} mide el reordenador en CPU sobre 38 preguntas. El top-5 mantiene el recall y sube el nDCG y el P@1; el top-20 pierde Hit@5 y multiplica la latencia.
 
 \begin{table}[H]
 \centering
@@ -40,7 +40,7 @@ La Tabla~\ref{tab:s1} mide el reordenador en CPU sobre 38 preguntas. El top-5 ma
 \label{tab:s1}
 \begin{tabular}{lrrrrr}
 \toprule
-Configuraci\'on & Recall & nDCG & P@1 & P@5 & p50 \\
+Configuraci\'on & Recall & nDCG & P@1 & Hit@5 & p50 \\
 \midrule
 Denso top-5 & 0,895 & 0,809 & 0,737 & 0,947 & 0,10 s \\
 Rerank top-5 & 0,895 & \textbf{0,865} & \textbf{0,868} & \textbf{0,947} & 1,30 s \\
@@ -61,7 +61,7 @@ La Tabla~\ref{tab:s2} resume las variantes de prompt y diversidad probadas sobre
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lrrrrl}
 \toprule
-Variante & Recall & nDCG & P@1 & P@5 & Decisi\'on \\
+Variante & Recall & nDCG & P@1 & Hit@5 & Decisi\'on \\
 \midrule
 Top-5 con reranker & \textbf{0,895} & \textbf{0,865} & \textbf{0,868} & \textbf{0,947} & Referencia \\
 Rerank top-20 & 0,864 & 0,853 & \textbf{0,868} & 0,921 & Rechazada \\
@@ -91,12 +91,12 @@ M\'etrica & Valor & Denominador \\
 Recall@10 & 0,700 & 20 \\
 nDCG@10 & 0,612 & 20 \\
 P@1 & 0,500 & 20 \\
-P@5 & 0,650 & 20 \\
+Hit@5 & 0,650 & 20 \\
 Cobertura de span & 0,700 & 20 \\
 Entregadas & 19 & 20 \\
 Abstenciones en directas & 1 & 20 \\
-Match estricto, entregadas & 17 & 19 \\
-Match estricto, todas & 17 & 20 \\
+Cobertura de tokens, entregadas & 17 & 19 \\
+Cobertura de tokens, todas & 17 & 20 \\
 Con cita & 1,000 & 19 \\
 Abstenciones en sin respuesta & 5 & 5 \\
 Compuerta rechaza & 5 & 5 \\
@@ -107,7 +107,7 @@ Latencia media & 6,2 s & 25 \\
 
 \section*{Inyecci\'on de instrucciones}
 
-La Tabla~\ref{tab:inyeccion} mide E5 sobre 38 preguntas. Las instrucciones inyectadas en el texto recuperado no alteran la respuesta del generador en este corpus.
+La Tabla~\ref{tab:inyeccion} mide E5 sobre 38 preguntas. Gemma2:2b obedeci\'o una de cinco instrucciones y a\~nadi\'o la palabra pedida; los otros dos modelos las ignoraron. La prueba es exploratoria: no cubre el generador final ni demuestra robustez general.
 
 \begin{table}[H]
 \centering
@@ -177,16 +177,16 @@ La Tabla~\ref{tab:progresion} resume el recorrido de la configuraci\'on: cada fi
 \toprule
 Etapa & Cambio & Silver & M\'etrica & Decisi\'on \\
 \midrule
-Piloto & e5-base, 1.932 docs & piloto (30) & Recall@10 0,947 & Punto de partida \\
+Piloto & e5-base, 1.932 docs & piloto (38) & Recall@10 0,947 & Punto de partida \\
 Escala & corpus completo & 38 & Recall@10 0,684 & El piloto sobreestima \\
 Dispersa & BM25 & 38 & Recall@10 0,763 & No alcanza el techo \\
 Codificador & bge-m3 & 38 & Recall@10 0,842 & Adoptado \\
 \'Indice & \texttt{ef}=800 & 38 & Recall@10 0,895 & Adoptado \\
 Fusi\'on & h\'ibrido RRF & 38 & Recall@10 0,895 & Empata, se descarta \\
-Fusi\'on & h\'ibrido RRF & ampliado (45) & Recall@10 0,890 & Rechazado \\
+Fusi\'on & h\'ibrido RRF & ampliado & Recall@10 0,890 & Rechazado \\
 Reordenamiento & uni\'on densa+BM25 & reservado (20) & Recall@10 0,700 & Adoptado \\
 Contexto & $k=10$ & reservado (20) & 19/20 entregadas & Adoptado \\
-Prompt & v2 & 38 & 37/38 y 25/37 & Adoptado \\
+Prompt & v2 & 38 & 37/38 y cobertura 25/37 & Adoptado \\
 Compuerta & 160 preguntas & 20 test & 0 falsos aceptados & Adoptado \\
 Fase 6 & cuatro variantes & 38 & sin mejora & Rechazadas \\
 Fase 7 & MMR & 38 & recall 0,816 & Rechazado \\
@@ -200,7 +200,7 @@ Compuerta & 5 negativas & reservado (5) & 5/5 rechazadas & 3/20 falsos rechazos 
 
 \section*{Versiones de los modelos}
 
-La Tabla~\ref{tab:modelos} fija la versi\'on de cada modelo. Los identificadores son las etiquetas de Ollama y de Hugging Face usadas en el c\'odigo.
+La Tabla~\ref{tab:modelos} fija la versi\'on de cada modelo. Los identificadores son las etiquetas de Ollama y de Hugging Face usadas en el c\'odigo. El checkpoint del reordenador es \texttt{BAAI/bge-reranker-v2-m3}; los artefactos no guardan un digest inmutable de cada modelo, as\'i que la etiqueta y la fecha de la corrida son la referencia disponible.
 
 \begin{table}[H]
 \centering

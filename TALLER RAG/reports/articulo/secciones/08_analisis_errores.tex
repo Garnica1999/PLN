@@ -3,7 +3,7 @@
 
 \subsection{Errores de recuperaci\'on}
 
-Quedan dos fallos claros en el silver standard. g-031 pregunta por el municipio de gran extensi\'on y tradici\'on agropecuaria del sur del Tolima. El documento de referencia aparece en el puesto 11 del top-50 denso y en el puesto 1 despu\'es del reranker: el pipeline actual solo pasa cinco candidatos al reordenador y nunca lo ve. Ampliar el conjunto a 20 recupera esa pregunta, pero baja el recall global 3,1 puntos y el P@5 2,6, as\'i que no se adopta. g-046, sobre la protesta de Extinction Rebellion, no aparece ni en el top-50 denso ni tras el reranker. El problema est\'a en la consulta o en el \'indice, no en el ordenamiento.
+Quedan dos fallos claros en el silver standard. g-031 pregunta por el municipio de gran extensi\'on y tradici\'on agropecuaria del sur del Tolima. El documento de referencia aparece en el puesto 11 del top-50 denso y en el puesto 1 despu\'es del reranker: el pipeline de E6/E7 pasaba cinco candidatos al reordenador y nunca lo ve\'ia. Ampliar el conjunto a 20 recupera esa pregunta, pero baja el recall global 3,1 puntos y el Hit@5 2,6, as\'i que no se adopta. g-046, sobre la protesta de Extinction Rebellion, no aparece ni en el top-50 denso ni tras el reranker. El problema est\'a en la consulta o en el \'indice, no en el ordenamiento. Los dos casos son hist\'oricos: no se han reevaluado sobre la uni\'on h\'ibrida desplegada.
 
 \subsection{Errores de generaci\'on}
 
@@ -11,7 +11,7 @@ Los modelos peque\~nos fallan de formas distintas con la misma evidencia. qwen2.
 
 \subsection{Abstenci\'on y compuerta}
 
-La abstenci\'on tiene dos caminos. El primero ocurre antes de generar, cuando la compuerta rechaza la pregunta; el segundo, despu\'es, cuando los guardarra\'iles o el juez no encuentran respaldo. El primer camino es barato (decenas de milisegundos) y ahora rechaza las 5 preguntas sin respuesta con 0,293 a 0,436. El segundo cuesta una generaci\'on completa. El \'unico falso rechazo de la compuerta es una pregunta leg\'itima sobre la inflaci\'on, en 0,494, justo por debajo del umbral. Es el precio de no aceptar preguntas ajenas.
+La abstenci\'on tiene dos caminos. El primero ocurre antes de generar, cuando la compuerta rechaza la pregunta; el segundo, despu\'es, cuando los guardarra\'iles o el juez no encuentran respaldo. El primer camino es barato (decenas de milisegundos) y ahora rechaza las 5 preguntas sin respuesta con 0,293 a 0,436. El segundo cuesta una generaci\'on completa. La compuerta v2, con umbral 0,4, rechaza 3 de las 20 directas del reservado: r-011 es un falso rechazo del clasificador y r-012/r-014 son deudas de dise\~no porque la compuerta solo ve el top-5 denso. La versi\'on anterior, con umbral 0,5, dejaba un \'unico falso rechazo en 0,494; se conserva como antecedente y no describe la compuerta actual.
 
 \subsection{Errores de evaluaci\'on}
 

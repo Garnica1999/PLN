@@ -15,7 +15,7 @@ Se construyeron cuatro \'indices sobre el piloto con 30 preguntas, e5-base, $k=1
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrrrr}
 \toprule
-Variante & P@1 & P@5 & Recall@10 & MRR & nDCG \\
+Variante & P@1 & Hit@5 & Recall@10 & MRR & nDCG \\
 \midrule
 V0 crudo & 0,733 & 0,833 & 0,833 & 0,775 & 0,790 \\
 V1 sin p\'aginas de error & 0,767 & 0,833 & 0,833 & 0,800 & 0,809 \\
@@ -36,7 +36,7 @@ E1 compar\'o chunking fijo de 1000 caracteres con 150 de solape contra segmentac
 \label{tab:e1}
 \begin{tabular}{lrrrrr}
 \toprule
-Variante & P@1 & P@5 & Recall@10 & nDCG & p50 \\
+Variante & P@1 & Hit@5 & Recall@10 & nDCG & p50 \\
 \midrule
 Fijo 1000/150 & \textbf{0,833} & \textbf{0,900} & \textbf{0,900} & \textbf{0,875} & \textbf{38,5 ms} \\
 Oraciones 384/1 & 0,767 & 0,833 & 0,833 & 0,804 & 42,1 ms \\
@@ -57,7 +57,7 @@ E2 ablacion\'o el n\'umero de fragmentos. Con el silver del piloto, el documento
 
 E3 compar\'o e5-base con qwen3-embedding:8b sobre el piloto, con 18 preguntas de desarrollo. qwen3 recupera mejor: Recall@10 perfecto y 6,4 puntos m\'as de nDCG. El problema es el coste. e5-base index\'o el corpus completo en 2 h 41 min medidos en la RX 9070 XT. qwen3-embedding:8b no se index\'o entero: las 23 horas son una extrapolaci\'on desde el rendimiento por lote, no un tiempo medido. Se adopta e5-base para la ingesta y qwen3 queda como comparaci\'on documentada.
 
-E6 midi\'o el mismo pipeline sobre el corpus completo. La Figura~\ref{fig:escala} muestra la ca\'ida. La ca\'ida es el hallazgo m\'as importante del trabajo: con el mismo codificador, el mismo \'indice y las mismas 38 preguntas, Recall@10 pasa de 0,947 a 0,684 y nDCG de 0,909 a 0,604 al crecer de 1.932 a 161.868 documentos. La latencia no explica la ca\'ida (40 ms contra 42 ms); es un problema de ordenamiento y de competencia entre fragmentos.
+E6 midi\'o el mismo pipeline sobre el corpus completo. La Figura~\ref{fig:escala} muestra la ca\'ida. La ca\'ida es el hallazgo m\'as importante del trabajo: con el mismo codificador y los mismos par\'ametros de \'indice en colecciones separadas, y las mismas 38 preguntas, Recall@10 pasa de 0,947 a 0,684 y nDCG de 0,909 a 0,594 al crecer de 1.932 a 161.868 documentos. La latencia no explica la ca\'ida (40 ms contra 42 ms). El experimento observa la ca\'ida al aumentar la escala; no separa competencia entre fragmentos, truncamiento del texto ni segmentaci\'on.
 
 \begin{table}[t]
 \centering
@@ -66,10 +66,10 @@ E6 midi\'o el mismo pipeline sobre el corpus completo. La Figura~\ref{fig:escala
 \label{tab:e6}
 \begin{tabular}{lrrrrr}
 \toprule
-Corpus & Recall@10 & P@1 & P@5 & nDCG & Span \\
+Corpus & Recall@10 & P@1 & Hit@5 & nDCG & Span \\
 \midrule
 Piloto (1.932 docs) & \textbf{0,947} & \textbf{0,842} & \textbf{0,947} & \textbf{0,909} & \textbf{0,895} \\
-Completo (161.868) & 0,684 & 0,500 & 0,658 & 0,604 & 0,684 \\
+Completo (161.868) & 0,684 & 0,474 & 0,658 & 0,594 & 0,684 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -83,22 +83,22 @@ E8 y E10 buscaron un recuperador mejor. BM25 sparse sube el recall a 0,763 y es 
 \label{tab:codificadores}
 \begin{tabular}{lrrrrr}
 \toprule
-M\'etodo & Recall@10 & P@1 & P@5 & nDCG & p50 \\
+M\'etodo & Recall@10 & P@1 & Hit@5 & nDCG & p50 \\
 \midrule
-Denso e5 & 0,684 & 0,500 & 0,658 & 0,604 & 48 ms \\
+Denso e5 & 0,684 & 0,474 & 0,658 & 0,594 & 48 ms \\
 BM25 sparse & 0,763 & \textbf{0,684} & 0,737 & \textbf{0,727} & \textbf{7 ms} \\
 bge-m3 & \textbf{0,842} & 0,553 & \textbf{0,816} & 0,708 & 56 ms \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-E11 ajust\'o \texttt{ef} y prob\'o la fusi\'on con BM25. \texttt{ef}=800 sube el recall 2,6 puntos y el nDCG 1,3 con 6 ms m\'as. La fusi\'on 0,5/0,5 empata en recall y sube nDCG 6,9, P@1 13,2 y cobertura de span 5,3. Con el silver de un solo relevante la fusi\'on parec\'ia ganar. E12 repiti\'o la comparaci\'on con el silver ampliado: el denso recupera m\'as documentos nuevos (Recall@10 0,921 contra 0,890 y nDCG 0,827 contra 0,804). La configuraci\'on final es densa, \texttt{ef}=800, sin fusi\'on.
+E11 ajust\'o \texttt{ef} y prob\'o la fusi\'on con BM25. \texttt{ef}=800 sube el recall 2,6 puntos y el nDCG 1,3 con 6 ms m\'as. La fusi\'on 0,5/0,5 empata en recall y sube nDCG 6,9, P@1 13,2 y cobertura de span 5,3. Con el silver de un solo relevante la fusi\'on parec\'ia ganar. E12 repiti\'o la comparaci\'on con el silver ampliado: el denso recupera m\'as documentos nuevos (Recall@10 0,921 contra 0,890 y nDCG 0,827 contra 0,804). E12 se queda con la base densa, \texttt{ef}=800, sin fusi\'on; la ruta desplegada despu\'es es la uni\'on h\'ibrida, elegida sobre el conjunto de desarrollo.
 
 \subsection{Reordenamiento}
 
 E7 midi\'o el cross-encoder sobre el top-50 con e5 en el corpus completo: P@1 sube de 0,474 a 0,632 y nDCG de 0,594 a 0,661, pero la cobertura no cambia y el coste es de 3,1 s por consulta. La mejora de orden no compensa el coste si se reordena tanto.
 
-El denso a $k=10$ recupera 0,912 de recall y 0,818 de nDCG. Con bge-m3 se prob\'o reordenar 5 y 20 candidatos. La Tabla~S1 del suplemento muestra que el top-20 baja el recall a 0,864 y el P@5 a 0,921, mientras que el top-5 mantiene 0,895 de recall y 0,947 de P@5, y sube el nDCG a 0,865 y el P@1 a 0,868 con 1,30 s. La tabla mide el reordenador en CPU; en la configuraci\'on final corre en GPU, con 0,68 s para 50 pares. La configuraci\'on final no reordena el top-5 denso: reordena la uni\'on con BM25 y recorta a 10.
+El denso a $k=10$ recupera 0,912 de recall y 0,818 de nDCG. Con bge-m3 se prob\'o reordenar 5 y 20 candidatos. La Tabla~S1 del suplemento muestra que el top-20 baja el recall a 0,864 y el Hit@5 a 0,921, mientras que el top-5 mantiene 0,895 de recall y 0,947 de Hit@5, y sube el nDCG a 0,865 y el P@1 a 0,868 con 1,30 s. La tabla mide el reordenador en CPU; en la configuraci\'on final corre en GPU, con 0,68 s para 50 pares. La configuraci\'on final no reordena el top-5 denso: reordena la uni\'on con BM25 y recorta a 10.
 
 \subsection{Modelos generativos}
 
@@ -129,7 +129,7 @@ E5 insert\'o instrucciones expl\'icitas en cinco documentos sint\'eticos por mod
 
 \subsection{Prompts y mejoras rechazadas}
 
-La fase 6 prob\'o cuatro mejoras sobre la configuraci\'on de referencia y la fase 7 prob\'o diversidad. La referencia de estas fases era el top-5 denso con reranker; la uni\'on con BM25 se adopt\'o despu\'es, en el conjunto reservado. Ninguna de las variantes de las fases 6 y 7 supera a esa referencia. La Tabla~S2 del suplemento resume. El filtro por score pierde recall; reordenar el top-20 pierde P@5 y multiplica la latencia; la expansi\'on de consulta baja el recall y el nDCG; el prompt v4 no mejora el match estricto; y MMR baja el recall 8 puntos. El prompt v4 entreg\'o 37 de 38 y 25 de 37 de match estricto, sin mejora. Todas se rechazan y la configuraci\'on se mantiene.
+La fase 6 prob\'o cuatro mejoras sobre la configuraci\'on de referencia y la fase 7 prob\'o diversidad. La referencia de estas fases era el top-5 denso con reranker; la uni\'on con BM25 se adopt\'o despu\'es, en el conjunto reservado. Ninguna de las variantes de las fases 6 y 7 supera a esa referencia. La Tabla~S2 del suplemento resume. El filtro por score pierde recall; reordenar el top-20 pierde Hit@5 y multiplica la latencia; la expansi\'on de consulta baja el recall y el nDCG; el prompt v4 no mejora la cobertura de tokens; y MMR baja el recall 8 puntos. El prompt v4 entreg\'o 37 de 38 y 25 de 37 de cobertura de tokens, sin mejora. Todas se rechazan y la configuraci\'on se mantiene.
 
 \subsection{Compuerta de dominio}
 
@@ -152,12 +152,12 @@ Reservado & 25 & 20 & 5 & 1,000 & 0,850 & 0,919 \\
 
 \subsection{RAGAS}
 
-La Tabla~\ref{tab:ragas} compara la configuraci\'on final con la anterior. Son dos comparaciones distintas y conviene no mezclarlas. La primera es una repetici\'on del mismo sistema con timeout de 900 s y 6 workers frente a la corrida por defecto, que dejaba la precisi\'on del contexto con 4 valores de 38; la repetici\'on tiene 34. La segunda es la comparaci\'on entre arquitecturas, que cambia juez, embedding y recuperador, as\'i que es observacional y no causal. En esa comparaci\'on la configuraci\'on actual gana en fidelidad, relevancia, precisi\'on y cobertura del contexto, y pierde en correcci\'on de la respuesta. El juez es gemma4:e4b, de la misma familia que el generador, lo que puede favorecer la fidelidad.
+La Tabla~\ref{tab:ragas} compara la configuraci\'on final con la anterior. Son dos comparaciones distintas y conviene no mezclarlas. La primera es una repetici\'on del mismo sistema con timeout de 900 s y 6 workers frente a la corrida por defecto, que dejaba la precisi\'on del contexto con 4 valores de 38; la repetici\'on tiene 34. La segunda es la comparaci\'on entre arquitecturas, que cambia juez, embedding y recuperador, as\'i que es observacional y no causal. En esa comparaci\'on la configuraci\'on actual gana en fidelidad, relevancia, precisi\'on y cobertura del contexto, y pierde en correcci\'on de la respuesta. La corrida final usa juez gemma4:e4b y embeddings bge-m3; la anterior, gemma2:2b y qwen3. El artefacto se midi\'o antes del h\'ibrido, con $k=5$ y sin compuerta, as\'i que describe esa configuraci\'on y no la ruta desplegada.
 
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{RAGAS: configuraci\'on final contra la anterior, con $n$ entre par\'entesis. Ambas corridas usan gemma4:e4b como juez, la misma familia que el generador.}
+\caption{RAGAS: repetici\'on del mismo sistema contra la configuraci\'on anterior, con $n$ entre par\'entesis. Final: juez gemma4:e4b, embeddings bge-m3, densa con $k=5$ y sin compuerta, antes del h\'ibrido. Anterior: juez gemma2:2b y embeddings qwen3. Cambian juez y embeddings.}
 \label{tab:ragas}
 \begin{tabular}{lrr}
 \toprule
@@ -192,16 +192,16 @@ Draft & Tokens/s \\
 \end{tabular}
 \end{table}
 
-La corrida de referencia de la configuraci\'on anterior (densa y reranker en CPU) es la del 2 de noviembre de 2026 en el worker GPU, con el host cargado (unos 2 GB de RAM libres) y el c\'odigo del commit \texttt{125bbc7}. La latencia media fue de 7.938 ms sin razonamiento (mediana 7.086, p95 10.127) y 6.834 ms con razonamiento (mediana 6.729, p95 9.162); los CSV est\'an en \texttt{reports/tablas/metricas\_final\_sin.csv} y \texttt{metricas\_final\_con.csv}. El reranker en CPU aporta 1,30 s de mediana y la generaci\'on el resto. La corrida limpia del 1 de noviembre dio 6.788 y 6.482 ms, pero su CSV no se conserva. Con la configuraci\'on final (uni\'on h\'ibrida y reranker en GPU), la corrida del conjunto reservado dio 6.154 ms de media (mediana 5.578, p95 9.136) sobre 25 preguntas; el reranker cuesta 0,68 s para 50 pares y la generaci\'on el resto. La compuerta reutiliza la puntuaci\'on del reranker, as\'i que no a\~nade una segunda pasada; en las preguntas rechazadas el coste es el del reranker, no el de la generaci\'on.
+La corrida de referencia de la configuraci\'on anterior (densa y reranker en CPU) es la del 2 de noviembre, con el c\'odigo del commit \texttt{125bbc7}: 7.938 ms sin razonamiento y 6.834 ms con razonamiento; los CSV est\'an en \texttt{reports/tablas/}. El reranker en CPU aporta 1,30 s de mediana. Con la configuraci\'on final (uni\'on h\'ibrida y reranker en GPU), el conjunto reservado dio 6.154 ms de media (mediana 5.578, p95 9.136) sobre 25 preguntas. La compuerta reutiliza la puntuaci\'on del reranker, as\'i que no a\~nade una segunda pasada.
 
 \subsection{Conjunto reservado}
 \label{sec:reservado}
 
-El silver exploratorio se us\'o para elegir la configuraci\'on densa, as\'i que no mide generalizaci\'on. Se construy\'o un conjunto reservado de 25 preguntas: 20 directas y 5 sin respuesta, 15 en espa\~nol y 10 en ingl\'es, 14 de prensa y 6 de Bluesky. El conjunto se congel\'o antes de evaluar la compuerta y se us\'o para esa evaluaci\'on. Despu\'es se us\'o tambi\'en para elegir la recuperaci\'on h\'ibrida, as\'i que las m\'etricas de recuperaci\'on y respuesta de esta secci\'on son de desarrollo; la compuerta conserva su car\'acter externo porque se midi\'o antes de esa elecci\'on. Una prueba independiente de la recuperaci\'on exige un conjunto nuevo. La Tabla~S3 del suplemento muestra el resultado.
+El silver exploratorio se us\'o para elegir la configuraci\'on densa, as\'i que no mide generalizaci\'on. Se construy\'o un conjunto reservado de 25 preguntas: 20 directas y 5 sin respuesta, 15 en espa\~nol y 10 en ingl\'es, 14 de prensa y 6 de Bluesky. El conjunto se congel\'o antes de evaluar la compuerta y se us\'o para esa evaluaci\'on. Despu\'es se us\'o tambi\'en para elegir la recuperaci\'on h\'ibrida, as\'i que las m\'etricas de recuperaci\'on y respuesta de esta secci\'on son de desarrollo; la compuerta se midi\'o antes de esa elecci\'on, pero el mismo conjunto se us\'o despu\'es para elegir el h\'ibrido, as\'i que sus cifras tambi\'en son de desarrollo. Una prueba independiente de la recuperaci\'on exige un conjunto nuevo. La Tabla~S3 del suplemento muestra el resultado.
 
-El recall@10 es 0,700 y el nDCG 0,612, por debajo del 0,912 y 0,818 del silver exploratorio, pero por encima del 0,600 y 0,477 de la recuperaci\'on densa. La uni\'on con BM25 recupera r-012 y r-014, que el denso dejaba fuera, y conserva los aciertos del denso en r-009 y r-013. Seis de las 20 preguntas no recuperan el documento de referencia en el top-10; cuatro se responden correctamente con otro documento que contiene el mismo dato (r-005, r-008, r-017, r-019), una termina en abstenci\'on (r-006) y una es ambigua (r-016). El recall con un solo documento de referencia subestima la recuperaci\'on \'util: la mitad de los fallos de recall no son fallos de respuesta. La profundidad de la uni\'on no es monot\'onica: 20/20 y 30/30 suben el recall@10 a 0,750; 50/50 lo sube a 0,850 y recupera r-006, pero baja las entregas a 18 de 20 y las exactas a 16 de 20, porque desplaza evidencia que el modelo usaba bien en r-009 y r-012. La configuraci\'on se queda en 10/20.
+Las m\'etricas de respuesta se midieron sin la compuerta estricta; las predicciones de la compuerta se calcularon en una pasada aparte. El recall@10 es 0,700 y el nDCG 0,612, por debajo del 0,912 y 0,818 del silver exploratorio, pero por encima del 0,600 y 0,477 de la recuperaci\'on densa. La uni\'on con BM25 recupera r-012 y r-014, que el denso dejaba fuera, y conserva los aciertos del denso en r-009 y r-013. Seis de las 20 preguntas no recuperan el documento de referencia en el top-10; cuatro se responden correctamente con otro documento que contiene el mismo dato (r-005, r-008, r-017, r-019), una termina en abstenci\'on (r-006) y una es ambigua (r-016). El recall con un solo documento de referencia subestima la recuperaci\'on \'util: la mitad de los fallos de recall no son fallos de respuesta. La profundidad de la uni\'on no es monot\'onica: 20/20 y 30/30 suben el recall@10 a 0,750; 50/50 lo sube a 0,850 y recupera r-006, pero baja las entregas a 18 de 20 y la cobertura de tokens a 16 de 20, porque desplaza evidencia que el modelo usaba bien en r-009 y r-012. La configuraci\'on se queda en 10/20.
 
-El match estricto entre las entregadas es 17 de 19 (89,5\,\%), y sobre las 20 directas, 17 de 20 (85\,\%). La diferencia con la recuperaci\'on densa est\'a en la uni\'on: recupera las entidades que el denso no trae. En ingl\'es el recall es 0,875 y el nDCG 0,829; en espa\~nol, 0,583 y 0,468. El ingl\'es recupera mejor, al contrario de lo que suger\'ia el silver exploratorio.
+La cobertura de tokens entre las entregadas es 17 de 19 (89,5\,\%), y sobre las 20 directas, 17 de 20 (85\,\%). La diferencia con la recuperaci\'on densa est\'a en la uni\'on: recupera las entidades que el denso no trae. En ingl\'es el recall es 0,875 y el nDCG 0,829; en espa\~nol, 0,583 y 0,468. El ingl\'es recupera mejor, al contrario de lo que suger\'ia el silver exploratorio.
 
 Las cinco preguntas sin respuesta se rechazan por la compuerta. En las 20 directas, la compuerta rechaza 3: r-011, r-012 y r-014. r-012 y r-014 son preguntas que la recuperaci\'on h\'ibrida s\'i puede responder, pero la compuerta solo ve el top-5 denso; es una deuda de dise\~no, no un fallo de recuperaci\'on. r-011 s\'i recupera el documento y es un falso rechazo del clasificador. La compuerta nueva baja los falsos rechazos de 6 a 3 y los falsos aceptados de 1 a 0 respecto de la anterior. El 0/9 del conjunto anterior no se confirma como tasa nula, pero el 0/5 tampoco la demuestra.
 

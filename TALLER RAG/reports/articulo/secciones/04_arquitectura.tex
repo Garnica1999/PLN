@@ -3,7 +3,7 @@
 
 \subsection{Vista general}
 
-La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una interfaz Streamlit; la API FastAPI recibe la pregunta, la condensa si viene de una conversaci\'on, aplica la compuerta de dominio si el Modo estricto est\'a activo, recupera fragmentos de Milvus, los reordena, arma el contexto y genera la respuesta. Antes de devolverla, los guardarra\'iles verifican citas, entidades y n\'umeros. Cada capa se eligi\'o por una raz\'on medible, no por disponibilidad.
+La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una interfaz Streamlit; la API FastAPI recibe la pregunta, la condensa si viene de una conversaci\'on, recupera fragmentos con la uni\'on densa y BM25, los punt\'ua con el cross-encoder, aplica la compuerta de dominio si el Modo estricto est\'a activo, reordena con el reranker, arma el contexto y genera la respuesta. Antes de devolverla, los guardarra\'iles verifican citas, entidades y n\'umeros. Cada capa se eligi\'o con una medici\'on o una restricci\'on documentada; no todas las comparaciones son experimentos controlados.
 
 \begin{figure}[t]
 \centering
@@ -16,9 +16,10 @@ La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una int
 \node[box] (ui) {UI Streamlit};
 \node[box, below=of ui] (api) {API FastAPI};
 \node[box, below=of api] (cond) {Condensador\\gemma2:2b};
-\node[box, below=of cond] (gate) {Compuerta de dominio\\(Modo estricto)};
-\node[box, below=of gate] (ret) {Retriever bge-m3};
-\node[box, below=of ret] (rer) {Reranker\\bge-reranker-v2-m3};
+\node[box, below=of cond, minimum height=1.1cm] (ret) {Recuperaci\'on\\denso bge-m3 top-10\\+ BM25 top-20};
+\node[box, below=of ret] (score) {Score cross-encoder};
+\node[box, below=of score] (gate) {Compuerta de dominio\\(Modo estricto)};
+\node[box, below=of gate] (rer) {Reranker GPU\\bge-reranker-v2-m3};
 \node[box, below=of rer] (prompt) {Prompt v2};
 \node[box, below=of prompt] (llm) {gemma4:e4b + MTP};
 \node[box, below=of llm] (guard) {Guardarra\'iles};
@@ -27,9 +28,10 @@ La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una int
 \node[db, right=0.55cm of ret] (milvus) {Milvus\\618k};
 \draw[arr] (ui) -- (api);
 \draw[arr] (api) -- (cond);
-\draw[arr] (cond) -- (gate);
-\draw[arr] (gate) -- (ret);
-\draw[arr] (ret) -- (rer);
+\draw[arr] (cond) -- (ret);
+\draw[arr] (ret) -- (score);
+\draw[arr] (score) -- (gate);
+\draw[arr] (gate) -- (rer);
 \draw[arr] (rer) -- (prompt);
 \draw[arr] (prompt) -- (llm);
 \draw[arr] (llm) -- (guard);

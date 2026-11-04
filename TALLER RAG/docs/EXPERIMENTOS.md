@@ -286,7 +286,7 @@ Los dos fallos son g-045 y g-046. Ambos documentos están en la colección; son 
 
 El silver ya no tiene preguntas ambiguas: g-036 se reformuló a directa. Las URLs 404 de g-022, g-025 y g-032 se reemplazaron por instantáneas de Wayback.
 
-Límites: sin preguntas comparativas; solo 2 de Bluesky y 9 en inglés; dos revisores parciales (Carlos 43/43, Julián 40/43) y Erika y Óscar sin revisar. El JSONL consolidado es la fuente de verdad: no se debe regenerar con `build_silver_standard` o se perderían las correcciones.
+Límites: sin preguntas comparativas; solo 2 de Bluesky y 9 en inglés. Cuatro personas revisaron: Carlos 43/43, Julián 40/43, Óscar 43/43 y Erika 43/43 (35 aprobadas, 5 no aplicables y 3 solicitudes de corrección). El JSONL consolidado es la fuente de verdad: no se debe regenerar con `build_silver_standard` o se perderían las correcciones.
 
 ## 11. E4: comparación de los cuatro modelos (2026-10-31)
 

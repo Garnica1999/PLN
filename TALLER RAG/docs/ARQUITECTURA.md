@@ -162,14 +162,14 @@ En 15 preguntas humanas (los conjuntos de 12 y 6 comparten tres controles), el d
 | `EMBEDDINGS_DIMS` | `1024` |
 | `EMBEDDING_DEVICE` | `cuda` |
 | `EMBEDDING_HALF` | `true` |
-| `RETRIEVER` | `dense` |
+| `RETRIEVER` | `hybrid_union` |
 | `SEARCH_EF` | `800` |
-| `TOP_K` | `5` |
+| `TOP_K` | `10` |
 | `RERANK` | `1` |
 | `RERANK_MODEL` | `BAAI/bge-reranker-v2-m3` |
-| `RERANK_DEVICE` | `cpu` |
-| `DOMAIN_CLASSIFIER_PATH` | `modelos/domain_classifier.json` |
-| `DOMAIN_THRESHOLD` | `0.5` |
+| `RERANK_DEVICE` | `cuda` |
+| `DOMAIN_CLASSIFIER_PATH` | `modelos/domain_classifier_v2.json` |
+| `DOMAIN_THRESHOLD` | `0.4` |
 | `MAX_CONTEXT_TOKENS` | `16384` |
 | `GEMMA4_INPUT_TOKENS` | `16384` |
 | `GEMMA4_OUTPUT_TOKENS` | `100000` |
@@ -180,13 +180,13 @@ En 15 preguntas humanas (los conjuntos de 12 y 6 comparten tres controles), el d
 
 ### 4.1 Recuperación
 
-| Configuración | Recall | nDCG | P@1 | P@5 | span hit |
+| Configuración | Recall | nDCG | P@1 | Hit@5 | span hit |
 |---|---|---|---|---|---|
 | Denso k=10 | 0,912 | 0,818 | 0,737 | 0,947 | 0,816 |
 | Denso top-5 | 0,895 | 0,809 | 0,737 | 0,947 | 0,763 |
 | Reranker top-5 | 0,895 | 0,865 | 0,868 | 0,947 | 0,763 |
 
-El reranker sube nDCG y P@1 sin perder recall ni P@5. Por idioma, el reranker top-5 da en inglés 0,889 de recall, 0,817 de nDCG, 0,778 de P@1 y 0,889 de P@5; en español 0,897, 0,880, 0,897 y 0,966.
+El reranker sube nDCG y P@1 sin perder recall ni Hit@5. Por idioma, el reranker top-5 da en inglés 0,889 de recall, 0,817 de nDCG, 0,778 de P@1 y 0,889 de Hit@5; en español 0,897, 0,880, 0,897 y 0,966.
 
 La corrección de spans de la revisión de Óscar se volvió a medir y `span_hit` se mantiene en 0,816.
 
@@ -297,15 +297,15 @@ Se probaron cuatro mejoras sobre el silver de 38 preguntas. La referencia es el 
 
 | Mejora | Resultado | Decisión |
 |---|---|---|
-| Filtro del top-5 por score del reranker | recall 0,838/0,825; P@5 0,921; nDCG 0,837/0,830 | Rechazada |
-| Rerank del top-20 al top-5 | recall 0,864; P@5 0,921; nDCG 0,853; 5,46 s | Rechazada |
-| Expansión de consulta con RRF | recall 0,825; P@5 0,895; nDCG 0,739 | Rechazada |
+| Filtro del top-5 por score del reranker | recall 0,838/0,825; Hit@5 0,921; nDCG 0,837/0,830 | Rechazada |
+| Rerank del top-20 al top-5 | recall 0,864; Hit@5 0,921; nDCG 0,853; 5,46 s | Rechazada |
+| Expansión de consulta con RRF | recall 0,825; Hit@5 0,895; nDCG 0,739 | Rechazada |
 | Prompt v4 para fechas | 37/38; 25/37; F1 0,273; 6,98 s | Rechazada |
 
-Ninguna supera al top-5 con reranker. La configuración final se mantiene: `k=5`, reranker top-5, sin filtro, sin expansión y prompt v2. Los detalles están en `reports/tablas/mejoras_recuperacion.csv` y `metricas_v4_sin.csv`.
+Ninguna supera al top-5 con reranker. La comparación E12 se queda con `k=5` y reranker top-5; la ruta desplegada después es la unión híbrida con `k=10`, elegida sobre el conjunto de desarrollo. Los detalles están en `reports/tablas/mejoras_recuperacion.csv` y `metricas_v4_sin.csv`.
 
 ### 7.1 Diversidad (MMR)
 
-Se probó MMR sobre el top-20 con relevancia por coseno y por score del reranker. Ninguna variante supera al top-5 con reranker: la mejor baja de 0,895 a 0,816 de recall y de 0,947 a 0,921 de P@5, y tarda 4,06 s frente a 1,03 s. Se rechaza.
+Se probó MMR sobre el top-20 con relevancia por coseno y por score del reranker. Ninguna variante supera al top-5 con reranker: la mejor baja de 0,895 a 0,816 de recall y de 0,947 a 0,921 de Hit@5, y tarda 4,06 s frente a 1,03 s. Se rechaza.
 
 El diagnóstico de los dos fallos queda así: g-031 aparece en el puesto 11 del denso top-50 y en el 1 tras el reranker, así que un pool mayor lo recuperaría a costa de 3,1 puntos de recall global; g-046 no aparece ni en el top-50, así que el problema está en la consulta o en el índice.

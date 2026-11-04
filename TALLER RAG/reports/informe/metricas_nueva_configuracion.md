@@ -1,3 +1,5 @@
+> Nota de vigencia: este informe describe la configuracion v1 (umbral de compuerta 0,5, top-5 denso). La configuracion desplegada despues usa union hibrida, k=10 y umbral 0,4; las cifras de este informe se conservan como historia.
+
 # Métricas de la configuración final
 
 Fecha: 2026-11-01

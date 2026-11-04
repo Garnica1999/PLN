@@ -1,6 +1,6 @@
 # Conjunto reservado
 
-Creado el 2 de noviembre de 2026 despues de fijar la configuracion final, para tener una evaluacion que no se haya usado en ninguna decision.
+Creado el 2 de noviembre de 2026 para una evaluacion reservada. En la practica se uso despues para elegir la recuperacion hibrida y para evaluar la compuerta v2, asi que sus resultados son de desarrollo y no una prueba independiente.
 
 ## Composicion
 
@@ -24,8 +24,8 @@ Creado el 2 de noviembre de 2026 despues de fijar la configuracion final, para t
 
 - SHA256 del silver: `87fda373a4d40691b8ee766f71cbc41bfdef73683732d27a9456896a6dc3433d`
 - SHA256 de la configuracion: `b6d6375ab000cff1853ff96d206ea6054d110c33b0b6f04eb5daa070a1a1b608`
-- Configuracion: {"collection": "rag_full_bge_m3_d1024_v1", "gate": "logistic", "gate_threshold": 0.5, "k_answer": 5, "k_retrieval": 10, "model": "gemma4:e4b-mtp7", "prompt": "v2", "rerank_top": 5, "reranker": "BAAI/bge-reranker-v2-m3"}
-- Regla: se ejecuta una sola vez. No se ajusta el prompt, el umbral, el modelo ni el corte despues de ver los resultados.
+- Configuracion congelada al crear el conjunto (v1): {"collection": "rag_full_bge_m3_d1024_v1", "gate": "logistic", "gate_threshold": 0.5, "k_answer": 5, "k_retrieval": 10, "model": "gemma4:e4b-mtp7", "prompt": "v2", "rerank_top": 5, "reranker": "BAAI/bge-reranker-v2-m3"}. La compuerta v2 se evaluo despues con umbral 0,4 y la recuperacion hibrida se eligio con este mismo conjunto.
+- Regla inicial: ejecutarlo una sola vez. No se cumplio: el conjunto se uso despues para elegir la recuperacion hibrida y para evaluar la compuerta v2. Se conserva como registro y sus cifras se reportan como desarrollo.
 
 ## Uso
 
