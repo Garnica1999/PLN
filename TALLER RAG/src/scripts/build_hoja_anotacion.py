@@ -7,6 +7,7 @@ No requiere ejecutar nada para anotar ni para ver el acuerdo.
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 
 from openpyxl import Workbook
@@ -61,6 +62,14 @@ def filas() -> list[dict]:
     return rows
 
 
+def alto_texto(texto: str, ancho: int) -> float:
+    """Altura de fila suficiente para el texto ajustado al ancho de la columna."""
+    if not texto:
+        return 15.0
+    lineas = max(1, math.ceil(len(str(texto)) / max(1, ancho - 3)))
+    return max(15.0, 13.5 * lineas + 3)
+
+
 def ajustar_impresion(sheet) -> None:
     sheet.page_setup.orientation = "landscape"
     sheet.page_setup.fitToWidth = 1
@@ -81,6 +90,16 @@ def hoja_anotacion(book: Workbook, nombre: str, rows: list[dict]) -> None:
     sheet.row_dimensions[1].height = 22
     ajustar_impresion(sheet)
 
+    # contador de avance, fuera de la tabla
+    sheet["L1"] = "Etiquetadas"
+    sheet["M1"] = f'=COUNTIF(E2:E{len(rows) + 1},"si")+COUNTIF(E2:E{len(rows) + 1},"no")'
+    sheet["L2"] = "Faltan"
+    sheet["M2"] = f"={len(rows)}-M1"
+    for cell in ("L1", "L2"):
+        sheet[cell].font = Font(bold=True)
+    sheet.column_dimensions["L"].width = 12
+    sheet.column_dimensions["M"].width = 8
+
     for numero, row in enumerate(rows, start=2):
         history = " | ".join(
             f"{'usuario' if turn.get('role') == 'user' else 'asistente'}: {turn.get('content')}"
@@ -97,6 +116,9 @@ def hoja_anotacion(book: Workbook, nombre: str, rows: list[dict]) -> None:
             cell.border = BORDE
             if index in (6, 7, 8, 9, 10):
                 cell.alignment = Alignment(wrap_text=True, vertical="top")
+        sheet.row_dimensions[numero].height = max(
+            alto_texto(row["question"], 58), alto_texto(history, 46)
+        )
 
     validacion = DataValidation(
         type="list",
@@ -218,6 +240,7 @@ def hoja_consolidado(book: Workbook, rows: list[dict]) -> None:
 def hoja_instrucciones(book: Workbook) -> None:
     sheet = book.create_sheet("Instrucciones", 0)
     sheet.column_dimensions["A"].width = 110
+    ajustar_impresion(sheet)
     lineas = [
         ("Anotación humana del gold v2 de ambigüedad", True),
         ("", False),
@@ -231,6 +254,7 @@ def hoja_instrucciones(book: Workbook) -> None:
         ("4. Si no es ambigua, deja las interpretaciones vacías.", False),
         ("5. Usa notas solo para dudas que el otro anotador deba conocer.", False),
         ("", False),
+        ("Las columnas de respuesta empiezan vacías a propósito: el libro es el formulario. El contador «Etiquetadas» de la derecha muestra tu avance.", False),
         ("La hoja «Acuerdo» calcula sola las coincidencias, el acuerdo observado y el kappa de Cohen.", False),
         ("La hoja «Consolidado» marca «revisar» en las preguntas donde las dos etiquetas no coinciden.", False),
         ("", False),
@@ -240,6 +264,7 @@ def hoja_instrucciones(book: Workbook) -> None:
     for fila, (texto, negrita) in enumerate(lineas, start=1):
         cell = sheet.cell(row=fila, column=1, value=texto)
         cell.alignment = Alignment(wrap_text=True, vertical="top")
+        sheet.row_dimensions[fila].height = alto_texto(texto, 110)
         if negrita:
             cell.font = Font(bold=True, size=13 if fila == 1 else 11)
 
