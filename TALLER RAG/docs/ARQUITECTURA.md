@@ -240,7 +240,7 @@ La ampliación añadió 40 negativos duros: entidades inventadas, eventos futuro
 | Context recall | 0,947 (n=38) | 0,921 (n=38) | 0,842 (n=38) |
 | Answer correctness | 0,553 (n=38) | 0,657 (n=38) | 0,705 (n=37) |
 
-El híbrido sube context recall y baja las demás métricas frente al denso k=5; el contexto extra no es gratis. La comparación con la arquitectura anterior cambia juez y embedding, así que no es causal. La corrida de referencia usa `RAGAS_TIMEOUT=900` y `RAGAS_WORKERS=6`: con el timeout por defecto de 180 s, `context precision` quedaba con 4 valores de 38 y no era comparable. La mejora pendiente es la corrección de respuesta.
+El híbrido sube context recall y baja las demás métricas frente al denso k=5; cambian recuperador y k, así que la comparación es descriptiva. La comparación con la arquitectura anterior cambia juez y embedding, así que no es causal. La corrida de referencia usa `RAGAS_TIMEOUT=900` y `RAGAS_WORKERS=6`: con el timeout por defecto de 180 s, `context precision` quedaba con 4 valores de 38 y no era comparable. La mejora pendiente es la corrección de respuesta.
 
 ### 4.6 Arquitectura anterior contra actual
 

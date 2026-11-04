@@ -152,7 +152,7 @@ Reservado & 25 & 20 & 5 & 1,000 & 0,850 & 0,919 \\
 
 \subsection{RAGAS}
 
-La Tabla~\ref{tab:ragas} compara tres configuraciones. El h\'ibrido es la ruta desplegada: uni\'on densa y BM25, $k=10$ y sin compuerta. El denso $k=5$ es la configuraci\'on anterior, medida con timeout de 900 s y 6 workers; la corrida por defecto dejaba la precisi\'on del contexto con 4 valores de 38. La tercera columna cambia juez y embeddings, as\'i que es observacional. El h\'ibrido sube la cobertura del contexto (0,947 frente a 0,921) pero baja fidelidad, relevancia, precisi\'on y correcci\'on: el contexto extra no es gratis. La comparaci\'on con la arquitectura anterior no es causal.
+La Tabla~\ref{tab:ragas} compara tres configuraciones. El h\'ibrido es la ruta desplegada: uni\'on densa y BM25, $k=10$ y sin compuerta. El denso $k=5$ es la configuraci\'on anterior, medida con timeout de 900 s y 6 workers; la corrida por defecto dejaba la precisi\'on del contexto con 4 valores de 38. La tercera columna cambia juez y embeddings, as\'i que es observacional. El h\'ibrido sube la cobertura del contexto (0,947 frente a 0,921) y baja fidelidad, relevancia, precisi\'on y correcci\'on. La comparaci\'on cambia recuperador y $k$, as\'i que es descriptiva y no atribuye la diferencia al contexto.
 
 \begin{table}[t]
 \centering
