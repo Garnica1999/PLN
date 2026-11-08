@@ -5,8 +5,8 @@ name: taller-rag
 # la aplicacion con GPU en la estacion.
 #
 # La estacion tiene dockerd con "iptables": false y "bridge": "none", asi que
-# la app usa red de host. Milvus vive en el servidor y se alcanza por LAN
-# (192.168.1.100:19530); no hay tunel SSH.
+# la app usa red de host. Por defecto, el compose usa el Milvus local; para el
+# servidor, define MILVUS_URI en .env (por ejemplo, http://192.168.1.100:19530).
 
 services:
   etcd:
@@ -140,7 +140,7 @@ services:
       EMBEDDING_DEVICE: cuda
       EMBEDDING_HALF: "true"
       EMBEDDINGS_BATCH: "128"
-      MILVUS_URI: http://192.168.1.100:19530
+      MILVUS_URI: ${MILVUS_URI:-http://localhost:19530}
       MILVUS_COLLECTION: rag_full_bge_m3_d1024_v1
       RETRIEVER: hybrid_union
       TOP_K: "10"
@@ -179,7 +179,7 @@ services:
     environment:
       PYTHONPATH: /work
       API_URL: http://localhost:8010
-      MILVUS_URI: http://192.168.1.100:19530
+      MILVUS_URI: ${MILVUS_URI:-http://localhost:19530}
       OLLAMA_URL: http://localhost:11435
       EMBEDDER: bge
       EMBEDDINGS_MODEL: BAAI/bge-m3
