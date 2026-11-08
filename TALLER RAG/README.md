@@ -144,6 +144,25 @@ El `.env` de la demo apunta al Milvus del servidor. Para usar el Milvus local qu
 
 Al levantar el stack, el servicio `prewarm` espera a que la API esté sana, carga el generador, el embedding y el reranker, y termina. La primera consulta web ya no paga los 29 s de carga. Se puede repetir a mano con `docker compose exec -T api python -m src.scripts.prewarm`.
 
+### Todo en una máquina
+
+`docker-compose.all.yml` levanta etcd, MinIO, Milvus, Solr, Ollama, API, frontend y prewarm en el mismo host. `solr-init` crea el core y aplica el esquema.
+
+```bash
+docker compose -f docker-compose.all.yml up -d --build
+docker compose -f docker-compose.all.yml exec ollama ollama pull gemma4:e4b
+docker compose -f docker-compose.all.yml exec ollama ollama pull gemma2:2b
+docker compose -f docker-compose.all.yml --profile rocm run --rm -T ingest-rocm \
+  python -m src.scripts.ingest_v2 --sample eval/all_docs.parquet \
+  --collection rag_full_bge_m3_d1024_v1 --drop --batch-size 128
+docker compose -f docker-compose.all.yml exec api \
+  python -m src.scripts.index_solr --solr http://localhost:8983/solr/noticias
+docker compose -f docker-compose.all.yml exec api \
+  python -m src.scripts.index_solr_vectors --solr http://localhost:8983/solr/noticias
+```
+
+Los perfiles `rocm` y `eval` quedan para la ingesta y la evaluación. El compose usa el Milvus y el Solr locales; no necesita el servidor.
+
 Servicios y puertos:
 
 | Servicio | Imagen | Puerto |
