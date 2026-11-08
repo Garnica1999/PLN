@@ -7,8 +7,38 @@ Asistente de recuperación aumentada sobre el corpus de prensa y Bluesky del tal
 - Docker Engine y Docker Compose v2.
 - 31 GB de RAM para el stack completo.
 - GPU AMD con ROCm para los embeddings y la generación. En este equipo: RX 9070 XT de 16 GB con ROCm 7.2.4.
-- El Parquet del corpus en `Dataset/documentos_rag.parquet`. No se publica en Git.
+- El Parquet del corpus en `Dataset/documentos_rag.parquet`. Se versiona con Git LFS.
 - Opcional: un servidor con GPU para comparar embeddings remotos. En este taller, `192.168.1.100` con GTX 1080.
+
+### Git LFS
+
+Los archivos `.parquet` se versionan con Git LFS: el corpus `Dataset/documentos_rag.parquet` (246 MB) y las muestras de `eval/`. Sin LFS, Git descarga punteros de 134 bytes en lugar de los datos.
+
+Instala Git LFS antes de clonar:
+
+```bash
+# Arch / CachyOS
+sudo pacman -S git-lfs
+# Debian / Ubuntu
+sudo apt install git-lfs
+```
+
+Clona el repositorio de entrega:
+
+```bash
+git lfs install
+git clone https://github.com/Garnica1999/noticias-rag.git
+```
+
+Si ya lo clonaste sin LFS:
+
+```bash
+git lfs install
+git lfs pull
+git lfs ls-files
+```
+
+`git lfs ls-files` debe listar los seis parquet. El repositorio pesa unos 260 MB, casi todo en LFS.
 
 ## 2. Estructura
 
@@ -32,10 +62,12 @@ TALLER RAG/
 ├── docs/ARQUITECTURA.md    arquitectura y resultados de evaluación
 ├── plan/                   PLAN.md y mejora_rag.md
 ├── config/                 preferencias de la interfaz (ui_prefs.json)
-└── Dataset/                corpus (ignorado por Git)
+└── Dataset/                corpus versionado con Git LFS
 ```
 
 ## 3. Obtener el corpus
+
+Si clonaste el repositorio con Git LFS, el corpus ya está en `Dataset/documentos_rag.parquet` y puedes pasar a la Sección 4. Las opciones siguientes son alternativas si el archivo falta o está corrupto.
 
 Opción A, si ya tienes el archivo: colócalo en `Dataset/documentos_rag.parquet`.
 
@@ -295,7 +327,7 @@ La evaluación de desempeño corre en el worker GPU y no dentro de la API: así 
 
 ## 15. Datos y seguridad
 
-- `Dataset/`, `*.parquet`, `.env` y los pesos están en `.gitignore`.
+- `Dataset/`, `*.parquet` y `.env` se versionan en el repositorio. Los parquet usan Git LFS; sin `git lfs` se ven como punteros de 134 bytes.
 - El Parquet no se copia ni se modifica; se monta en solo lectura.
 - La contraseña del servidor no se guarda en el repositorio. Se usa llave SSH.
 - El endpoint de embeddings del servidor no tiene autenticación y no se expone a internet.
