@@ -1,0 +1,1379 @@
+{
+ "experimento": "calidad_respuesta_rag_v1",
+ "fecha": "2026-11-01T01:13:08-05:00",
+ "n_casos": 30,
+ "n_validos": 28,
+ "generador": "qwen3.8:diario-8k-q3_k_s",
+ "juez": "alia-legal:latest",
+ "procedencia": "Juez LLM de familia distinta al generador con rubrica fija; es gold-LLM, no anotacion humana. Las consultas salen del gold set del agente (ruta en_alcance).",
+ "metricas": {
+  "fidelidad": {
+   "media": 0.7749,
+   "ic95": [
+    0.7067,
+    0.8442
+   ],
+   "min": 0.5,
+   "max": 1.1081
+  },
+  "relevancia": {
+   "media": 1.2857,
+   "ic95": [
+    1.0,
+    1.8571
+   ],
+   "min": 1.0,
+   "max": 9.0
+  },
+  "precision_contexto": {
+   "media": 0.7742,
+   "ic95": [
+    0.7067,
+    0.8387
+   ],
+   "min": 0.5,
+   "max": 1.0644
+  }
+ },
+ "resultados": [
+  {
+   "id": "alc-01",
+   "prompt": "¿Qué artículos de la Constitución están vinculados a la sentencia T-293/97?",
+   "modo": "agente",
+   "respuesta": "Para la sentencia **T-293/97** (id 2195), los artículos vinculados son:\n\n**Citados explícitamente en el texto:**\n- Art. 11 (derechos fundamentales)\n- Art. 13 (derechos fundamentales)\n- Art. 25 (derechos fundamentales)\n- Art. 49 (derechos sociales, económicos y culturales)\n- Art. 86 (protección y aplicación de derechos)\n- Art. 241 (rama judicial)\n\n**Recuperados por similitud (BM25):**\n- Art. 86, 241, 1, 9, 2 y 53.\n\nLos más relevantes por puntuación son el 86 (tutela) y el 241 (guarda de la Constitución).",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "2195",
+     "articulos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "9",
+       "bloque": "principios_fundamentales",
+       "texto": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien"
+      },
+      {
+       "numero": "2",
+       "bloque": "principios_fundamentales",
+       "texto": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta del asistente menciona los artículos de la Constitución que están vinculados a la sentencia T-293/97, citando explícitamente los artículos 11, 13, 25, 49, 86 y 241, así como otros artícul"
+  },
+  {
+   "id": "alc-02",
+   "prompt": "Analiza la sentencia T-760/08 e identifica los derechos fundamentales involucrados.",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: T-760-2008 (id 11705). Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos); 241 (rama_judicial); 1 (principios_fundamentales); 94 (proteccion_aplicacion_derechos); 50 (derechos_sociales_economicos_culturales); 49 (derechos_sociales_economicos_culturales); 9 (principios_fundamentales); 48 (derechos_sociales_economicos_culturales). Sentencias citadas resueltas: C-463-2008 (área: derechos_fundamentales); T-227-2003 (área: derechos_fundamentales); T-801-1998 (área: derechos_sociales_economicos_culturales); T-859-2003 (área: derechos_fundamentales); T-595-2002 (área: derechos_sociales_economicos_culturales); T-749-2001 (área: derechos_fundamentales); T-490-2006 (área: proteccion_aplicacion_derechos); T-198-2004 (área: derechos_fundamentales).",
+   "tool_calls": [
+    "id=11705 canon=T-760-2008 articulos=86,241,49,44,13,2",
+    "id=11705 citas=494 resueltas=424"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "11705",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "334",
+       "bloque": "regimen_economico",
+       "texto": "<Artículo modificado por el artículo 1o . del Acto Legislativo 3 de 2011. El nuevo texto es el siguiente:> La dirección general de la economía estará "
+      },
+      {
+       "numero": "23",
+       "bloque": "derechos_fundamentales",
+       "texto": "Toda persona tiene derecho a presentar peticiones respetuosas a las autoridades por motivos de interés general o particular y a obtener pronta resoluc"
+      },
+      {
+       "numero": "44",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "Son derechos fundamentales de los niños: la vida, la integridad física, la salud y la seguridad social, la alimentación equilibrada, su nombre y nacio"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta del asistente identifica correctamente los artículos de la Constitución relacionados con los derechos fundamentales involucrados en la sentencia T-760/08, aunque no proporciona una explic"
+  },
+  {
+   "id": "alc-04",
+   "prompt": "¿Qué sentencias cita la SU-480/97?",
+   "modo": "agente",
+   "respuesta": "La SU-480/97 (id 2725) cita 46 sentencias, todas resueltas en el corpus. Entre las principales figuran:\n\n- SU-111/97 (derechos fundamentales, PageRank 0.0036)\n- T-493/93 (derechos fundamentales)\n- T-59/97 (derechos fundamentales)\n- T-271/95 (derechos fundamentales)\n- T-165/95 (derechos fundamentales)\n- T-125/97 (derechos fundamentales)\n- T-477/95 (derechos fundamentales)\n- T-67/94 (derechos sociales, económicos y culturales)\n- C-221/94 (derechos sociales, económicos y culturales)\n- C-179/97 (principios fundamentales)\n\nLa mayoría se concentra en derechos fundamentales.",
+   "tool_calls": [
+    "id=2725 citas=46 resueltas=46"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "2725",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      },
+      {
+       "numero": "186",
+       "bloque": "rama_legislativa",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 1 de 2018. El nuevo texto es el siguiente:> De los delitos que cometan los Congresistas, c"
+      },
+      {
+       "numero": "234",
+       "bloque": "rama_judicial",
+       "texto": "<Artículo modificado por el artículo 2 del Acto Legislativo 1 de 2018. El nuevo texto es el siguiente:> La Corte Suprema de Justicia es el máximo Trib"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta del asistente menciona que la SU-480/97 cita 46 sentencias, pero no proporciona detalles específicos sobre qué sentencias son citadas. Además, la respuesta no se alinea con el contexto pr"
+  },
+  {
+   "id": "alc-07",
+   "prompt": "¿Cuál es el área temática de la sentencia T-760/08 según el clasificador M4?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: T-760-2008 (id 11705). Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos); 241 (rama_judicial); 1 (principios_fundamentales); 94 (proteccion_aplicacion_derechos); 50 (derechos_sociales_economicos_culturales); 49 (derechos_sociales_economicos_culturales); 9 (principios_fundamentales); 48 (derechos_sociales_economicos_culturales). Sentencias citadas resueltas: C-463-2008 (área: derechos_fundamentales); T-227-2003 (área: derechos_fundamentales); T-801-1998 (área: derechos_sociales_economicos_culturales); T-859-2003 (área: derechos_fundamentales); T-595-2002 (área: derechos_sociales_economicos_culturales); T-749-2001 (área: derechos_fundamentales); T-490-2006 (área: proteccion_aplicacion_derechos); T-198-2004 (área: derechos_fundamentales).",
+   "tool_calls": [
+    "id=11705 canon=T-760-2008 articulos=86,241,49,44,13,2",
+    "id=11705 citas=494 resueltas=424"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "11705",
+     "articulos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "49",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 2 de 2009. El nuevo texto es el siguiente:> La atención de la salud y el saneamiento ambie"
+      },
+      {
+       "numero": "44",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "Son derechos fundamentales de los niños: la vida, la integridad física, la salud y la seguridad social, la alimentación equilibrada, su nombre y nacio"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La sentencia T-760/08 se clasifica bajo el área temática de derechos fundamentales según el clasificador M4, ya que se refiere a la protección de derechos fundamentales a través de la acción de tutela"
+  },
+  {
+   "id": "alc-09",
+   "prompt": "Resume los artículos citados explícitamente en la T-293/97.",
+   "modo": "agente",
+   "respuesta": "La T-293/97 cita explícitamente seis artículos de la Constitución:\n\n- **Art. 11**: derecho a la vida, inviolable; prohibición de la pena de muerte.\n- **Art. 13**: igualdad ante la ley, misma protección y trato de las autoridades.\n- **Art. 25**: el trabajo como derecho y obligación social, con especial protección del Estado.\n- **Art. 49**: atención de la salud y saneamiento ambiental como derechos.\n- **Art. 86**: acción de tutela, procedimiento preferente y sumario.\n- **Art. 241**: a la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución.\n\nEn conjunto, articulan derechos fundamentales, sociales y la competencia constitucional.",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53",
+    "articulo=11 bloque=derechos_fundamentales",
+    "articulo=13 bloque=derechos_fundamentales",
+    "articulo=25 bloque=derechos_fundamentales",
+    "articulo=49 bloque=derechos_sociales_economicos_culturales",
+    "articulo=86 bloque=proteccion_aplicacion_derechos",
+    "articulo=241 bloque=rama_judicial"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "2195",
+     "articulos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "9",
+       "bloque": "principios_fundamentales",
+       "texto": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien"
+      },
+      {
+       "numero": "2",
+       "bloque": "principios_fundamentales",
+       "texto": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta del asistente menciona explícitamente seis artículos de la Constitución, pero no todos están presentes en el contexto proporcionado. El contexto incluye artículos 1, 86, 241, 1, 9 y 2, pe"
+  },
+  {
+   "id": "alc-10",
+   "prompt": "¿La sentencia SU-480/97 qué artículos de la Constitución menciona?",
+   "modo": "agente",
+   "respuesta": "La sentencia SU-480/97 (canon detectado SU-480-1997, id 2725) menciona explícitamente estos artículos de la Constitución:\n\n- **11** (derechos fundamentales)\n- **13** (derechos fundamentales)\n- **33** (derechos fundamentales)\n- **35** (derechos fundamentales)\n- **42** (derechos sociales, económicos y culturales)\n- **48** (derechos sociales, económicos y culturales)\n- **49** (derechos sociales, económicos y culturales)\n- **86** (protección y aplicación de derechos)\n\nAdemás, por similitud temática el sistema recuperó los artículos 241, 186, 234 y 235, aunque no están citados directamente en el texto.",
+   "tool_calls": [
+    "id=2725 canon=SU-480-1997 articulos=241,86,48,186,234,235"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "2725",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      },
+      {
+       "numero": "186",
+       "bloque": "rama_legislativa",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 1 de 2018. El nuevo texto es el siguiente:> De los delitos que cometan los Congresistas, c"
+      },
+      {
+       "numero": "234",
+       "bloque": "rama_judicial",
+       "texto": "<Artículo modificado por el artículo 2 del Acto Legislativo 1 de 2018. El nuevo texto es el siguiente:> La Corte Suprema de Justicia es el máximo Trib"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.95,
+   "relevancia": 1.0,
+   "precision_contexto": 0.95,
+   "justificacion": "La respuesta menciona correctamente los artículos de la Constitución que la sentencia SU-480/97 cita, y se respalda en el contexto proporcionado. La fidelidad es alta ya que los artículos mencionados "
+  },
+  {
+   "id": "alc-12",
+   "prompt": "¿La C-543/92 es una sentencia de constitucionalidad y qué artículos vincula?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: C-543-1992 (id 224). Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos); 11 (derechos_fundamentales); 29 (derechos_fundamentales); 25 (derechos_fundamentales); 90 (proteccion_aplicacion_derechos); 12 (derechos_fundamentales); 241 (rama_judicial); 5 (principios_fundamentales).",
+   "tool_calls": [
+    "id=224 canon=C-543-1992 articulos=86,241,243,234,2,29",
+    "id=224 citas=0 resueltas=0"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "224",
+     "articulos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "243",
+       "bloque": "rama_judicial",
+       "texto": "Los fallos que la Corte dicte en ejercicio del control jurisdiccional hacen tránsito a cosa juzgada constitucional Ninguna autoridad podrá reproducir "
+      },
+      {
+       "numero": "234",
+       "bloque": "rama_judicial",
+       "texto": "<Artículo modificado por el artículo 2 del Acto Legislativo 1 de 2018. El nuevo texto es el siguiente:> La Corte Suprema de Justicia es el máximo Trib"
+      },
+      {
+       "numero": "2",
+       "bloque": "principios_fundamentales",
+       "texto": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta del asistente menciona correctamente que la sentencia C-543/92 es una sentencia de constitucionalidad, vinculando los artículos 86, 11, 29, 25, 90, 12, 241 y 5 de la Constitución. Aunque "
+  },
+  {
+   "id": "alc-13",
+   "prompt": "Vincula los artículos de la Constitución a la sentencia con id 2195.",
+   "modo": "agente",
+   "respuesta": "Para la sentencia **T-293-1997** (id 2195) se vincularon los siguientes artículos de la Constitución:\n\n**Citados explícitamente:** 11, 13, 25, 49, 86 y 241.\n\n**Recuperados por relevancia:** 86 (tutela), 241 (guarda de la Constitución), 1 (Estado social de derecho), 9 (relaciones exteriores), 2 (fines del Estado) y 53 (estatuto del trabajo).\n\nLos bloques temáticos predominantes son derechos fundamentales, protección de derechos, rama judicial y principios fundamentales.",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "2195",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "2",
+       "bloque": "principios_fundamentales",
+       "texto": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe"
+      },
+      {
+       "numero": "4",
+       "bloque": "principios_fundamentales",
+       "texto": "La Constitución es norma de normas. En todo caso de incompatibilidad entre la Constitución y la ley u otra norma jurídica, se aplicarán las disposicio"
+      },
+      {
+       "numero": "95",
+       "bloque": "deberes",
+       "texto": "La calidad de colombiano enaltece a todos los miembros de la comunidad nacional. Todos están en el deber de engrandecerla y dignificarla. El ejercicio"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta vincula correctamente los artículos de la Constitución mencionados en la sentencia con sus respectivos bloques temáticos, aunque no detalla explícitamente los artículos citados explícitam"
+  },
+  {
+   "id": "alc-14",
+   "prompt": "¿Qué artículos de la Constitución están vinculados a la sentencia con id 11705?",
+   "modo": "agente",
+   "respuesta": "La sentencia con id 11705 corresponde al canon **T-760-2008**.\n\n**Artículos citados explícitamente en el texto:**\n- 86 (protección/aplicación de derechos)\n- 241 (rama judicial)\n- 1 (principios fundamentales)\n- 94 (protección/aplicación de derechos)\n- 50, 49, 48 (derechos sociales, económicos y culturales)\n- 9 (principios fundamentales)\n\n**Artículos recuperados por el sistema (BM25):**\n- 86, 241, 49 (también citados)\n- 44 (derechos de los niños)\n- 13 (derechos fundamentales)\n- 2 (principios fundamentales)\n\nEn total, 11 artículos distintos vinculados a esta providencia.",
+   "tool_calls": [
+    "id=11705 canon=T-760-2008 articulos=86,241,49,44,13,2"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "11705",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "2",
+       "bloque": "principios_fundamentales",
+       "texto": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe"
+      },
+      {
+       "numero": "95",
+       "bloque": "deberes",
+       "texto": "La calidad de colombiano enaltece a todos los miembros de la comunidad nacional. Todos están en el deber de engrandecerla y dignificarla. El ejercicio"
+      },
+      {
+       "numero": "123",
+       "bloque": "organizacion_estado",
+       "texto": "Son servidores públicos los miembros de las corporaciones públicas, los empleados y trabajadores del Estado y de sus entidades descentralizadas territ"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.9,
+   "justificacion": "La respuesta del asistente menciona correctamente la sentencia con id 11705 y los artículos de la Constitución que están vinculados a ella. La fidelidad es alta porque los artículos citados son los qu"
+  },
+  {
+   "id": "alc-15",
+   "prompt": "Analiza la providencia con id 13921 y dime sus artículos.",
+   "modo": "agente",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: C-355-2006 (id 13921). Artículos de la Constitución vinculados: 243 (rama_judicial); 343 (regimen_economico); 11 (derechos_fundamentales); 93 (proteccion_aplicacion_derechos); 122 (organizacion_estado); 123 (organizacion_estado); 124 (organizacion_estado); 32 (derechos_fundamentales).",
+   "tool_calls": [
+    "id=13921 canon=C-355-2006 articulos=241,86,53,13,93,1"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "13921",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "176",
+       "bloque": "rama_legislativa",
+       "texto": "<Ver Notas del Editor> <Artículo modificado por el artículo 1 del Acto Legislativo 1 de 2013. El nuevo texto es el siguiente:> La Cámara de Representa"
+      },
+      {
+       "numero": "310",
+       "bloque": "organizacion_territorial",
+       "texto": "El Departamento Archipiélago de San Andrés, Providencia y Santa Catalina se regirá, además de las normas previstas en la Constitución y las leyes para"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta del asistente menciona correctamente los artículos de la Constitución vinculados a la sentencia C-355-2006 (id 13921), incluyendo 243 (rama_judicial), 343 (regimen_economico), 11 (derecho"
+  },
+  {
+   "id": "alc-16",
+   "prompt": "Dame las sentencias citadas por el documento 2725.",
+   "modo": "agente",
+   "respuesta": "El documento 2725 (SU-480-1997) cita 46 sentencias, todas resueltas en el corpus. Entre las más relevantes por PageRank:\n\n- **SU-111-1997** (id 2716) – derechos fundamentales\n- **T-493-1993** (id 1191) – derechos fundamentales\n- **T-59-1997** (id 2080) – derechos fundamentales\n- **T-67-1994** / **C-221-1994** – derechos sociales, económicos y culturales\n- **T-271-1995**, **T-165-1995**, **T-477-1995**, **T-125-1997** – derechos fundamentales\n- **C-179-1997** – principios fundamentales\n\nLa mayoría se concentra en derechos fundamentales.",
+   "tool_calls": [
+    "id=2725 citas=46 resueltas=46"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "2725",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "6",
+       "bloque": "principios_fundamentales",
+       "texto": "Los particulares sólo son responsables ante las autoridades por infringir la Constitución y las leyes. Los servidores públicos lo son por la misma cau"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta del asistente cita correctamente las sentencias mencionadas en el documento 2725, pero no proporciona un contexto detallado sobre cómo estas sentencias se relacionan con los artículos de "
+  },
+  {
+   "id": "alc-17",
+   "prompt": "¿Qué área temática tiene la sentencia con id 224?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: C-543-1992 (id 224). Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos); 11 (derechos_fundamentales); 29 (derechos_fundamentales); 25 (derechos_fundamentales); 90 (proteccion_aplicacion_derechos); 12 (derechos_fundamentales); 241 (rama_judicial); 5 (principios_fundamentales).",
+   "tool_calls": [
+    "id=224 canon=C-543-1992 articulos=86,241,243,234,2,29",
+    "id=224 citas=0 resueltas=0"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "224",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "328",
+       "bloque": "organizacion_territorial",
+       "texto": "<Artículo modificado por el artículo 2 del Acto Legislativo 2 de 2018. El nuevo texto es el siguiente:> El Distrito Turístico y Cultural de Cartagena "
+      },
+      {
+       "numero": "29",
+       "bloque": "derechos_fundamentales",
+       "texto": "El debido proceso se aplicará a toda clase de actuaciones judiciales y administrativas Nadie podrá ser juzgado sino conforme a leyes preexistentes al "
+      },
+      {
+       "numero": "319",
+       "bloque": "organizacion_territorial",
+       "texto": "Cuando dos o más municipios tengan relaciones económicas, sociales y físicas, que den al conjunto características de un área metropolitana, podrán org"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.5,
+   "relevancia": 1.0,
+   "precision_contexto": 0.5,
+   "justificacion": "La sentencia con id 224 se relaciona con la protección de derechos fundamentales y la organización territorial, específicamente con el artículo 241 de la Constitución, que establece la competencia de "
+  },
+  {
+   "id": "alc-18",
+   "prompt": "Valida si la sentencia con id 42 es una providencia de la Corte Constitucional.",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Artículos de la Constitución vinculados: 241 (rama_judicial) score 1.6521; 86 (proteccion_aplicacion_derechos) score 1.3931; 152 (rama_legislativa) score 1.0212; 215 (rama_ejecutiva) score 1.0021; 239 (rama_judicial) score 0.9999; 109 (participacion_democratica) score 0.8979.",
+   "tool_calls": [
+    "id=None canon=None articulos=241,86,152,215,239,109"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "None",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "152",
+       "bloque": "rama_legislativa",
+       "texto": "Mediante las leyes estatutarias, el Congreso de la República regulará las siguientes materias: a) Derechos y deberes fundamentales de las personas y l"
+      },
+      {
+       "numero": "215",
+       "bloque": "rama_ejecutiva",
+       "texto": "Cuando sobrevengan hechos distintos de los previstos en los artículos 212 y 213 que perturben o amenacen perturbar en forma grave e inminente el orden"
+      },
+      {
+       "numero": "239",
+       "bloque": "rama_judicial",
+       "texto": "La Corte Constitucional tendrá el número impar de miembros que determine la ley. En su integración se atenderá el criterio de designación de magistrad"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.5,
+   "relevancia": 1.0,
+   "precision_contexto": 0.5,
+   "justificacion": "La respuesta del asistente no proporciona una sentencia con id 42, por lo que no se puede validar si es una providencia de la Corte Constitucional. La respuesta menciona artículos de la Constitución, "
+  },
+  {
+   "id": "alc-19",
+   "prompt": "Para la sentencia con id 11705, lista los artículos extraídos y los recuperados.",
+   "modo": "agente",
+   "respuesta": "Para la sentencia T-760-2008 (id 11705):\n\n**Artículos extraídos (8):** 86, 241, 1, 94, 50, 49, 9 y 48.\n\n**Artículos recuperados (6):** 86, 241, 49, 44, 13 y 2.\n\nCoinciden en 86, 241 y 49. Los recuperados adicionales son 44 (derechos de los niños), 13 (igualdad) y 2 (fines del Estado). Los extraídos adicionales son 1, 94, 50, 9 y 48.",
+   "tool_calls": [
+    "id=11705 canon=T-760-2008 articulos=86,241,49,44,13,2"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "11705",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "262",
+       "bloque": "elecciones",
+       "texto": "<Artículo modificado por el artículo 20 del Acto Legislativo 2 de 2015, anteriormente era el artículo 263. El nuevo texto es el siguiente:> Los partid"
+      },
+      {
+       "numero": "2",
+       "bloque": "principios_fundamentales",
+       "texto": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe"
+      },
+      {
+       "numero": "9",
+       "bloque": "principios_fundamentales",
+       "texto": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.6,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta menciona los artículos extraídos y recuperados de la sentencia T-760-2008 (id 11705), pero no proporciona una justificación detallada de por qué se considera que los artículos extraídos s"
+  },
+  {
+   "id": "alc-20",
+   "prompt": "¿Qué sentencias cita el documento 2195?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Sentencia analizada: T-293-1997 (id 2195). Artículos de la Constitución vinculados: 11 (derechos_fundamentales); 13 (derechos_fundamentales); 25 (derechos_fundamentales); 49 (derechos_sociales_economicos_culturales); 86 (proteccion_aplicacion_derechos); 241 (rama_judicial); 1 (principios_fundamentales) score 1.1081; 9 (principios_fundamentales) score 1.0644.",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53",
+    "id=2195 citas=0 resueltas=0"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "2195",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "150",
+       "bloque": "rama_legislativa",
+       "texto": "Corresponde al Congreso hacer las leyes. Por medio de ellas ejerce las siguientes funciones: 1. Interpretar, reformar y derogar las leyes. 2. Expedir "
+      }
+     ]
+    }
+   ],
+   "fidelidad": 1.1081,
+   "relevancia": 9.0,
+   "precision_contexto": 1.0644,
+   "justificacion": "La respuesta cita la sentencia T-293-1997 (id 2195) y menciona los artículos de la Constitución vinculados a los derechos fundamentales, derechos sociales, económicos y culturales, y la protección de "
+  },
+  {
+   "id": "alc-21",
+   "prompt": "¿Qué dice el artículo 86 de la Constitución sobre la acción de tutela?",
+   "modo": "agente",
+   "respuesta": "El artículo 86 de la Constitución Política establece que toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario. Esta acción está orientada a la protección inmediata de los derechos fundamentales cuando resulten violados, amenazados o en riesgo de serlo. Pertenece al bloque temático de protección y aplicación de derechos.",
+   "tool_calls": [
+    "articulo=86 bloque=proteccion_aplicacion_derechos"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": null,
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "2",
+       "bloque": "principios_fundamentales",
+       "texto": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.5,
+   "relevancia": 1.0,
+   "precision_contexto": 0.5,
+   "justificacion": "La respuesta del asistente menciona el artículo 86 de la Constitución, que efectivamente trata sobre la acción de tutela, pero no proporciona el texto del artículo. La respuesta del asistente no inclu"
+  },
+  {
+   "id": "alc-22",
+   "prompt": "Explícame el artículo 13 de la Constitución.",
+   "modo": "agente",
+   "respuesta": "El artículo 13 de la Constitución Política está clasificado en el bloque de **derechos fundamentales**.\n\nSu texto establece que todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades, y gozarán de los mismos derechos. En esencia, consagra el principio de **igualdad**: prohíbe discriminaciones y obliga al Estado a tratar por igual a quienes se encuentren en situaciones equivalentes, garantizando protección jurídica uniforme.\n\nNota: la herramienta solo devolvió el inicio del texto (truncado a 150 caracteres), por lo que esta explicación se basa en ese fragmento y su bloque temático.",
+   "tool_calls": [
+    "articulo=13 bloque=derechos_fundamentales"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": null,
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "305",
+       "bloque": "organizacion_territorial",
+       "texto": "Son atribuciones del gobernador: 1. Cumplir y hacer cumplir la Constitución, las leyes, los decretos del Gobierno y las ordenanzas de las Asambleas De"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      },
+      {
+       "numero": "189",
+       "bloque": "rama_ejecutiva",
+       "texto": "Corresponde al Presidente de la República como Jefe de Estado, Jefe del Gobierno y Suprema Autoridad Administrativa: 1. Nombrar y separar libremente a"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.5,
+   "relevancia": 1.0,
+   "precision_contexto": 0.5,
+   "justificacion": "La respuesta del asistente menciona el artículo 13 de la Constitución, pero no proporciona el texto completo del artículo ni su contexto completo. La respuesta se centra en el principio de igualdad y "
+  },
+  {
+   "id": "alc-24",
+   "prompt": "¿Qué dice el artículo 93 sobre el bloque de constitucionalidad?",
+   "modo": "agente",
+   "respuesta": "El artículo 93, según el corpus, se ubica en el bloque temático de protección y aplicación de derechos. Su texto (recortado por la herramienta) establece que los tratados y convenios internacionales ratificados por el Congreso que reconocen los derechos humanos y prohíben su limitación en tiempo de guerra tienen fuerza jurídica dentro del Estado.\n\nLa recuperación por tema confirma que el artículo 93 es el núcleo del bloque de constitucionalidad en materia de tratados internacionales de derechos humanos (score 1.0865), junto con los artículos 241, 86, 164, 214 y 44.\n\nNota: la herramienta solo devolvió el texto truncado a 150 caracteres, por lo que no puedo reproducir el artículo completo.",
+   "tool_calls": [
+    "articulo=93 bloque=proteccion_aplicacion_derechos",
+    "id=None canon=None articulos=241,93,86,164,214,44"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "None",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "215",
+       "bloque": "rama_ejecutiva",
+       "texto": "Cuando sobrevengan hechos distintos de los previstos en los artículos 212 y 213 que perturben o amenacen perturbar en forma grave e inminente el orden"
+      },
+      {
+       "numero": "214",
+       "bloque": "rama_ejecutiva",
+       "texto": "Los Estados de Excepción a que se refieren los artículos anteriores se someterán a las siguientes disposiciones: 1. Los decretos legislativos llevarán"
+      },
+      {
+       "numero": "244",
+       "bloque": "rama_judicial",
+       "texto": "La Corte Constitucional comunicará al Presidente de la República o al Presidente del Congreso, según el caso, la iniciación de cualquier proceso que t"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 1.0865,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "El artículo 93, según el contexto proporcionado, se refiere a la protección y aplicación de derechos humanos, específicamente en relación con tratados internacionales ratificados por el Congreso que r"
+  },
+  {
+   "id": "alc-25",
+   "prompt": "Consulta el artículo 44 de la Constitución.",
+   "modo": "agente",
+   "respuesta": "El artículo 44 de la Constitución Política de Colombia consagra los derechos fundamentales de los niños. Según el corpus, incluye: la vida, la integridad física, la salud y la seguridad social, la alimentación equilibrada, su nombre y nacionalidad, la familia y no ser separados de ella, el disfrute de la cultura y el arte, y el juego y el recreo.\n\nEl sistema clasifica este artículo en el bloque temático de derechos sociales, económicos y culturales.\n\n¿Quieres que identifique las sentencias de la Corte Constitucional que lo vinculan?",
+   "tool_calls": [
+    "articulo=44 bloque=derechos_sociales_economicos_culturales"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": null,
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "297",
+       "bloque": "organizacion_territorial",
+       "texto": "El Congreso Nacional puede decretar la formación de nuevos Departamentos, siempre que se cumplan los requisitos exigidos en la Ley Orgánica del Ordena"
+      },
+      {
+       "numero": "104",
+       "bloque": "participacion_democratica",
+       "texto": "El Presidente de la República, con la firma de todos los ministros y previo concepto favorable del Senado de la República, podrá consultar al pueblo d"
+      },
+      {
+       "numero": "103",
+       "bloque": "participacion_democratica",
+       "texto": "Son mecanismos de participación del pueblo en ejercicio de su soberanía: el voto, el plebiscito, el referendo, la consulta popular, el cabildo abierto"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.8,
+   "relevancia": 1.0,
+   "precision_contexto": 0.8,
+   "justificacion": "La respuesta del asistente menciona el artículo 44 de la Constitución de Colombia, que efectivamente trata sobre los derechos fundamentales de los niños, incluyendo vida, integridad física, salud, seg"
+  },
+  {
+   "id": "alc-27",
+   "prompt": "¿Qué dice el artículo 241 sobre las funciones de la Corte Constitucional?",
+   "modo": "agente",
+   "respuesta": "El artículo 241 (bloque: rama_judicial) establece que a la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de la norma.\n\nLa herramienta solo devolvió el inicio del texto (truncado a 150 caracteres), por lo que no puedo enumerar aquí la lista completa de funciones que el artículo desarrolla. Si necesitas el texto íntegro con todas las funciones, indícamelo y lo consulto de nuevo.",
+   "tool_calls": [
+    "articulo=241 bloque=rama_judicial"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": null,
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "215",
+       "bloque": "rama_ejecutiva",
+       "texto": "Cuando sobrevengan hechos distintos de los previstos en los artículos 212 y 213 que perturben o amenacen perturbar en forma grave e inminente el orden"
+      },
+      {
+       "numero": "239",
+       "bloque": "rama_judicial",
+       "texto": "La Corte Constitucional tendrá el número impar de miembros que determine la ley. En su integración se atenderá el criterio de designación de magistrad"
+      },
+      {
+       "numero": "214",
+       "bloque": "rama_ejecutiva",
+       "texto": "Los Estados de Excepción a que se refieren los artículos anteriores se someterán a las siguientes disposiciones: 1. Los decretos legislativos llevarán"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.5,
+   "relevancia": 1.0,
+   "precision_contexto": 0.5,
+   "justificacion": "El artículo 241 menciona la función de la Corte Constitucional como la guarda de la integridad y supremacía de la Constitución, pero no detalla todas sus funciones. La respuesta del asistente se centr"
+  },
+  {
+   "id": "alc-28",
+   "prompt": "Muéstrame el artículo 11 de la Constitución.",
+   "modo": "agente",
+   "respuesta": "El artículo 11 de la Constitución Política de Colombia, según el corpus, establece:\n\n\"El derecho a la vida es inviolable. No habrá pena de muerte.\"\n\nPertenece al bloque temático de derechos fundamentales.",
+   "tool_calls": [
+    "articulo=11 bloque=derechos_fundamentales"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": null,
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "313",
+       "bloque": "organizacion_territorial",
+       "texto": "Corresponde a los concejos: 1. Reglamentar las funciones y la eficiente prestación de los servicios a cargo del municipio. 2. Adoptar los correspondie"
+      },
+      {
+       "numero": "150",
+       "bloque": "rama_legislativa",
+       "texto": "Corresponde al Congreso hacer las leyes. Por medio de ellas ejerce las siguientes funciones: 1. Interpretar, reformar y derogar las leyes. 2. Expedir "
+      },
+      {
+       "numero": "231",
+       "bloque": "rama_judicial",
+       "texto": "<Artículo modificado por el artículo 11 del Acto Legislativo 2 de 2015. El nuevo texto es el siguiente:> <Apartes tachados INEXEQUIBLES, el aparte en "
+      }
+     ]
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "El artículo 11 de la Constitución Política de Colombia, según el contexto proporcionado, se refiere al derecho a la vida y la prohibición de la pena de muerte. La respuesta del asistente es precisa y "
+  },
+  {
+   "id": "alc-30",
+   "prompt": "Busca jurisprudencia sobre libertad de expresión en el corpus.",
+   "modo": "agente",
+   "respuesta": "Evidencia recuperada por las herramientas. Artículos de la Constitución vinculados: 241 (rama_judicial) score 1.0742; 310 (organizacion_territorial) score 1.0035; 44 (derechos_sociales_economicos_culturales) score 0.9421; 86 (proteccion_aplicacion_derechos) score 0.9243; 333 (regimen_economico) score 0.9042; 73 (derechos_sociales_economicos_culturales) score 0.9035.",
+   "tool_calls": [
+    "id=None canon=None articulos=241,310,44,86,333,73"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "None",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "30",
+       "bloque": "derechos_fundamentales",
+       "texto": "Quien estuviere privado de su libertad, y creyere estarlo ilegalmente, tiene derecho a invocar ante cualquier autoridad judicial, en todo tiempo, por "
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "230",
+       "bloque": "rama_judicial",
+       "texto": "Los jueces, en sus providencias, sólo están sometidos al imperio de la ley La equidad, la jurisprudencia, los principios generales del derecho y la do"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.9243,
+   "relevancia": 1.0,
+   "precision_contexto": 0.9035,
+   "justificacion": "La respuesta del asistente menciona varios artículos de la Constitución relacionados con la libertad de expresión, pero no proporciona una respuesta directa a la pregunta sobre jurisprudencia. La fide"
+  },
+  {
+   "id": "alc-32",
+   "prompt": "Necesito jurisprudencia sobre el mínimo vital y la protección de personas vulnerables.",
+   "modo": "agente",
+   "respuesta": "Evidencia recuperada por las herramientas. Artículos de la Constitución vinculados: 86 (proteccion_aplicacion_derechos) score 1.2718; 13 (derechos_fundamentales) score 1.2069; 241 (rama_judicial) score 1.1527; 53 (derechos_sociales_economicos_culturales) score 1.1347; 46 (derechos_sociales_economicos_culturales) score 1.0209; 48 (derechos_sociales_economicos_culturales) score 0.9938.",
+   "tool_calls": [
+    "id=None canon=None articulos=86,13,241,53,46,48"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "None",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "53",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "El Congreso expedirá el estatuto del trabajo. La ley correspondiente tendrá en cuenta por lo menos los siguientes principios mínimos fundamentales: Ig"
+      },
+      {
+       "numero": "13",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.75,
+   "relevancia": 1.0,
+   "precision_contexto": 0.75,
+   "justificacion": "La respuesta del asistente menciona la protección de personas vulnerables y el mínimo vital, pero no proporciona jurisprudencia específica. La respuesta se basa en artículos de la Constitución que tra"
+  },
+  {
+   "id": "alc-33",
+   "prompt": "Valida este documento: Sentencia T-293/97. Corte Constitucional de Colombia. Magistrado Ponente: Dr. Jose Gregorio Hernandez Galindo. Referencia: Expediente T-120148. Se revisa la acción de tutela instaurada por Jorge Arsenio Alvarez Escobar contra Colomsat S.A.",
+   "error": "Expecting ',' delimiter: line 20 column 3 (char 302)"
+  },
+  {
+   "id": "alc-34",
+   "prompt": "¿Es esta una providencia de la Corte Constitucional? T-293-97 Sentencia T-293/97 Magistrado Ponente: Jose Gregorio Hernandez Galindo",
+   "modo": "agente",
+   "respuesta": "Sí. La validación (heurística M0) la reconoce como providencia de la Corte Constitucional: cumple 2 de 3 reglas (encabezado con canon y marcador \"magistrado ponente\"; no detecta el marcador \"corte constitucional\"), con score 0.667. El canon detectado es T-293-1997 y el id en el corpus es 2195.\n\nNota: el texto pegado es solo un encabezado, no el cuerpo completo de la sentencia, por lo que la validación es parcial. Si me pegas el texto íntegro, puedo confirmar con mayor certeza.",
+   "tool_calls": [
+    "es_sentencia=True canon=T-293-1997"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": null,
+     "articulos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "9",
+       "bloque": "principios_fundamentales",
+       "texto": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien"
+      },
+      {
+       "numero": "2",
+       "bloque": "principios_fundamentales",
+       "texto": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.667,
+   "relevancia": 1.0,
+   "precision_contexto": 0.5,
+   "justificacion": "La respuesta del asistente reconoce parcialmente la naturaleza de la providencia como una providencia de la Corte Constitucional, pero no proporciona una validación completa debido a la falta de texto"
+  },
+  {
+   "id": "alc-35",
+   "prompt": "¿Qué artículos de la Constitución se vinculan a la sentencia T-293/97 y cuáles son sus sentencias citadas?",
+   "modo": "agente",
+   "respuesta": "Para la sentencia T-293/97 (id 2195), los artículos de la Constitución vinculados son:\n\n**Citados explícitamente:** 11, 13, 25, 49, 86 y 241.\n\n**Recuperados por el sistema:** 86 (tutela), 241 (guarda de la Constitución), 1 (Estado social de derecho), 9 (relaciones exteriores), 2 (fines del Estado) y 53 (estatuto del trabajo).\n\nRespecto a las sentencias citadas, el análisis no encontró ninguna cita resuelta en el corpus (0 citas). Por tanto, no hay providencias citadas que reportar para esta sentencia.",
+   "tool_calls": [
+    "id=2195 canon=T-293-1997 articulos=86,241,1,9,2,53",
+    "id=2195 citas=0 resueltas=0"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "2195",
+     "articulos": [
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "1",
+       "bloque": "principios_fundamentales",
+       "texto": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem"
+      },
+      {
+       "numero": "9",
+       "bloque": "principios_fundamentales",
+       "texto": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien"
+      },
+      {
+       "numero": "2",
+       "bloque": "principios_fundamentales",
+       "texto": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.5,
+   "relevancia": 1.0,
+   "precision_contexto": 0.5,
+   "justificacion": "La respuesta del asistente menciona los artículos de la Constitución vinculados a la sentencia T-293/97, pero no proporciona citas de sentencias específicas. El contexto recuperado indica que no hay s"
+  },
+  {
+   "id": "alc-37",
+   "prompt": "¿De qué año es la sentencia SU-480/97 y qué artículos de la CP le corresponden?",
+   "modo": "agente",
+   "respuesta": "La sentencia SU-480/97 es de **1997** (canon detectado: SU-480-1997, id 2725).\n\nArtículos de la CP citados explícitamente en la providencia:\n- **11** (derechos fundamentales)\n- **13** (derechos fundamentales)\n- **33** (derechos fundamentales)\n- **35** (derechos fundamentales)\n- **42** (derechos sociales, económicos y culturales)\n- **48** (derechos sociales, económicos y culturales)\n- **49** (derechos sociales, económicos y culturales)\n- **86** (protección y aplicación de derechos)\n\nAdemás, por recuperación temática se asocian los artículos 241, 186, 234 y 235 (rama judicial y legislativa).",
+   "tool_calls": [
+    "id=2725 canon=SU-480-1997 articulos=241,86,48,186,234,235"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "2725",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "48",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "La Seguridad Social es un servicio público de carácter obligatorio que se prestará bajo la dirección, coordinación y control del Estado, en sujeción a"
+      },
+      {
+       "numero": "186",
+       "bloque": "rama_legislativa",
+       "texto": "<Artículo modificado por el artículo 1 del Acto Legislativo 1 de 2018. El nuevo texto es el siguiente:> De los delitos que cometan los Congresistas, c"
+      },
+      {
+       "numero": "234",
+       "bloque": "rama_judicial",
+       "texto": "<Artículo modificado por el artículo 2 del Acto Legislativo 1 de 2018. El nuevo texto es el siguiente:> La Corte Suprema de Justicia es el máximo Trib"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.9,
+   "relevancia": 1.0,
+   "precision_contexto": 0.9,
+   "justificacion": "La respuesta del asistente es precisa y relevante, ya que menciona correctamente el año de la sentencia (1997) y los artículos de la Constitución que corresponden a la sentencia SU-480/97. Además, se "
+  },
+  {
+   "id": "alc-38",
+   "prompt": "¿Qué bloque temático tiene el artículo 86 de la Constitución?",
+   "modo": "agente",
+   "respuesta": "El artículo 86 de la Constitución Política, que consagra la acción de tutela, pertenece al bloque temático **protección y aplicación de derechos**.\n\nEste artículo establece que toda persona podrá reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, el restablecimiento inmediato de derechos fundamentales amenazados o vulnerados.",
+   "tool_calls": [
+    "articulo=86 bloque=proteccion_aplicacion_derechos"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": null,
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "29",
+       "bloque": "derechos_fundamentales",
+       "texto": "El debido proceso se aplicará a toda clase de actuaciones judiciales y administrativas Nadie podrá ser juzgado sino conforme a leyes preexistentes al "
+      },
+      {
+       "numero": "40",
+       "bloque": "derechos_fundamentales",
+       "texto": "Todo ciudadano tiene derecho a participar en la conformación, ejercicio y control del poder político. Para hacer efectivo este derecho puede: 1. Elegi"
+      },
+      {
+       "numero": "45",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "El adolescente tiene derecho a la protección y a la formación integral El Estado y la sociedad garantizan la participación activa de los jóvenes en lo"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 1.0,
+   "relevancia": 1.0,
+   "precision_contexto": 1.0,
+   "justificacion": "El artículo 86 de la Constitución Política, que consagra la acción de tutela, pertenece al bloque temático **protección y aplicación de derechos**. Este artículo establece que toda persona podrá recla"
+  },
+  {
+   "id": "alc-39",
+   "prompt": "¿Cuáles son las sentencias más citadas del corpus que tratan derechos fundamentales?",
+   "modo": "fallback_sin_tools",
+   "respuesta": "Evidencia recuperada por las herramientas. Artículos de la Constitución vinculados: 241 (rama_judicial) score 1.1149; 23 (derechos_fundamentales) score 1.0823; 86 (proteccion_aplicacion_derechos) score 1.0547; 250 (rama_judicial) score 0.9757; 44 (derechos_sociales_economicos_culturales) score 0.9462; 334 (regimen_economico) score 0.9433.",
+   "tool_calls": [
+    "id=None canon=None articulos=241,23,86,250,44,334"
+   ],
+   "grounding_ok": null,
+   "ms": null,
+   "contexto": [
+    {
+     "sentencia": "None",
+     "articulos": [
+      {
+       "numero": "241",
+       "bloque": "rama_judicial",
+       "texto": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu"
+      },
+      {
+       "numero": "23",
+       "bloque": "derechos_fundamentales",
+       "texto": "Toda persona tiene derecho a presentar peticiones respetuosas a las autoridades por motivos de interés general o particular y a obtener pronta resoluc"
+      },
+      {
+       "numero": "86",
+       "bloque": "proteccion_aplicacion_derechos",
+       "texto": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi"
+      },
+      {
+       "numero": "250",
+       "bloque": "rama_judicial",
+       "texto": "<Artículo modificado por el artículo 2 del Acto Legislativo No. 3 de 2002. El nuevo texto es el siguiente:> La Fiscalía General de la Nación está obli"
+      },
+      {
+       "numero": "44",
+       "bloque": "derechos_sociales_economicos_culturales",
+       "texto": "Son derechos fundamentales de los niños: la vida, la integridad física, la salud y la seguridad social, la alimentación equilibrada, su nombre y nacio"
+      }
+     ]
+    }
+   ],
+   "fidelidad": 0.91,
+   "relevancia": 1.0,
+   "precision_contexto": 0.91,
+   "justificacion": "La respuesta menciona las sentencias más citadas del corpus que tratan derechos fundamentales, pero no proporciona una lista específica de estas sentencias. Sin embargo, se identifican los artículos d"
+  },
+  {
+   "id": "alc-40",
+   "prompt": "¿Qué dice la sentencia T-500/90 sobre la acción de tutela?",
+   "error": "sin contexto recuperado"
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+\section{An\'alisis de errores}
+\label{sec:errores}
+
+\subsection{Errores de recuperaci\'on}
+
+Queda un fallo claro en el silver standard. g-031 pregunta por el municipio de gran extensi\'on y tradici\'on agropecuaria del sur del Tolima. En E6/E7 quedaba en el puesto 11 del top-50 denso; la ruta h\'ibrida lo recupera en el puesto 1 y responde Chaparral. g-046, sobre la protesta de Extinction Rebellion, no aparece ni en la uni\'on ni tras el reranker; no se aisl\'o la causa. El an\'alisis de E6/E7 se conserva como hist\'orico.
+
+\subsection{Errores de generaci\'on}
+
+Los modelos peque\~nos fallan de formas distintas con la misma evidencia. qwen2.5:1.5b responde sin citar en el 89,5\,\% de los casos: la respuesta puede ser correcta, pero el usuario no puede verificar de d\'onde sale. llama3.2:3b cita la mitad de las veces. llama3.2:1b se abstiene en el 73,7\,\% de las preguntas respondibles. gemma2:2b cita siempre y responde casi siempre, pero responde preguntas sin respuesta en 3 de 15 repeticiones, es decir, alucina con evidencia insuficiente. El generador final, gemma4:e4b, no estaba en esa comparaci\'on; los guardarra\'iles de cita, entidades y juez cubren parte de ese riesgo, y la compuerta lo cubre antes de generar.
+
+\subsection{Abstenci\'on y compuerta}
+
+La abstenci\'on tiene dos caminos. El primero ocurre antes de generar, cuando la compuerta rechaza la pregunta; el segundo, despu\'es, cuando los guardarra\'iles o el juez no encuentran respaldo. El primer camino es barato (decenas de milisegundos) y ahora rechaza las 5 preguntas sin respuesta con probabilidades de 0,000 a 0,166. El segundo cuesta una generaci\'on completa. La compuerta v2, con umbral 0,4, rechaza 3 de las 20 directas del reservado: r-011 es un falso rechazo del clasificador y r-012/r-014 son deudas de dise\~no porque la compuerta solo ve el top-5 denso. La versi\'on anterior, con umbral 0,5, dejaba un \'unico falso rechazo en 0,494; se conserva como antecedente y no describe la compuerta actual.
+
+\subsection{Errores de evaluaci\'on}
+
+RAGAS deja 4 muestras sin valor en la precisi\'on del contexto por errores de parser del juez. Una media con 34 valores no es comparable con una de 38, y por eso se reporta $n$ en cada fila. En la primera corrida, con timeout de 180 s y 16 workers, la m\'etrica ten\'ia 4 valores y su media (0,750) no era comparable con nada. La conclusi\'on anterior, que afirmaba una p\'erdida de precisi\'on frente a la arquitectura previa (0,760, con 36 valores), era un artefacto del juez. La repetici\'on corregida del mismo sistema da 0,881 con 34 valores. La comparaci\'on entre arquitecturas sigue siendo observacional porque cambia juez y embedding.
+
+\subsection{Errores de dise\~no del protocolo}
+
+El experimento de limpieza se lanz\'o inicialmente con el silver de humo, que pertenece a una muestra de 600 documentos que no es subconjunto del piloto de 2.000. Las referencias no exist\'ian en las colecciones y las m\'etricas habr\'ian sido cero. El error se detect\'o al medir y oblig\'o a construir un silver espec\'ifico para el piloto. La lecci\'on es que el silver debe declarar a qu\'e muestra pertenece y que la ingesta debe verificar que los documentos de referencia est\'an en la colecci\'on antes de evaluar. Esa verificaci\'on ya forma parte del protocolo.

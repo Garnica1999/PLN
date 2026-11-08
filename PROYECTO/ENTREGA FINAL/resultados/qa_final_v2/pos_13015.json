@@ -1,0 +1,209 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "13015",
+  "ponente": "Humberto Antonio Sierra Porto",
+  "area": {
+    "top3": [
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.9134
+      },
+      {
+        "area": "derechos_fundamentales",
+        "prob": 0.0545
+      },
+      {
+        "area": "rama_judicial",
+        "prob": 0.0238
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "25",
+        "texto_150chars": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "241",
+        "texto_150chars": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "348",
+        "texto_150chars": "Si el Congreso no expidiere el presupuesto, regirá el presentado por el Gobierno dentro de los términos del artículo precedente; si el presupuesto no ",
+        "bloque": "regimen_economico"
+      },
+      {
+        "numero": "351",
+        "texto_150chars": "El Congreso no podrá aumentar ninguna de las partidas del presupuesto de gastos propuestas por el Gobierno, ni incluir una nueva, sino con la aceptaci",
+        "bloque": "regimen_economico"
+      },
+      {
+        "numero": "331",
+        "texto_150chars": "Créase la Corporación Autónoma Regional del Río Grande de la Magdalena encargada de la recuperación de la navegación, de la actividad portuaria, la ad",
+        "bloque": "organizacion_territorial"
+      },
+      {
+        "numero": "29",
+        "texto_150chars": "El debido proceso se aplicará a toda clase de actuaciones judiciales y administrativas Nadie podrá ser juzgado sino conforme a leyes preexistentes al ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "242",
+        "texto_150chars": "Los procesos que se adelanten ante la Corte Constitucional en las materias a que se refiere este título, serán regulados por la ley conforme a las sig",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "2",
+        "texto_150chars": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "278",
+        "texto_150chars": "El Procurador General de la Nación ejercerá directamente las siguientes funciones: 1. Desvincular del cargo, previa audiencia y mediante decisión moti",
+        "bloque": "organismos_control"
+      },
+      {
+        "numero": "5",
+        "texto_150chars": "El Estado reconoce, sin discriminación alguna, la primacía de los derechos inalienables de la persona y ampara a la familia como institución básica de",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "1",
+        "texto_150chars": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "26",
+        "texto_150chars": "Toda persona es libre de escoger profesión u oficio. La ley podrá exigir títulos de idoneidad. Las autoridades competentes inspeccionarán y vigilarán ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "14",
+        "texto_150chars": "Toda persona tiene derecho al reconocimiento de su personalidad jurídica",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "8",
+        "texto_150chars": "Es obligación del Estado y de las personas proteger las riquezas culturales y naturales de la Nación",
+        "bloque": "principios_fundamentales"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "241",
+        "score": 1.2413
+      },
+      {
+        "numero": "29",
+        "score": 1.1967
+      },
+      {
+        "numero": "86",
+        "score": 1.0968
+      },
+      {
+        "numero": "1",
+        "score": 0.7367
+      },
+      {
+        "numero": "13",
+        "score": 0.7357
+      },
+      {
+        "numero": "9",
+        "score": 0.7222
+      },
+      {
+        "numero": "2",
+        "score": 0.7094
+      },
+      {
+        "numero": "48",
+        "score": 0.6397
+      },
+      {
+        "numero": "4",
+        "score": 0.6048
+      },
+      {
+        "numero": "150",
+        "score": 0.6029
+      }
+    ],
+    "reranker_usado": false,
+    "hubs_usado": true,
+    "alpha_hubs": 0.75
+  },
+  "sentencias_citadas": [
+    {
+      "id": "12958",
+      "resuelta": true,
+      "ano": 2007,
+      "pagerank": 2.1e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "T-1110-2005",
+      "resuelta": false,
+      "ano": 2005,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "T-1216-2005",
+      "resuelta": false,
+      "ano": 2005,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "1269",
+      "resuelta": true,
+      "ano": 1993,
+      "pagerank": 0.000207,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "C-632-1995",
+      "resuelta": false,
+      "ano": 1995,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "8176",
+      "resuelta": true,
+      "ano": 2002,
+      "pagerank": 0.000533,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "SU-1184-2000",
+      "resuelta": false,
+      "ano": 2000,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "SU-1159-2003",
+      "resuelta": false,
+      "ano": 2003,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "10117",
+      "resuelta": true,
+      "ano": 2005,
+      "pagerank": 2.2e-05,
+      "area": "rama_judicial"
+    }
+  ],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica principios_fundamentales (prob 0.9134); 14 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 4 de 9 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 5.82
+}

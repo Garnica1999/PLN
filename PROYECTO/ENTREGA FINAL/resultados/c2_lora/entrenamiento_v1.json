@@ -1,0 +1,244 @@
+{
+  "version": "c2-lora-train-v1",
+  "fecha": "2026-10-05 07:50:01",
+  "modo": "completo",
+  "config": {
+    "semilla": 42,
+    "max_seq": 512,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ],
+    "lr": 0.0001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0,
+    "batch": 1,
+    "grad_accum": 16,
+    "epocas": 1,
+    "warmup_frac": 0.03,
+    "min_lr_frac": 0.1,
+    "grad_clip": 1.0,
+    "eval_cada": 250,
+    "checkpoint_cada": 250,
+    "early_stop_patience": 4,
+    "max_ejemplos": null,
+    "max_horas": null,
+    "max_pasos": null
+  },
+  "peft": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ]
+  },
+  "dataset": {
+    "dir_sft": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/data/c2_lora/sft_v1",
+    "n_train": 20000,
+    "n_val": 3000,
+    "n_val_eval": 1000,
+    "md5": {
+      "train": "ab0c50e5203ac8654a7d4229c6982168",
+      "val": "320e265e58a12ff6675ef169cca1b0af",
+      "val_eval": "dd37df7f210285436bf7fce028fb19f8"
+    }
+  },
+  "modelo_base": {
+    "n_shards": 4,
+    "bytes": 15536268344,
+    "total_declarado": 15536234496
+  },
+  "entorno": {
+    "python": "3.14.7",
+    "plataforma": "Linux-7.2.8-1-cachyos-x86_64-with-glibc2.44",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3",
+    "cleanlab": "2.9.0",
+    "matplotlib": "3.10.9",
+    "torch": "2.14.0+rocm7.2",
+    "transformers": "5.16.1",
+    "peft": "0.21.2",
+    "accelerate": "1.15.0",
+    "cuda_disponible": true,
+    "gpu": "AMD Radeon RX 9070 XT",
+    "rocm": "7.2.53211"
+  },
+  "hardware": {
+    "gpu": "AMD Radeon RX 9070 XT",
+    "vram_total_gib": 15.921875,
+    "vram_pico_gib": 15.013400554656982
+  },
+  "entrenamiento": {
+    "pasos": 1250,
+    "epocas_completadas": 1,
+    "parada": "completado",
+    "mejor_paso": 1250,
+    "mejor_auc": 0.848382,
+    "sin_mejora": 0,
+    "total_steps_plan": 1250,
+    "scoring": "corregido (padding izquierdo en evaluar; evals con etiqueta bug_padding en curvas son del scoring antiguo)"
+  },
+  "curvas": [
+    {
+      "paso": 250,
+      "epoca": 0,
+      "lr": 9.337490070214006e-05,
+      "loss_train": 3.5016138090286404,
+      "loss": 7.164741008758545,
+      "acc": 0.58,
+      "f1_si": 0.31596091205211724,
+      "f1_macro": 0.5064653045109071,
+      "auc": 0.46625599999999995,
+      "matriz": [
+        [
+          483,
+          17
+        ],
+        [
+          403,
+          97
+        ]
+      ],
+      "n": 1000,
+      "scoring": "bug_padding"
+    },
+    {
+      "paso": 500,
+      "epoca": 0,
+      "lr": 7.140931868271948e-05,
+      "loss_train": 5.02892779186368,
+      "loss": 7.398228897094727,
+      "acc": 0.577,
+      "f1_si": 0.29850746268656714,
+      "f1_macro": 0.4978578830970416,
+      "auc": 0.476526,
+      "matriz": [
+        [
+          487,
+          13
+        ],
+        [
+          410,
+          90
+        ]
+      ],
+      "n": 1000,
+      "scoring": "bug_padding"
+    },
+    {
+      "paso": 750,
+      "epoca": 0,
+      "lr": 4.279079305598236e-05,
+      "loss_train": 2.5473714880645275,
+      "loss": 7.55062015914917,
+      "acc": 0.576,
+      "f1_si": 0.3161290322580645,
+      "f1_macro": 0.5044413277232351,
+      "auc": 0.453658,
+      "matriz": [
+        [
+          478,
+          22
+        ],
+        [
+          402,
+          98
+        ]
+      ],
+      "n": 1000,
+      "scoring": "bug_padding"
+    },
+    {
+      "paso": 1000,
+      "epoca": 0,
+      "lr": 1.9122330674354043e-05,
+      "loss_train": 3.6306159552186728,
+      "loss": 7.5679112129211425,
+      "acc": 0.576,
+      "f1_si": 0.30491803278688523,
+      "f1_macro": 0.4999410307819318,
+      "auc": 0.445962,
+      "matriz": [
+        [
+          483,
+          17
+        ],
+        [
+          407,
+          93
+        ]
+      ],
+      "n": 1000,
+      "scoring": "bug_padding"
+    },
+    {
+      "paso": 1250,
+      "epoca": 0,
+      "lr": 1e-05,
+      "loss_train": 4.610076321288943,
+      "scoring": "corregido",
+      "loss": 0.24324109953641893,
+      "acc": 0.781,
+      "f1_si": 0.7794561933534743,
+      "f1_macro": 0.7809892684741553,
+      "auc": 0.848382,
+      "matriz": [
+        [
+          394,
+          106
+        ],
+        [
+          113,
+          387
+        ]
+      ],
+      "n": 1000
+    }
+  ],
+  "eval_final": {
+    "loss": 0.24219145932793618,
+    "acc": 0.767,
+    "f1_si": 0.7667667667667668,
+    "f1_macro": 0.766999766999767,
+    "auc": 0.8461482222222222,
+    "matriz": [
+      [
+        1152,
+        348
+      ],
+      [
+        351,
+        1149
+      ]
+    ],
+    "n": 3000
+  },
+  "tiempos": {
+    "segundos": 913.8958143130003,
+    "horas": 0.25385994842027787,
+    "tokens_procesados": 5778894,
+    "tokens_por_segundo": 6323.36192976674
+  },
+  "salidas": {
+    "checkpoint": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/c2_lora/checkpoints/ultimo",
+    "adapter": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/c2_lora/adapter_v1",
+    "json": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/c2_lora/entrenamiento_v1.json",
+    "figura": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/figuras/c2_lora_curvas.png"
+  }
+}

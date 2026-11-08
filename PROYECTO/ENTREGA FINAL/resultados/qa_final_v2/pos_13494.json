@@ -1,0 +1,103 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "13494",
+  "ponente": "Rodrigo Escobar Gil",
+  "area": {
+    "top3": [
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.8728
+      },
+      {
+        "area": "derechos_fundamentales",
+        "prob": 0.066
+      },
+      {
+        "area": "proteccion_aplicacion_derechos",
+        "prob": 0.0197
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "86",
+        "texto_150chars": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi",
+        "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+        "numero": "241",
+        "texto_150chars": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "9",
+        "texto_150chars": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "31",
+        "texto_150chars": "Toda sentencia judicial podrá ser apelada o consultada, salvo las excepciones que consagre la ley El superior no podrá agravar la pena impuesta cuando",
+        "bloque": "derechos_fundamentales"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "241",
+        "score": 1.6092
+      },
+      {
+        "numero": "86",
+        "score": 1.5402
+      },
+      {
+        "numero": "2",
+        "score": 1.0989
+      },
+      {
+        "numero": "9",
+        "score": 1.0716
+      },
+      {
+        "numero": "48",
+        "score": 1.0478
+      },
+      {
+        "numero": "13",
+        "score": 1.0322
+      },
+      {
+        "numero": "312",
+        "score": 1.004
+      },
+      {
+        "numero": "29",
+        "score": 0.9862
+      },
+      {
+        "numero": "1",
+        "score": 0.9841
+      },
+      {
+        "numero": "313",
+        "score": 0.9651
+      }
+    ],
+    "reranker_usado": false,
+    "hubs_usado": true,
+    "alpha_hubs": 0.75
+  },
+  "sentencias_citadas": [
+    {
+      "id": "8884",
+      "resuelta": true,
+      "ano": 2003,
+      "pagerank": 5.3e-05,
+      "area": "derechos_sociales_economicos_culturales"
+    }
+  ],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica principios_fundamentales (prob 0.8728); 4 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 1 de 1 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 4.05
+}

@@ -1,0 +1,171 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "4971",
+  "ponente": "Jorge Arango Mejía",
+  "area": {
+    "top3": [
+      {
+        "area": "derechos_fundamentales",
+        "prob": 0.934
+      },
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.0348
+      },
+      {
+        "area": "rama_legislativa",
+        "prob": 0.0113
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "241",
+        "texto_150chars": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "26",
+        "texto_150chars": "Toda persona es libre de escoger profesión u oficio. La ley podrá exigir títulos de idoneidad. Las autoridades competentes inspeccionarán y vigilarán ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "38",
+        "texto_150chars": "Se garantiza el derecho de libre asociación para el desarrollo de las distintas actividades que las personas realizan en sociedad",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "39",
+        "texto_150chars": "Los trabajadores y empleadores tienen derecho a constituir sindicatos o asociaciones, sin intervención del Estado. Su reconocimiento jurídico se produ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "103",
+        "texto_150chars": "Son mecanismos de participación del pueblo en ejercicio de su soberanía: el voto, el plebiscito, el referendo, la consulta popular, el cabildo abierto",
+        "bloque": "participacion_democratica"
+      },
+      {
+        "numero": "58",
+        "texto_150chars": "<Artículo modificado por el artículo 1 o. del Acto Legislativo 1 de 1999. El nuevo texto es el siguiente:> Se garantizan la propiedad privada y los de",
+        "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+        "numero": "1",
+        "texto_150chars": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "83",
+        "texto_150chars": "Las actuaciones de los particulares y de las autoridades públicas deberán ceñirse a los postulados de la buena fe, la cual se presumirá en todas las g",
+        "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+        "numero": "154",
+        "texto_150chars": "Las leyes pueden tener origen en cualquiera de las Cámaras a propuesta de sus respectivos miembros, del Gobierno Nacional, de las entidades señaladas ",
+        "bloque": "rama_legislativa"
+      },
+      {
+        "numero": "2",
+        "texto_150chars": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "5",
+        "texto_150chars": "El Estado reconoce, sin discriminación alguna, la primacía de los derechos inalienables de la persona y ampara a la familia como institución básica de",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "6",
+        "texto_150chars": "Los particulares sólo son responsables ante las autoridades por infringir la Constitución y las leyes. Los servidores públicos lo son por la misma cau",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "150",
+        "texto_150chars": "Corresponde al Congreso hacer las leyes. Por medio de ellas ejerce las siguientes funciones: 1. Interpretar, reformar y derogar las leyes. 2. Expedir ",
+        "bloque": "rama_legislativa"
+      },
+      {
+        "numero": "13",
+        "texto_150chars": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "29",
+        "texto_150chars": "El debido proceso se aplicará a toda clase de actuaciones judiciales y administrativas Nadie podrá ser juzgado sino conforme a leyes preexistentes al ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "40",
+        "texto_150chars": "Todo ciudadano tiene derecho a participar en la conformación, ejercicio y control del poder político. Para hacer efectivo este derecho puede: 1. Elegi",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "365",
+        "texto_150chars": "Los servicios públicos son inherentes a la finalidad social del Estado. Es deber del Estado asegurar su prestación eficiente a todos los habitantes de",
+        "bloque": "regimen_economico"
+      },
+      {
+        "numero": "340",
+        "texto_150chars": "Habrá un Consejo Nacional de Planeación integrado por representantes de las entidades territoriales y de los sectores económicos, sociales, ecológicos",
+        "bloque": "regimen_economico"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "154",
+        "score": 282.0418
+      },
+      {
+        "numero": "1",
+        "score": 280.3314
+      },
+      {
+        "numero": "2",
+        "score": 189.8469
+      },
+      {
+        "numero": "160",
+        "score": 171.399
+      },
+      {
+        "numero": "Transitorio 34",
+        "score": 169.4602
+      }
+    ]
+  },
+  "sentencias_citadas": [
+    {
+      "id": "3194",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 8.9e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "1289",
+      "resuelta": true,
+      "ano": 1993,
+      "pagerank": 0.001064,
+      "area": "regimen_economico"
+    },
+    {
+      "id": "1937",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000282,
+      "area": "regimen_economico"
+    },
+    {
+      "id": "2034",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000113,
+      "area": "regimen_economico"
+    }
+  ],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.934); 18 articulos CP extraidos y 5 recuperados por BM25; 4 de 4 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 9.3
+}

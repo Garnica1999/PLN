@@ -1,0 +1,10 @@
+metrica,valor
+filas,169248.0
+duplicados_texto,14771.0
+grupos_duplicados,4434.0
+texto_vacio,0.0
+sin_idioma,13140.0
+word_mediana,371.0
+word_p99,2420.0
+char_mediana,2367.0
+char_p99,15142.0

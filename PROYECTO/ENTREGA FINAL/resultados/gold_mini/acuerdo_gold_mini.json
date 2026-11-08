@@ -1,0 +1,82 @@
+{
+  "por_anotador": {
+    "carlos": {
+      "n_grados": 820,
+      "n_casos_con_grado": 50,
+      "distribucion_grados": {
+        "0": 364,
+        "1": 267,
+        "2": 189
+      }
+    },
+    "llm": {
+      "n_grados": 820,
+      "n_casos_con_grado": 50,
+      "distribucion_grados": {
+        "0": 510,
+        "1": 146,
+        "2": 164
+      }
+    },
+    "llm_gemma4": {
+      "n_grados": 174,
+      "n_casos_con_grado": 12,
+      "distribucion_grados": {
+        "0": 125,
+        "1": 23,
+        "2": 26
+      }
+    }
+  },
+  "kappas_pares": {
+    "carlos|llm": {
+      "n_comunes": 820,
+      "po": 0.5939024390243902,
+      "kappa": 0.34483734902179075,
+      "nivel": "aceptable"
+    },
+    "carlos|llm_gemma4": {
+      "n_comunes": 174,
+      "po": 0.6436781609195402,
+      "kappa": 0.3700070077084794,
+      "nivel": "aceptable"
+    },
+    "llm|llm_gemma4": {
+      "n_comunes": 174,
+      "po": 0.8390804597701149,
+      "kappa": 0.6506024096385542,
+      "nivel": "sustancial"
+    }
+  },
+  "fleiss": {
+    "n_items": 174,
+    "n_evaluadores": 3,
+    "p_bar": 0.7088122605363985,
+    "p_e": 0.4756976556421661,
+    "kappa": 0.44461865830440145,
+    "nivel": "moderada",
+    "n_items_completos": 174
+  },
+  "meta": {
+    "fecha": "2026-10-05T02:06:24",
+    "script": "scripts/16_anotador_gold.py",
+    "anotadores": [
+      "carlos",
+      "llm",
+      "llm_gemma4"
+    ],
+    "md5_respuestas": {
+      "carlos": "67ce4f0ae031b658637c536b008f3de1",
+      "llm": "e5d7088fd4383e87dcd78c82ea7672dd",
+      "llm_gemma4": "4ad7049ddf3bf886189018c493dd2325"
+    },
+    "premisas": [
+      "Muestra: 50 de los 90 casos del benchmark M7 (vinculo_cp_benchmark_v2.json), ids verificados contra v8; estratificada por periodo (cuotas ~17/17/16) y por tercil de dificultad dentro de cada periodo (terciles del nDCG@10 por caso de la ruta B2 de v13, contexto ganador; 0 = mas dificil). Semilla 42.",
+      "Candidatos por caso: union de arts_cp NER (data/entidades_sentencias.parquet) y el top-10 de la ruta B2 de v13; ordenados por numero de articulo; snippet de ~200 chars del texto de la CP. El flag citado_ner es una referencia automatica (no verdad) y se muestra al anotador solo al cerrar el caso.",
+      "Anotacion humana graduada de relevancia: 2 = fundamento, 1 = mencionado, 0 = no relevante. Enter deja el candidato pendiente; la anotacion se guarda por candidato (append) y es reanudable. Es diagnostico: no entrena nada y no toca test ni el holdout sellado.",
+      "Evaluacion: rutas guardadas del benchmark (no se re-ejecuta retrieval); nDCG@5/@10 con ganancia exponencial 2^g - 1; P@k y R@k binarios con umbral grado >= 1; recall graduado @10; IC bootstrap 1000 remuestreos seed 42 de la media por caso y bootstrap PAREADO de B2 vs v12 vs v8. Un candidato anotado sin grado cuenta como 0. Variante 'completo': items del top-10 fuera del pool de candidatos = 0 (estandar de no juzgados). Variante 'pool': ranking restringido a candidatos anotados (sensibilidad ante juicios incompletos, Sakai 2007).",
+      "Acuerdo inter-anotador (solo con >= 2 anotadores): kappa de Cohen por pares sobre los pares (caso, articulo) calificados por ambos y Fleiss sobre items calificados por todos; interpretacion Landis y Koch (1977). El gold agrupado (pooled) conserva el ultimo registro por fecha.",
+      "El corpus y los parquet se leen SOLO por id con filtros pyarrow; no se carga el corpus completo ni se modifica ningun archivo de datos o resultado previo."
+    ]
+  }
+}

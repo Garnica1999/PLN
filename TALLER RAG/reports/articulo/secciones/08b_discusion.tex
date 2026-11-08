@@ -1,0 +1,34 @@
+\section{Discusi\'on}
+\label{sec:discusion}
+
+\subsection{Por qu\'e el piloto enga\~na}
+
+La ca\'ida de Recall@10 de 0,947 a 0,684 al pasar del piloto al corpus completo (Tabla~\ref{tab:e6}) es consistente con un efecto de competencia: con 1.932 documentos, el fragmento relevante compite contra pocos vecinos; con 161.868, contra cientos de fragmentos que comparten vocabulario gen\'erico. El texto sin cierre terminal (32,7\,\%) y el chunking fijo podr\'ian agravarla, pero el experimento no separa competencia, truncamiento y segmentaci\'on. La consecuencia pr\'actica es que un piloto sirve para depurar el pipeline, no para elegir codificador, chunking o $k$. Esa elecci\'on hay que hacerla a la escala final, aunque cueste horas de GPU.
+
+\subsection{El coste del orden}
+
+El reordenador es una herramienta de precisi\'on, no de cobertura. Sobre el top-5 sube el nDCG 5,6 puntos y el P@1 13,1, porque el recuperador ya trajo la respuesta y solo hab\'ia que colocarla primero. Sobre el top-20 denso baja el recall y el Hit@5: al ampliar el conjunto entran fragmentos peores que desplazan a los buenos. La uni\'on con BM25 cambia el c\'alculo: a\~nade documentos que el denso no trae y el reordenador los coloca arriba. En GPU el coste es 0,68 s para 50 pares, frente a 1,30 s para 5 en CPU. El reordenador no puede recuperar lo que el recuperador no trajo; la uni\'on s\'i puede, y por eso se adopta.
+
+\subsection{La abstenci\'on barata}
+
+La compuerta cuesta milisegundos y rechaza las 5 preguntas sin respuesta; el juez cuesta una generaci\'on completa. Esa asimetr\'ia justifica el clasificador. La compuerta v2, con umbral 0,4, rechaza 3 de las 20 directas del reservado: dos son deudas de dise\~no y una es un falso rechazo del clasificador. El umbral es una decisi\'on de negocio, no t\'ecnica: aceptar una pregunta ajena erosiona la confianza m\'as que abstenerse en una propia. En un asistente de corpus, el usuario prefiere un ``no lo s\'e'' a una respuesta inventada. Si el coste de abstenerse fuera mayor, el umbral se mover\'ia en la otra direcci\'on.
+
+\subsection{La evaluaci\'on}
+
+El episodio de RAGAS (Secci\'on~\ref{sec:experimentos}) deja dos reglas. La comparaci\'on entre arquitecturas cambia juez y embedding, as\'i que se reporta como observaci\'on y no como mejora causal. La corrida del h\'ibrido confirma el intercambio: m\'as cobertura del contexto, menos correcci\'on. La primera: reportar $n$ junto a cada media y no comparar m\'etricas con cobertura distinta. La segunda: el ruido del juez no es aleatorio, se concentra en contextos largos y en fallos de parser, as\'i que un timeout m\'as generoso y menos concurrencia lo reducen.
+
+El acuerdo humano tambi\'en delimita lo que se puede afirmar. La correcci\'on (0,95) y las citas (0,90) son fiables; la abstenci\'on (0,72) es aceptable; la fidelidad (0,12) no. Usar la fidelidad para elegir modelo habr\'ia sido elegir con ruido. La r\'ubrica de fidelidad mezcla errores factuales con abstenciones injustificadas, y los anotadores no comparten el criterio. Un eje que no alcanza acuerdo no debe decidir, y eso es una lecci\'on de dise\~no de la evaluaci\'on, no un defecto de los anotadores.
+
+\subsection{Lo que mostr\'o el conjunto reservado}
+
+El conjunto reservado cambia el diagn\'ostico: la ca\'ida de recuperaci\'on se confirma fuera del piloto y la uni\'on con BM25 recupera parte de lo perdido. La mejora no viene de reordenar m\'as: viene de recuperar entidades que el denso no trae. Quedan tres fallos de respuesta en la corrida sin compuerta: r-006 se abstiene, r-012 enumera iniciativas y r-016 es ambigua. El sistema sabe decir que no, pero todav\'ia no siempre elige la evidencia correcta cuando hay varias.
+
+La compuerta anterior tampoco generalizaba el cero. La nueva reduce los falsos rechazos, pero no los elimina; los que quedan son preguntas que la recuperaci\'on h\'ibrida s\'i puede responder, porque la compuerta solo ve el top-5 denso. La lecci\'on no es retirar la compuerta, sino alinearla con el conjunto que ve el generador.
+
+El conjunto reservado tambi\'en muestra que el silver exploratorio no era representativo en idioma: el ingl\'es, que parec\'ia el punto d\'ebil, recupera mejor en la muestra nueva. Con 8 y 12 preguntas, las diferencias no son concluyentes, pero bastan para no tratar el idioma como una conclusi\'on cerrada.
+
+\subsection{Qu\'e se llevar\'ia a producci\'on}
+
+La configuraci\'on que se llevar\'ia es la de la Tabla~\ref{tab:config-final}: uni\'on densa y BM25, reranker en GPU, $k=10$, gemma4:e4b con MTP y compuerta con umbral 0,4. Las deudas son r-006, r-016, la alineaci\'on de la compuerta con el conjunto reordenado y la correcci\'on de la respuesta.
+
+El monitoreo que acompa\~nar\'ia el despliegue tiene cuatro se\~nales: recall en una muestra fija del silver, tasa de abstenci\'on, tasa de citas v\'alidas y latencia p95. Las cuatro se pueden calcular con la infraestructura actual y detectan las regresiones que importan: que el \'indice cambie, que el modelo se actualice, que el prompt se rompa o que el hardware se quede sin memoria. La compuerta se monitorea aparte, con un conjunto fijo de preguntas de fuera, porque su deriva no se ve en las m\'etricas de respuesta.

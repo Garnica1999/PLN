@@ -1,0 +1,463 @@
+{
+  "fecha": "2026-10-03T20:51:18",
+  "script": "scripts/20_h2b_postproceso_m4.py",
+  "smoke": false,
+  "modo": "todo",
+  "versiones": {
+    "python": "3.14.7",
+    "plataforma": "Linux-7.2.8-1-cachyos-x86_64-with-glibc2.44",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3",
+    "cleanlab": "2.9.0",
+    "matplotlib": "3.10.9"
+  },
+  "premisas": [
+    "H2 (registrado en resultados/m4_h2_objetivo_suave_v1.json): W2 dejo macro-F1 fijo16 en val de 0.3002 vs 0.2658 de W1 (delta pareado +0.0344, IC95 [-0.0051, +0.0749], p=0.128): el efecto roza cero y no alcanzo el gate. H2b refina SOLO el post-proceso de las probabilidades guardadas, sin reentrenar.",
+    "Sin reentrenamiento: se reutilizan integramente las probabilidades persistidas de W2 (resultados/m4_h2_w2_preds.npz) y W1 (resultados/m4_h1_v1r_preds.npz). El holdout sellado no esta en esos npz y no se toca; no se reajusta ningun modelo, vectorizador ni split.",
+    "P1/P3 (sesgos por clase): decision argmax(log p + b_c). log p difiere del decision_function en una constante por fila (denominador del softmax), lo que no altera ni el argmax sin sesgos ni la optimizacion aditiva de sesgos. Los sesgos se optimizan con optimizar_sesgos_logits del modulo 06 (rejilla [-2, 2] paso 0.05, coordinate ascent, maximo MAX_RONDAS_COORDENADA rondas) SIEMPRE sobre val (o sobre la mitad de ajuste en el chequeo A/B).",
+    "P2 (ensemble): promedio aritmetico (W1 + W2) / 2 de las probabilidades por fila y argmax; soft voting sin parametros ajustables.",
+    "Gate: delta pareado de macro-F1 fijo16 vs W1 con IC bootstrap percentil 95 % (1000 remuestreos, semilla 42, mismos indices para ambas variantes) y consistencia A/B por mitades (A = posiciones pares y B = impares del orden de id). Para P1/P3 los sesgos se ajustan en la mitad complementaria y se evaluan en la otra; P2, sin parametros, se evalua directo en cada mitad. Gana la variante con delta > 0 e IC95 inferior > 0 en la val usada y delta > 0 en ambas mitades; desempate por mayor delta, luego mayor macro-F1 fijo16 en val, luego orden p1, p2, p3.",
+    "Lecturas de test: solo si hay ganador se leen UNA vez el test canonico y el temporal (temporal_val y temporal_test) con las probabilidades ya guardadas, marcado development_test_reutilizado; W1 se reporta como comparador interno. Si no hay ganador no hay ninguna lectura de test/temporal.",
+    "Metricas: macro-F1 de espacio fijo de 16 (zero_division=0) como metrica primaria; se reporta accuracy en todas las variantes y bloques como contexto de la compensacion macro-F1/accuracy.",
+    "Modo smoke: submuestra aleatoria de 800 documentos de val (semilla 42) y salidas SOLO en /tmp/opencode/h2b_smoke/; el smoke verifica el codigo y no decide gates ni se mezcla con las salidas reales."
+  ],
+  "clases_espacio_fijo": [
+    "derechos_colectivos_ambiente",
+    "derechos_fundamentales",
+    "derechos_sociales_economicos_culturales",
+    "elecciones",
+    "habitantes_territorio",
+    "organismos_control",
+    "organizacion_estado",
+    "organizacion_territorial",
+    "participacion_democratica",
+    "principios_fundamentales",
+    "proteccion_aplicacion_derechos",
+    "rama_ejecutiva",
+    "rama_judicial",
+    "rama_legislativa",
+    "reforma_constitucion",
+    "regimen_economico"
+  ],
+  "parametros": {
+    "semilla": 42,
+    "n_bootstrap": 1000,
+    "eps_log": 1e-12,
+    "max_rondas_sesgos": 3,
+    "smoke_n_val": 800
+  },
+  "md5_entradas": {
+    "w1_preds": "a1651f2205ccca2a6bbe5e38e2c698e1",
+    "w2_preds": "83f0c10b0cbc8874bbc2a4a5c147157e",
+    "h2_json": "fad9b8ba03c7316d9692be558b7a5d3c",
+    "script": "9f99e262e8137362bf36a4de930a56e0"
+  },
+  "referencia_h2": {
+    "disponible": true,
+    "ruta": "resultados/m4_h2_objetivo_suave_v1.json",
+    "md5": "fad9b8ba03c7316d9692be558b7a5d3c",
+    "val_w1": {
+      "macro_f1_espacio_fijo": 0.26583453766976023,
+      "accuracy": 0.5866441251056635
+    },
+    "val_w2": {
+      "macro_f1_espacio_fijo": 0.30019120156299295,
+      "accuracy": 0.5212735981966751
+    },
+    "delta_w2_vs_w1": {
+      "punto": 0.03435666389323272,
+      "ic95_inf": -0.005111230977080786,
+      "ic95_sup": 0.07493261828729159
+    }
+  },
+  "val": {
+    "n": 3549,
+    "n_original": 3549,
+    "submuestra_smoke": false,
+    "variantes": {
+      "w1": {
+        "macro_f1": 0.26583453766976023,
+        "macro_f1_espacio_fijo": 0.26583453766976023,
+        "accuracy": 0.5866441251056635,
+        "n": 3549
+      },
+      "p1": {
+        "macro_f1": 0.43740732330761267,
+        "macro_f1_espacio_fijo": 0.43740732330761267,
+        "accuracy": 0.5319808396731474,
+        "n": 3549,
+        "sesgos": [
+          0.0,
+          -0.5,
+          -0.1,
+          0.0,
+          1.55,
+          0.0,
+          0.05,
+          0.65,
+          1.05,
+          -0.2,
+          -0.65,
+          0.0,
+          -0.6,
+          0.05,
+          1.0,
+          0.8
+        ],
+        "detalle_calibracion": {
+          "macro_f1_val_antes": 0.30019120156299295,
+          "macro_f1_val_despues": 0.43740732330761267,
+          "n_ajuste": 3549,
+          "max_rondas": 3,
+          "tiempo_seg": 16.563154563002172,
+          "nota": "macro_f1_val_antes/despues es macro-F1 observado del modulo 06 (metrica auxiliar); la metrica del gate se recalcula sobre el espacio fijo de 16"
+        }
+      },
+      "p2": {
+        "macro_f1": 0.2794836867633048,
+        "macro_f1_espacio_fijo": 0.2794836867633048,
+        "accuracy": 0.5855170470555086,
+        "n": 3549,
+        "sesgos": null,
+        "detalle_calibracion": null
+      },
+      "p3": {
+        "macro_f1": 0.41077402893858295,
+        "macro_f1_espacio_fijo": 0.41077402893858295,
+        "accuracy": 0.5950972104818258,
+        "n": 3549,
+        "sesgos": [
+          2.0,
+          -0.45,
+          0.0,
+          0.0,
+          0.0,
+          1.1,
+          0.65,
+          0.65,
+          1.8,
+          -0.35,
+          -0.5,
+          0.0,
+          -0.55,
+          1.0,
+          0.0,
+          0.5
+        ],
+        "detalle_calibracion": {
+          "macro_f1_val_antes": 0.2794836867633048,
+          "macro_f1_val_despues": 0.41077402893858295,
+          "n_ajuste": 3549,
+          "max_rondas": 3,
+          "tiempo_seg": 16.542698101002316,
+          "nota": "macro_f1_val_antes/despues es macro-F1 observado del modulo 06 (metrica auxiliar); la metrica del gate se recalcula sobre el espacio fijo de 16"
+        }
+      }
+    }
+  },
+  "comparaciones_pareadas_val": {
+    "p1": {
+      "delta_macro_f1_espacio_fijo": {
+        "punto": 0.17157278563785244,
+        "media_bootstrap": 0.13527985112013216,
+        "ic95_inf": 0.04185427327605528,
+        "ic95_sup": 0.21524410167375405,
+        "p_valor_bilateral": 0.0
+      },
+      "delta_macro_f1_observado": {
+        "punto": 0.17157278563785244,
+        "media_bootstrap": 0.1404981319557498,
+        "ic95_inf": 0.04317287292765147,
+        "ic95_sup": 0.22175850530277103,
+        "p_valor_bilateral": 0.0
+      },
+      "n_bootstrap": 1000,
+      "semilla": 42,
+      "tiempo_seg": 18.91968227700272
+    },
+    "p2": {
+      "delta_macro_f1_espacio_fijo": {
+        "punto": 0.013649149093544588,
+        "media_bootstrap": 0.013133630956457193,
+        "ic95_inf": 0.00027804448903064884,
+        "ic95_sup": 0.02809989028930929,
+        "p_valor_bilateral": 0.04
+      },
+      "delta_macro_f1_observado": {
+        "punto": 0.013649149093544588,
+        "media_bootstrap": 0.014115475149016045,
+        "ic95_inf": 0.00027804448903064884,
+        "ic95_sup": 0.03157886199786386,
+        "p_valor_bilateral": 0.04
+      },
+      "n_bootstrap": 1000,
+      "semilla": 42,
+      "tiempo_seg": 18.876690491000772
+    },
+    "p3": {
+      "delta_macro_f1_espacio_fijo": {
+        "punto": 0.14493949126882272,
+        "media_bootstrap": 0.11883421487638943,
+        "ic95_inf": 0.04680256201013745,
+        "ic95_sup": 0.18044086608516424,
+        "p_valor_bilateral": 0.0
+      },
+      "delta_macro_f1_observado": {
+        "punto": 0.14493949126882272,
+        "media_bootstrap": 0.1251144654104645,
+        "ic95_inf": 0.04992273281081334,
+        "ic95_sup": 0.1917008916735191,
+        "p_valor_bilateral": 0.0
+      },
+      "n_bootstrap": 1000,
+      "semilla": 42,
+      "tiempo_seg": 18.891028229001677
+    }
+  },
+  "consistencia_ab": {
+    "p1": {
+      "mitades": "A = posiciones pares y B = impares del orden de id",
+      "n_mitad_a": 1775,
+      "n_mitad_b": 1774,
+      "delta_mitad_a": 0.03582519211652491,
+      "delta_mitad_b": 0.017100562410427345,
+      "macro_f1_fijo16_mitad_a": {
+        "w1": 0.26394848556435313,
+        "p1": 0.29977367768087804
+      },
+      "macro_f1_fijo16_mitad_b": {
+        "w1": 0.26399784266361137,
+        "p1": 0.2810984050740387
+      },
+      "accuracy_mitad_a": {
+        "w1": 0.5881690140845071,
+        "p1": 0.5126760563380282
+      },
+      "accuracy_mitad_b": {
+        "w1": 0.5851183765501691,
+        "p1": 0.5298759864712514
+      },
+      "sesgos_ajustados_en_b_para_a": [
+        0.0,
+        0.05,
+        0.3,
+        0.0,
+        0.0,
+        0.0,
+        0.2,
+        0.3,
+        1.05,
+        -0.2,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "sesgos_ajustados_en_a_para_b": [
+        0.15,
+        -0.15,
+        0.1,
+        0.0,
+        1.7,
+        1.55,
+        0.1,
+        0.35,
+        0.0,
+        -0.05,
+        -0.65,
+        -0.2,
+        -0.35,
+        -0.4,
+        1.15,
+        0.1
+      ],
+      "consistente": true
+    },
+    "p2": {
+      "mitades": "A = posiciones pares y B = impares del orden de id",
+      "n_mitad_a": 1775,
+      "n_mitad_b": 1774,
+      "delta_mitad_a": 0.015708465460104182,
+      "delta_mitad_b": 0.01170776311699051,
+      "macro_f1_fijo16_mitad_a": {
+        "w1": 0.26394848556435313,
+        "p2": 0.2796569510244573
+      },
+      "macro_f1_fijo16_mitad_b": {
+        "w1": 0.26399784266361137,
+        "p2": 0.2757056057806019
+      },
+      "accuracy_mitad_a": {
+        "w1": 0.5881690140845071,
+        "p2": 0.5830985915492958
+      },
+      "accuracy_mitad_b": {
+        "w1": 0.5851183765501691,
+        "p2": 0.5879368658399098
+      },
+      "sesgos_ajustados_en_b_para_a": null,
+      "sesgos_ajustados_en_a_para_b": null,
+      "consistente": true
+    },
+    "p3": {
+      "mitades": "A = posiciones pares y B = impares del orden de id",
+      "n_mitad_a": 1775,
+      "n_mitad_b": 1774,
+      "delta_mitad_a": 0.026256669962989365,
+      "delta_mitad_b": 0.04217327598143311,
+      "macro_f1_fijo16_mitad_a": {
+        "w1": 0.26394848556435313,
+        "p3": 0.2902051555273425
+      },
+      "macro_f1_fijo16_mitad_b": {
+        "w1": 0.26399784266361137,
+        "p3": 0.3061711186450445
+      },
+      "accuracy_mitad_a": {
+        "w1": 0.5881690140845071,
+        "p3": 0.5453521126760563
+      },
+      "accuracy_mitad_b": {
+        "w1": 0.5851183765501691,
+        "p3": 0.5811724915445321
+      },
+      "sesgos_ajustados_en_b_para_a": [
+        0.0,
+        -0.4,
+        0.4,
+        0.0,
+        0.0,
+        1.1,
+        2.0,
+        0.7,
+        2.0,
+        -0.65,
+        -0.1,
+        0.0,
+        0.4,
+        -0.05,
+        0.0,
+        0.9
+      ],
+      "sesgos_ajustados_en_a_para_b": [
+        0.95,
+        -0.5,
+        0.3,
+        0.0,
+        0.0,
+        -2.0,
+        0.85,
+        1.0,
+        0.0,
+        -0.35,
+        -0.55,
+        0.5,
+        -0.55,
+        0.25,
+        1.7,
+        1.35
+      ],
+      "consistente": true
+    }
+  },
+  "decision": {
+    "ganador": "p1",
+    "resultado": "positivo",
+    "criterio": "delta pareado (macro-F1 fijo16) vs W1 en val con IC95 inferior > 0 y delta > 0 en ambas mitades A/B; desempate por mayor delta puntual, luego mayor macro-F1 fijo16 en val, luego orden p1, p2, p3",
+    "candidatos_que_cumplen": [
+      "p1",
+      "p2",
+      "p3"
+    ],
+    "detalle_por_variante": {
+      "p1": {
+        "delta_puntual": 0.17157278563785244,
+        "ic95_inf": 0.04185427327605528,
+        "ic95_sup": 0.21524410167375405,
+        "cumple_ic95_inf_positivo": true,
+        "cumple_consistencia_ab": true
+      },
+      "p2": {
+        "delta_puntual": 0.013649149093544588,
+        "ic95_inf": 0.00027804448903064884,
+        "ic95_sup": 0.02809989028930929,
+        "cumple_ic95_inf_positivo": true,
+        "cumple_consistencia_ab": true
+      },
+      "p3": {
+        "delta_puntual": 0.14493949126882272,
+        "ic95_inf": 0.04680256201013745,
+        "ic95_sup": 0.18044086608516424,
+        "cumple_ic95_inf_positivo": true,
+        "cumple_consistencia_ab": true
+      }
+    }
+  },
+  "test_canonico_y_temporal": {
+    "development_test_reutilizado": true,
+    "n_lecturas_por_bloque": 1,
+    "nota": "test canonico y temporal leidos UNA sola vez, despues de declarar ganador, reutilizando probabilidades ya persistidas; los sesgos del ganador se ajustaron solo en val",
+    "test": {
+      "ganador": {
+        "macro_f1": 0.28455642159861316,
+        "macro_f1_espacio_fijo": 0.2667716452486998,
+        "accuracy": 0.5146561443066516,
+        "n": 3548
+      },
+      "w1": {
+        "macro_f1": 0.2628330579315817,
+        "macro_f1_espacio_fijo": 0.24640599181085782,
+        "accuracy": 0.5837091319052987,
+        "n": 3548
+      }
+    },
+    "temporal_val": {
+      "ganador": {
+        "macro_f1": 0.4597733791942441,
+        "macro_f1_espacio_fijo": 0.4310375429946039,
+        "accuracy": 0.6555380989787902,
+        "n": 5092
+      },
+      "w1": {
+        "macro_f1": 0.680233081120284,
+        "macro_f1_espacio_fijo": 0.5952039459802486,
+        "accuracy": 0.8338570306362922,
+        "n": 5092
+      }
+    },
+    "temporal_test": {
+      "ganador": {
+        "macro_f1": 0.4631000414324517,
+        "macro_f1_espacio_fijo": 0.40521253625339526,
+        "accuracy": 0.6543427230046949,
+        "n": 1704
+      },
+      "w1": {
+        "macro_f1": 0.8237545247902248,
+        "macro_f1_espacio_fijo": 0.5663312357932797,
+        "accuracy": 0.8327464788732394,
+        "n": 1704
+      }
+    }
+  },
+  "tiempos_seg": {
+    "val_y_calibracion_seg": 33.17026011100097,
+    "bootstrap_seg": 56.68785949499943,
+    "consistencia_ab_seg": 38.60716211799809,
+    "test_temporal_seg": 0.05686283300019568,
+    "total_seg": 129.27228378200016
+  },
+  "artefactos": {
+    "json": "resultados/m4_h2b_postproceso_v1.json",
+    "figura": "figuras/fig_h2b_postproceso.png",
+    "log": "experimentos/20_h2b_postproceso.log"
+  },
+  "md5_salidas": {
+    "figura": "9c054594b03ce7c1d176d3ddb7d477e0"
+  }
+}

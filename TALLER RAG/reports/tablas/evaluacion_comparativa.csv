@@ -1,0 +1,27 @@
+familia,metrica,configuracion,actual,anterior
+Recuperacion,Recall@10,final 125bbc7 vs k=15,0.912,0.912
+Recuperacion,nDCG@10,final 125bbc7 vs k=15,0.818,0.818
+Recuperacion,P@1,final 125bbc7 vs k=15,0.737,0.737
+Recuperacion,Hit@5,final 125bbc7 vs k=15,0.947,0.947
+Respuesta,Entregadas,final 125bbc7 vs k=15,37/38,33/38
+Respuesta,Abstenciones directas,final 125bbc7 vs k=15,1,5
+Respuesta,Cobertura de tokens,final 125bbc7 vs k=15,25/37 (67.6%),24/33 (72.7%)
+Respuesta,F1 tokens,final 125bbc7 vs k=15,0.273,0.274
+Respuesta,Latencia media,final 125bbc7 vs k=15,7938 ms,17657 ms
+Respuesta,Latencia mediana,final 125bbc7 vs k=15,7086 ms,17569 ms
+Respuesta,Contexto medio,final 125bbc7 vs k=15,1361,3975
+Respuesta con razonamiento,Entregadas,final 125bbc7 vs k=15,37/38,33/38
+Respuesta con razonamiento,Latencia media,final 125bbc7 vs k=15,6834 ms,18840 ms
+Recuperacion top-5,nDCG con reranker,final 125bbc7 vs k=15,0.865,0.809
+Recuperacion top-5,P@1 con reranker,final 125bbc7 vs k=15,0.868,0.737
+Recuperacion top-5,Recall,final 125bbc7 vs k=15,0.895,0.895
+Recuperacion top-5,Hit@5,final 125bbc7 vs k=15,0.947,0.947
+Revision manual (12 sin cobertura),Correctas / parciales / incorrectas,12 sin cobertura vs historico,8/3/1,7/3/2
+Chat,Con Modo estricto,final 125bbc7 vs k=15,14/14,9/12
+Chat,Sin Modo estricto,final 125bbc7 vs k=15,11/14,9/12
+Chat con razonamiento,Con Modo estricto,final 125bbc7 vs k=15,14/14,9/12
+RAGAS,faithfulness,hibrido k=10 vs denso k=10,0.920 (n=38),0.932 (n=38)
+RAGAS,answer_relevancy,hibrido k=10 vs denso k=10,0.788 (n=38),0.765 (n=38)
+RAGAS,context_precision,hibrido k=10 vs denso k=10,0.867 (n=36),0.810 (n=36)
+RAGAS,context_recall,hibrido k=10 vs denso k=10,0.947 (n=38),0.947 (n=38)
+RAGAS,answer_correctness,hibrido k=10 vs denso k=10,0.607 (n=38),0.569 (n=38)

@@ -1,0 +1,647 @@
+{
+ "version": "b2-retriever-denso-v1",
+ "ciclo": "v3",
+ "sprint": "B2",
+ "fecha": "2026-10-04 17:52:48",
+ "smoke": false,
+ "modelo_base": "SINAI/ALIA-MrBERT-es-legal-administrative-embeddings",
+ "hiperparametros": {
+  "lr": 2e-05,
+  "epochs": 1,
+  "batch": 64,
+  "val_frac": 0.05,
+  "max_tripletas": 200000,
+  "warmup_ratio": 0.1,
+  "weight_decay": 0.01,
+  "max_grad_norm": 1.0,
+  "amp": true,
+  "gradient_checkpointing": true,
+  "semilla": 42,
+  "log_cada": 50,
+  "max_seq_length": 512,
+  "max_filas": 0,
+  "max_pasos": 0
+ },
+ "datos": {
+  "dir_pares": "data/pares_b1",
+  "esquema_shards": {
+   "huella": "696002518e19e6e19d434c9ab565fdf1",
+   "version": "b1-pares-reranker-v1",
+   "n_shards": 23
+  },
+  "filas_leidas": 299999,
+  "positivos": 150000,
+  "negativos": 149999,
+  "docs": 22994,
+  "docs_train": 21844,
+  "docs_val": 1150,
+  "tripletas_train_antes_cap": 143004,
+  "tripletas_train": 143004,
+  "tripletas_val": 7970,
+  "pares_train": 96328,
+  "pares_val": 5038,
+  "cap_tripletas_aplicado": false,
+  "enlace_hard_negatives": {
+   "claves_negativas": 113389,
+   "claves_negativas_enlazadas": 29461,
+   "tasa_claves_enlazadas": 0.2598,
+   "filas_negativas": 149999,
+   "filas_negativas_enlazadas": 55912,
+   "tasa_filas_enlazadas": 0.3727,
+   "nota": "enlace exacto por (doc_id, huella(texto_chunk)); el resto de positivos entrena como pares (MNRL con negativos in-batch)"
+  },
+  "negativos_por_fuente_total": {
+   "aleatorio_sin_bm25": 49079,
+   "aleatorio": 30120,
+   "cocitado": 44799,
+   "bm25": 26001
+  },
+  "fuentes_negativo_en_tripletas": {
+   "cocitado": 41072,
+   "aleatorio_sin_bm25": 12492,
+   "bm25": 61931,
+   "aleatorio": 27509
+  },
+  "md5_shards": {
+   "por_shard": {
+    "pares_reranker_b1_shard0000.parquet": "a33bb2aaa560805f58b4b037b1b15a56",
+    "pares_reranker_b1_shard0001.parquet": "1ef0bb277723630af9c408f7406b7a7a",
+    "pares_reranker_b1_shard0002.parquet": "6a6541650cf0d154095130bf05e00d6c",
+    "pares_reranker_b1_shard0003.parquet": "e43bf7cb80073159dea0fd2418c6472a",
+    "pares_reranker_b1_shard0004.parquet": "5b5595882302b9482881b185d161c16c",
+    "pares_reranker_b1_shard0005.parquet": "5400a322bd26ad11a52045471a20d2bd",
+    "pares_reranker_b1_shard0006.parquet": "534d26b32f9b8a2eedadda1dde7aef77",
+    "pares_reranker_b1_shard0007.parquet": "17054484c222685af34a05517ad6e021",
+    "pares_reranker_b1_shard0008.parquet": "6c3de09369c903092cce1005c8f777b9",
+    "pares_reranker_b1_shard0009.parquet": "8f5b856f0b2edc4e090e13f28a02ab10",
+    "pares_reranker_b1_shard0010.parquet": "32a52f99f3c4c9485af216ba269e536a",
+    "pares_reranker_b1_shard0011.parquet": "ae58c52a60373d642f93c10a93de08f5",
+    "pares_reranker_b1_shard0012.parquet": "005b4588294a0b51d2a12f3738b8ca33",
+    "pares_reranker_b1_shard0013.parquet": "646ba72ae090c773a6ccefa824f78cf3",
+    "pares_reranker_b1_shard0014.parquet": "80ac6865bc5a8b69db09b64323346edf",
+    "pares_reranker_b1_shard0015.parquet": "c15b3a4a6deff2e5c09f10a494da8e5b",
+    "pares_reranker_b1_shard0016.parquet": "98a66e94008a8b3c4f1aa1eaa7298682",
+    "pares_reranker_b1_shard0017.parquet": "b0515cc81e9fbc83085172df820d2b89",
+    "pares_reranker_b1_shard0018.parquet": "820d5c5f439f333c7c23899cfc9c02b8",
+    "pares_reranker_b1_shard0019.parquet": "0216d9e2d502412e4566d3fc7519bbdf",
+    "pares_reranker_b1_shard0020.parquet": "9104bd56439ee2cd4f6900979d3f2d1a",
+    "pares_reranker_b1_shard0021.parquet": "88f227286959a839c3f99ee52804a382",
+    "pares_reranker_b1_shard0022.parquet": "19498602012ace82fb63bf807157e6b4"
+   },
+   "combinado": "079c815a85b02e5c0eeec0511f9f813e",
+   "n_shards": 23
+  }
+ },
+ "exclusion_benchmark": {
+  "n_ids": 90,
+  "fuente_primaria": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v2.json",
+  "fuente_cruzada": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v8.json",
+  "md5_v2": "d8cf0cbde15eff34d6f57b702fb89868",
+  "md5_v8": "746621a797fe109335e2a43367717a77",
+  "huella_exclusion": "3bc0f1680c9868194352c98c2271781f",
+  "filas_benchmark_en_shards": 0,
+  "docs_benchmark_en_shards": 0,
+  "verificado": true
+ },
+ "entrenamiento": {
+  "pasos_por_epoca": 3762,
+  "pasos_totales": 3762,
+  "pasos_ejecutados": 3762,
+  "ejemplos_entrenados": 239332,
+  "reanudado": false,
+  "curva_loss": [
+   {
+    "epoca": 1,
+    "paso": 50,
+    "perdida": 4.986823601722717,
+    "lr": 2.6595744680851065e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 100,
+    "perdida": 4.062186636924744,
+    "lr": 5.319148936170213e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 150,
+    "perdida": 3.7441711902618406,
+    "lr": 7.97872340425532e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 200,
+    "perdida": 3.7447782611846923,
+    "lr": 1.0638297872340426e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 250,
+    "perdida": 3.5813441848754883,
+    "lr": 1.3297872340425533e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 300,
+    "perdida": 3.418036689758301,
+    "lr": 1.595744680851064e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 350,
+    "perdida": 3.338675060272217,
+    "lr": 1.8617021276595745e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 400,
+    "perdida": 3.411562991142273,
+    "lr": 1.9858239810986416e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 450,
+    "perdida": 3.6057649087905883,
+    "lr": 1.956290608387478e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 500,
+    "perdida": 3.513001952171326,
+    "lr": 1.9267572356763144e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 550,
+    "perdida": 3.3775414514541624,
+    "lr": 1.8972238629651508e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 600,
+    "perdida": 3.1355315589904786,
+    "lr": 1.8676904902539872e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 650,
+    "perdida": 3.447568583488464,
+    "lr": 1.8381571175428236e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 700,
+    "perdida": 3.2420201301574707,
+    "lr": 1.80862374483166e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 750,
+    "perdida": 3.3199307239055633,
+    "lr": 1.7790903721204964e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 800,
+    "perdida": 3.436789093017578,
+    "lr": 1.7495569994093328e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 850,
+    "perdida": 3.2200470066070555,
+    "lr": 1.7200236266981692e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 900,
+    "perdida": 3.08107901096344,
+    "lr": 1.6904902539870052e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 950,
+    "perdida": 3.025158529281616,
+    "lr": 1.660956881275842e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1000,
+    "perdida": 3.0700843334198,
+    "lr": 1.631423508564678e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1050,
+    "perdida": 3.2294927263259887,
+    "lr": 1.6018901358535145e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1100,
+    "perdida": 3.3126959371566773,
+    "lr": 1.5723567631423512e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1150,
+    "perdida": 3.2330758285522463,
+    "lr": 1.5428233904311873e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1200,
+    "perdida": 3.394586653709412,
+    "lr": 1.5132900177200238e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1250,
+    "perdida": 3.1356566095352174,
+    "lr": 1.48375664500886e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1300,
+    "perdida": 3.246234931945801,
+    "lr": 1.4542232722976966e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1350,
+    "perdida": 3.1324016666412353,
+    "lr": 1.4246898995865329e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1400,
+    "perdida": 3.5182499837875367,
+    "lr": 1.3951565268753693e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1450,
+    "perdida": 3.3384746360778808,
+    "lr": 1.3656231541642058e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1500,
+    "perdida": 3.258521361351013,
+    "lr": 1.336089781453042e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1550,
+    "perdida": 3.1073732137680055,
+    "lr": 1.3065564087418785e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1600,
+    "perdida": 3.0256510090827944,
+    "lr": 1.2770230360307147e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1650,
+    "perdida": 3.374232530593872,
+    "lr": 1.2474896633195513e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1700,
+    "perdida": 3.091819143295288,
+    "lr": 1.2179562906083875e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1750,
+    "perdida": 2.918787064552307,
+    "lr": 1.1884229178972239e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1800,
+    "perdida": 3.2581323516368865,
+    "lr": 1.1588895451860605e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1850,
+    "perdida": 3.097443046569824,
+    "lr": 1.1293561724748967e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1900,
+    "perdida": 3.2065408611297608,
+    "lr": 1.0998227997637331e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 1950,
+    "perdida": 3.2480740690231324,
+    "lr": 1.0702894270525695e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 2000,
+    "perdida": 3.049906220436096,
+    "lr": 1.0407560543414059e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 2050,
+    "perdida": 2.96341001033783,
+    "lr": 1.0112226816302421e-05
+   },
+   {
+    "epoca": 1,
+    "paso": 2100,
+    "perdida": 3.1835736417770386,
+    "lr": 9.816893089190787e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2150,
+    "perdida": 3.1939361357688902,
+    "lr": 9.52155936207915e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2200,
+    "perdida": 3.2790114879608154,
+    "lr": 9.226225634967514e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2250,
+    "perdida": 3.4503115105628965,
+    "lr": 8.930891907855878e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2300,
+    "perdida": 3.310560097694397,
+    "lr": 8.635558180744242e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2350,
+    "perdida": 3.103017067909241,
+    "lr": 8.340224453632606e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2400,
+    "perdida": 2.987994990348816,
+    "lr": 8.04489072652097e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2450,
+    "perdida": 3.014011409282684,
+    "lr": 7.749556999409334e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2500,
+    "perdida": 3.190965781211853,
+    "lr": 7.454223272297697e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2550,
+    "perdida": 3.039473714828491,
+    "lr": 7.158889545186061e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2600,
+    "perdida": 3.4789095544815063,
+    "lr": 6.863555818074424e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2650,
+    "perdida": 3.2824313926696775,
+    "lr": 6.568222090962788e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2700,
+    "perdida": 3.2122080373764037,
+    "lr": 6.272888363851153e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2750,
+    "perdida": 2.9600931453704833,
+    "lr": 5.977554636739517e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2800,
+    "perdida": 3.3455619764328004,
+    "lr": 5.68222090962788e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2850,
+    "perdida": 3.199305601119995,
+    "lr": 5.386887182516244e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2900,
+    "perdida": 3.389130425453186,
+    "lr": 5.091553455404607e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2950,
+    "perdida": 3.3512840032577516,
+    "lr": 4.796219728292971e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3000,
+    "perdida": 3.2355031633377074,
+    "lr": 4.500886001181335e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3050,
+    "perdida": 3.0690436124801637,
+    "lr": 4.205552274069699e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3100,
+    "perdida": 3.321321611404419,
+    "lr": 3.9102185469580624e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3150,
+    "perdida": 3.189998593330383,
+    "lr": 3.614884819846427e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3200,
+    "perdida": 3.1586207096278667,
+    "lr": 3.319551092734791e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3250,
+    "perdida": 3.2094499683380127,
+    "lr": 3.0242173656231545e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3300,
+    "perdida": 3.1774031686782838,
+    "lr": 2.728883638511518e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3350,
+    "perdida": 3.267178554534912,
+    "lr": 2.433549911399882e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3400,
+    "perdida": 3.4588358974456788,
+    "lr": 2.138216184288246e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3450,
+    "perdida": 3.2994569635391233,
+    "lr": 1.8428824571766097e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3500,
+    "perdida": 3.217212872505188,
+    "lr": 1.5475487300649735e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3550,
+    "perdida": 3.378607015609741,
+    "lr": 1.2522150029533373e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3600,
+    "perdida": 3.2591028141975404,
+    "lr": 9.568812758417011e-07
+   },
+   {
+    "epoca": 1,
+    "paso": 3650,
+    "perdida": 3.166665515899658,
+    "lr": 6.61547548730065e-07
+   },
+   {
+    "epoca": 1,
+    "paso": 3700,
+    "perdida": 3.507424849271774,
+    "lr": 3.6621382161842885e-07
+   },
+   {
+    "epoca": 1,
+    "paso": 3750,
+    "perdida": 3.897691583633423,
+    "lr": 7.088009450679268e-08
+   },
+   {
+    "epoca": 1,
+    "paso": 3762,
+    "perdida": 3.8901679317156472,
+    "lr": 0.0
+   }
+  ],
+  "val_por_epoca": [
+   {
+    "epoca": 1,
+    "n_tripletas": 7970,
+    "n_pares": 5038,
+    "n_anclas": 6072,
+    "n_pasajes": 572,
+    "accuracy_tripletas": 0.6864491844416563,
+    "recall@1": 0.1671279212792128,
+    "recall@5": 0.29620233702337023,
+    "recall@10": 0.36162361623616235,
+    "mrr": 0.23679613462666896,
+    "accuracy_seleccion": 0.6864491844416563,
+    "segundos": 105.2,
+    "mejor": true
+   }
+  ],
+  "mejor_epoca": 1,
+  "mejor_metrica": 0.6864491844416563,
+  "tiempos": {
+   "total_s": 3661.4,
+   "entrenamiento_s": 3554.9,
+   "evaluacion_s": 105.2,
+   "por_epoca_s": [
+    3554.9
+   ],
+   "ejemplos_por_s": 67.33
+  },
+  "vram_pico_gb": 5.97,
+  "vram_inicial": {
+   "gpu": "AMD Radeon RX 9070 XT",
+   "vram_libre_gb": 17.0,
+   "vram_total_gb": 17.1
+  }
+ },
+ "mejor": {
+  "epoca": 1,
+  "n_tripletas": 7970,
+  "n_pares": 5038,
+  "n_anclas": 6072,
+  "n_pasajes": 572,
+  "accuracy_tripletas": 0.6864491844416563,
+  "recall@1": 0.1671279212792128,
+  "recall@5": 0.29620233702337023,
+  "recall@10": 0.36162361623616235,
+  "mrr": 0.23679613462666896,
+  "accuracy_seleccion": 0.6864491844416563,
+  "segundos": 105.2,
+  "mejor": true
+ },
+ "entorno": {
+  "python": "3.14.7",
+  "plataforma": "Linux-7.2.8-1-cachyos-x86_64-with-glibc2.44",
+  "torch": "2.14.0+rocm7.2",
+  "transformers": "5.16.1",
+  "sentence_transformers": "6.0.1",
+  "numpy": "1.26.4",
+  "pandas": "2.3.3",
+  "pyarrow": null,
+  "hip": "7.2.53211",
+  "cuda_disponible": true,
+  "gpu": "AMD Radeon RX 9070 XT"
+ },
+ "artefactos": {
+  "modelo": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/b2_retriever",
+  "checkpoints": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/b2_retriever/checkpoints",
+  "json": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/b2_entrenamiento_v1.json",
+  "log": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/experimentos/25_b2_entrenar.log",
+  "figura": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/figuras/fig_b2_entrenamiento.png"
+ },
+ "notas": [
+  "Anti-leakage: los pares de B1 ya excluyen las 90 sentencias del benchmark; se reverifico por re-escaneo de shards.",
+  "Enlace de hard negatives parcial por construccion de B1; las claves sin enlace entrenan como pares.",
+  "Recall@k de val es un proxy con candidatos = pasajes unicos de val (no el indice completo de la CP).",
+  "Gradient checkpointing en el encoder (ver hiperparametros)."
+ ],
+ "tiempos_totales_s": 3667.4
+}

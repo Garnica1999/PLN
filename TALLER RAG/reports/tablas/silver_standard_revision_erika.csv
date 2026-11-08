@@ -1,0 +1,44 @@
+﻿id;validado;estado;comentario
+g-001;Sí;si;
+g-002;Sí;si;
+g-003;Corregir;corregida;La fila sirve pero la respuesta debe cambiarse
+g-007;Sí;si;
+g-008;Sí;si;
+g-009;Sí;si;
+g-010;Sí;si;
+g-011;Sí;si;
+g-012;Sí;si;
+g-014;Sí;si;
+g-016;Sí;si;
+g-017;Corregir;sin_verificar;La fila sirve pero la respuesta debe cambiarse
+g-018;Corregir;sin_verificar;La fila sirve pero la respuesta debe cambiarse
+g-019;Sí;si;
+g-020;Sí;si;
+g-021;Sí;si;
+g-022;No;no_aplicada;El link no funciona.
+g-023;Sí;si;
+g-024;No;no_aplicada;La fila sirve pero la respuesta debe cambiarse
+g-025;No;no_aplicada;El link no funciona.
+g-027;Sí;si;
+g-028;Sí;si;
+g-031;Sí;si;
+g-032;No;no_aplicada;El link no funciona.
+g-033;Sí;si;
+g-034;Sí;si;
+g-036;Sí;si;
+g-037;Sí;si;
+g-038;No;no_aplicada;La pregunta esta duplicada.
+g-039;Sí;si;
+g-040;Sí;si;
+g-041;Sí;si;
+g-042;Sí;si;
+g-043;Sí;si;
+g-044;Sí;si;
+g-045;Sí;si;
+g-046;Sí;si;
+g-047;Sí;si;
+g-048;Sí;si;
+g-049;Sí;si;
+g-050;Sí;si;
+g-051;Sí;si;
+g-052;Sí;si;

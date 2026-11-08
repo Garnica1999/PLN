@@ -1,0 +1,8 @@
+metric,diff,ci_lo,ci_hi,significativo
+hit,0.0,0.0,0.0,False
+recall,0.0,0.0,0.0,False
+p_at_1,0.0,0.0,0.0,False
+p_at_5,0.0,0.0,0.0,False
+mrr,0.0,0.0,0.0,False
+ndcg,0.0,0.0,0.0,False
+retrieval_ms,-0.9432,-1.7572,-0.1478,True

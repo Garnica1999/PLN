@@ -1,0 +1,5 @@
+union,recall_at_10,delivered,strict_match,abstained
+10/20,0.7,19,17,1
+20/20,0.75,,,
+30/30,0.75,,,
+50/50,0.85,18,16,2

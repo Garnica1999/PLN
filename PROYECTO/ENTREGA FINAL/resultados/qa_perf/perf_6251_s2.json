@@ -1,0 +1,71 @@
+{
+  "id": "6251",
+  "stats_documento": {
+    "chars_crudo": 38801,
+    "palabras_crudo": 6265,
+    "chars_limpio": 35796,
+    "palabras_limpio": 5837,
+    "n_citas": 13,
+    "n_arts_extraidos": 2
+  },
+  "carga": {
+    "lectura_corpus": 0.032,
+    "init_m0_validador": 0.0,
+    "init_m2_extractor": 0.002,
+    "init_m4_clasificador": 0.708,
+    "init_m7_vinculo": 0.174,
+    "init_m5_contexto": 0.083,
+    "total_carga": 1.0
+  },
+  "rss_tras_carga_mb": 342.8,
+  "inferencia": {
+    "m0_validacion": 0.004,
+    "m2_extraccion": 0.003,
+    "m2_canon_encabezado": 0.0,
+    "m5_id_de_canon": 0.0,
+    "m4_carga_lazy_spacy": 2.603,
+    "m4_lematizacion_spacy": 0.44,
+    "m4_mascara_lemas": 0.004,
+    "m4_tfidf_logreg": 0.006,
+    "m7_detalle_arts": 0.0,
+    "m7_tokenizacion_query": 0.004,
+    "m7_scoring_bm25": 0.476,
+    "m7_pooling_ranking": 0.001,
+    "m5_resolver_citas": 0.0,
+    "suma_componentes": 3.54,
+    "m4_total_clasificar_2a_pasada": 0.355,
+    "m7_total_recuperar_2a_pasada": 0.487
+  },
+  "construir_salida_3a_pasada_s": 0.841,
+  "recursos": {
+    "rss_pico_mb": 1662.2,
+    "rss_final_mb": 1666.4,
+    "fases": {
+      "carga": {
+        "cpu_prom_pct": 417.3,
+        "cpu_pico_pct": 2797.3,
+        "hilos_pico": 50,
+        "rss_pico_mb": 340.6,
+        "n_muestras": 15
+      },
+      "inferencia": {
+        "cpu_prom_pct": 98.6,
+        "cpu_pico_pct": 119.3,
+        "hilos_pico": 53,
+        "rss_pico_mb": 1666.4,
+        "n_muestras": 69
+      }
+    }
+  },
+  "cpu_only": {
+    "modulos_gpu_en_sys_modules": [
+      "torch"
+    ],
+    "torch_gpu_disponible": true,
+    "cpu_only_confirmado": false
+  },
+  "coherencia_replica": {
+    "m4_top1_coincide": true,
+    "m7_recuperados_coinciden": true
+  }
+}

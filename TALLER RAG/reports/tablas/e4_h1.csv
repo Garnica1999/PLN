@@ -1,0 +1,5 @@
+comparacion,eje,diff,ic_lo,ic_hi,excluye_cero,latencia_base_ms,latencia_rival_ms
+llama3.2:3b - qwen2.5:1.5b,correccion,-0.083,-0.806,0.611,False,292.8,215.4
+llama3.2:3b - qwen2.5:1.5b,fidelidad,0.0,-0.278,0.25,False,292.8,215.4
+llama3.2:3b - gemma2:2b,correccion,-0.583,-1.111,-0.167,True,292.8,321.3
+llama3.2:3b - gemma2:2b,fidelidad,-0.25,-0.528,-0.056,True,292.8,321.3

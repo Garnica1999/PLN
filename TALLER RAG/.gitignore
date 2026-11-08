@@ -1,0 +1,11 @@
+Dataset/
+data/
+*.parquet
+!eval/*.parquet
+.env
+hf_cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+.streamlit/secrets.toml
+reports/corridas/

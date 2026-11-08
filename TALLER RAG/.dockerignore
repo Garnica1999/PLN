@@ -1,0 +1,9 @@
+Dataset/
+reports/
+eval/
+hf_cache/
+.env
+.git
+__pycache__/
+*.pyc
+.pytest_cache/

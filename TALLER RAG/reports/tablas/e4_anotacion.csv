@@ -1,0 +1,5 @@
+model,n_preguntas,correccion,fidelidad,citas,abstencion,generation_p50_ms
+gemma2:2b,18,2.806,2.972,2.667,2.889,321.3
+qwen2.5:1.5b,18,2.306,2.722,0.0,2.806,215.4
+llama3.2:3b,18,2.222,2.722,0.861,2.694,292.8
+llama3.2:1b,18,0.417,2.306,0.278,1.611,83.7

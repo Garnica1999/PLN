@@ -1,0 +1,175 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "2728",
+  "ponente": "Eduardo Cifuentes Muñoz",
+  "area": {
+    "top3": [
+      {
+        "area": "regimen_economico",
+        "prob": 0.9098
+      },
+      {
+        "area": "derechos_sociales_economicos_culturales",
+        "prob": 0.0327
+      },
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.0247
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "357",
+        "texto_150chars": "<Artículo modificado por el artículo 2 del Acto Legislativo 3 de 2024. El nuevo texto es el siguiente:> El Sistema General de Participaciones crecerá ",
+        "bloque": "regimen_economico"
+      },
+      {
+        "numero": "356",
+        "texto_150chars": "<Artículo modificado por el artículo 1 del Acto Legislativo 3 de 2024. El nuevo texto es el siguiente:> Salvo lo dispuesto por la Constitución, la ley",
+        "bloque": "regimen_economico"
+      },
+      {
+        "numero": "11",
+        "texto_150chars": "El derecho a la vida es inviolable. No habrá pena de muerte",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "334",
+        "texto_150chars": "<Artículo modificado por el artículo 1o . del Acto Legislativo 3 de 2011. El nuevo texto es el siguiente:> La dirección general de la economía estará ",
+        "bloque": "regimen_economico"
+      },
+      {
+        "numero": "366",
+        "texto_150chars": "El bienestar general y el mejoramiento de la calidad de vida de la población son finalidades sociales del Estado. Será objetivo fundamental de su acti",
+        "bloque": "regimen_economico"
+      },
+      {
+        "numero": "25",
+        "texto_150chars": "El trabajo es un derecho y una obligación social y goza, en todas sus modalidades, de la especial protección del Estado. Toda persona tiene derecho a ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "53",
+        "texto_150chars": "El Congreso expedirá el estatuto del trabajo. La ley correspondiente tendrá en cuenta por lo menos los siguientes principios mínimos fundamentales: Ig",
+        "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+        "numero": "58",
+        "texto_150chars": "<Artículo modificado por el artículo 1 o. del Acto Legislativo 1 de 1999. El nuevo texto es el siguiente:> Se garantizan la propiedad privada y los de",
+        "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+        "numero": "1",
+        "texto_150chars": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem",
+        "bloque": "principios_fundamentales"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "48",
+        "score": 193.6795
+      },
+      {
+        "numero": "Transitorio ACL02021-2",
+        "score": 191.8904
+      },
+      {
+        "numero": "67",
+        "score": 183.2481
+      },
+      {
+        "numero": "356",
+        "score": 182.621
+      },
+      {
+        "numero": "Transitorio 48",
+        "score": 175.735
+      }
+    ]
+  },
+  "sentencias_citadas": [
+    {
+      "id": "C-115-1995",
+      "resuelta": false,
+      "ano": 1995,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "T-615-1996",
+      "resuelta": false,
+      "ano": 1996,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "267",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.000194,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2980",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 0.000108,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "2806",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 0.000129,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "792",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 8.5e-05,
+      "area": "elecciones"
+    },
+    {
+      "id": "1842",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000416,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "1489",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000294,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "1644",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000282,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "1659",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000137,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "1263",
+      "resuelta": true,
+      "ano": 1993,
+      "pagerank": 6.4e-05,
+      "area": "principios_fundamentales"
+    }
+  ],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica regimen_economico (prob 0.9098); 9 articulos CP extraidos y 5 recuperados por BM25; 9 de 11 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 10.33
+}

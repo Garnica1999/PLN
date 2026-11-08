@@ -1,0 +1,458 @@
+{
+  "version": "c2-lora-dataset-v1",
+  "fecha": "2026-10-05 04:55:35",
+  "modo": "completo",
+  "huella": "333e60bee3a96611b211c2912101e6b7",
+  "entorno": {
+    "python": "3.14.7",
+    "plataforma": "Linux-7.2.8-1-cachyos-x86_64-with-glibc2.44",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3",
+    "cleanlab": "2.9.0",
+    "matplotlib": "3.10.9",
+    "torch": "2.14.0+rocm7.2",
+    "transformers": "5.16.1",
+    "peft": "0.21.2",
+    "accelerate": "1.15.0",
+    "cuda_disponible": true,
+    "gpu": "AMD Radeon RX 9070 XT",
+    "rocm": "7.2.53211"
+  },
+  "fuentes": {
+    "shards": {
+      "n_shards": 23,
+      "n_filas": 299999,
+      "shards": [
+        {
+          "nombre": "pares_reranker_b1_shard0000.parquet",
+          "filas": 18450,
+          "bytes": 5244821,
+          "md5": "a33bb2aaa560805f58b4b037b1b15a56"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0001.parquet",
+          "filas": 17264,
+          "bytes": 4859116,
+          "md5": "1ef0bb277723630af9c408f7406b7a7a"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0002.parquet",
+          "filas": 19494,
+          "bytes": 5575613,
+          "md5": "6a6541650cf0d154095130bf05e00d6c"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0003.parquet",
+          "filas": 20888,
+          "bytes": 6132300,
+          "md5": "e43bf7cb80073159dea0fd2418c6472a"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0004.parquet",
+          "filas": 22480,
+          "bytes": 6714077,
+          "md5": "5b5595882302b9482881b185d161c16c"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0005.parquet",
+          "filas": 24875,
+          "bytes": 7405320,
+          "md5": "5400a322bd26ad11a52045471a20d2bd"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0006.parquet",
+          "filas": 18400,
+          "bytes": 5528995,
+          "md5": "534d26b32f9b8a2eedadda1dde7aef77"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0007.parquet",
+          "filas": 10300,
+          "bytes": 3042617,
+          "md5": "17054484c222685af34a05517ad6e021"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0008.parquet",
+          "filas": 8526,
+          "bytes": 2599603,
+          "md5": "6c3de09369c903092cce1005c8f777b9"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0009.parquet",
+          "filas": 7424,
+          "bytes": 2315798,
+          "md5": "8f5b856f0b2edc4e090e13f28a02ab10"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0010.parquet",
+          "filas": 7576,
+          "bytes": 2295517,
+          "md5": "32a52f99f3c4c9485af216ba269e536a"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0011.parquet",
+          "filas": 8456,
+          "bytes": 2687400,
+          "md5": "ae58c52a60373d642f93c10a93de08f5"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0012.parquet",
+          "filas": 8726,
+          "bytes": 2765793,
+          "md5": "005b4588294a0b51d2a12f3738b8ca33"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0013.parquet",
+          "filas": 9318,
+          "bytes": 3001240,
+          "md5": "646ba72ae090c773a6ccefa824f78cf3"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0014.parquet",
+          "filas": 9496,
+          "bytes": 3063799,
+          "md5": "80ac6865bc5a8b69db09b64323346edf"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0015.parquet",
+          "filas": 9374,
+          "bytes": 3016072,
+          "md5": "c15b3a4a6deff2e5c09f10a494da8e5b"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0016.parquet",
+          "filas": 9966,
+          "bytes": 3223663,
+          "md5": "98a66e94008a8b3c4f1aa1eaa7298682"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0017.parquet",
+          "filas": 10454,
+          "bytes": 3388253,
+          "md5": "b0515cc81e9fbc83085172df820d2b89"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0018.parquet",
+          "filas": 10862,
+          "bytes": 3525088,
+          "md5": "820d5c5f439f333c7c23899cfc9c02b8"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0019.parquet",
+          "filas": 11204,
+          "bytes": 3686640,
+          "md5": "0216d9e2d502412e4566d3fc7519bbdf"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0020.parquet",
+          "filas": 11676,
+          "bytes": 3853174,
+          "md5": "9104bd56439ee2cd4f6900979d3f2d1a"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0021.parquet",
+          "filas": 12682,
+          "bytes": 4154578,
+          "md5": "88f227286959a839c3f99ee52804a382"
+        },
+        {
+          "nombre": "pares_reranker_b1_shard0022.parquet",
+          "filas": 12108,
+          "bytes": 3894122,
+          "md5": "19498602012ace82fb63bf807157e6b4"
+        }
+      ]
+    },
+    "benchmark": {
+      "n_ids": 90,
+      "md5_v2": "d8cf0cbde15eff34d6f57b702fb89868",
+      "md5_v8": "746621a797fe109335e2a43367717a77",
+      "conjuntos_iguales": true
+    },
+    "gold": {
+      "gold_mini": {
+        "existe": true,
+        "n_ids": 50,
+        "md5": "60870a019a67a609c9d2b0d3217ab73e",
+        "subconjunto_benchmark": true
+      },
+      "gold_150": {
+        "existe": false
+      }
+    }
+  },
+  "integridad": {
+    "benchmark_en_shards": 0,
+    "gold_en_shards": 0,
+    "benchmark_en_train": 0,
+    "benchmark_en_val": 0,
+    "gold_en_train": 0,
+    "gold_en_val": 0,
+    "split_identico_b1": true,
+    "disjuncion_train_val": true,
+    "val_eval_subconjunto_val": true,
+    "fuga_md5_train_a_val": 0,
+    "fuga_md5_train_a_val_eval": 0
+  },
+  "split": {
+    "metodo": "docs ordenados + random.Random('42:split:doc') + val_frac 0.05 (identico a B1, script 24)",
+    "n_docs": 22994,
+    "n_docs_train": 21844,
+    "n_docs_val": 1150,
+    "val_frac": 0.05,
+    "semilla": 42,
+    "disjuntos": true
+  },
+  "muestreo": {
+    "train": {
+      "docs_train": 21844,
+      "docs_con_pares_muestreados": 21844,
+      "muestreados_positivos": 60465,
+      "muestreados_negativos": 42294,
+      "candidatos_positivos": 10500,
+      "candidatos_negativos": 10500,
+      "objetivo_positivos": 10000,
+      "objetivo_negativos": 10000
+    },
+    "val": {
+      "docs_val": 1150,
+      "disponibles_positivos": 7470,
+      "disponibles_negativos": 7470,
+      "candidatos_val": 3150,
+      "candidatos_val_eval": 1050,
+      "objetivo_val": [
+        1500,
+        1500
+      ],
+      "objetivo_val_eval": [
+        500,
+        500
+      ],
+      "val_eval_subconjunto_val": true
+    }
+  },
+  "dedupe": {
+    "train": {
+      "entrada": 21000,
+      "salida": 20999,
+      "dup_clave": 0,
+      "dup_md5": 1
+    },
+    "val": {
+      "entrada": 3150,
+      "salida": 3150,
+      "dup_clave": 0,
+      "dup_md5": 0
+    },
+    "val_eval": {
+      "entrada": 1050,
+      "salida": 1050,
+      "dup_clave": 0,
+      "dup_md5": 0
+    }
+  },
+  "balance": {
+    "train": {
+      "disponibles_positivos": 10499,
+      "disponibles_negativos": 10500,
+      "objetivo_positivos": 10000,
+      "objetivo_negativos": 10000,
+      "salida_positivos": 10000,
+      "salida_negativos": 10000
+    },
+    "val": {
+      "disponibles_positivos": 1575,
+      "disponibles_negativos": 1575,
+      "objetivo_positivos": 1500,
+      "objetivo_negativos": 1500,
+      "salida_positivos": 1500,
+      "salida_negativos": 1500
+    },
+    "val_eval": {
+      "disponibles_positivos": 502,
+      "disponibles_negativos": 501,
+      "objetivo_positivos": 500,
+      "objetivo_negativos": 500,
+      "salida_positivos": 500,
+      "salida_negativos": 500
+    }
+  },
+  "conteos": {
+    "train": {
+      "nombre": "train",
+      "n": 20000,
+      "n_positivos": 10000,
+      "n_negativos": 10000,
+      "balance_positivo": 0.5,
+      "docs": 13802,
+      "fuentes_negativos": {
+        "aleatorio_sin_bm25": 3259,
+        "bm25": 1767,
+        "aleatorio": 2055,
+        "cocitado": 2919
+      },
+      "truncados": 0,
+      "pct_truncados": 0.0,
+      "tokens_total": {
+        "p50": 293.0,
+        "p95": 363.0,
+        "max": 424.0,
+        "media": 288.9447
+      },
+      "tokens_prompt": {
+        "p50": 291.0,
+        "p95": 361.0,
+        "max": 422.0,
+        "media": 286.9447
+      },
+      "chars_textos": {
+        "p50": 1099.0,
+        "p95": 1383.0,
+        "max": 1400.0,
+        "media": 1073.53715
+      }
+    },
+    "val": {
+      "nombre": "val",
+      "n": 3000,
+      "n_positivos": 1500,
+      "n_negativos": 1500,
+      "balance_positivo": 0.5,
+      "docs": 959,
+      "fuentes_negativos": {
+        "bm25": 254,
+        "aleatorio_sin_bm25": 477,
+        "cocitado": 467,
+        "aleatorio": 302
+      },
+      "truncados": 0,
+      "pct_truncados": 0.0,
+      "tokens_total": {
+        "p50": 287.0,
+        "p95": 360.0499999999997,
+        "max": 409.0,
+        "media": 286.577
+      },
+      "tokens_prompt": {
+        "p50": 285.0,
+        "p95": 358.0499999999997,
+        "max": 407.0,
+        "media": 284.577
+      },
+      "chars_textos": {
+        "p50": 1082.0,
+        "p95": 1383.0,
+        "max": 1400.0,
+        "media": 1062.905
+      }
+    },
+    "val_eval": {
+      "nombre": "val_eval",
+      "n": 1000,
+      "n_positivos": 500,
+      "n_negativos": 500,
+      "balance_positivo": 0.5,
+      "docs": 583,
+      "fuentes_negativos": {
+        "aleatorio_sin_bm25": 176,
+        "cocitado": 149,
+        "aleatorio": 108,
+        "bm25": 67
+      },
+      "truncados": 0,
+      "pct_truncados": 0.0,
+      "tokens_total": {
+        "p50": 288.0,
+        "p95": 359.04999999999995,
+        "max": 386.0,
+        "media": 286.396
+      },
+      "tokens_prompt": {
+        "p50": 286.0,
+        "p95": 357.04999999999995,
+        "max": 384.0,
+        "media": 284.396
+      },
+      "chars_textos": {
+        "p50": 1093.0,
+        "p95": 1383.0,
+        "max": 1400.0,
+        "media": 1062.428
+      }
+    }
+  },
+  "longitudes": {
+    "max_seq": 768,
+    "caps_chars": {
+      "chunk": 600,
+      "pasaje": 800
+    },
+    "tokens_total_train": {
+      "p50": 293.0,
+      "p95": 363.0,
+      "max": 424.0,
+      "media": 288.9447
+    },
+    "tokens_total_val": {
+      "p50": 287.0,
+      "p95": 360.0499999999997,
+      "max": 409.0,
+      "media": 286.577
+    },
+    "criterio_truncado_pct": 2.0
+  },
+  "ids_respuesta": {
+    "standalone": {
+      "Sí": 34351,
+      "No": 2125
+    },
+    "contexto": {
+      "Sí": 112502,
+      "No": 7704
+    },
+    "esperados": {
+      "Sí": 34351,
+      "No": 2125
+    }
+  },
+  "salidas": {
+    "train": {
+      "ruta": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/data/c2_lora/sft_v1/train.parquet",
+      "filas": 20000,
+      "bytes": 26932151,
+      "md5": "ab0c50e5203ac8654a7d4229c6982168"
+    },
+    "val": {
+      "ruta": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/data/c2_lora/sft_v1/val.parquet",
+      "filas": 3000,
+      "bytes": 4060547,
+      "md5": "320e265e58a12ff6675ef169cca1b0af"
+    },
+    "val_eval": {
+      "ruta": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/data/c2_lora/sft_v1/val_eval.parquet",
+      "filas": 1000,
+      "bytes": 1460173,
+      "md5": "dd37df7f210285436bf7fce028fb19f8"
+    }
+  },
+  "config": {
+    "semilla": 42,
+    "val_frac": 0.05,
+    "cap_positivos_por_doc": 3,
+    "cap_negativos_por_doc": 2,
+    "train_pos": 10000,
+    "train_neg": 10000,
+    "val_pos": 1500,
+    "val_neg": 1500,
+    "val_eval_pos": 500,
+    "val_eval_neg": 500,
+    "max_chars_chunk": 600,
+    "max_chars_pasaje": 800,
+    "max_seq": 768,
+    "system": "Eres un asistente jurídico experto en derecho constitucional colombiano. Respondes únicamente 'Sí' o 'No'.",
+    "plantilla_user": "FRAGMENTO DE SENTENCIA:\n{chunk}\n\nARTÍCULO {art} DE LA CONSTITUCIÓN:\n{pasaje}\n\n¿El fragmento cita el artículo {art}? Responde solo \"Sí\" o \"No\"."
+  }
+}

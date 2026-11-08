@@ -1,0 +1,66 @@
+\section{Protocolo de evaluaci\'on}
+\label{sec:evaluacion}
+
+\subsection{Silver est\'andar}
+
+El silver standard tiene 43 preguntas: 19 en desarrollo y 24 en prueba, 38 respondibles y 5 sin respuesta. Lo denominamos silver standard y no gold standard porque lo gener\'o un LLM y lo revisaron los autores, no expertos independientes. Cada fila guarda el identificador, la pregunta, el idioma, el tipo, el split, los documentos y fragmentos de referencia, el span literal que responde, la respuesta de referencia, el criterio de correcci\'on y el estado de validaci\'on. La Tabla~\ref{tab:silver} resume la composici\'on. Las preguntas sin respuesta no entran en Recall@k: se eval\'uan por abstenci\'on.
+
+\begin{table}[t]
+\centering
+\caption{Composici\'on del silver standard.}
+\label{tab:silver}
+\begin{tabular}{lrrr}
+\toprule
+Split & Respondibles & Sin respuesta & Total \\
+\midrule
+Desarrollo & 19 & 0 & 19 \\
+Prueba & 19 & 5 & 24 \\
+\midrule
+Total & 38 & 5 & 43 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El silver standard se ampli\'o con 17 documentos adicionales marcados por consenso de dos anotadores (kappa 0,626). Con esa ampliaci\'on, 14 preguntas quedaron con dos o m\'as documentos relevantes, lo que hace que Recall@k y nDCG no dependan de un \'unico pasaje.
+
+\subsection{Revisi\'on humana}
+
+Cuatro personas revisaron el silver standard contra el documento citado. Carlos revis\'o las 43 y dej\'o 12 correcciones; Juli\'an aport\'o 7 spans y una reformulaci\'on; \'Oscar aport\'o 5 spans corregidos y marc\'o 3 enlaces rotos; Erika revis\'o las 43, aprob\'o 35, marc\'o 5 como no aplicables y corrigi\'o la respuesta y el span de g-003. Cada propuesta se aplic\'o solo si el span aparec\'ia literalmente en el texto indexado. Las que no se pudieron verificar quedaron con nota.
+
+Para la comparaci\'on de modelos se anotaron 72 respuestas de 4 modelos, ciegas y en orden barajado, con r\'ubrica de 0 a 3 en correcci\'on, fidelidad, citas y abstenci\'on. Dos anotadores calificaron las mismas respuestas. La Tabla~\ref{tab:kappa} reporta el acuerdo. La fidelidad no alcanz\'o acuerdo suficiente y no se usa para el veredicto; la correcci\'on y las citas s\'i.
+
+\begin{table}[t]
+\centering
+\caption{Acuerdo entre anotadores en la comparaci\'on de modelos (kappa lineal, $n=72$).}
+\label{tab:kappa}
+\begin{tabular}{lr}
+\toprule
+Eje & Kappa \\
+\midrule
+Correcci\'on & 0,95 \\
+Citas & 0,90 \\
+Abstenci\'on & 0,72 \\
+Fidelidad & 0,12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{M\'etricas}
+
+\textbf{Recuperaci\'on.} Recall@k mide la fracci\'on de documentos de referencia recuperados en el top-k; nDCG@k usa relevancia binaria; P@1 mide precisi\'on en el primer corte; Hit@5 indica si al menos un documento relevante aparece en el top-5; MRR mide la posici\'on del primer acierto; y la cobertura de span indica si al menos un fragmento recuperado contiene el texto exacto que responde. Esta \'ultima es la m\'as cercana a lo que necesita el generador.
+
+\textbf{Respuesta.} Se reportan las preguntas entregadas, las abstenciones, la cobertura de tokens de la referencia (todos sus tokens aparecen en la respuesta), el F1 por tokens, la tasa de citas, el contexto medio en tokens y la latencia por etapa. La revisi\'on humana se aplica solo a las respuestas que no superaron la cobertura y las clasifica como correctas, parciales o incorrectas; no cubre las que s\'i la superaron.
+
+\textbf{Conversaci\'on.} Catorce casos: seis saludos, cuatro de dominio y cuatro de fuera. Cada uno tiene un resultado esperado y se marca como correcto o incorrecto. Se ejecutan con y sin Modo estricto, y con y sin razonamiento.
+
+\textbf{RAGAS.} Se reportan fidelidad, relevancia de la respuesta, precisi\'on del contexto, cobertura del contexto y correcci\'on de la respuesta \cite{es2023ragas}. Para cada m\'etrica se informa cu\'antas muestras tienen valor, porque el juez falla en algunas y una media con cuatro valores no es comparable con una con 38. La corrida de referencia es densa con $k=5$; la comparaci\'on con el h\'ibrido y con la arquitectura anterior est\'a en la Secci\'on~\ref{sec:experimentos}.
+
+\textbf{Compuerta.} Precisi\'on, recall y F1 en dev y test, falsos rechazos de dominio (preguntas del corpus rechazadas) y falsos aceptados de fuera (preguntas ajenas aceptadas).
+
+\subsection{Estad\'istica}
+
+Las comparaciones de recuperaci\'on usan bootstrap pareado por pregunta con 1.000 remuestreos e intervalos de confianza al 95\,\%. En la comparaci\'on de limpieza se aplica correcci\'on de Bonferroni por comparaciones m\'ultiples. La configuraci\'on se eligi\'o inspeccionando las 43 preguntas del silver, as\'i que los resultados sobre las 38 respondibles son exploratorios. El conjunto reservado de 25 preguntas (Secci\'on~\ref{sec:reservado}) se congel\'o antes de evaluar la compuerta, pero despu\'es se us\'o para elegir la recuperaci\'on h\'ibrida; por eso sus m\'etricas son de desarrollo y no una prueba independiente. Las diferencias que no excluyen cero se reportan como no concluyentes, aunque la media favorezca a una variante. Los intervalos pareados se calcularon para limpieza, E1 y E2; las comparaciones de codificadores, reordenamiento y fusi\'on se reportan como estimaciones puntuales sobre 38 preguntas, sin intervalo, y as\'i se indica en cada tabla.
+
+\subsection{Configuraci\'on de RAGAS}
+
+La corrida de referencia usa juez gemma4:e4b y embeddings BAAI/bge-m3 en CPU, con 38 preguntas directas. El timeout del juez se fij\'o en 900 s y la concurrencia en 6. Con los valores por defecto (180 s y 16 workers) el juez no terminaba en varias muestras y la precisi\'on del contexto quedaba con 4 valores de 38. La corrida de referencia tiene 34 valores en esa m\'etrica y 38 en las dem\'as. Las preguntas sin respuesta se miden aparte y se abstienen 5 de 5.

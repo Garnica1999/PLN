@@ -1,0 +1,60 @@
+\section{Reproducibilidad}
+\label{sec:reproducibilidad}
+
+\subsection{Hardware y software}
+
+El sistema se ejecut\'o en una estaci\'on con Ryzen 9 5950X, 31 GB de RAM y una GPU AMD Radeon RX 9070 XT de 16 GB con ROCm 7.2.4. La capa de datos (etcd, MinIO y Milvus 2.6.6) corre en un servidor de la red local con 16 n\'ucleos y 62 GB de RAM; el API, el embedding y el generador siguen en la estaci\'on. El API se conecta a Milvus por LAN en \texttt{http://192.168.1.100:19530}; el stack de datos se despliega con Docker Swarm y la aplicaci\'on con Compose. Los contenedores usan Python 3.12, PyTorch 2.10 con ROCm, FastAPI, Streamlit y Ollama. RAGAS 0.4.3 y LangChain 0.3 corren en un contenedor aparte con Python 3.12 y \texttt{BAAI/bge-m3} en CPU.
+
+\subsection{Modelos}
+
+La Tabla~\ref{tab:modelos} fija la versi\'on de cada modelo. Los identificadores son las etiquetas de Ollama y de Hugging Face usadas en el c\'odigo; no se usan alias m\'oviles.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Modelos, etiqueta y papel en el sistema.}
+\label{tab:modelos}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lll}
+\toprule
+Papel & Etiqueta & Cuantizaci\'on \\
+\midrule
+Generador & \texttt{gemma4:e4b} & Q4\_K\_M \\
+Condensador y juez & \texttt{gemma2:2b} & Q4\_K\_M \\
+Embedding & \texttt{BAAI/bge-m3} & fp16 en GPU \\
+Reordenador & \texttt{BAAI/bge-reranker-v2-m3} & fp16 en GPU \\
+Comparaci\'on E4 & \texttt{qwen2.5:1.5b} & Q4\_K\_M \\
+Comparaci\'on E4 & \texttt{llama3.2:3b}, \texttt{llama3.2:1b} & Q4\_K\_M \\
+Comparaci\'on E3 & \texttt{qwen3-embedding:8b} & Q4\_K\_M \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+El generador, el detector y el condensador corren con temperatura 0; las repeticiones del mismo estado dan las mismas m\'etricas. El art\'iculo se compila con IEEEtran V1.8b. La corrida de referencia de la configuraci\'on densa es el commit \texttt{125bbc7}; la de la configuraci\'on h\'ibrida es \texttt{experimento\_recuperacion\_hibrida.py}. Las figuras y tablas se regeneran desde \texttt{reports/tablas/}. RAGAS 0.4.3 corre con LangChain 0.3 y \texttt{BAAI/bge-m3} en CPU.
+
+\subsection{Comandos}
+
+El stack se levanta con un comando:
+
+\begin{verbatim}
+make up
+make ps
+curl http://localhost:8010/health
+\end{verbatim}
+
+\texttt{make up} despliega la capa de datos en el servidor con \texttt{docker stack deploy -c docker-stack.yml taller-rag} y levanta la aplicaci\'on con \texttt{docker compose up -d --no-deps api frontend ollama}. El servicio \texttt{prewarm} carga el generador, el embedding y el reranker cuando la API est\'a sana. La evaluaci\'on completa se ejecuta con:
+
+\begin{verbatim}
+python src/scripts/run_evaluation.py
+\end{verbatim}
+
+Ese pipeline corre la evaluaci\'on de desempe\~no en el worker GPU, la de conversaci\'on contra la API y RAGAS en el contenedor de evaluaci\'on. Los resultados se escriben en \texttt{reports/tablas/} y la comparaci\'on en \texttt{reports/tablas/evaluacion\_comparativa.md}.
+
+\subsection{Artefactos}
+
+El silver consolidado est\'a en \texttt{eval/silver/silver\_standard.jsonl}, con su versi\'on ampliada en \texttt{silver\_standard\_ampliado.jsonl}. El conjunto reservado (\texttt{silver\_reservado.jsonl}, con hashes en \texttt{README\_RESERVADO.md}) escribe \texttt{reports/corridas/reservado\_*\_raw.jsonl} y \texttt{reports/tablas/reservado\_*\_resumen.csv}. El silver de ambig\"uedad est\'a en \texttt{eval/silver/silver\_ambiguedad*.jsonl}, con las tablas \texttt{ambiguedad\_*\_resumen.csv} y \texttt{ambiguedad\_*\_por\_pregunta.csv}. La capa de datos se define en \texttt{docker-stack.yml} y el modo local de respaldo en \texttt{docker-compose.data.yml}. Las figuras est\'an en \texttt{reports/figuras/}, las corridas en \texttt{reports/corridas/} y los modelos de la compuerta en \texttt{modelos/}.
+
+\subsection{Datos}
+
+El corpus completo no se publica por derechos de las fuentes. Se incluyen el silver, las anotaciones, la muestra del piloto y los Parquet de evaluaci\'on necesarios para reproducir las m\'etricas. Las cifras de este art\'iculo se pueden verificar contra esos artefactos sin volver a descargar el corpus.

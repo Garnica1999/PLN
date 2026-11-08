@@ -1,0 +1,13 @@
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "C4"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = [
+    "integration: requiere el backend real o servicios externos",
+]

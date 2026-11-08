@@ -1,0 +1,4 @@
+| run | mode | model | k | split | n_registros | n_preguntas | hit | recall | recall_lo | recall_hi | p_at_1 | p_at_5 | mrr | map | ndcg | ndcg_lo | ndcg_hi | chunk_recall | span_hit | context_precision | context_recall | duplicados | retrieval_p50 | generation_p50 | tokens_por_segundo | abstencion | citas_invalidas | sin_citas |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| e6_full | retrieve | e5 | 10 | all | 114 | 38 | 0.6842 | 0.6842 | 0.6053 | 0.7719 | 0.4737 | 0.6579 | 0.5643 | 0.5643 | 0.5944 | 0.52 | 0.6802 | nan | 0.6842 | 0.1251 | 0.6842 | 0.1781 | 42.435 | nan | nan | 0.0 | 0.0 | 0.0 |
+| e7_rerank_full | retrieve | e5+bge-reranker-v2-m3 | 10 | all | 114 | 38 | 0.6842 | 0.6842 | 0.6053 | 0.7719 | 0.6316 | 0.6842 | 0.6535 | 0.6535 | 0.6613 | 0.5803 | 0.7468 | nan | 0.6842 | 0.1237 | 0.6842 | 0.1842 | 3144.015 | nan | nan | 0.0 | 0.0 | 0.0 |

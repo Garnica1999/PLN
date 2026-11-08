@@ -1,0 +1,47 @@
+\section{Ambig\"uedad y clarificaci\'on}
+\label{sec:ambiguedad}
+
+\subsection{Estado del arte}
+
+La ambig\"uedad referencial aparece cuando una pregunta admite varias respuestas v\'alidas sobre el mismo corpus. AmbigQA la formaliza como una pregunta con un conjunto de respuestas \cite{min2020ambigqa}. CLAM muestra que los modelos detectan la ambig\"uedad cuando se les pregunta de forma expl\'icita, pero en modo QA contestan igual; el contexto recuperado reduce a\'un m\'as la probabilidad de pedir una aclaraci\'on \cite{kuhn2022clam}. CLAMBER eval\'ua la detecci\'on y la calidad de las preguntas de clarificaci\'on en cuatro tipos de ambig\"uedad y encuentra que los LLM actuales tienen dificultades para resolverla \cite{zhang2024clamber}. Clarify When Necessary estima la entrop\'ia sobre las intenciones para decidir cu\'ando preguntar \cite{zhang2025clarify}.
+
+En RAG hay dos familias. La clarificaci\'on interactiva pregunta al usuario y reescribe la consulta; ASK elige entre clarificaci\'on basada en documentos y basada en aspectos seg\'un la ambig\"uedad \cite{sahay2025ask}, y Tree of Clarifications construye un \'arbol de subpreguntas y agrega las respuestas \cite{kim2023tree}. La respuesta condicional contesta todas las interpretaciones; DIVA recupera pasajes diversos, verifica su calidad y adapta la respuesta \cite{in2025diva}, y CondAmbigQA introduce condiciones expl\'icitas y reporta una mejora de 11,75\,\% cuando el modelo las considera \cite{li2025condambigqa}. La encuesta de 2025 ordena estas estrategias y se\~nala que la detecci\'on sigue siendo el cuello de botella \cite{tanjim2025survey}.
+
+\subsection{Dise\~no}
+
+El sistema usa un detector selectivo. Solo gasta una llamada al LLM cuando la pregunta contiene una referencia gen\'erica que puede tener varios referentes en el corpus (``la iniciativa'', ``el concierto'', ``la reforma'', ``el acuerdo'', ``la COP'', entre otras). Para esas preguntas recupera una uni\'on profunda de 50 fragmentos densos y 50 de BM25, la reordena y pasa el top-10 al detector. As\'i las opciones no se limitan al top-10 de producci\'on.
+
+El detector pide al LLM un JSON con la ambig\"uedad, la pregunta de clarificaci\'on y entre dos y seis opciones; cada opci\'on lleva etiqueta, consulta reescrita, respuesta y evidencias. Una aumentaci\'on determinista a\~nade las cifras de votos y los montos que el modelo omite, para que la lista cubra interpretaciones que el LLM no propuso. La clarificaci\'on devuelve las opciones a la interfaz; al elegir una, la consulta reescrita se env\'ia con la compuerta desactivada, porque la interpretaci\'on ya est\'a fundamentada. La respuesta condicional usa las mismas opciones como condiciones, cada una con su cita. La pol\'itica h\'ibrida clarifica en \texttt{/chat} y condiciona en \texttt{/ask}.
+
+\subsection{Experimento}
+
+El conjunto tiene 12 preguntas: 6 ambiguas y 6 de control, con la interpretaci\'on pretendida, las opciones, las respuestas condicionales y los alias en espa\~nol e ingl\'es. Se congel\'o antes de ejecutar. Se comparan cuatro pol\'iticas: baseline (respuesta \'unica), clarificaci\'on, condicional e h\'ibrida. La clarificaci\'on se eval\'ua con un usuario oracle que elige la opci\'on cuya respuesta coincide con la interpretaci\'on pretendida; si no existe, se marca como fallo. Los valores p son de McNemar exacto bilateral y no se ajustan por comparaciones m\'ultiples. La Tabla~\ref{tab:ambiguedad} resume.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Ambig\"uedad: 6 ambiguas y 6 de control. Baseline y clarificaci\'on: cobertura de tokens; condicional: resultado de la pol\'itica sobre 12. Cobertura entre opciones: 5/6. La h\'ibrida reporta clarificaci\'on interactiva y condicional de una pasada.}
+\label{tab:ambiguedad}
+\begin{tabular}{lrrr}
+\toprule
+Pol\'itica & Resultado & Turnos & Latencia \\
+\midrule
+Baseline & 0,833 & 1,0 & 7,16 s \\
+Clarificaci\'on & 0,833 & 1,4 & 8,78 s \\
+Condicional & \textbf{0,917} & \textbf{1,0} & 5,94 s \\
+H\'ibrida & 0,833 / 0,917 & 1 a 2 & 5,94 a 8,78 s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Resultados}
+
+El detector marc\'o las 6 ambiguas y ninguna de las 6 de control: precisi\'on, recall y F1 de 1,0. En un segundo conjunto de 6 preguntas temporales y de alcance (3 ambiguas y 3 de control, estos \'ultimos repetidos del primero) volvi\'o a marcar las 3 ambiguas y ninguna de las 3 de control, con F1 de 1,0. Los dos conjuntos suman 15 preguntas \'unicas, incluidas en el v2 de 42. Los conjuntos son peque\~nos y el resultado es descriptivo, no una estimaci\'on poblacional.
+
+El baseline cubre los tokens de referencia en 10 de 12 (0,833); la clarificaci\'on en 10 de 12 (0,833), con la interpretaci\'on pretendida en 5 de las 6 ambiguas; el resultado de la pol\'itica condicional es 11 de 12 (0,917); la cobertura entre opciones es 5 de 6 (0,833). El condicional obtiene el mayor resultado autom\'atico y la menor latencia; la clarificaci\'on gana en control. La h\'ibrida no gana en una m\'etrica \'unica.
+
+En el conjunto temporal y de alcance, las tres pol\'iticas acertaron las 3 ambiguas y el condicional fue el m\'as r\'apido (5,8 s). La recomendaci\'on por puntuaci\'on de la evidencia acert\'o 1 de 3 y no es un desambiguador fiable: el valor del condicional est\'a en la cobertura, no en la recomendaci\'on, que se muestra solo como pista.
+
+El conjunto v2 tiene 42 preguntas creadas por los autores; el silver asistido las etiquet\'o con un LLM y la doble anotaci\'on humana revis\'o la etiqueta de ambig\"uedad. Dej\'o 21 ambiguas y 21 de control (42/42, kappa 1,000). Cuatro preguntas que el silver asistido marcaba como ambiguas quedaron como control; dos tienen respuesta verificada (v-008 y v-009) y dos no (la tarifa del pasaje y el n\'umero de votos), as\'i que la exactitud se mide sobre 40. El detector da F1 0,894 (precisi\'on 0,81; recall 1,0); los cinco falsos positivos son esas cuatro y el proyecto Tri\'angulo del Puma. El baseline cubre los tokens de referencia en 30 de 40 (0,750); la clarificaci\'on en 29 de 40 (0,725, p=1,0); el resultado de la pol\'itica condicional es 33 de 40 (0,825), con cuatro pares a favor y uno en contra (McNemar p=0,375); la cobertura entre opciones es 18 de 21 (0,857). Sobre el silver asistido sube a 36 de 42 (p=0,039); la cobertura entre opciones es 22 de 25 (0,88). Los valores p comparan el resultado autom\'atico, no una evaluaci\'on sem\'antica. Por tipo, acierta 1,0 en alcance, comparaci\'on, conversaci\'on y unidad, 0,78 en referencial y 0,75 en temporal. La recomendaci\'on se retira.
+
+La lista plana tiene un l\'imite. En la pregunta de los votos, el LLM propuso tres iniciativas y ninguna era la de 95 votos; la aumentaci\'on determinista a\~nadi\'o las cifras de la evidencia y la interpretaci\'on del silver entr\'o como sexta opci\'on. En el terremoto, la aumentaci\'on se contamin\'o con montos y unidades de otros documentos; el filtro por la unidad de la pregunta dej\'o las tres cifras de municipios y la de 472 entr\'o como cuarta. Para preguntas con muchas interpretaciones, una clarificaci\'on jer\'arquica, que primero pregunte la faceta y despu\'es la opci\'on, es el siguiente paso.

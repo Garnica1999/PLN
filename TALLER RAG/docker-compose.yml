@@ -1,0 +1,287 @@
+name: taller-rag
+
+# Modo local de respaldo. La via principal es el stack de Swarm
+# (docker-stack.yml) para la capa de datos en el servidor y este compose para
+# la aplicacion con GPU en la estacion.
+#
+# La estacion tiene dockerd con "iptables": false y "bridge": "none", asi que
+# la app usa red de host. Milvus vive en el servidor y se alcanza por LAN
+# (192.168.1.100:19530); no hay tunel SSH.
+
+services:
+  etcd:
+    restart: "no"
+    image: quay.io/coreos/etcd:v3.5.18
+    network_mode: host
+    command: etcd -advertise-client-urls=http://localhost:2379 -listen-client-urls=http://0.0.0.0:2379 --data-dir=/etcd
+    volumes:
+      - etcd_data:/etcd
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  minio:
+    restart: "no"
+    # MinIO retiró sus imágenes oficiales en 2026; se usa el espejo legacy de Bitnami,
+    # fijado por digest. Ver docs/DECISIONES.md (ADR-014).
+    image: bitnamilegacy/minio@sha256:451fe6858cb770cc9d0e77ba811ce287420f781c7c1b806a386f6896471a349c
+    network_mode: host
+    user: "0"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/bitnami/minio/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  milvus:
+    restart: "no"
+    image: milvusdb/milvus:v2.6.6
+    network_mode: host
+    command: ["milvus", "run", "standalone"]
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      ETCD_ENDPOINTS: localhost:2379
+      MINIO_ADDRESS: localhost:9000
+      MINIO_ACCESS_KEY_ID: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    volumes:
+      - milvus_data:/var/lib/milvus
+    depends_on:
+      etcd:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+    mem_limit: 10g
+    cpus: 8
+
+  ollama:
+    restart: "no"
+    image: ollama/ollama:latest
+    network_mode: host
+    volumes:
+      - ollama_data:/root/.ollama
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - "983"   # video (GID del host)
+      - "987"   # render (GID del host); el daemon no resuelve el nombre
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11435
+      OLLAMA_KEEP_ALIVE: 10m
+      OLLAMA_CONTEXT_LENGTH: 8192
+    healthcheck:
+      test: ["CMD-SHELL", "OLLAMA_HOST=127.0.0.1:11435 ollama list"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+    mem_limit: 12g
+    cpus: 8
+
+  ollama-embeddings:
+    restart: "no"
+    image: ollama/ollama:latest
+    profiles:
+      - embeddings
+    network_mode: host
+    volumes:
+      - ollama_embeddings_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11435
+      OLLAMA_KEEP_ALIVE: 10m
+    mem_limit: 12g
+
+  # Worker GPU: ingesta del corpus y evaluacion de desempeno.
+  ingest-rocm:
+    restart: "no"
+    build:
+      context: .
+      dockerfile: Dockerfile.rocm
+      network: host
+    image: taller-rag-rocm:local
+    profiles:
+      - rocm
+    network_mode: host
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - "983"
+      - "987"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PYTHONPATH: /work
+      HF_HOME: /root/.cache/huggingface
+      EMBEDDER: bge
+      EMBEDDINGS_MODEL: BAAI/bge-m3
+      EMBEDDINGS_DIMS: "1024"
+      EMBEDDING_DEVICE: cuda
+      EMBEDDING_HALF: "true"
+      EMBEDDINGS_BATCH: "128"
+      MILVUS_URI: http://192.168.1.100:19530
+      MILVUS_COLLECTION: rag_full_bge_m3_d1024_v1
+      RETRIEVER: hybrid_union
+      TOP_K: "10"
+      RERANK_DEVICE: cuda
+      UNION_DENSE_K: "10"
+      UNION_SPARSE_K: "20"
+      SEARCH_EF: "800"
+    volumes:
+      - ./src:/work/src
+      - ./Dataset:/work/data:ro
+      - ./eval:/work/eval
+      - ./reports:/work/reports
+      - ./modelos:/work/modelos
+      - hf_cache:/root/.cache/huggingface
+    mem_limit: 16g
+    cpus: 8
+
+  api:
+    restart: "no"
+    build:
+      context: .
+      dockerfile: Dockerfile.rocm
+      network: host
+    image: taller-rag-rocm:local
+    network_mode: host
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - "983"
+      - "987"
+    command: uvicorn src.rag.api:app --host 0.0.0.0 --port 8010
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PYTHONPATH: /work
+      API_URL: http://localhost:8010
+      MILVUS_URI: http://192.168.1.100:19530
+      OLLAMA_URL: http://localhost:11435
+      EMBEDDER: bge
+      EMBEDDINGS_MODEL: BAAI/bge-m3
+      EMBEDDINGS_DIMS: "1024"
+      EMBEDDING_DEVICE: cuda
+      EMBEDDING_HALF: "true"
+      MILVUS_COLLECTION: rag_full_bge_m3_d1024_v1
+      RETRIEVER: hybrid_union
+      HYBRID_DENSE: "0.5"
+      HYBRID_SPARSE: "0.5"
+      SEARCH_EF: "800"
+      TORCH_THREADS: "24"
+    volumes:
+      - ./src:/work/src
+      - ./Dataset:/work/data:ro
+      - ./eval:/work/eval
+      - ./reports:/work/reports
+      - ./modelos:/work/modelos
+      - hf_cache:/root/.cache/huggingface
+    depends_on:
+      - milvus
+      - ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8010/health"]
+      interval: 20s
+      timeout: 20s
+      retries: 10
+    mem_limit: 16g
+    cpus: 24
+
+  frontend:
+    restart: "no"
+    build:
+      context: .
+      network: host
+    image: taller-rag:local
+    network_mode: host
+    command: streamlit run src/rag/ui.py --server.address=0.0.0.0 --server.port=8501
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PYTHONPATH: /work
+      API_URL: http://localhost:8010
+      UI_PREFS_PATH: /work/config/ui_prefs.json
+    volumes:
+      - ./src:/work/src
+      - ./.streamlit:/work/.streamlit:ro
+      - ./config:/work/config
+    depends_on:
+      - api
+    mem_limit: 1536m
+    cpus: 2
+
+  # Carga el generador, el embedding y el reranker cuando la API está sana.
+  prewarm:
+    restart: "no"
+    image: taller-rag:local
+    network_mode: host
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      PYTHONPATH: /work
+      API_URL: http://localhost:8010
+    volumes:
+      - ./src:/work/src
+    command: python -m src.scripts.prewarm
+    mem_limit: 512m
+
+  eval:
+    restart: "no"
+    build:
+      context: .
+      dockerfile: Dockerfile.eval
+      network: host
+    image: taller-rag-eval:local
+    profiles:
+      - eval
+    network_mode: host
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PYTHONPATH: /eval
+      API_URL: http://localhost:8010
+      OLLAMA_URL: http://localhost:11435
+      HF_HOME: /root/.cache/huggingface
+    volumes:
+      - ./src:/eval/src
+      - ./eval:/eval/eval
+      - ./reports:/eval/reports
+      - ./plan:/eval/plan
+      - hf_cache:/root/.cache/huggingface
+    command: python -m src.scripts.eval_ragas
+    mem_limit: 8g
+    cpus: 8
+
+volumes:
+  etcd_data:
+  minio_data:
+  milvus_data:
+  ollama_data:
+  ollama_embeddings_data:
+  hf_cache:

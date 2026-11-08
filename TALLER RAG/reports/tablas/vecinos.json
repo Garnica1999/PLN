@@ -1,0 +1,383 @@
+[
+  {
+    "query": "resultados de las elecciones en Colombia",
+    "retrieval_ms": 11923.9,
+    "neighbors": [
+      {
+        "rank": 1,
+        "score": 0.6691,
+        "document_id": "bluesky_posts:bluesky_3motm33onjm2y",
+        "title": "",
+        "language": "en",
+        "url": "https://bsky.app/profile/english.lemonde.fr/post/3motm33onjm2y",
+        "snippet": "Trump-backed candidate wins razor-tight Colombia presidential election"
+      },
+      {
+        "rank": 2,
+        "score": 0.6323,
+        "document_id": "bluesky_posts:bluesky_3mneuhrxrxh2o",
+        "title": "",
+        "language": "",
+        "url": "https://bsky.app/profile/iviewpoint.bsky.social/post/3mneuhrxrxh2o",
+        "snippet": "“Surprise” election result poses new challenges for the left in Colombia"
+      },
+      {
+        "rank": 3,
+        "score": 0.6319,
+        "document_id": "bluesky_posts:bluesky_3mn6flxe4hx26",
+        "title": "",
+        "language": "",
+        "url": "https://bsky.app/profile/en.france24.com/post/3mn6flxe4hx26",
+        "snippet": "Live: Colombia heads to the polls to elect President Gustavo Petro's successor"
+      },
+      {
+        "rank": 4,
+        "score": 0.6273,
+        "document_id": "bluesky_posts:bluesky_3mgnp5udxwk2v",
+        "title": "",
+        "language": "es",
+        "url": "https://bsky.app/profile/jedirepublicano.bsky.social/post/3mgnp5udxwk2v",
+        "snippet": "El partido de Petro gana las elecciones al Senado en Colombia y Uribe recupera el liderazgo de la oposición"
+      }
+    ]
+  },
+  {
+    "query": "protestas y derechos humanos",
+    "retrieval_ms": 27.18,
+    "neighbors": [
+      {
+        "rank": 1,
+        "score": 0.6153,
+        "document_id": "url_crawls:crawl_uq_736dadd1b62bd7d53f95f2fb_media_cloud_whitelist",
+        "title": "El “Mamertismo” y la Distorsión Irresponsable de las Narrativas - Diario La Libertad.",
+        "language": "en",
+        "url": "https://diariolalibertad.com/sitio/2021/07/19/el-mamertismo-y-la-distorsion-irresponsable-de-las-narrativas/",
+        "snippet": "nte protesta, con o sin razón, por lo general solo repite insatisfacciones propias o ajenas, pero poco aporta en materia de soluciones a toda una incuestionable infinidad de falencias. Hay causas que son asunto de todos "
+      },
+      {
+        "rank": 2,
+        "score": 0.6017,
+        "document_id": "url_crawls:crawl_uq_211796d54891ad68339a29d2_media_cloud_whitelist",
+        "title": "Georgian parliament speaker quits after anti-Russian protests leave hundreds injured",
+        "language": "en",
+        "url": "https://www.independent.co.uk/news/world/europe/georgia-protests-russia-police-tear-gas-bullets-sergei-gavrilov-elections-a8968891.html",
+        "snippet": "n a statement issued following the protest, Human Rights Watch expressed concern at the use of rubber bullets and tear gas without warning. International law allowed only for “proportional force” in response to clear dan"
+      },
+      {
+        "rank": 3,
+        "score": 0.5982,
+        "document_id": "url_crawls:crawl_uq_757c68359f10b67d39a82bde_media_cloud_whitelist",
+        "title": "‘Our future is being burnt down’: youth activists call for fossil phaseout at Cop30 – as it happened",
+        "language": "en",
+        "url": "https://www.theguardian.com/environment/live/2025/nov/18/cop30-climate-protests-latest-news-live-updates-brazil-belem",
+        "snippet": "bon credits that do not respect their rights or harm biodiversity, water, food and health. Indigenous Peoples seek to be heard and ask that solutions affecting them are co-developed with them. Critically, these solutions"
+      },
+      {
+        "rank": 4,
+        "score": 0.594,
+        "document_id": "url_crawls:crawl_uq_5aef149ca5cac836662f09c0_media_cloud_whitelist",
+        "title": "The UN declared a universal human right to a healthy, sustainable environment – here’s where resolutions like this can lead",
+        "language": "en",
+        "url": "https://theconversation.com/the-un-just-declared-a-universal-human-right-to-a-healthy-sustainable-environment-heres-where-resolutions-like-this-can-lead-188060",
+        "snippet": "e vital tools people can use to pressure governments and private companies to protect or improve human well-being. Change can take time, but I believe this latest declaration of human rights will support climate and envi"
+      },
+      {
+        "rank": 5,
+        "score": 0.5925,
+        "document_id": "url_crawls:crawl_uq_95cb7bbc6c618142f61ac16e_media_cloud_whitelist",
+        "title": "La protesta social y las estatuas",
+        "language": "es",
+        "url": "https://elpilon.com.co/la-protesta-social-y-las-estatuas/",
+        "snippet": "Estado es proteger a los ciudadanos. La protesta social debe ser pacífica y tener las garantías de las autoridades, sin represión de las fuerzas del orden, que, al contrario, les corresponde garantizar la libre expresión"
+      }
+    ]
+  },
+  {
+    "query": "cambio climático y sequías",
+    "retrieval_ms": 23.16,
+    "neighbors": [
+      {
+        "rank": 1,
+        "score": 0.7017,
+        "document_id": "bluesky_posts:bluesky_3msuio2imuk2g",
+        "title": "",
+        "language": "en",
+        "url": "https://bsky.app/profile/rahger.bsky.social/post/3msuio2imuk2g",
+        "snippet": "climate"
+      },
+      {
+        "rank": 2,
+        "score": 0.6882,
+        "document_id": "url_crawls:crawl_uq_0561978cdcc5b22d1103147d_media_cloud_whitelist",
+        "title": "Llueve menos y las temperaturas están aumentando",
+        "language": "es",
+        "url": "https://occidente.co/secciones/tendencias/llueve-menos-y-las-temperaturas-estan-aumentando/",
+        "snippet": "En las últimas décadas, el clima global ha experimentado cambios significativos que han llevado a fenómenos climáticos extremos, como sequías prolongadas y olas de calor. La interrelación entre la disminución de las prec"
+      },
+      {
+        "rank": 3,
+        "score": 0.6703,
+        "document_id": "url_crawls:crawl_uq_162e3cb90cfbd8c5f73ebd91_media_cloud_whitelist",
+        "title": "Calor extremo récord en Europa: revelan el papel del cambio climático y la presión atmosférica",
+        "language": "es",
+        "url": "https://www.infobae.com/america/ciencia-america/2026/07/23/calor-extremo-record-en-europa-revelan-el-papel-del-cambio-climatico-y-la-presion-atmosferica/",
+        "snippet": "istemas energéticos. Además, el estudio remarca que la relación entre circulación atmosférica y sequía introduce un grado alto de incertidumbre en las proyecciones futuras. Si los cambios observados en la circulación res"
+      },
+      {
+        "rank": 4,
+        "score": 0.6688,
+        "document_id": "url_crawls:crawl_uq_b302d8a3c88ac40f704a8e89_colombia_media_local_excel",
+        "title": "Lo que no sabías de los bosques y su rol en el planeta",
+        "language": "es",
+        "url": "https://www.elespectador.com/ambiente/bibo/lo-que-no-sabias-de-los-bosques-y-su-rol-en-el-planeta/",
+        "snippet": "los cambios de temperatura, humedad y otras condiciones, debido al cambio climático, también están afectando a los bosques y a las especies que viven en ellos. Con el aumento de la temperatura global, incrementa la frecu"
+      }
+    ]
+  },
+  {
+    "query": "what did the president say about the economy",
+    "retrieval_ms": 27.51,
+    "neighbors": [
+      {
+        "rank": 1,
+        "score": 0.6463,
+        "document_id": "url_crawls:crawl_uq_34bfdb72af53b62286663e7a_media_cloud_whitelist",
+        "title": "50 años del Foro en Davos | Gatopardo",
+        "language": "es",
+        "url": "https://gatopardo.com/noticias-actuales/foro-economico-global-wef-davos-crisis-climatica/",
+        "snippet": "ste año recordó que en 2018, cuando acudió por primera vez como presidente, dijo al público que haría el gran \"regreso norteamericano\". En su más reciente participación refrendó esta idea al decir estaba orgulloso de anu"
+      },
+      {
+        "rank": 2,
+        "score": 0.638,
+        "document_id": "url_crawls:crawl_uq_34bfdb72af53b62286663e7a_media_cloud_whitelist",
+        "title": "50 años del Foro en Davos | Gatopardo",
+        "language": "es",
+        "url": "https://gatopardo.com/noticias-actuales/foro-economico-global-wef-davos-crisis-climatica/",
+        "snippet": "ncenter\" width=\"1280\"] World Economic Forum / Flickr.[/caption]Trump en DavosEl discurso del presidente de Estados Unidos el primer día en Davos se dio mientras en Washington comenzaba el juicio político en su contra. Si"
+      },
+      {
+        "rank": 3,
+        "score": 0.6314,
+        "document_id": "url_crawls:crawl_uq_34bfdb72af53b62286663e7a_media_cloud_whitelist",
+        "title": "50 años del Foro en Davos | Gatopardo",
+        "language": "es",
+        "url": "https://gatopardo.com/noticias-actuales/foro-economico-global-wef-davos-crisis-climatica/",
+        "snippet": "ientras en Washington comenzaba el juicio político en su contra. Sin embargo, el mensaje de Trump sonó a un presidente triunfalista, confiado en que logrará la reelección este año.En 2019, Trump no fue al Foro, pero en s"
+      },
+      {
+        "rank": 4,
+        "score": 0.6282,
+        "document_id": "bluesky_posts:bluesky_3mv4wlm2j6l2v",
+        "title": "",
+        "language": "",
+        "url": "https://bsky.app/profile/killbaitcolombia.bsky.social/post/3mv4wlm2j6l2v",
+        "snippet": "El Presidente anuncia medidas económicas para enfrentar la crisis 🤖 IA: No es clickbait ✅ 👥 Usuarios: No es clickbait ✅ políticaeconómica medidaseconómicas crisiseconómica 👇👇👇"
+      },
+      {
+        "rank": 5,
+        "score": 0.6247,
+        "document_id": "url_crawls:crawl_uq_1e8d7d6d2a1be9566acf52f6_media_cloud_whitelist",
+        "title": "Duque espera cerrar 2021 con alza del PIB de 7% y desempleo en niveles prepandemia",
+        "language": "es",
+        "url": "https://www.larepublica.co/economia/presidente-duque-espera-cerrar-2021-con-un-desempleo-en-niveles-prepandemia-3237156",
+        "snippet": "MI SELECCIÓN DE NOTICIAS Noticias personalizadas, de acuerdo a sus temas de interés El jefe de Estado se reunió en EE.UU. con el empresario Mike Bloomberg para hablar de cambio climático y transición energética El presid"
+      }
+    ]
+  },
+  {
+    "query": "fake news and social media",
+    "retrieval_ms": 27.53,
+    "neighbors": [
+      {
+        "rank": 1,
+        "score": 0.6397,
+        "document_id": "url_crawls:crawl_uq_ed41c152e8264a970cdbb763_media_cloud_whitelist",
+        "title": "Psicóloga del Icbf en Barranquilla vive una pesadilla por falsa acusación de robo de niños en redes sociales",
+        "language": "es",
+        "url": "https://www.eltiempo.com/colombia/barranquilla/sicologa-del-icbf-en-barranquilla-vive-una-pesadilla-por-falsa-acusacion-de-robo-de-ninos-en-redes-sociales-3395220",
+        "snippet": "no de los mensajes que ha publicado en redes, apelando a la comprensión de la comunidad.  Sin embargo, el impacto de esta falsa noticia amenaza con seguir afectando tanto su vida personal como su labor profesional."
+      },
+      {
+        "rank": 2,
+        "score": 0.6352,
+        "document_id": "bluesky_posts:bluesky_3mun5tpk7oy2n",
+        "title": "",
+        "language": "en",
+        "url": "https://bsky.app/profile/radok.bsky.social/post/3mun5tpk7oy2n",
+        "snippet": "There are some vile, vile people out there. Particularly on social media, but also in the regular media."
+      },
+      {
+        "rank": 3,
+        "score": 0.6035,
+        "document_id": "url_crawls:crawl_uq_ee45e844f49c9a8faad207df_media_cloud_whitelist",
+        "title": "Climate fight 'is undermined by social media's toxic reports'",
+        "language": "en",
+        "url": "https://www.theguardian.com/environment/2021/mar/21/climate-fight-is-undermined-by-social-medias-toxic-reports",
+        "snippet": "Fake news on social media about climate change and biodiversity loss is having a worrying impact in the battle to halt the growing environmental threats to the planet, a group of scientists and analysts have warned. In a"
+      },
+      {
+        "rank": 4,
+        "score": 0.5935,
+        "document_id": "url_crawls:crawl_uq_8374b88d95416e8fb6a987b1_colombia_media_local_excel",
+        "title": "Fotografía de una nueva especie",
+        "language": "es",
+        "url": "https://www.elespectador.com/ambiente/bibo/fotografia-de-una-nueva-especie/",
+        "snippet": ". Este incidente engañó a numerosas personas en todo el mundo, quienes compartieron la imagen, asombradas por su inusual belleza y supuesta novedad, recordando otros casos famosos de fotografías falsas como la del monstr"
+      },
+      {
+        "rank": 5,
+        "score": 0.5929,
+        "document_id": "url_crawls:crawl_uq_879002d7fb8f7cdfc829d1fe_media_cloud_whitelist",
+        "title": "Los detalles de los casos de profesores del Distrito sancionados por humillar a sus estudiantes y colegas, van 33 actuaciones disciplinarias",
+        "language": "es",
+        "url": "https://www.eltiempo.com/bogota/los-detalles-de-los-casos-de-profesores-del-distrito-sancionados-por-humillar-a-sus-estudiantes-y-colegas-van-33-actuaciones-disciplinarias-3394912",
+        "snippet": "res, difundir informaciones falsas o mensajes hirientes, fotos o comentarios embarazosos o también excluir a alguien de las redes sociales u otros medios de comunicación. CAROL MALAVER SUBEDITORA BOGOTÁ Escríbanos a carm"
+      }
+    ]
+  },
+  {
+    "query": "salud pública y vacunación",
+    "retrieval_ms": 30.51,
+    "neighbors": [
+      {
+        "rank": 1,
+        "score": 0.5836,
+        "document_id": "url_crawls:crawl_uq_969638774028e5651266af83_media_cloud_whitelist",
+        "title": "Inmunidad de grupo",
+        "language": "es",
+        "url": "https://www.elheraldo.co/columnas-de-opinion/hernando-baquero-latorre/inmunidad-de-grupo-818976",
+        "snippet": "onde los avances científicos nos han permitido tener vacunas disponibles en tiempos relativamente cortos. Solo con ellas se nos ha comenzado a despejar el camino para contener de manera definitiva la pandemia. Barranquil"
+      },
+      {
+        "rank": 2,
+        "score": 0.5781,
+        "document_id": "url_crawls:crawl_uq_857c3ce4f0a63888f990297b_media_cloud_whitelist",
+        "title": "Qué se celebra el 29 de mayo en el Perú: un mosaico de memoria histórica, desarrollo y desafíos contemporáneos",
+        "language": "es",
+        "url": "https://www.infobae.com/peru/2026/05/29/que-se-celebra-el-29-de-mayo-en-el-peru-un-mosaico-de-memoria-historica-desarrollo-y-desafios-contemporaneos/",
+        "snippet": "29 de mayo de 2011 fue oficializado en el Perú el Día Nacional de la Vacunación, una fecha destinada a promover la inmunización y reforzar la prevención de enfermedades en toda la población. PUBLICIDAD La jornada impulsa"
+      },
+      {
+        "rank": 3,
+        "score": 0.5731,
+        "document_id": "url_crawls:crawl_uq_26570a440b243a03a10af2a2_media_cloud_whitelist",
+        "title": "El discurso completo de la asunción de Alberto Fernández ante la Asamblea Legislativa",
+        "language": "es",
+        "url": "https://www.infobae.com/politica/2019/12/10/el-discurso-completo-de-la-asuncion-de-alberto-fernandez-ante-la-asamblea-legislativa/",
+        "snippet": "pública. Los ciudadanos podrán acceder a toda la información sobre el proyecto de la obra, los costos de la misma, el proceso de licitación y selección de la empresa ejecutora, monitorear los avances y denunciar irregula"
+      },
+      {
+        "rank": 4,
+        "score": 0.5692,
+        "document_id": "url_crawls:crawl_uq_5ded57a1b449c69dbe726bfd_media_cloud_whitelist",
+        "title": "Carta de Santa al Niño Dios 2022",
+        "language": "es",
+        "url": "https://www.larepublica.co/analisis/ramiro-santa-513971/carta-de-santa-al-nino-dios-2022-3515331",
+        "snippet": ", la tranquilidad las posibles medidas preventivas y/o vacunas sobre las posibles nuevas situaciones de salud. En lo local la petición es sobre la salud mental pues entre la agresividad, la violencia en las calles, el bu"
+      },
+      {
+        "rank": 5,
+        "score": 0.5649,
+        "document_id": "url_crawls:crawl_uq_6e7a0cc0955e56e1347c1b66_media_cloud_whitelist",
+        "title": "Semana de la vacunación: la estrategia ha protegido a más de 1.000 millones de personas en América",
+        "language": "es",
+        "url": "https://www.eltiempo.com/salud/semana-de-la-vacunacion-en-america-esta-estrategia-ha-protegido-a-mas-de-1-000-millones-de-personas-3336326",
+        "snippet": "ificativo de respeto sobre el derecho fundamental de las personas de disfrutar de la salud física y mental en un mayor grado. Tome a consideración estos tres motivos por los cuales resulta primordial entender el valor de"
+      }
+    ]
+  },
+  {
+    "query": "migración en la frontera",
+    "retrieval_ms": 31.11,
+    "neighbors": [
+      {
+        "rank": 1,
+        "score": 0.6331,
+        "document_id": "bluesky_posts:bluesky_3mv5onkhtus2y",
+        "title": "",
+        "language": "en",
+        "url": "https://bsky.app/profile/clivebagley.bsky.social/post/3mv5onkhtus2y",
+        "snippet": "Climate change migrants that we actually should be worried about."
+      },
+      {
+        "rank": 2,
+        "score": 0.6258,
+        "document_id": "url_crawls:crawl_uq_740fb8d98cc1a997c6573e5f_media_cloud_whitelist",
+        "title": "Scientific fieldwork ‘caught in the middle’ of US-Mexico border tensions",
+        "language": "en",
+        "url": "https://theconversation.com/scientific-fieldwork-caught-in-the-middle-of-us-mexico-border-tensions-129530",
+        "snippet": "the border had stalled their research for over a year. More than half of respondents said these issues had increased in frequency or caused greater disruption to their work within the last three years. Caught in the midd"
+      },
+      {
+        "rank": 3,
+        "score": 0.6241,
+        "document_id": "url_crawls:crawl_uq_c3dff11b1749fbe0f947840a_colombia_media_local_excel",
+        "title": "El muro entre EE.UU. y México también está afectando a los animales",
+        "language": "es",
+        "url": "https://www.elespectador.com/ambiente/el-muro-entre-eeuu-y-mexico-tambien-esta-afectando-a-los-animales/",
+        "snippet": "itó la colaboración en un plan de acción binacional urgente para evaluar y mitigar los impactos del muro y restaurar la conectividad en el ecosistema. La comitiva que visitó la zona en febrero de 2024 busca motivar las a"
+      },
+      {
+        "rank": 4,
+        "score": 0.6222,
+        "document_id": "url_crawls:crawl_uq_857a6d74816df70399b01225_media_cloud_whitelist",
+        "title": "Botanists are trying to save a forgotten ecosystem split by Trump’s giant wall",
+        "language": "en",
+        "url": "https://www.independent.co.uk/news/world/americas/donald-trump-mexico-wall-wildlife-b2547713.html",
+        "snippet": "ant to not be impeded by the barriers that humans create.” As border security increases with the number of people being displaced by natural disasters, violence and wars at record levels worldwide, more migrants are trai"
+      }
+    ]
+  },
+  {
+    "query": "energy transition and fossil fuels",
+    "retrieval_ms": 26.44,
+    "neighbors": [
+      {
+        "rank": 1,
+        "score": 0.6748,
+        "document_id": "url_crawls:crawl_uq_4f2cf1eb98e5902fc0214767_media_cloud_whitelist",
+        "title": "Comunidad científica propone 12 acciones para la transición energética",
+        "language": "es",
+        "url": "https://www.lasillavacia.com/en-vivo/comunidad-cientifica-propone-12-acciones-para-la-transicion-energetica/",
+        "snippet": "subsidios a los combustibles fósiles, implementar impuestos al carbono y usar los recursos obtenidos para la transición energética. - Exigir reportes que permitan hacer seguimiento al cumplimiento de los objetivos de dis"
+      },
+      {
+        "rank": 2,
+        "score": 0.6715,
+        "document_id": "url_crawls:crawl_uq_27e0a742c41a02310ba6c4d7_gdelt_event",
+        "title": "Santa Marta is a major milestone towards fossil fuel phase-out",
+        "language": "en",
+        "url": "https://actionaid.org/news/2026/santa-marta-major-milestone-towards-fossil-fuel-phase-out",
+        "snippet": "tone on our journey out of the fossil fuel era. It must set the stage for a new Fossil Fuel Treaty for the countries that are ready to lead the world down this path”."
+      },
+      {
+        "rank": 3,
+        "score": 0.6708,
+        "document_id": "bluesky_posts:bluesky_3mva37eltuc2j",
+        "title": "",
+        "language": "en",
+        "url": "https://bsky.app/profile/yes2renewablesuk.eurosky.social/post/3mva37eltuc2j",
+        "snippet": "Transition Oil Climateemergency"
+      },
+      {
+        "rank": 4,
+        "score": 0.6697,
+        "document_id": "url_crawls:crawl_uq_4f2cf1eb98e5902fc0214767_media_cloud_whitelist",
+        "title": "Comunidad científica propone 12 acciones para la transición energética",
+        "language": "es",
+        "url": "https://www.lasillavacia.com/en-vivo/comunidad-cientifica-propone-12-acciones-para-la-transicion-energetica/",
+        "snippet": "s por la transición. - Desmontar argumentos de “greenwashing” de empresas de combustibles fósiles, quienes quieren mostrarse como sostenibles, pero en realidad no lo son y prohibir la publicidad a favor de los combustibl"
+      },
+      {
+        "rank": 5,
+        "score": 0.6686,
+        "document_id": "url_crawls:crawl_uq_d8f8ed5111930d31edbbe92b_media_cloud_whitelist",
+        "title": "Cambio climático no es ajeno a campaña presidencial | El Nuevo Siglo",
+        "language": "es",
+        "url": "https://www.elnuevosiglo.com.co/politica/que-proponen-los-candidatos-presidenciales-sobre-el-cambio-climatico",
+        "snippet": "EL MEDIOAMBIENTE y la problemática por el cambio climático por sus implicaciones ocupa un lugar especial entre las propuestas de los candidatos presidenciales. La mayoría de ellos coincide en que la transición del país a"
+      }
+    ]
+  }
+]

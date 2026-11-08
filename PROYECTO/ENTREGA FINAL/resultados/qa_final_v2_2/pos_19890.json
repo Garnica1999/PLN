@@ -1,0 +1,440 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "19890",
+  "ponente": "Jorge Iván Palacio Palacio",
+  "area": {
+    "top3": [
+      {
+        "area": "derechos_fundamentales",
+        "prob": 0.785
+      },
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.1874
+      },
+      {
+        "area": "derechos_sociales_economicos_culturales",
+        "prob": 0.021
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "86",
+        "texto_150chars": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi",
+        "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+        "numero": "241",
+        "texto_150chars": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "33",
+        "texto_150chars": "Nadie podrá ser obligado a declarar contra sí mismo o contra su cónyuge, compañero permanente o parientes dentro del cuarto grado de consanguinidad, s",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "2",
+        "texto_150chars": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "23",
+        "texto_150chars": "Toda persona tiene derecho a presentar peticiones respetuosas a las autoridades por motivos de interés general o particular y a obtener pronta resoluc",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "9",
+        "texto_150chars": "Las relaciones exteriores del Estado se fundamentan en la soberanía nacional, en el respeto a la autodeterminación de los pueblos y en el reconocimien",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "31",
+        "texto_150chars": "Toda sentencia judicial podrá ser apelada o consultada, salvo las excepciones que consagre la ley El superior no podrá agravar la pena impuesta cuando",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "1",
+        "texto_150chars": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "38",
+        "texto_150chars": "Se garantiza el derecho de libre asociación para el desarrollo de las distintas actividades que las personas realizan en sociedad",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "39",
+        "texto_150chars": "Los trabajadores y empleadores tienen derecho a constituir sindicatos o asociaciones, sin intervención del Estado. Su reconocimiento jurídico se produ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "3",
+        "texto_150chars": "La soberanía reside exclusivamente en el pueblo, del cual emana el poder público. El pueblo la ejerce en forma directa o por medio de sus representant",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "11",
+        "texto_150chars": "El derecho a la vida es inviolable. No habrá pena de muerte",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "13",
+        "texto_150chars": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "53",
+        "texto_150chars": "El Congreso expedirá el estatuto del trabajo. La ley correspondiente tendrá en cuenta por lo menos los siguientes principios mínimos fundamentales: Ig",
+        "bloque": "derechos_sociales_economicos_culturales"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "86",
+        "score": 1.6064
+      },
+      {
+        "numero": "241",
+        "score": 1.2292
+      },
+      {
+        "numero": "39",
+        "score": 0.7595
+      },
+      {
+        "numero": "13",
+        "score": 0.7295
+      },
+      {
+        "numero": "361",
+        "score": 0.7107
+      },
+      {
+        "numero": "9",
+        "score": 0.6869
+      },
+      {
+        "numero": "2",
+        "score": 0.6744
+      },
+      {
+        "numero": "1",
+        "score": 0.6643
+      },
+      {
+        "numero": "103",
+        "score": 0.6063
+      },
+      {
+        "numero": "29",
+        "score": 0.6059
+      }
+    ],
+    "reranker_usado": false,
+    "hubs_usado": true,
+    "alpha_hubs": 0.75
+  },
+  "sentencias_citadas": [
+    {
+      "id": "C-1064-2001",
+      "resuelta": false,
+      "ano": 2001,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "870",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.000763,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "1880",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000793,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "12541",
+      "resuelta": true,
+      "ano": 2007,
+      "pagerank": 2.3e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "12709",
+      "resuelta": true,
+      "ano": 2007,
+      "pagerank": 1.8e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "11204",
+      "resuelta": true,
+      "ano": 2008,
+      "pagerank": 1.6e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "12354",
+      "resuelta": true,
+      "ano": 2007,
+      "pagerank": 3.1e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "369",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 4.8e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2219",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 8.6e-05,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "348",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.000329,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "1611",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.001579,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "306",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.000103,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "14510",
+      "resuelta": true,
+      "ano": 2009,
+      "pagerank": 1.6e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "17959",
+      "resuelta": true,
+      "ano": 2012,
+      "pagerank": 1.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "18166",
+      "resuelta": true,
+      "ano": 2012,
+      "pagerank": 1.9e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "4615",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 3.8e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "4617",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 6.2e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "4744",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 4.8e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "T-677-1998",
+      "resuelta": false,
+      "ano": 1998,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "4885",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 1.9e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "T-1658-2000",
+      "resuelta": false,
+      "ano": 2000,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "8412",
+      "resuelta": true,
+      "ano": 2003,
+      "pagerank": 3.6e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "23116",
+      "resuelta": true,
+      "ano": 2011,
+      "pagerank": 1.8e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "1696",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 1.9e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "873",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 3.7e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "612",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 5.2e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "875",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 6.9e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2082",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 1.9e-05,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "2727",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 9.9e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "4454",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 3.5e-05,
+      "area": "rama_judicial"
+    },
+    {
+      "id": "SU-69-1999",
+      "resuelta": false,
+      "ano": 1999,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "7216",
+      "resuelta": true,
+      "ano": 2002,
+      "pagerank": 3.1e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "7256",
+      "resuelta": true,
+      "ano": 2002,
+      "pagerank": 1.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "7258",
+      "resuelta": true,
+      "ano": 2002,
+      "pagerank": 4.9e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "13155",
+      "resuelta": true,
+      "ano": 2006,
+      "pagerank": 2.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "18332",
+      "resuelta": true,
+      "ano": 2012,
+      "pagerank": 1.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2004",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000338,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "789",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 7.6e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "5574",
+      "resuelta": true,
+      "ano": 1999,
+      "pagerank": 2.9e-05,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "C-330-2005",
+      "resuelta": false,
+      "ano": 2005,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "8655",
+      "resuelta": true,
+      "ano": 2003,
+      "pagerank": 2.5e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "344",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.0003,
+      "area": "derechos_fundamentales"
+    }
+  ],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.785); 14 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 37 de 42 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 7.21
+}
