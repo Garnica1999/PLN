@@ -92,7 +92,7 @@ def test_p1_flow_2195(app: AppTest) -> None:
         for item in app.subheader
     )
     assert "Artículo 86" in content
-    assert "149.1889" in content
+    assert "149,1889" in content
     assert any(
         button.label == "Descargar ficha PDF" for button in app.download_button
     )
@@ -146,7 +146,7 @@ def test_p3_shows_real_metrics_with_provenance(app: AppTest) -> None:
 
     assert not app.exception
     content = markdown_text(app)
-    assert "0.7852" in content
+    assert "0,7852" in content
     assert "SEGUNDA ENTREGA/resultados/metricas.json" in content
     assert "ADR-19" in content
     assert any(
@@ -154,9 +154,9 @@ def test_p3_shows_real_metrics_with_provenance(app: AppTest) -> None:
         for item in app.subheader
     )
     assert any("Guardrails del agente" in item.value for item in app.subheader)
-    assert "0.6013" in content
-    assert "0.6907" in content
-    assert "13444 ms" in content
+    assert "0,6013" in content
+    assert "0,6907" in content
+    assert "13.444 ms" in content
     assert "agente_guardrails_eval" in content
     assert "Gold humano" in content
 

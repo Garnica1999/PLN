@@ -1,48 +1,101 @@
 # DESIGN.md — Entrega Final Juris-PLN
 
-Dirección de diseño para la app y las diapositivas. Deriva de la identidad ya usada en el EDA
-(paleta del generador de la presentación) y del informe (plantilla institucional).
+Dos superficies con una misma familia de azul:
+
+- **Producto digital (app Streamlit):** Material Design 3, el sistema de Android 16 y 17.
+- **Documentos (informe y deck):** identidad institucional serif heredada del EDA y del informe.
+
+Las razones: la app se usa en pantalla, con interacción y estados; el papel y el deck se leen
+en proyección. Comparten el azul como acento y la disciplina de una sola voz visual.
 
 ## Identidad
+
 - Herramienta de investigación jurídica para académicos y profesionales del derecho.
 - Registro: institucional, documental, sobrio. No es una landing de producto.
-- Paleta (tomada del deck del EDA):
-  - Azul institucional #2F75B5 (acento único: acción principal y estado seleccionado).
-  - Tinta #162536 (texto principal y superficies oscuras puntuales).
-  - Gris texto #425466 (texto secundario).
-  - Fondo #FFFFFF y superficie #F5F7FA.
-- Sin degradados, sin glass, sin sombras generalizadas. Elevación solo en modales.
+- Sin degradados, sin glass, sin sombras generalizadas. La elevación en la app es tonal.
 - Logo Javeriana en portada y pie del informe, solo si el archivo existe.
 
-## Tipografía
-- Títulos: serif de informe (Source Serif 4 o la del template del informe), peso 600.
-- Interfaz: sans humanista (Source Sans 3 o la del sistema), 16 px base.
-- Cifras y puntajes: monoespaciada tabular, solo para datos.
-- Razón: el serif da peso documental; la sans mantiene legibilidad en pantalla.
+## Producto digital: Material 3
+
+### Color (tema claro, semilla azul institucional)
+
+| Rol | Valor | Uso |
+|---|---|---|
+| primary / on-primary | `#3B5BA9` / `#FFFFFF` | acción principal, foco, selección |
+| primary-container / on-primary-container | `#DBE1FF` / `#00174B` | estados informativos y selección suave |
+| secondary-container / on-secondary-container | `#DAE2F9` / `#131C2B` | botones tonales, item activo del cajón |
+| tertiary-container / on-tertiary-container | `#BEEAFE` / `#001F29` | avisos |
+| error-container / on-error-container | `#FFDAD6` / `#410002` | errores |
+| surface / on-surface | `#F9F9FF` / `#1A1B21` | fondo y texto |
+| surface-container-low … highest | `#F3F3FA` … `#E2E2E9` | tarjetas, campos, tablas |
+| outline / outline-variant | `#74777F` / `#C4C6D0` | bordes y divisores |
+
+Un solo acento: el azul no se reparte por la pantalla. La jerarquía se construye con tamaño,
+peso y superficie.
+
+### Tipografía
+
+- Roboto (400, 500, 700), con Noto Sans y la sans del sistema como respaldo.
+- Escala usada: display 36/44, headline 24/32, title 22/28 y 16/24, body 16/24 y 14/20,
+  label 14/20 y 11/16 en mayúsculas con tracking.
+- Datos, rutas y claves: Roboto Mono con cifras tabulares.
+- Los decimales y porcentajes van con coma; los miles con punto (`13.444 ms`, `100,0 %`).
+
+### Forma y elevación
+
+- Radios: 4 (campos), 8 (chips), 12 (tarjetas, tablas, avisos), 16 (estado vacío), 28 y full
+  (botones y navegación).
+- Elevación tonal: las superficies cambian de tono, no se cubren de sombras. Sombra solo en
+  hover de botón y en contenedores elevados.
+
+### Componentes
+
+- **Botones:** filled (primario) y tonal (secundario), altura 40, radio full, etiqueta 14/500.
+- **Campos:** variante filled, fondo `surface-container-highest`, radio 4 arriba, línea inferior
+  de 1 px que pasa a 2 px primary con el foco.
+- **Cajón de navegación:** 336 px, ítems de 48 px con indicador activo full en
+  `secondary-container`; sin círculos de radio.
+- **Tarjetas:** borde 1 px `outline-variant`, radio 12, fondo blanco o `surface-container-low`.
+- **Tablas:** contenedor tipo tarjeta, cabecera en mayúsculas sobre `surface-container`, filas
+  separadas por `outline-variant`, hover tonal; columnas técnicas en mono con corte de palabra.
+- **Avisos:** banners tonales por tipo (info, éxito, aviso, error), radio 12.
+- **Selección:** radios y casillas M3 (círculo de 20 px, casilla de 18 px, relleno primary).
+- **Estados:** vacío en tarjeta con título y qué hacer; carga con spinner primary; error con
+  banner y una acción.
+
+### Accesibilidad y movimiento
+
+- Contraste AA; foco visible de 2 px primary con offset.
+- Objetivos táctiles de 48 px en navegación y botones.
+- `prefers-reduced-motion`: sin transiciones.
+- Estados nunca solo por color: siempre hay texto o forma.
+
+### Retícula y responsive
+
+- Ancho de contenido 1180 px, padding 2,5 rem; 1,5 rem por debajo de 1024; 1 rem por debajo
+  de 720.
+- En móvil el cajón se colapsa, el título baja a 28 px y las filas de metadatos se apilan.
+- Capturas de referencia en `presentacion/capturas/` (P1, P2, P3, chat y móvil).
+
+## Documentos: informe y deck
+
+- Paleta del EDA: azul `#2F75B5`, tinta `#162536`, gris `#425466`, blanco y `#F5F7FA`.
+- Títulos en serif (Source Serif 4 o la del template), peso 600; cuerpo serif 11 pt en el
+  informe y sans en el deck.
+- Un solo acento por figura; título = hallazgo; fuente al pie (n, dataset, fecha).
+- Sin emoji, sin 3D, sin degradados decorativos, sin iconos genéricos.
+- Diapositivas de 16:9 con franja azul, tarjetas y pie con numeración.
 
 ## Dials
+
 - ENERGY 1 (calma, herramienta de trabajo).
 - RHYTHM 2 (variación moderada entre pantallas).
-- MOTION 1 (solo estados hover y transiciones de carga).
+- MOTION 1 (hover y transiciones de carga, nada más).
 
-## Reglas de la interfaz
-- Un solo acento; el azul no se reparte por toda la pantalla.
-- Jerarquía por tamaño y peso, no por color.
-- Estados vacío, carga y error explícitos: qué pasó y qué hacer.
+## Reglas transversales
+
 - Cifras reales con fuente visible (n, dataset, fecha). Nada inventado.
 - El área temática se rotula "exploratoria" y remite a ADR-19.
 - Selector de modelo LLM en la barra lateral, con el modelo por defecto indicado.
-
-## Reglas de las figuras (aplican también a las diapositivas)
-- Misma paleta que la diapositiva; un color de acento por figura.
-- Título = hallazgo, no el tipo de gráfico.
-- Línea de fuente al pie: n, dataset y fecha.
-- Sin emoji, sin 3D, sin degradados decorativos, sin iconos genéricos.
-- Etiquetas directas; sin leyendas cuando la etiqueta cabe en la serie.
-- Contraste AA; tipografía legible en proyección (mínimo 14 pt).
-- No usar estilos por defecto de matplotlib sin razón.
-
-## Diapositivas
-- 10 a 12 slides, storytelling, con el diseño del deck del EDA (misma retícula y tarjetas).
-- Responden: problema real, público, quién lo usa y cómo se beneficia, diferenciación, impacto.
-- Métricas clave con fuente (nDCG@10 con gold humano, C3, latencia).
+- Interruptor de razonamiento en la consulta asistida, con aviso de costo.
+- Sin emojis en código, documentos ni interfaz.

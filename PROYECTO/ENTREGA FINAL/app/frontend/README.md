@@ -36,3 +36,9 @@ El puerto 8501 está ocupado por otro proyecto; usa 8502 (o el que esté libre).
 - El área temática se rotula "exploratoria" (ADR-19).
 - El selector de modelo usa los nombres exactos de ollama; si `tool_calling=false`, se avisa del
   fallback determinista.
+
+## Diseno
+
+La interfaz sigue Material Design 3 (tema claro, semilla azul, tipografia Roboto, roles
+tonales, formas de 4 a 28 px y campos filled). La direccion completa esta en `../../DESIGN.md`
+y las capturas de referencia en `../presentacion/capturas/`.

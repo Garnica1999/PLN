@@ -32,6 +32,7 @@ Leyenda: [x] hecho, [~] en curso, [ ] pendiente.
 - [x] Consolidación E1+E2 en `ENTREGA FINAL/` con enlaces a datos pesados
 - [x] Informe PDF completo (33 páginas, 14 tablas, 13 figuras) en `informe/`
 - [x] Deck storytelling de 12 diapositivas en `presentacion/` (PPTX y PDF, 12 páginas)
+- [x] Interfaz rediseñada con Material Design 3 (verificado en Firefox, escritorio y móvil)
 - [x] Documentación actualizada y Delivery Gate de antislop aplicado (sin guiones largos, sin emojis, sin relleno)
 
 ## F4 — Entrega
