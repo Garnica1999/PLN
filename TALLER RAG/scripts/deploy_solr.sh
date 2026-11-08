@@ -4,17 +4,20 @@ set -euo pipefail
 SOLR_URL="${SOLR_URL:-http://192.168.1.100:8983/solr/noticias}"
 CORE="${CORE:-noticias}"
 
-if ! docker --context server ps --format '{{.Names}}' | grep -qx taller-rag-solr; then
-  docker --context server run -d --name taller-rag-solr --restart unless-stopped \
-    -p 8983:8983 -v taller-rag_solr_data:/var/solr solr:9
-fi
+docker --context server stack deploy -c docker-stack.yml taller-rag
 
-for _ in $(seq 1 60); do
+for _ in $(seq 1 90); do
   if curl -sf -m 2 http://192.168.1.100:8983/solr/ >/dev/null; then break; fi
   sleep 2
 done
 
-docker --context server exec taller-rag-solr solr create -c "$CORE" -d _default || true
+CID=$(docker --context server ps -q --filter name=taller-rag_solr | head -1)
+if [ -z "$CID" ]; then
+  echo "no encontre la tarea de Solr en el stack"
+  exit 1
+fi
+
+docker --context server exec "$CID" solr create -c "$CORE" -d _default || true
 
 curl -sS -X POST -H 'Content-Type: application/json' --data-binary @- "$SOLR_URL/schema" <<'JSON'
 {"add-field":[

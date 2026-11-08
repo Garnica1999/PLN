@@ -99,6 +99,32 @@ services:
           cpus: "8"
           memory: 10G
 
+  solr:
+    image: ${SOLR_IMAGE:-solr:9}
+    volumes:
+      - solr_data:/var/solr
+    networks:
+      - rag
+    ports:
+      - target: 8983
+        published: ${SOLR_PORT:-8983}
+        mode: host
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8983/solr/"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+    deploy:
+      placement:
+        constraints: [node.labels.role==data]
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+      resources:
+        limits:
+          cpus: "${SOLR_CPUS:-2}"
+          memory: ${SOLR_MEMORY:-4G}
+
 networks:
   rag:
     driver: overlay
@@ -108,3 +134,4 @@ volumes:
   etcd_data:
   minio_data:
   milvus_data:
+  solr_data:
