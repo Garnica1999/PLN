@@ -5,6 +5,7 @@ Cada tabla del artículo se respalda en un artefacto. El verificador debe compar
 | Tabla o afirmación | Artefacto |
 |---|---|
 | Composición del corpus, idiomas, duplicados, longitud, ruido | `docs/EXPERIMENTOS.md` §7 y §10; `reports/informe/metricas_nueva_configuracion.md` |
+| Idioma normalizado (Tabla II) | `reports/tablas/perfilado.json` (`idioma_normalizado`) |
 | Textometría (Tabla II) | `docs/EXPERIMENTOS.md` §7 |
 | Limpieza (Tabla III) | `docs/EXPERIMENTOS.md` §8.2 y §8.3 |
 | E1 y E2 | `docs/EXPERIMENTOS.md` §9.1 y §9.2 |

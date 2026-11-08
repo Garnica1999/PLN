@@ -53,21 +53,20 @@ def limpieza() -> None:
 def escala() -> None:
     labels = ["Recall@10", "P@1", "Hit@5", "nDCG@10"]
     series = {
-        "Piloto, 1.932 docs": [0.947, 0.842, 0.947, 0.909],
-        "Corpus, 161.868 docs": [0.684, 0.474, 0.658, 0.594],
-        "Corpus + rerank e5 top-50": [0.684, 0.632, 0.684, 0.661],
+        "Piloto": [0.947, 0.842, 0.947, 0.909],
+        "Corpus": [0.684, 0.474, 0.658, 0.594],
+        "Corpus + rerank": [0.684, 0.632, 0.684, 0.661],
     }
     positions = np.arange(len(labels))
     width = 0.26
-    fig, ax = plt.subplots(figsize=(6.6, 3.6))
+    fig, ax = plt.subplots(figsize=(3.5, 2.6))
     for index, (name, values) in enumerate(series.items()):
         offset = (index - 1) * width
         ax.bar(positions + offset, values, width, label=name, color=PALETTE[index])
-    ax.set_xticks(positions, labels)
+    ax.set_xticks(positions, labels, fontsize=7)
     ax.set_ylim(0, 1)
-    ax.set_ylabel("Valor")
-    ax.set_title("Recuperación en el piloto y en el corpus completo")
-    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=3)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=3, fontsize=7,
+              handlelength=1.2, columnspacing=0.8)
     save_figure(fig, FIGURES / "escala_e6_e7.png")
 
 
