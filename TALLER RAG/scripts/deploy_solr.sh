@@ -20,7 +20,8 @@ fi
 docker --context server exec "$CID" solr create -c "$CORE" -d _default || true
 
 curl -sS -X POST -H 'Content-Type: application/json' --data-binary @- "$SOLR_URL/schema" <<'JSON'
-{"add-field":[
+{"add-field-type":{"name":"knn_vector","class":"solr.DenseVectorField","vectorDimension":1024,"similarityFunction":"cosine","vectorEncoding":"FLOAT32"},
+ "add-field":[
   {"name":"chunk_id","type":"string","stored":true,"indexed":true},
   {"name":"text","type":"text_general","stored":true,"indexed":true},
   {"name":"document_id","type":"string","stored":true,"indexed":true},
@@ -33,7 +34,8 @@ curl -sS -X POST -H 'Content-Type: application/json' --data-binary @- "$SOLR_URL
   {"name":"position","type":"pint","stored":true,"indexed":false},
   {"name":"end_offset","type":"pint","stored":true,"indexed":false},
   {"name":"chunk_strategy","type":"string","stored":true,"indexed":false},
-  {"name":"text_sha256","type":"string","stored":true,"indexed":false}
+  {"name":"text_sha256","type":"string","stored":true,"indexed":false},
+  {"name":"vector","type":"knn_vector","indexed":true,"stored":false}
 ]}
 JSON
 

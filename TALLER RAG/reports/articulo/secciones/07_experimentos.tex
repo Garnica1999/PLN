@@ -133,9 +133,9 @@ bge-m3 & \textbf{0,842} & 0,553 & \textbf{0,816} & 0,708 & 56 ms \\
 
 E11 ajust\'o \texttt{ef} y prob\'o la fusi\'on con BM25. \texttt{ef}=800 sube el recall 2,6 puntos y el nDCG 1,3 con 6 ms m\'as. La fusi\'on 0,5/0,5 empata en recall y sube nDCG 6,9, P@1 13,2 y cobertura de span 5,3. Con el silver de un solo relevante la fusi\'on parec\'ia ganar. E12 repiti\'o la comparaci\'on con el silver ampliado: el denso recupera m\'as documentos nuevos (Recall@10 0,921 contra 0,890 y nDCG 0,827 contra 0,804). E12 se queda con la base densa, \texttt{ef}=800, sin fusi\'on; la ruta desplegada despu\'es es la uni\'on h\'ibrida, elegida sobre el conjunto de desarrollo.
 
-\subsection{Solr como recuperador disperso}
+\subsection{Solr como backend de recuperaci\'on}
 
-Solr 9 se despleg\'o como un servicio m\'as del stack de Swarm, con imagen, puerto, CPU y memoria parametrizados. El \'indice replica los 618.286 fragmentos con un esquema de 13 campos y b\'usqueda \texttt{edismax} sobre \texttt{text} y \texttt{title}$^2$. La Tabla~\ref{tab:solr} compara el mismo silver de 38 preguntas. Solr iguala el recall y el Hit@5 del BM25 de Milvus, pero pierde P@1 y nDCG y paga 30 ms m\'as; el denso bge-m3 conserva la mayor cobertura. El backend es sustituible, pero el denso sigue siendo la mejor opci\'on para la recuperaci\'on inicial. El servicio se levanta con \texttt{scripts/deploy\_solr.sh} y la API de la demo corre en el puerto 8011 con \texttt{RETRIEVER=solr}.
+Solr 9 se despleg\'o como un servicio m\'as del stack de Swarm, con imagen, puerto, CPU y memoria parametrizados. El \'indice replica los 618.286 fragmentos con un esquema de 13 campos y b\'usqueda \texttt{edismax} sobre \texttt{text} y \texttt{title}$^2$. La Tabla~\ref{tab:solr} compara el mismo silver de 38 preguntas. Solr con BM25 iguala el recall y el Hit@5 del BM25 de Milvus, pero pierde P@1 y nDCG. Con bge-m3, Solr alcanza 0,605 de recall, por debajo del denso de Milvus (0,842); la diferencia es consistente con el \'indice HNSW por defecto de Solr, que no se ajust\'o, y no con el embedding, que es el mismo. El backend es sustituible, pero el denso de Milvus sigue siendo la mejor opci\'on para la recuperaci\'on inicial; una comparaci\'on justa de Solr denso exige ajustar \texttt{hnswBeamWidth} y reconstruir el \'indice. El servicio se levanta con \texttt{scripts/deploy\_solr.sh} y la API de la demo corre en el puerto 8011 con \texttt{RETRIEVER=solr}.
 
 \begin{table}[t]
 \centering
@@ -148,6 +148,7 @@ Solr 9 se despleg\'o como un servicio m\'as del stack de Swarm, con imagen, puer
 Recuperador & Recall@10 & P@1 & Hit@5 & nDCG & p50 \\
 \midrule
 Solr BM25 & 0,763 & 0,526 & 0,737 & 0,652 & 37 ms \\
+Solr bge-m3 & 0,605 & 0,395 & 0,579 & 0,510 & 109 ms \\
 Milvus BM25 & 0,763 & \textbf{0,684} & 0,737 & \textbf{0,727} & \textbf{7 ms} \\
 Milvus bge-m3 & \textbf{0,842} & 0,553 & \textbf{0,816} & 0,708 & 56 ms \\
 \bottomrule
