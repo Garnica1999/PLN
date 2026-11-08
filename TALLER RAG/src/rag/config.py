@@ -18,6 +18,7 @@ def _float(name: str, default: float) -> float:
 @dataclass(frozen=True)
 class Settings:
     milvus_uri: str
+    solr_url: str
     collection: str
     embeddings_url: str
     embeddings_model: str
@@ -68,6 +69,7 @@ class Settings:
 def load_settings() -> Settings:
     return Settings(
         milvus_uri=os.getenv("MILVUS_URI", "http://milvus:19530"),
+        solr_url=os.getenv("SOLR_URL", "http://localhost:8983/solr/noticias"),
         collection=os.getenv("MILVUS_COLLECTION", "rag_pilot_qwen3emb8b_d1024_fixed_v1"),
         embeddings_url=os.getenv("EMBEDDINGS_URL", "http://192.168.1.100:11435"),
         embeddings_model=os.getenv("EMBEDDINGS_MODEL", "qwen3-embedding:8b"),
