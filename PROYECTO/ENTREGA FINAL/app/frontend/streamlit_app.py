@@ -64,278 +64,650 @@ RESPONSE_MODES: dict[str, str] = {
 
 CSS = """
 <style>
+/* Material Design 3, tema claro con semilla azul institucional.
+   Roles tonales, tipografia Roboto, formas de 4 a 28 dp y elevacion tonal. */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+
 :root {
-    --azul: #2F75B5;
-    --azul-oscuro: #28649B;
-    --tinta: #162536;
-    --gris: #425466;
-    --fondo: #FFFFFF;
-    --superficie: #F5F7FA;
-    --borde: #DCE3EB;
-    --borde-suave: #E7ECF2;
+    /* Roles de color M3 (claro) */
+    --md-primary: #3B5BA9;
+    --md-on-primary: #FFFFFF;
+    --md-primary-container: #DBE1FF;
+    --md-on-primary-container: #00174B;
+    --md-secondary: #565E71;
+    --md-on-secondary: #FFFFFF;
+    --md-secondary-container: #DAE2F9;
+    --md-on-secondary-container: #131C2B;
+    --md-tertiary: #3A6475;
+    --md-on-tertiary: #FFFFFF;
+    --md-tertiary-container: #BEEAFE;
+    --md-on-tertiary-container: #001F29;
+    --md-error: #BA1A1A;
+    --md-on-error: #FFFFFF;
+    --md-error-container: #FFDAD6;
+    --md-on-error-container: #410002;
+    --md-surface: #F9F9FF;
+    --md-on-surface: #1A1B21;
+    --md-surface-variant: #E1E2EC;
+    --md-on-surface-variant: #44474F;
+    --md-outline: #74777F;
+    --md-outline-variant: #C4C6D0;
+    --md-surface-container-lowest: #FFFFFF;
+    --md-surface-container-low: #F3F3FA;
+    --md-surface-container: #EDEDF4;
+    --md-surface-container-high: #E7E8EE;
+    --md-surface-container-highest: #E2E2E9;
+    --md-inverse-surface: #2F3036;
+    --md-inverse-on-surface: #F1F0F7;
+    /* Formas */
+    --md-xs: 4px;
+    --md-sm: 8px;
+    --md-md: 12px;
+    --md-lg: 16px;
+    --md-xl: 28px;
+    --md-full: 999px;
+    /* Elevacion tonal */
+    --md-elev-1: 0 1px 2px rgba(0, 0, 0, .07), 0 1px 3px 1px rgba(0, 0, 0, .04);
+    --md-elev-2: 0 1px 2px rgba(0, 0, 0, .10), 0 2px 6px 2px rgba(0, 0, 0, .05);
+    /* Tipografia */
+    --md-font: 'Roboto', 'Noto Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --md-mono: 'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 }
+
+/* ---------- Base ---------- */
 html, body, [data-testid="stAppViewContainer"] {
-    font-family: "Source Sans 3", "Source Sans Pro", "Segoe UI", system-ui, sans-serif;
-    color: var(--tinta);
+    font-family: var(--md-font);
+    color: var(--md-on-surface);
     font-size: 16px;
+    background: var(--md-surface);
+    -webkit-font-smoothing: antialiased;
 }
-[data-testid="stAppViewContainer"] { background: var(--fondo); }
-[data-testid="stHeader"] { background: var(--fondo); }
-[data-testid="stDecoration"] { display: none; }
+[data-testid="stAppViewContainer"] { background: var(--md-surface); }
+[data-testid="stHeader"] { background: transparent; }
 [data-testid="stToolbar"] { display: none; }
-.block-container {
-    max-width: 1080px;
-    padding-top: 2.2rem;
-    padding-bottom: 4rem;
+[data-testid="stHeaderActionElements"] { display: none; }
+#MainMenu, footer { visibility: hidden; }
+[data-testid="stMainBlockContainer"] {
+    max-width: 1180px;
+    padding: 2.25rem 2.5rem 4rem;
 }
-h1, h2, h3, .jp-titulo, .jp-subtitulo {
-    font-family: "Source Serif 4", "Source Serif Pro", Georgia, serif;
-    color: var(--tinta);
-    font-weight: 600;
+[data-testid="stVerticalBlock"] { gap: 1rem; }
+::selection {
+    background: var(--md-primary-container);
+    color: var(--md-on-primary-container);
 }
-div[data-testid="stHeadingWithActionElements"] h1,
-div[data-testid="stHeadingWithActionElements"] h2,
-div[data-testid="stHeadingWithActionElements"] h3,
-h1.jp-titulo, h2.jp-titulo, h3.jp-titulo {
-    font-family: "Source Serif 4", "Source Serif Pro", Georgia, serif;
-    color: var(--tinta);
-    font-weight: 600;
+* { scrollbar-width: thin; scrollbar-color: var(--md-outline-variant) transparent; }
+a { color: var(--md-primary); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--md-primary); outline-offset: 2px; }
+
+/* ---------- Tipografia ---------- */
+h1, h2, h3, h4, h5, h6, p, li, label, span, div, button, input, textarea {
+    font-family: var(--md-font);
 }
-div[data-testid="stHeadingWithActionElements"] h1.jp-titulo {
-    font-size: 2rem;
-    line-height: 1.2;
-    margin: 0 0 .35rem 0;
+h1 {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
+    font-weight: 400;
+    letter-spacing: -.01em;
+    color: var(--md-on-surface);
+    margin: 0 0 .5rem;
 }
-div[data-testid="stHeadingWithActionElements"] h3 {
-    font-size: 1.35rem;
-    line-height: 1.3;
-    margin-top: 1.2rem;
+h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 500;
+    color: var(--md-on-surface);
+    margin: 2rem 0 .75rem;
 }
-.jp-titulo { font-size: 2rem; line-height: 1.2; margin: 0 0 .35rem 0; }
+h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    color: var(--md-on-surface);
+    margin: 1.5rem 0 .5rem;
+}
+[data-testid="stMarkdownContainer"] p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: var(--md-on-surface);
+}
+[data-testid="stCaptionContainer"] {
+    color: var(--md-on-surface-variant);
+    font-size: .875rem;
+    line-height: 1.25rem;
+}
+[data-testid="stWidgetLabel"] p {
+    font-size: .875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    color: var(--md-on-surface-variant);
+}
+[data-testid="stSubheader"] h2, [data-testid="stSubheader"] h3 {
+    font-size: 1.375rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+}
+
+/* Encabezado de pantalla */
+.jp-overline {
+    font-size: .75rem;
+    line-height: 1rem;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--md-primary);
+    margin: 0 0 .5rem;
+}
+.jp-titulo {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
+    font-weight: 400;
+    letter-spacing: -.01em;
+    color: var(--md-on-surface);
+    margin: 0 0 .5rem;
+}
 .jp-lede {
-    color: var(--gris);
-    font-size: 1.02rem;
-    line-height: 1.55;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: var(--md-on-surface-variant);
     max-width: 68ch;
-    margin: 0 0 1.8rem 0;
+    margin: 0 0 1.75rem;
 }
+
+/* ---------- Barra lateral: cajon de navegacion ---------- */
+[data-testid="stSidebar"] {
+    background: var(--md-surface-container-low);
+    border-right: 1px solid var(--md-outline-variant);
+    min-width: 272px;
+    max-width: 296px;
+}
+[data-testid="stSidebarContent"] { padding: 0 .75rem 1.5rem; }
+[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+    padding: 0 .5rem 1.5rem;
+}
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"],
+[data-testid="stSidebar"] [data-testid="stElementContainer"],
+[data-testid="stSidebar"] [data-testid="stRadio"],
+[data-testid="stSidebar"] [data-testid="stRadioGroup"],
+[data-testid="stSidebar"] [data-testid="stRadioGroup"] > div {
+    width: 100%;
+}
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"] { gap: .5rem; }
+[data-testid="stSidebar"] hr { display: none; }
 .jp-marca {
-    font-family: "Source Serif 4", Georgia, serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--tinta);
-    padding-top: .4rem;
+    font-size: 1.375rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    color: var(--md-on-surface);
+    padding: 1.25rem .75rem .25rem;
+    letter-spacing: -.01em;
 }
-.jp-regla { border-top: 1px solid var(--borde); margin: 1.6rem 0; }
+[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
+    font-size: .6875rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--md-on-surface-variant);
+    padding: 0 .75rem;
+}
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+    padding: 0 .75rem;
+    color: var(--md-on-surface-variant);
+}
+
+/* Items de navegacion como active indicator de M3 */
+[data-testid="stSidebar"] [data-testid="stRadioGroup"] { gap: 2px; }
+[data-testid="stSidebar"] [data-testid="stRadioGroup"] > div { width: 100%; }
+[data-testid="stSidebar"] label[data-testid="stRadioOption"] {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 0 1rem;
+    margin: 0;
+    border-radius: var(--md-full);
+    color: var(--md-on-surface-variant);
+    font-size: .875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+[data-testid="stSidebar"] label[data-testid="stRadioOption"]:hover {
+    background: var(--md-surface-container-high);
+    color: var(--md-on-surface);
+}
+[data-testid="stSidebar"] label[data-testid="stRadioOption"][data-selected="true"] {
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+}
+/* Ocultar el circulo del radio solo en la navegacion */
+[data-testid="stSidebar"] label[data-testid="stRadioOption"] > div > div:first-child {
+    display: none;
+}
+[data-testid="stSidebar"] label[data-testid="stRadioOption"] > div {
+    padding: 0;
+}
+
+/* Radios del contenido: circulo M3 */
+[data-testid="stMain"] label[data-testid="stRadioOption"] > div {
+    gap: .625rem;
+}
+[data-testid="stMain"] label[data-testid="stRadioOption"] > div > div:first-child {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--md-on-surface-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+[data-testid="stMain"] label[data-testid="stRadioOption"][data-selected="true"]
+    > div > div:first-child {
+    border-color: var(--md-primary);
+}
+[data-testid="stMain"] label[data-testid="stRadioOption"]
+    > div > div:first-child > div {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: transparent;
+}
+[data-testid="stMain"] label[data-testid="stRadioOption"][data-selected="true"]
+    > div > div:first-child > div {
+    background: var(--md-primary);
+}
+[data-testid="stMain"] label[data-testid="stRadioOption"] p {
+    font-size: .9375rem;
+    color: var(--md-on-surface);
+}
+
+/* ---------- Botones M3 ---------- */
+[data-testid="stButton"] button,
+[data-testid="stDownloadButton"] button,
+[data-testid="stFormSubmitButton"] button {
+    min-height: 40px;
+    padding: 0 24px;
+    border-radius: var(--md-full);
+    border: none;
+    font-size: .875rem;
+    font-weight: 500;
+    letter-spacing: .01em;
+    box-shadow: none;
+    transition: background-color .15s ease, box-shadow .15s ease, color .15s ease;
+}
+[data-testid="stBaseButton-primary"] {
+    background: var(--md-primary) !important;
+    color: var(--md-on-primary) !important;
+}
+[data-testid="stBaseButton-primary"]:hover {
+    background: #33539B !important;
+    box-shadow: var(--md-elev-1);
+}
+[data-testid="stBaseButton-secondary"],
+[data-testid="stBaseButton-secondaryFormSubmit"] {
+    background: var(--md-secondary-container) !important;
+    color: var(--md-on-secondary-container) !important;
+}
+[data-testid="stBaseButton-secondary"]:hover {
+    background: #CED8F2 !important;
+}
+[data-testid="stBaseButton-primary"] p,
+[data-testid="stBaseButton-secondary"] p {
+    font-size: .875rem;
+    font-weight: 500;
+    margin: 0;
+    color: inherit;
+}
+
+/* ---------- Campos de texto: variante filled ---------- */
+[data-testid="stTextInputRootElement"],
+[data-testid="stTextAreaRootElement"],
+[data-testid="stNumberInputContainer"] {
+    background: var(--md-surface-container-highest);
+    border: none;
+    border-bottom: 1px solid var(--md-outline);
+    border-radius: var(--md-xs) var(--md-xs) 0 0;
+    box-shadow: none;
+    transition: border-color .15s ease, background-color .15s ease;
+}
+[data-testid="stTextInputRootElement"]:focus-within,
+[data-testid="stTextAreaRootElement"]:focus-within {
+    border-bottom: 2px solid var(--md-primary);
+    background: var(--md-surface-container-high);
+}
+[data-testid="stTextInputField"],
+[data-testid="stTextAreaField"] textarea,
+[data-testid="stNumberInputField"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--md-on-surface);
+    font-size: 1rem;
+    padding: .75rem 1rem;
+}
+[data-testid="stTextInputField"]::placeholder,
+[data-testid="stTextAreaField"] textarea::placeholder {
+    color: var(--md-on-surface-variant);
+    opacity: .8;
+}
+[data-testid="stTextAreaRootElement"] textarea {
+    min-height: 120px;
+    resize: none;
+}
+[data-testid="stTextAreaRootElement"]::after,
+[data-testid="stTextAreaRootElement"]::before {
+    display: none !important;
+    content: none !important;
+}
+
+/* Selector: mismo lenguaje que el campo filled */
+[data-testid="stSelectbox"] .react-aria-ComboBox > div[role="group"] {
+    background: var(--md-surface-container-highest);
+    border: none;
+    border-bottom: 1px solid var(--md-outline);
+    border-radius: var(--md-xs) var(--md-xs) 0 0;
+    min-height: 56px;
+    padding: 0 .5rem 0 1rem;
+    box-shadow: none;
+    align-items: center;
+}
+[data-testid="stSelectbox"] .react-aria-ComboBox > div[role="group"]:focus-within {
+    border-bottom: 2px solid var(--md-primary);
+}
+[data-testid="stSelectbox"] .react-aria-ComboBox input {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--md-on-surface);
+    font-size: .8125rem;
+}
+[data-testid="stSelectbox"] button[aria-label] {
+    color: var(--md-on-surface-variant);
+    background: transparent;
+}
+
+/* Radios y casillas del contenido */
+[data-testid="stRadio"] input[type="radio"],
+[data-testid="stCheckbox"] input[type="checkbox"] {
+    accent-color: var(--md-primary);
+}
+[data-testid="stCheckbox"] label {
+    font-size: .875rem;
+    color: var(--md-on-surface);
+    gap: .625rem;
+}
+[data-testid="stCheckbox"] label > div:first-of-type {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 2px solid var(--md-on-surface-variant);
+    border-radius: 3px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+[data-testid="stCheckbox"] label[data-selected="true"] > div:first-of-type {
+    background: var(--md-primary);
+    border-color: var(--md-primary);
+}
+[data-testid="stCheckbox"] label > div:first-of-type svg {
+    width: 11px;
+    height: 9px;
+    fill: none;
+}
+[data-testid="stCheckbox"] label[data-selected="true"] svg polyline {
+    stroke: var(--md-on-primary);
+    stroke-width: 1.8;
+}
+
+/* ---------- Tarjetas, tablas y avisos ---------- */
 .jp-card {
-    background: var(--fondo);
-    border: 1px solid var(--borde);
-    border-radius: 3px;
-    padding: 1rem 1.1rem;
-    margin: .4rem 0 1rem 0;
+    background: var(--md-surface-container-lowest);
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--md-md);
+    padding: .25rem 0;
+    margin: .25rem 0;
 }
-.jp-aviso {
-    background: var(--superficie);
-    border: 1px solid var(--borde);
-    border-radius: 3px;
-    padding: .85rem 1rem;
-    color: var(--tinta);
-    font-size: .94rem;
-    line-height: 1.5;
-    margin: .4rem 0 1rem 0;
-}
-.jp-aviso p { margin: 0; }
-.jp-etiqueta {
-    color: var(--gris);
-    font-size: .82rem;
-    line-height: 1.4;
-    margin-bottom: .25rem;
-}
-.jp-dato {
-    font-family: "Source Code Pro", "JetBrains Mono", ui-monospace, monospace;
-    font-variant-numeric: tabular-nums;
-    color: var(--tinta);
-}
+.jp-card:has(.jp-etiqueta) { padding: 1rem 1.25rem; }
 .jp-meta-fila {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     gap: 1rem;
-    padding: .35rem 0;
-    border-bottom: 1px solid var(--borde-suave);
-    font-size: .94rem;
+    padding: .75rem 1.25rem;
+    border-bottom: 1px solid var(--md-outline-variant);
 }
 .jp-meta-fila:last-child { border-bottom: none; }
-.jp-meta-clave { color: var(--gris); }
+.jp-meta-clave {
+    color: var(--md-on-surface-variant);
+    font-size: .875rem;
+    line-height: 1.25rem;
+}
+.jp-dato {
+    font-family: var(--md-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: .875rem;
+    color: var(--md-on-surface);
+    text-align: right;
+}
+.jp-etiqueta {
+    font-size: .6875rem;
+    line-height: 1rem;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--md-primary);
+    margin: 0 0 .25rem;
+}
+.jp-frag-texto {
+    font-size: .9375rem;
+    line-height: 1.5rem;
+    color: var(--md-on-surface);
+    margin: 0;
+}
+.jp-regla {
+    height: 1px;
+    background: var(--md-outline-variant);
+    margin: 1.75rem 0;
+    border: none;
+}
+.jp-aviso {
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+    border-radius: var(--md-md);
+    padding: .875rem 1rem;
+    margin: .25rem 0;
+}
+.jp-aviso p {
+    margin: 0;
+    color: inherit;
+    font-size: .9375rem;
+    line-height: 1.375rem;
+}
+.jp-vacio {
+    background: var(--md-surface-container-low);
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--md-lg);
+    padding: 1.75rem 2rem;
+}
+.jp-vacio-titulo {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    color: var(--md-on-surface);
+    margin: 0 0 .5rem;
+}
+.jp-vacio p { color: var(--md-on-surface-variant); margin: 0; }
+
+/* Tablas como card M3 */
 .jp-tabla-envoltura {
-    overflow-x: auto;
-    border: 1px solid var(--borde);
-    border-radius: 3px;
-    margin: .3rem 0 1.2rem 0;
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--md-md);
+    overflow: hidden;
+    background: var(--md-surface-container-lowest);
+    margin: .5rem 0;
 }
 .jp-tabla {
     width: 100%;
     border-collapse: collapse;
-    font-size: .92rem;
-    background: var(--fondo);
+    font-size: .875rem;
 }
 .jp-tabla th {
+    background: var(--md-surface-container);
+    color: var(--md-on-surface-variant);
+    font-size: .6875rem;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
     text-align: left;
-    font-weight: 600;
-    color: var(--tinta);
-    background: var(--superficie);
-    padding: .5rem .65rem;
-    border-bottom: 1px solid var(--borde);
-    white-space: nowrap;
+    padding: .75rem 1rem;
 }
+.jp-tabla th, .jp-tabla td { text-align: left; }
 .jp-tabla td {
-    padding: .5rem .65rem;
-    border-bottom: 1px solid var(--borde-suave);
-    color: var(--tinta);
+    padding: .75rem 1rem;
+    border-top: 1px solid var(--md-outline-variant);
+    color: var(--md-on-surface);
     vertical-align: top;
-    line-height: 1.45;
 }
-.jp-tabla tr:last-child td { border-bottom: none; }
-.jp-tabla .jp-dato { white-space: nowrap; }
-.jp-ruta {
-    font-family: "Source Code Pro", ui-monospace, monospace;
-    font-size: .78rem;
-    color: var(--gris);
-    word-break: break-word;
+.jp-tabla td.jp-mono, .jp-tabla td.jp-mono.jp-dato {
+    font-family: var(--md-mono);
+    font-size: .8125rem;
+    overflow-wrap: anywhere;
 }
-.jp-vacio {
-    border: 1px solid var(--borde);
-    border-radius: 3px;
-    padding: 1.2rem 1.1rem;
-    background: var(--superficie);
-}
-.jp-vacio-titulo {
-    font-family: "Source Serif 4", Georgia, serif;
-    font-weight: 600;
-    font-size: 1.05rem;
-    color: var(--tinta);
-    margin: 0 0 .35rem 0;
-}
-.jp-vacio p { margin: 0; color: var(--gris); line-height: 1.5; }
-.jp-frag-texto {
-    margin: 0;
-    color: var(--tinta);
-    font-size: .93rem;
-    line-height: 1.55;
-}
+.jp-tabla tbody tr:hover { background: var(--md-surface-container-low); }
+.jp-tabla td.jp-dato { text-align: right; }
+
+/* ---------- Grafico de barras ---------- */
 .jp-figura {
-    border: 1px solid var(--borde);
-    border-radius: 3px;
-    background: var(--fondo);
-    padding: .85rem 1rem .5rem 1rem;
-    margin: .3rem 0 1.2rem 0;
+    background: var(--md-surface-container-lowest);
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--md-md);
+    padding: 1rem 1.25rem 1.25rem;
+    margin: .5rem 0;
 }
-.jp-figura .jp-etiqueta { margin-bottom: .5rem; }
 .jp-barras {
     display: flex;
     align-items: flex-end;
-    gap: 2px;
-    height: 130px;
-    border-bottom: 1px solid var(--borde);
+    gap: 3px;
+    height: 168px;
+    margin: .75rem 0 .25rem;
 }
 .jp-barra {
-    flex: 1 1 0;
-    background: var(--azul);
-    min-height: 1px;
+    flex: 1;
+    background: var(--md-primary);
+    border-radius: var(--md-xs) var(--md-xs) 0 0;
+    min-height: 2px;
+    transition: background-color .15s ease;
 }
-.jp-ejes {
-    display: flex;
-    gap: 2px;
-    padding-top: .2rem;
-}
+.jp-barra:hover { background: var(--md-tertiary); }
+.jp-ejes { display: flex; gap: 3px; }
 .jp-eje {
-    flex: 1 1 0;
+    flex: 1;
     text-align: center;
-    font-size: .68rem;
-    color: var(--gris);
-    font-variant-numeric: tabular-nums;
+    font-size: .625rem;
+    color: var(--md-on-surface-variant);
     white-space: nowrap;
+    overflow: visible;
 }
 
-[data-testid="stSidebar"] {
-    background: var(--superficie);
-    border-right: 1px solid var(--borde);
-}
-[data-testid="stSidebar"] .block-container { padding-top: 1.6rem; }
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 { font-size: 1.05rem; }
-
-.stButton > button, [data-testid="stBaseButton-secondary"] {
-    border-radius: 3px;
-    border: 1px solid #C9D3DE;
-    background: var(--fondo);
-    color: var(--tinta);
-    font-family: inherit;
-    min-height: 2.5rem;
-}
-.stButton > button:hover, [data-testid="stBaseButton-secondary"]:hover {
-    border-color: var(--azul);
-    color: var(--tinta);
-}
-[data-testid="stBaseButton-primary"] {
-    background: var(--azul);
-    border: 1px solid var(--azul);
-    border-radius: 3px;
-    color: #FFFFFF;
-    min-height: 2.5rem;
-}
-[data-testid="stBaseButton-primary"]:hover {
-    background: var(--azul-oscuro);
-    border-color: var(--azul-oscuro);
-}
-[data-testid="stBaseButton-primary"] p { color: #FFFFFF; }
-[data-testid="stDownloadButton"] button {
-    border-radius: 3px;
-    border: 1px solid #C9D3DE;
-    background: var(--fondo);
-    color: var(--tinta);
-    min-height: 2.5rem;
-}
-[data-testid="stDownloadButton"] button:hover {
-    border-color: var(--azul);
-    color: var(--tinta);
-}
-button:focus-visible, a:focus-visible, input:focus-visible,
-textarea:focus-visible, select:focus-visible, [role="radio"]:focus-visible {
-    outline: 2px solid var(--azul);
-    outline-offset: 2px;
-}
-a { color: var(--azul); }
+/* ---------- Widgets nativos: alertas, estados, expanders ---------- */
 [data-testid="stAlert"] {
-    background: var(--superficie);
-    border: 1px solid #C9D3DE;
-    border-radius: 3px;
-    color: var(--tinta);
+    border-radius: var(--md-md);
+    border: none;
+    padding: 0;
+    background: transparent;
 }
-div[data-testid="stAlertContainer"] {
-    background: var(--superficie);
-    color: var(--tinta);
+[data-testid="stAlertContainer"] {
+    padding: 0;
+    background: transparent;
 }
-[data-testid="stAlert"] p,
-div[data-testid="stAlertContainer"] p { color: var(--tinta); }
-[data-testid="stAlert"] svg,
-div[data-testid="stAlertContainer"] svg { color: var(--gris); }
-[data-testid="stExpander"] details {
-    border: 1px solid var(--borde);
-    border-radius: 3px;
-    background: var(--fondo);
+[data-testid="stAlertContentInfo"],
+[data-testid="stAlertContentSuccess"],
+[data-testid="stAlertContentWarning"],
+[data-testid="stAlertContentError"] {
+    border-radius: var(--md-md);
+    padding: .875rem 1rem;
 }
-[data-testid="stTextInput"] input,
-[data-testid="stTextArea"] textarea {
-    border-radius: 3px;
-    border: 1px solid #C9D3DE;
-    color: var(--tinta);
-    background: var(--fondo);
+[data-testid="stAlertContentInfo"] {
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
 }
-[data-testid="stTextInput"] input::placeholder,
-[data-testid="stTextArea"] textarea::placeholder { color: #5D6D7E; }
-[data-testid="stCaptionContainer"] p { color: var(--gris); }
-[data-testid="stSpinner"] p { color: var(--gris); }
+[data-testid="stAlertContentSuccess"] {
+    background: var(--md-primary-container);
+    color: var(--md-on-primary-container);
+}
+[data-testid="stAlertContentWarning"] {
+    background: var(--md-tertiary-container);
+    color: var(--md-on-tertiary-container);
+}
+[data-testid="stAlertContentError"] {
+    background: var(--md-error-container);
+    color: var(--md-on-error-container);
+}
+[data-testid="stAlert"] p {
+    font-size: .9375rem;
+    margin: 0;
+    color: inherit;
+}
+[data-testid="stExpander"] {
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--md-md);
+    background: var(--md-surface-container-lowest);
+    overflow: hidden;
+}
+[data-testid="stExpander"] summary {
+    font-size: .875rem;
+    font-weight: 500;
+    color: var(--md-on-surface);
+    padding: .875rem 1rem;
+}
+[data-testid="stExpander"] summary:hover {
+    background: var(--md-surface-container-low);
+}
+[data-testid="stStatusWidget"] {
+    background: var(--md-surface-container);
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--md-md);
+    padding: .25rem .75rem;
+}
+[data-testid="stSpinner"] svg { color: var(--md-primary); }
+[data-testid="stVerticalBlockBorderWrapper"] > div {
+    border-radius: var(--md-md);
+}
+
+/* Contenedor con borde (tarjeta de respuesta del chat) */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    border-color: var(--md-outline-variant) !important;
+    border-radius: var(--md-md) !important;
+    background: var(--md-surface-container-lowest);
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 900px) {
+    [data-testid="stSidebar"] {
+        width: 336px !important;
+        min-width: 336px !important;
+        max-width: 336px !important;
+    }
+}
+@media (max-width: 1024px) {
+    [data-testid="stMainBlockContainer"] { padding: 1.75rem 1.5rem 3rem; }
+}
+@media (max-width: 720px) {
+    [data-testid="stMainBlockContainer"] { padding: 1.25rem 1rem 2.5rem; }
+    .jp-titulo { font-size: 1.75rem; line-height: 2.25rem; }
+    .jp-lede { font-size: .9375rem; }
+    .jp-barras { height: 128px; }
+    .jp-meta-fila { flex-direction: column; gap: .25rem; }
+    .jp-dato { text-align: left; }
+}
+
+/* Movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+}
 </style>
 """
 
@@ -388,6 +760,7 @@ def render_header(title: str, lede: str) -> None:
         lede: Texto de apoyo bajo el título.
     """
     st.markdown(
+        '<p class="jp-overline">Juris-PLN · Entrega 3</p>'
         f'<h1 class="jp-titulo">{html.escape(title)}</h1>'
         f'<p class="jp-lede">{html.escape(lede)}</p>',
         unsafe_allow_html=True,
@@ -432,6 +805,8 @@ def render_table(
     rows: list[list[str]],
     *,
     numeric: set[int] | None = None,
+    mono: set[int] | None = None,
+    anchos: list[int] | None = None,
 ) -> None:
     """Dibuja una tabla HTML con la paleta y la tipografía del informe.
 
@@ -439,8 +814,12 @@ def render_table(
         columns: Cabeceras de la tabla.
         rows: Celdas ya formateadas.
         numeric: Índices de columnas que usan monoespaciada tabular.
+        mono: Índices de columnas de texto técnico (rutas, claves) que
+            también usan monoespaciada.
+        anchos: Anchos relativos por columna, en porcentaje.
     """
     numeric = numeric or set()
+    mono = mono or set()
     header = "".join(
         f'<th scope="col">{html.escape(column)}</th>' for column in columns
     )
@@ -448,12 +827,23 @@ def render_table(
     for row in rows:
         cells = []
         for index, value in enumerate(row):
-            css_class = ' class="jp-dato"' if index in numeric else ""
+            clases = []
+            if index in numeric:
+                clases.append("jp-dato")
+            if index in mono:
+                clases.append("jp-mono")
+            css_class = f' class="{" ".join(clases)}"' if clases else ""
             cells.append(f"<td{css_class}>{html.escape(value)}</td>")
         body.append("<tr>" + "".join(cells) + "</tr>")
+    colgroup = ""
+    if anchos and len(anchos) == len(columns):
+        columnas = "".join(
+            f'<col style="width:{ancho}%">' for ancho in anchos
+        )
+        colgroup = f"<colgroup>{columnas}</colgroup>"
     st.markdown(
         '<div class="jp-tabla-envoltura"><table class="jp-tabla">'
-        f"<thead><tr>{header}</tr></thead>"
+        f"{colgroup}<thead><tr>{header}</tr></thead>"
         f"<tbody>{''.join(body)}</tbody></table></div>",
         unsafe_allow_html=True,
     )
@@ -484,7 +874,7 @@ def format_score(value: Any) -> str:
         Puntaje formateado o "No disponible".
     """
     if isinstance(value, (int, float)) and not isinstance(value, bool):
-        return f"{value:.4f}"
+        return f"{value:.4f}".replace(".", ",")
     return "No disponible"
 
 
@@ -498,7 +888,7 @@ def format_milisegundos(value: Any) -> str:
         Latencia formateada o "No disponible".
     """
     if isinstance(value, (int, float)) and not isinstance(value, bool):
-        return f"{value:.0f} ms"
+        return f"{value:,.0f}".replace(",", ".") + " ms"
     return "No disponible"
 
 
@@ -1421,6 +1811,8 @@ def page_evaluation(client: ApiClient) -> None:
         ["Métrica", "Valor", "Archivo", "Clave"],
         rows,
         numeric={1},
+        mono={2, 3},
+        anchos=[26, 9, 19, 46],
     )
 
     comparativa = summary.get("comparativa_rutas") or []
@@ -1444,6 +1836,8 @@ def page_evaluation(client: ApiClient) -> None:
                 if isinstance(item, dict)
             ],
             numeric={2},
+            mono={3},
+            anchos=[24, 9, 9, 58],
         )
 
     guardrails = summary.get("agente_guardrails") or {}
@@ -1455,7 +1849,15 @@ def page_evaluation(client: ApiClient) -> None:
         render_table(
             ["Métrica de guardrail", "Tasa"],
             [
-                [as_text(item.get("etiqueta")), format_score(item.get("valor"))]
+                [
+                    as_text(item.get("etiqueta")),
+                    (
+                        f"{float(item['valor']) * 100:.1f} %".replace(".", ",")
+                        if isinstance(item.get("valor"), (int, float))
+                        and not isinstance(item.get("valor"), bool)
+                        else "No disponible"
+                    ),
+                ]
                 for item in guardrails.get("metricas") or []
                 if isinstance(item, dict)
             ],
