@@ -11,6 +11,8 @@ Cada tabla del artículo se respalda en un artefacto. El verificador debe compar
 | E6 y E7 (piloto contra corpus y reranking) | `docs/EXPERIMENTOS.md` §13; `reports/corridas/e6_full.jsonl` y `e7_rerank_full.jsonl`; `reports/tablas/bench_retrieval.csv` para el piloto |
 | E10 (e5, BM25, bge-m3) | `docs/EXPERIMENTOS.md` §18 |
 | E11 y E12 (ef, fusión, silver ampliado) | `docs/EXPERIMENTOS.md` §19 y §20 |
+| Vecinos semánticos (Tabla IV) | `reports/tablas/vecinos.json`; `src/scripts/neighbors.py`; colección `rag_full_bge_m3_d1024_v1` |
+| Sensibilidad a paráfrasis (Tabla V) | `reports/tablas/bench_paraphrases.csv` y `bench_paraphrases_raw.csv`; `src/scripts/bench_hybrid.py` |
 | Reranking final y fases 6 y 7 | `reports/tablas/mejoras_recuperacion.csv`, `reports/tablas/mejoras_diversidad.csv`, `reports/tablas/metricas_v4_sin.csv` |
 | E4 (modelos y kappa) | `docs/EXPERIMENTOS.md` §11; `reports/tablas/e4_kappa.csv`, `e4_h1.csv` |
 | E5 (inyección) | `docs/EXPERIMENTOS.md` §15 |

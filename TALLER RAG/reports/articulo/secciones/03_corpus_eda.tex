@@ -53,26 +53,8 @@ La textometr\'ia se calcul\'o sobre dos muestras: los 2.000 documentos del pilot
 \label{fig:colecciones}
 \end{figure*}
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.8\textwidth]{textometria_zipf.png}
-\caption{Rango frente a frecuencia en escala logar\'itmica para el piloto y la muestra. Se muestran los 50 t\'erminos m\'as frecuentes; no se ajusta una recta, la figura solo comprueba la forma de ley de potencia.}
-\label{fig:zipf}
-\end{figure*}
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.8\textwidth]{perfil_idiomas.png}
-\caption{Idiomas normalizados m\'as frecuentes (15 primeros). La normalizaci\'on se hace al vuelo; el campo crudo del archivo no se modifica.}
-\label{fig:idiomas}
-\end{figure*}
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.8\textwidth]{perfil_longitud.png}
-\caption{Distribuci\'on de longitud en palabras. Los documentos de m\'as de 3.000 palabras se acumulan en el extremo derecho del histograma.}
-\label{fig:longitud}
-\end{figure*}
 
 
 \begin{table}[t]
@@ -104,12 +86,6 @@ Grupo m\'as grande & 12 & 32 \\
 
 El 32,7\,\% de los documentos de la muestra no termina en un signo de cierre. Es un proxy de truncamiento, no una verificaci\'on de que el rastreador los cort\'o: una publicaci\'on completa puede acabar sin punto. La limpieza no puede recuperar ese texto, y el porcentaje se declara como l\'imite en la Secci\'on~\ref{sec:limitaciones}. El HTML residual es marginal (0,14\,\% en la muestra), pero las URLs aparecen en uno de cada diez documentos y los emojis en uno de cada ocho, casi todo en Bluesky. Los near-duplicates no son solo hash exacto: SimHash encuentra grupos de hasta 32 documentos que el hash exacto no captura. Los t\'erminos exclusivos de prensa est\'an dominados por boilerplate (\emph{publicidad}, \emph{informaci\'on}, \emph{adem\'as}), lo que anticipa que una normalizaci\'on conservadora puede ayudar sin destruir entidades.
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.8\textwidth]{textometria_terminos.png}
-\caption{T\'erminos m\'as frecuentes del piloto y de la muestra.}
-\label{fig:terminos}
-\end{figure*}
 
 \begin{figure*}[t]
 \centering
@@ -118,11 +94,14 @@ El 32,7\,\% de los documentos de la muestra no termina en un signo de cierre. Es
 \label{fig:dups}
 \end{figure*}
 
+
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.8\textwidth]{textometria_ruido.png}
-\caption{Indicadores de ruido de rastreo en el corpus.}
-\label{fig:ruido}
+\includegraphics[width=0.32\textwidth]{textometria_zipf.png}\hfill
+\includegraphics[width=0.32\textwidth]{perfil_idiomas.png}\hfill
+\includegraphics[width=0.32\textwidth]{perfil_longitud.png}
+\caption{Textometr\'ia del piloto y de una muestra del corpus: rango frente a frecuencia en escala logar\'itmica, idiomas normalizados m\'as frecuentes y distribuci\'on de longitud en palabras.}
+\label{fig:textometria}
 \end{figure*}
 
 \subsection{Decisiones de procesamiento}

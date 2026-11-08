@@ -3,6 +3,21 @@
 
 Los experimentos usan el silver standard de 43 preguntas; E12 usa la versi\'on ampliada con 17 documentos adicionales y cada tabla lo indica. La configuraci\'on se eligi\'o con el silver completo, as\'i que los resultados son exploratorios. Cada subsecci\'on reporta el montaje en una frase, la tabla y la decisi\'on; el detalle del montaje est\'a en la Secci\'on~\ref{sec:metodo}.
 
+\subsection{Arco experimental}
+
+Los experimentos no forman una rejilla: siguen un arco de seis estaciones, y cada una se abre con la pregunta que deja la anterior.
+
+\begin{itemize}
+\item \textbf{L\'inea base sobre el piloto.} Limpieza, segmentaci\'on y n\'umero de fragmentos con e5-base y 1.932 documentos (Subsecciones \emph{Limpieza} a \emph{Segmentaci\'on y tama\~no del contexto}). El piloto deja un techo alto, Recall@10 de 0,947, y decisiones tomadas por coste y consistencia, no por significancia estad\'istica.
+\item \textbf{Modelos peque\~nos e H1.} E4 compara cuatro generadores de 1B a 3B con la misma evidencia recuperada (Subsecci\'on \emph{Modelos generativos}). H1 se refuta: el tama\~no no ordena la calidad; gemma2:2b gana en correcci\'on y citas y llama3.2:1b se abstiene en el 73,7\,\% de las preguntas respondibles.
+\item \textbf{Crisis de escala.} E6 repite el pipeline sobre el corpus completo, 161.868 documentos (Subsecci\'on \emph{Codificadores y escala}). Recall@10 cae de 0,947 a 0,684 y nDCG de 0,909 a 0,594 sin que la latencia cambie; la ca\'ida reorganiza el resto del trabajo.
+\item \textbf{Rescate h\'ibrido.} BM25, bge-m3, \texttt{ef}=800, la uni\'on densa y dispersa y el reordenador recuperan parte de la p\'erdida (Subsecciones \emph{Codificadores y escala} y \emph{Reordenamiento}). La fusi\'on RRF se rechaza con el silver ampliado y la uni\'on reordenada se adopta para el despliegue.
+\item \textbf{Ablaciones negativas.} Las fases 6 y 7 y la inyecci\'on de instrucciones prueban mejoras que no superan la referencia (Subsecciones \emph{Inyecci\'on de instrucciones} y \emph{Prompts y mejoras rechazadas}). Se reportan para acotar el espacio, no para justificar la configuraci\'on.
+\item \textbf{Arquitectura ganadora y reservado.} La instancia final se eval\'ua con la compuerta de dominio, RAGAS y el conjunto reservado de 20 preguntas directas y 5 negativas (Subsecciones \emph{Compuerta de dominio} a \emph{Conjunto reservado}). Es la evaluaci\'on de cierre y se reporta tal como sale, incluidas las cifras que empeoran la l\'inea base.
+\end{itemize}
+
+El orden importa: las estaciones iniciales se deciden con el silver exploratorio y el conjunto reservado se usa al final para comparar la configuraci\'on desplegada; las cifras de una estaci\'on no se trasladan a otra. Cada subsecci\'on indica con qu\'e conjunto se midi\'o.
+
 \subsection{Limpieza}
 
 Se construyeron cuatro \'indices sobre el piloto con 30 preguntas, e5-base, $k=10$ y tres repeticiones. La Tabla~\ref{tab:limpieza} muestra el resultado. Ninguna comparaci\'on pareada contra V0 excluye cero tras la correcci\'on de Bonferroni sobre 21 pruebas. V2 toca el l\'imite inferior en cuatro m\'etricas, compatible con una mejora peque\~na o con ausencia de efecto. Se adopta V2 por tres razones no estad\'isticas: la consistencia de la estimaci\'on en todas las m\'etricas, el coste nulo en consulta y la eliminaci\'on de 68 p\'aginas de error que de otro modo entrar\'ian al \'indice.
@@ -93,7 +108,7 @@ E6 midi\'o el mismo pipeline sobre el corpus completo. La Figura~\ref{fig:escala
 Corpus & Recall@10 & P@1 & Hit@5 & nDCG & Span \\
 \midrule
 Piloto (1.932 docs) & \textbf{0,947} & \textbf{0,842} & \textbf{0,947} & \textbf{0,909} & \textbf{0,895} \\
-Completo (161.868) & 0,684 & 0,474 & 0,658 & 0,594 & 0,684 \\
+Completo (161.868) & 0,684 & 0,474 & 0,658 & 0,594 & 0,658 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -109,7 +124,7 @@ E8 y E10 buscaron un recuperador mejor. BM25 sparse sube el recall a 0,763 y es 
 \toprule
 M\'etodo & Recall@10 & P@1 & Hit@5 & nDCG & p50 \\
 \midrule
-Denso e5 & 0,684 & 0,474 & 0,658 & 0,594 & 48 ms \\
+Denso e5 & 0,684 & 0,500 & 0,658 & 0,604 & 48 ms \\
 BM25 sparse & 0,763 & \textbf{0,684} & 0,737 & \textbf{0,727} & \textbf{7 ms} \\
 bge-m3 & \textbf{0,842} & 0,553 & \textbf{0,816} & 0,708 & 56 ms \\
 \bottomrule
@@ -194,7 +209,6 @@ La fase 6 prob\'o cuatro mejoras sobre la configuraci\'on de referencia y la fas
 \footnotesize
 \caption{Fases 6 y 7: variantes probadas sobre 38 preguntas. La referencia es el top-5 con reranker.}
 \label{tab:fases}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrl}
 \toprule
 Variante & Recall & nDCG & P@1 & Hit@5 & Decisi\'on \\
@@ -208,7 +222,6 @@ MMR coseno 0,5 & 0,868 & 0,784 & 0,737 & \textbf{0,947} & Rechazada \\
 MMR con reranker 0,7 & 0,816 & 0,818 & \textbf{0,868} & 0,921 & Rechazada \\
 \bottomrule
 \end{tabular}
-}
 \end{table*}
 
 
@@ -235,12 +248,11 @@ Reservado & 25 & 20 & 5 & 1,000 & 0,850 & 0,919 \\
 
 La Tabla~\ref{tab:ragas} compara cuatro configuraciones. El h\'ibrido es la ruta desplegada: uni\'on densa y BM25, $k=10$ y sin compuerta. El denso $k=10$ comparte $k$ con el h\'ibrido, as\'i que su diferencia a\'isla el recuperador: el h\'ibrido gana relevancia, precisi\'on y correcci\'on, y pierde fidelidad, con la misma cobertura. El denso $k=5$, con menos contexto, gana fidelidad, relevancia, precisi\'on y correcci\'on, y pierde cobertura: el efecto de $k$ es mayor que el del recuperador. La \'ultima columna cambia juez y embeddings, as\'i que es observacional. Las diferencias entre las tres primeras son descriptivas.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \footnotesize
 \caption{RAGAS: h\'ibrido, denso con $k=10$, denso con $k=5$ y configuraci\'on anterior, con $n$ entre par\'entesis. Las tres primeras usan juez gemma4:e4b y embeddings bge-m3; la \'ultima cambia juez y embeddings, as\'i que su comparaci\'on es observacional.}
 \label{tab:ragas}
-\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lrrrr}
 \toprule
 M\'etrica & H\'ibrido $k=10$ & Denso $k=10$ & Denso $k=5$ & Anterior \\
@@ -252,8 +264,7 @@ Cobertura del contexto & \textbf{0,947} (38) & \textbf{0,947} (38) & 0,921 (38) 
 Correcci\'on & 0,607 (38) & 0,569 (38) & \textbf{0,657} (38) & 0,705 (37) \\
 \bottomrule
 \end{tabular}
-}
-\end{table}
+\end{table*}
 
 \subsection{Latencia y MTP}
 
@@ -341,7 +352,6 @@ La Tabla~\ref{tab:progresion} resume la progresi\'on de la configuraci\'on. Cada
 \footnotesize
 \caption{Progresi\'on de la configuraci\'on y m\'etrica que la justific\'o.}
 \label{tab:progresion}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{lllll}
 \toprule
 Etapa & Cambio & Silver & M\'etrica & Decisi\'on \\
@@ -363,6 +373,5 @@ Reservado & 20 directas & reservado (20) & Recall@10 0,700 & Recupera parte de l
 Compuerta & 5 negativas & reservado (5) & 5/5 rechazadas & 3/20 falsos rechazos \\
 \bottomrule
 \end{tabular}
-}
 \end{table*}
 

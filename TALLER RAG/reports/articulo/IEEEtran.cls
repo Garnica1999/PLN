@@ -5275,7 +5275,7 @@ between column types.}%
 % so that spacing is more tightly controlled.
 \def\abstract{\normalfont
     \if@twocolumn
-      \@IEEEabskeysecsize\bfseries\textit{\abstractname}:\space\relax
+      \@IEEEabskeysecsize\bfseries\textit{\abstractname}---\space\relax
     \else
       \bgroup\par\addvspace{0.5\baselineskip}\centering\vspace{-1.78ex}\@IEEEabskeysecsize\textbf{\abstractname}\par\addvspace{0.5\baselineskip}\egroup\quotation\@IEEEabskeysecsize
     \fi\@IEEEgobbleleadPARNLSP}
@@ -5286,7 +5286,7 @@ between column types.}%
 
 \def\IEEEkeywords{\normalfont
     \if@twocolumn
-      \@IEEEabskeysecsize\bfseries\textit{\IEEEkeywordsname}:\space\relax
+      \@IEEEabskeysecsize\bfseries\textit{\IEEEkeywordsname}---\space\relax
     \else
       \bgroup\par\addvspace{0.5\baselineskip}\centering\@IEEEabskeysecsize\textbf{\IEEEkeywordsname}\par\addvspace{0.5\baselineskip}\egroup\quotation\@IEEEabskeysecsize
     \fi\@IEEEgobbleleadPARNLSP}

@@ -3,7 +3,7 @@
 
 \subsection{Vista general}
 
-La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una interfaz Streamlit; la API FastAPI recibe la pregunta, la condensa si viene de una conversaci\'on, recupera fragmentos con la uni\'on densa y BM25, los punt\'ua con el cross-encoder, aplica la compuerta de dominio si el Modo estricto est\'a activo, reordena con el reranker, arma el contexto y genera la respuesta. Antes de devolverla, los guardarra\'iles verifican citas, entidades y n\'umeros. Cada capa se eligi\'o con una medici\'on o una restricci\'on documentada; no todas las comparaciones son experimentos controlados.
+La arquitectura se organiza como un marco modular de capas con contratos expl\'icitos. Cada capa declara qu\'e recibe, qu\'e entrega y qu\'e invariante conserva; la instancia concreta de cada ranura, sea el codificador, la mezcla de recuperaci\'on, el generador o el umbral, se elige por medici\'on y se fija en la Secci\'on~\ref{sec:experimentos}. La Figura~\ref{fig:arquitectura} muestra la instancia final; el arco que la separa de la l\'inea base, con sus hip\'otesis y sus rechazos, se despliega en la Secci\'on~\ref{sec:experimentos}. Ninguna pieza se justifica por s\'i sola: la justificaci\'on es la comparaci\'on que la eligi\'o.
 
 \begin{figure}[t]
 \centering
@@ -40,35 +40,35 @@ La Figura~\ref{fig:arquitectura} muestra el flujo. El usuario escribe en una int
 \draw[arr, dashed] (guard.west) -- (abst.east);
 \draw[arr, <->] (ret) -- (milvus);
 \end{tikzpicture}
-\caption{Flujo de una consulta. La compuerta solo act\'ua con el Modo estricto; el condensador solo en preguntas encadenadas. Las l\'ineas discontinuas son las salidas de abstenci\'on, antes y despu\'es de generar.}
+\caption{Flujo de una consulta en la instancia final. La compuerta solo act\'ua con el Modo estricto; el condensador solo en preguntas encadenadas. Las l\'ineas discontinuas son las salidas de abstenci\'on, antes y despu\'es de generar.}
 \label{fig:arquitectura}
 \end{figure}
 
 \subsection{Capas y justificaci\'on}
 
-\textbf{Ingesta.} Los documentos se limpian, se fragmentan y se codifican una sola vez. La colecci\'on se valida contra la etiqueta del codificador activo para no mezclar espacios vectoriales. Se eligi\'o un pipeline idempotente y reanudable porque el corpus cambia y la codificaci\'on es la etapa m\'as costosa: la ingesta completa desde documentos tard\'o 2 h 41 min y reindexar 618.286 fragmentos ya troceados con bge-m3 tard\'o 27,3 min.
+\textbf{Ingesta.} La capa convierte documentos crudos en fragmentos con metadatos. El contrato exige idempotencia y reanudaci\'on: cada fragmento guarda \texttt{document\_id}, t\'itulo, URL, fuente, idioma, fecha, posici\'on, estrategia y hash, y la colecci\'on valida su etiqueta contra el codificador activo. La instancia final usa chunking fijo; el coste medido es 2 h 41 min para la ingesta completa y 27,3 min para reindexar 618.286 fragmentos ya troceados.
 
-\textbf{\'Indice vectorial.} Milvus se eligi\'o por tres razones: soporta HNSW con par\'ametro de exploraci\'on ajustable \cite{malkov2020hnsw}, filtra por metadatos (idioma, fecha, colecci\'on) sin salir del motor y mantiene 618.286 fragmentos con latencias de milisegundos.
+\textbf{\'Indice vectorial.} La capa recibe vectores y devuelve vecinos con metadatos. El contrato exige b\'usqueda aproximada con par\'ametro de exploraci\'on ajustable y filtrado por idioma, fecha y colecci\'on sin salir del motor; Milvus con HNSW cumple las tres condiciones \cite{malkov2020hnsw}. El tama\~no de la colecci\'on y el valor de \texttt{ef} se fijan en la Secci\'on~\ref{sec:experimentos}.
 
-\textbf{Codificaci\'on.} bge-m3 produce vectores densos de 1024 dimensiones, es multiling\"ue y rinde bien sin ajuste fino \cite{chen2024bge}. Se compar\'o con e5-base y con qwen3-embedding sobre el mismo corpus y el mismo protocolo, con un \'indice por modelo; la decisi\'on se reporta en la Secci\'on~\ref{sec:experimentos}.
+\textbf{Codificaci\'on.} La capa recibe texto y devuelve vectores densos. El contrato exige multiling\"uismo sin ajuste fino y una dimensi\'on declarada en la etiqueta de la colecci\'on. La comparaci\'on entre e5-base, qwen3-embedding y bge-m3 se reporta en la Secci\'on~\ref{sec:experimentos}; la instancia final es bge-m3 \cite{chen2024bge}.
 
-\textbf{Recuperaci\'on.} El recuperador combina una lista densa de 10 fragmentos con una dispersa de 20. Las dos se unen sin fusionar y se deduplican; la uni\'on conserva el top-5 denso y a\~nade las entidades que BM25 encuentra. La fusi\'on RRF sin reordenar se midi\'o y perd\'ia frente al denso; la uni\'on reordenada gana en el conjunto reservado.
+\textbf{Recuperaci\'on.} La capa recibe una consulta y devuelve $k$ fragmentos con puntuaci\'on. El contrato exige dos rutas independientes, densa y dispersa, deduplicaci\'on por texto y conservaci\'on del top-5 denso que consume la compuerta. La instancia final une denso top-10 y BM25 top-20; las mezclas y la fusi\'on RRF se miden en la Secci\'on~\ref{sec:experimentos}.
 
-\textbf{Reordenamiento.} Un cross-encoder multiling\"ue reordena la uni\'on en GPU y el resultado se recorta a 10 \cite{nogueira2019passage}. El reordenador comparte la pasada con la compuerta, que usa la puntuaci\'on del top-5. El coste medido es de 0,68 s para 50 pares en GPU, frente a 1,30 s para 5 pares en CPU; la GPU deja m\'as margen porque el generador usa el resto de la VRAM.
+\textbf{Reordenamiento.} La capa recibe pares pregunta-fragmento y devuelve un orden. El contrato exige una puntuaci\'on reutilizable por la compuerta para no pagar dos pasadas. El cross-encoder multiling\"ue corre en GPU con lote de 16 \cite{nogueira2019passage}; el coste medido es 0,68 s para 50 pares, frente a 1,30 s para 5 pares en CPU. El recorte y la profundidad se comparan en la Secci\'on~\ref{sec:experimentos}.
 
-\textbf{Generaci\'on.} gemma4:e4b es un modelo de 7,5B cuantizado a Q4\_K\_M con 116.384 tokens de contexto y MTP nativo. Se eligi\'o por tres motivos: cabe en 16 GB de VRAM, soporta contextos largos y el MTP con draft 3 acelera la decodificaci\'on sin cambiar la distribuci\'on del modelo. gemma4:e4b no particip\'o en E4: se eligi\'o por contexto y MTP, no por una comparaci\'on directa. En E4, el mejor de los modelos peque\~nos fue gemma2:2b en correcci\'on y citas.
+\textbf{Generaci\'on.} La capa recibe el prompt y el contexto y devuelve texto con citas. El contrato es agn\'ostico del modelo: temperatura 0, presupuesto de 16.384 tokens de entrada, prompt v2 con ocho reglas y frase de abstenci\'on exacta. gemma4:e4b es la instancia final por contexto y MTP, no por ganar una comparaci\'on directa; los modelos peque\~nos y la corrida final se eval\'uan en la Secci\'on~\ref{sec:experimentos}.
 
-\textbf{Conversaci\'on.} Un condensador reescribe la \'ultima pregunta con el historial para que la recuperaci\'on no dependa de pronombres. Se usa gemma2:2b para no cargar dos veces el modelo grande. Si el condensador pierde el tema, se antepone la primera pregunta del usuario.
+\textbf{Conversaci\'on.} La capa recibe el historial y la \'ultima pregunta y devuelve una consulta aut\'onoma. El contrato exige no cargar un segundo modelo grande; gemma2:2b act\'ua de condensador y, si pierde el tema, se antepone la primera pregunta del usuario.
 
-\textbf{Guardarra\'iles.} Tres controles antes de responder: cita obligatoria, verificaci\'on de entidades y n\'umeros contra el fragmento citado, y un juez de evidencia. Si alguno falla, el sistema se abstiene con el motivo. El juez es gemma2:2b, distinto del generador, para no validar con el mismo modelo que redacta.
+\textbf{Guardarra\'iles.} La capa recibe la respuesta y las evidencias y devuelve la respuesta o una abstenci\'on con motivo. Tres controles: cita obligatoria, verificaci\'on de entidades y n\'umeros contra el fragmento citado, y un juez de evidencia distinto del generador. El juez es gemma2:2b para no validar con el mismo modelo que redacta.
 
-\textbf{Compuerta de dominio.} Un clasificador de regresi\'on log\'istica con la puntuaci\'on del cross-encoder y se\~nales de recuperaci\'on decide si la pregunta pertenece al corpus. No es un LLM juez: reutiliza la pasada del reranker, es reproducible y se puede medir con precisi\'on y recall. Se activa con el interruptor Modo estricto.
+\textbf{Compuerta de dominio.} La capa recibe la puntuaci\'on del cross-encoder y se\~nales de recuperaci\'on y devuelve una probabilidad de dominio. El contrato exige ser reproducible y medible con precisi\'on y recall, no un LLM juez; una regresi\'on log\'istica reutiliza la pasada del reranker. Se activa con el interruptor Modo estricto y su entrenamiento se reporta en la Secci\'on~\ref{sec:experimentos}.
 
 \textbf{API e interfaz.} FastAPI separa el pipeline de la presentaci\'on y expone \texttt{/chat}, \texttt{/ask}, \texttt{/retrieve}, \texttt{/health}, \texttt{/models} y \texttt{/stats} \cite{fastapidocs}. Streamlit consume \texttt{/chat} y muestra la respuesta, las citas, las evidencias, las m\'etricas y el razonamiento \cite{streamlitdocs}. La separaci\'on permite probar el pipeline sin la interfaz y cambiar la interfaz sin tocar el pipeline.
 
 \subsection{Configuraci\'on final}
 
-La Tabla~\ref{tab:config-final} fija los par\'ametros. Los valores se justifican en las Secciones~\ref{sec:metodo} y~\ref{sec:experimentos}.
+La Tabla~\ref{tab:config-final} fija la instancia final del marco. Cada valor se justifica en las Secciones~\ref{sec:metodo} y~\ref{sec:experimentos}.
 
 \begin{table}[t]
 \centering

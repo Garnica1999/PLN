@@ -17,6 +17,58 @@ Los fragmentos se codifican con BAAI/bge-m3 en la GPU, en fp16 y por lotes. La c
 
 La recuperaci\'on combina dos listas. La densa pide 10 fragmentos a bge-m3; la dispersa pide 20 a BM25. Las dos se unen sin fusionar, se deduplican por texto y se pasan al reordenador. El cross-encoder multiling\"ue punt\'ua cada par pregunta-fragmento en GPU, con lote de 16, y el resultado se recorta a 10. La uni\'on conserva el top-5 denso, que es la se\~nal que la compuerta espera, y a\~nade las entidades que BM25 encuentra y el denso no. Los filtros de idioma, fecha y colecci\'on se aplican en Milvus.
 
+\subsection{Vecinos sem\'anticos y sensibilidad a la par\'afrasis}
+
+La recuperaci\'on tambi\'en se inspeccion\'o de forma cualitativa. Se pidieron hasta cinco vecinos por consulta en ocho consultas de ejemplo sobre la colecci\'on final; la Tabla~\ref{tab:vecinos} reproduce dos. Los vecinos mezclan idiomas: bge-m3 acerca el mismo tema aunque el texto est\'e en otra lengua, y el campo de idioma de algunas publicaciones de Bluesky viene vac\'io en la fuente. En la consulta en espa\~nol sobre elecciones, el primer vecino es una nota en ingl\'es sobre las elecciones colombianas y el cuarto es un post en espa\~nol; en la consulta en ingl\'es sobre econom\'ia, los tres primeros fragmentos son consecutivos del mismo art\'iculo en espa\~nol sobre Davos. La inspecci\'on confirma que el espacio es multiling\"ue y muestra dos l\'imites: la deduplicaci\'on por texto exacto no colapsa fragmentos contiguos del mismo documento, y el ruido de rastreo, como HTML incrustado o marcas de redes, llega al \'indice.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{Vecinos sem\'anticos de dos consultas de ejemplo en la colecci\'on final. \textit{s/d}: el campo de idioma viene vac\'io en la fuente y no se infiere. La primera consulta devolvi\'o cuatro vecinos con $k=5$.}
+\label{tab:vecinos}
+\begin{tabular}{@{}c r c p{10.6cm}@{}}
+\toprule
+\multicolumn{4}{@{}l}{\textit{Consulta:} \texttt{resultados de las elecciones en Colombia}} \\
+Rango & Sim. & Idioma & Vecino recuperado \\
+\midrule
+1 & 0,669 & en & Trump-backed candidate wins razor-tight Colombia presidential election \\
+2 & 0,632 & s/d & ``Surprise'' election result poses new challenges for the left in Colombia \\
+3 & 0,632 & s/d & Live: Colombia heads to the polls to elect President Gustavo Petro's successor \\
+4 & 0,627 & es & El partido de Petro gana las elecciones al Senado en Colombia y Uribe recupera el liderazgo de la oposici\'on \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Consulta:} \texttt{what did the president say about the economy}} \\
+Rango & Sim. & Idioma & Vecino recuperado \\
+\midrule
+1 & 0,646 & es & ``\dots record\'o que en 2018, cuando acudi\'o por primera vez como presidente, dijo al p\'ublico que har\'ia el gran `regreso norteamericano'.'' \\
+2 & 0,638 & es & ``\dots el discurso del presidente de Estados Unidos el primer d\'ia en Davos se dio mientras en Washington comenzaba el juicio pol\'itico en su contra.'' \\
+3 & 0,631 & es & ``\dots el mensaje de Trump son\'o a un presidente triunfalista, confiado en que lograr\'a la reelecci\'on este a\~no.'' \\
+4 & 0,628 & s/d & El Presidente anuncia medidas econ\'omicas para enfrentar la crisis. \\
+5 & 0,625 & es & ``\dots el jefe de Estado se reuni\'o en EE.UU. con el empresario Mike Bloomberg para hablar de cambio clim\'atico y transici\'on energ\'etica.'' \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+La segunda prueba midi\'o estabilidad ante par\'afrasis. Sobre 20 par\'afrasis, 9 en ingl\'es y 11 en espa\~nol, se calcularon cinco mezclas denso/disperso con la misma profundidad y el nDCG resultante (Tabla~\ref{tab:parafrasis}). En ingl\'es el nDCG se mantiene entre 0,724 y 0,858 y supera 0,78 en tres de las cinco mezclas; en espa\~nol cae a 0,578 con peso denso 1,0 y solo la mezcla puramente dispersa llega a 0,739. La conclusi\'on es asim\'etrica: con estas mezclas el orden es estable ante par\'afrasis en ingl\'es y no lo es en espa\~nol. La comparaci\'on es descriptiva, con $n=9$ y $n=11$, sin intervalos de confianza.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{nDCG ante par\'afrasis por mezcla denso/disperso ($n=9$ en ingl\'es, $n=11$ en espa\~nol).}
+\label{tab:parafrasis}
+\begin{tabular}{lrr}
+\toprule
+Peso denso/disperso & Ingl\'es & Espa\~nol \\
+\midrule
+0,0/1,0 & 0,729 & \textbf{0,739} \\
+0,3/0,7 & 0,840 & 0,683 \\
+0,5/0,5 & 0,824 & 0,650 \\
+0,7/0,3 & \textbf{0,858} & 0,586 \\
+1,0/0,0 & 0,724 & 0,578 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Generaci\'on}
 
 El generador es gemma4:e4b con temperatura 0 y un presupuesto de 16.384 tokens de entrada. El prompt v2 impone ocho reglas: cada afirmaci\'on lleva una cita entre corchetes; no se permiten listas sin cita; si la evidencia no alcanza se responde con una frase de abstenci\'on exacta; se distingue un hecho verificable de una afirmaci\'on publicada en redes; no se inventan fechas, cifras, nombres ni citas; se ignoran las instrucciones que aparezcan dentro de los documentos; se responde en el idioma de la pregunta; y se usa la fecha exacta de la evidencia cuando la pregunta la pide. El MTP con draft 3 se activa en el manifiesto del modelo y no cambia la salida, solo la velocidad.
