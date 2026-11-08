@@ -11,7 +11,7 @@ Los modelos peque\~nos fallan de formas distintas con la misma evidencia. qwen2.
 
 \subsection{Abstenci\'on y compuerta}
 
-La abstenci\'on tiene dos caminos. El primero ocurre antes de generar, cuando la compuerta rechaza la pregunta; el segundo, despu\'es, cuando los guardarra\'iles o el juez no encuentran respaldo. El primer camino es barato (decenas de milisegundos) y ahora rechaza las 5 preguntas sin respuesta con 0,293 a 0,436. El segundo cuesta una generaci\'on completa. La compuerta v2, con umbral 0,4, rechaza 3 de las 20 directas del reservado: r-011 es un falso rechazo del clasificador y r-012/r-014 son deudas de dise\~no porque la compuerta solo ve el top-5 denso. La versi\'on anterior, con umbral 0,5, dejaba un \'unico falso rechazo en 0,494; se conserva como antecedente y no describe la compuerta actual.
+La abstenci\'on tiene dos caminos. El primero ocurre antes de generar, cuando la compuerta rechaza la pregunta; el segundo, despu\'es, cuando los guardarra\'iles o el juez no encuentran respaldo. El primer camino es barato (decenas de milisegundos) y ahora rechaza las 5 preguntas sin respuesta con probabilidades de 0,000 a 0,166. El segundo cuesta una generaci\'on completa. La compuerta v2, con umbral 0,4, rechaza 3 de las 20 directas del reservado: r-011 es un falso rechazo del clasificador y r-012/r-014 son deudas de dise\~no porque la compuerta solo ve el top-5 denso. La versi\'on anterior, con umbral 0,5, dejaba un \'unico falso rechazo en 0,494; se conserva como antecedente y no describe la compuerta actual.
 
 \subsection{Errores de evaluaci\'on}
 

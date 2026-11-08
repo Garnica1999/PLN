@@ -302,7 +302,7 @@ La Figura~\ref{fig:resumen} re\'une los tres resultados principales: RAGAS por c
 \subsection{Conjunto reservado}
 \label{sec:reservado}
 
-El silver exploratorio se us\'o para elegir la configuraci\'on densa, as\'i que no mide generalizaci\'on. Se construy\'o un conjunto reservado de 25 preguntas: 20 directas y 5 sin respuesta, 15 en espa\~nol y 10 en ingl\'es, 14 de prensa y 6 de Bluesky. Las preguntas se generaron con Gemma4 y se validaron autom\'aticamente; no son una muestra humana independiente. El conjunto se congel\'o antes de evaluar la compuerta y se us\'o para esa evaluaci\'on. Despu\'es se us\'o tambi\'en para elegir la recuperaci\'on h\'ibrida, as\'i que las m\'etricas de recuperaci\'on y respuesta de esta secci\'on son de desarrollo; la compuerta se midi\'o antes de esa elecci\'on, pero el mismo conjunto se us\'o despu\'es para elegir el h\'ibrido, as\'i que sus cifras tambi\'en son de desarrollo. Una prueba independiente de la recuperaci\'on exige un conjunto nuevo. La Tabla~\ref{tab:reservado} muestra el resultado.
+El silver exploratorio se us\'o para elegir la configuraci\'on densa, as\'i que no mide generalizaci\'on. Se construy\'o un conjunto reservado de 25 preguntas: 20 directas y 5 sin respuesta, 15 en espa\~nol y 10 en ingl\'es, 14 de prensa y 6 de Bluesky. Las preguntas se generaron con Gemma4 y se validaron autom\'aticamente; no son una muestra humana independiente. El conjunto se congel\'o antes de evaluar la compuerta y se us\'o para esa evaluaci\'on. Despu\'es se us\'o tambi\'en para elegir la recuperaci\'on h\'ibrida. Por eso las m\'etricas de recuperaci\'on y respuesta de esta secci\'on son de desarrollo. La compuerta se midi\'o antes de esa elecci\'on, pero el mismo conjunto se us\'o despu\'es para elegir el h\'ibrido: sus cifras tambi\'en son de desarrollo. Una prueba independiente de la recuperaci\'on exige un conjunto nuevo. La Tabla~\ref{tab:reservado} muestra el resultado.
 
 \begin{table}[t]
 \centering
@@ -363,13 +363,12 @@ Codificador & bge-m3 & 38 & Recall@10 0,842 & Adoptado \\
 \'Indice & \texttt{ef}=800 & 38 & Recall@10 0,895 & Adoptado \\
 Fusi\'on & h\'ibrido RRF & 38 & Recall@10 0,895 & Empata, se descarta \\
 Fusi\'on & h\'ibrido RRF & ampliado & Recall@10 0,890 & Rechazado \\
-Reordenamiento & uni\'on densa+BM25 & reservado (20) & Recall@10 0,700 & Adoptado \\
+Reordenamiento & uni\'on densa+BM25 & reservado (20) & Recall@10 0,700 & Adoptado; recupera parte de la ca\'ida \\
 Contexto & $k=10$ & reservado (20) & 19/20 entregadas & Adoptado \\
 Prompt & v2 & 38 & 37/38 y cobertura 25/37 & Adoptado \\
 Compuerta & 160 preguntas & 20 test & 0 falsos aceptados & Adoptado \\
 Fase 6 & cuatro variantes & 38 & sin mejora & Rechazadas \\
 Fase 7 & MMR & 38 & recall 0,816 & Rechazado \\
-Reservado & 20 directas & reservado (20) & Recall@10 0,700 & Recupera parte de la ca\'ida \\
 Compuerta & 5 negativas & reservado (5) & 5/5 rechazadas & 3/20 falsos rechazos \\
 \bottomrule
 \end{tabular}
