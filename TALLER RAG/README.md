@@ -163,6 +163,17 @@ docker compose -f docker-compose.all.yml exec api \
 
 Los perfiles `rocm` y `eval` quedan para la ingesta y la evaluación. El compose usa el Milvus y el Solr locales; no necesita el servidor.
 
+Todo el proceso anterior está en un solo comando:
+
+```bash
+make all-up
+# corpus completo:
+make all-up SAMPLE=data/documentos_rag.parquet
+make all-down
+```
+
+`make all-up` levanta el stack, espera la API, jala `gemma4:e4b` y `gemma2:2b`, ingiere la muestra, construye la colección BM25, indexa Solr y precalienta los modelos.
+
 Servicios y puertos:
 
 | Servicio | Imagen | Puerto |
