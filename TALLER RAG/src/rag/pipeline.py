@@ -14,7 +14,7 @@ from .config import settings
 from .domain import domain_probability as domain_probability_score
 from .embeddings import get_embedder
 from .prompts import REASONING_PROMPT, get_prompt, prompt_hash
-from .solr import search_solr
+from .solr import search_solr, search_solr_dense
 from .store import OUTPUT_FIELDS, get_client, search
 
 CITATION_RE = re.compile(r"\[(\d+(?:\s*,\s*\d+)*)\]")
@@ -198,6 +198,8 @@ def search_hits(
         return retrieve(query, k=k, collection=collection, expr=expr)
     if settings.retriever == "solr":
         return search_solr(query, k or settings.top_k)
+    if settings.retriever == "solr_dense":
+        return search_solr_dense(query, k or settings.top_k)
     if settings.retriever == "hybrid_union":
         return retrieve_union(query, k=k, collection=collection, expr=expr)
     if settings.retriever == "sparse":

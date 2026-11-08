@@ -260,7 +260,11 @@ El camino Solr usa el mismo corpus y el mismo generador. El servicio se desplieg
 ./scripts/deploy_solr.sh
 docker compose exec -T api python -m src.scripts.index_solr \
   --solr http://192.168.1.100:8983/solr/noticias
+docker compose exec -T api python -m src.scripts.index_solr_vectors \
+  --solr http://192.168.1.100:8983/solr/noticias
 ```
+
+`index_solr_vectors.py` agrega los embeddings bge-m3 al campo `vector`; `eval_solr.py --mode dense` mide la recuperación densa.
 
 Para consultar por Solr, levanta una segunda API en el puerto 8011:
 
@@ -272,7 +276,7 @@ docker compose run -d --no-deps --name taller-rag-api-solr \
 API_URL=http://localhost:8011 ./scripts/demo.sh
 ```
 
-La recuperación sale de Solr y la generación de Ollama. `/health` debe reportar `milvus:true` y `llm:true`.
+La recuperación sale de Solr y la generación de Ollama. `/health` debe reportar `milvus:true` y `llm:true`. Para el camino denso, usa `-e RETRIEVER=solr_dense` en el puerto 8012.
 
 ## 9. Interfaz
 

@@ -13,6 +13,18 @@ FIELDS = (
 )
 
 
+def _hits(docs: list[dict]) -> list[dict]:
+    hits = []
+    for doc in docs:
+        score = float(doc.pop("score", 0.0))
+        for key in ("title", "language", "text"):
+            value = doc.get(key)
+            if isinstance(value, list):
+                doc[key] = value[0] if value else ""
+        hits.append({"chunk_id": doc.get("chunk_id") or doc.get("id"), "score": score, **doc})
+    return hits
+
+
 def search_solr(query: str, k: int) -> tuple[list[dict], float]:
     """Busca en Solr con edismax y devuelve los hits con la forma del pipeline."""
     started = time.perf_counter()
@@ -26,12 +38,21 @@ def search_solr(query: str, k: int) -> tuple[list[dict], float]:
     response = requests.get(f"{settings.solr_url}/select", params=params, timeout=settings.request_timeout)
     response.raise_for_status()
     docs = response.json().get("response", {}).get("docs", [])
-    hits = []
-    for doc in docs:
-        score = float(doc.pop("score", 0.0))
-        for key in ("title", "language", "text"):
-            value = doc.get(key)
-            if isinstance(value, list):
-                doc[key] = value[0] if value else ""
-        hits.append({"chunk_id": doc.get("chunk_id") or doc.get("id"), "score": score, **doc})
-    return hits, round((time.perf_counter() - started) * 1000, 2)
+    return _hits(docs), round((time.perf_counter() - started) * 1000, 2)
+
+
+def search_solr_dense(query: str, k: int) -> tuple[list[dict], float]:
+    """Busca por similitud coseno con el vector bge-m3 del query."""
+    from .embeddings import get_embedder
+
+    started = time.perf_counter()
+    vector = get_embedder().embed_queries([query])[0]
+    knn = ",".join(f"{float(x):.6f}" for x in vector)
+    response = requests.post(
+        f"{settings.solr_url}/select",
+        data={"q": f"{{!knn f=vector topK={k}}}[{knn}]", "fl": FIELDS},
+        timeout=settings.request_timeout,
+    )
+    response.raise_for_status()
+    docs = response.json().get("response", {}).get("docs", [])
+    return _hits(docs), round((time.perf_counter() - started) * 1000, 2)
