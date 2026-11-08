@@ -65,6 +65,8 @@ TALLER RAG/
 └── Dataset/                corpus versionado con Git LFS
 ```
 
+En la copia de entrega, `docs/` y `plan/` no se incluyen porque son solo Markdown.
+
 ## 3. Obtener el corpus
 
 Si clonaste el repositorio con Git LFS, el corpus ya está en `Dataset/documentos_rag.parquet` y puedes pasar a la Sección 4. Las opciones siguientes son alternativas si el archivo falta o está corrupto.
@@ -97,7 +99,7 @@ Variables principales:
 
 | Variable | Uso | Valor por defecto |
 |---|---|---|
-| `MILVUS_URI` | conexión a Milvus | `http://192.168.1.100:19530` |
+| `MILVUS_URI` | conexión a Milvus | `http://localhost:19530` (el `.env` de la demo usa el servidor) |
 | `MILVUS_COLLECTION` | colección activa | `rag_full_bge_m3_d1024_v1` |
 | `EMBEDDER` | `bge` en GPU, `e5` o `ollama` como alternativas | `bge` |
 | `EMBEDDINGS_MODEL` | encoder | `BAAI/bge-m3` |
@@ -108,7 +110,7 @@ Variables principales:
 | `LLM_MODEL` | modelo por defecto | `gemma4:e4b` |
 | `JUDGE_MODEL` | juez de los guardarraíles | `gemma2:2b` |
 | `CONDENSE_MODEL` | reformulador de preguntas encadenadas | `gemma2:2b` |
-| `RETRIEVER` | `dense`, `sparse` o `hybrid` | `dense` |
+| `RETRIEVER` | `dense`, `sparse` o `hybrid` | `hybrid_union` |
 | `RERANK` | reordena el top-k con un cross-encoder | `1` |
 | `RERANK_MODEL` | modelo del reranker | `BAAI/bge-reranker-v2-m3` |
 | `RERANK_DEVICE` | `cuda` o `cpu` | `cpu` |
@@ -136,6 +138,8 @@ docker compose up -d --build
 docker compose ps
 curl http://localhost:8010/health
 ```
+
+El `.env` de la demo apunta al Milvus del servidor. Para usar el Milvus local que levanta este compose, cambia `MILVUS_URI` a `http://localhost:19530`; el resto del stack ya está conectado a `localhost`.
 
 Al levantar el stack, el servicio `prewarm` espera a que la API esté sana, carga el generador, el embedding y el reranker, y termina. La primera consulta web ya no paga los 29 s de carga. Se puede repetir a mano con `docker compose exec -T api python -m src.scripts.prewarm`.
 
@@ -215,7 +219,7 @@ docker compose exec api python -m src.scripts.build_sparse_collection \
   --source rag_full_bge_m3_d1024_v1 --target rag_full_bge_m3_d1024_bm25_v1
 ```
 
-Con `RETRIEVER=sparse` se usa solo BM25. Con `RETRIEVER=hybrid` se fusionan dense y BM25 con los pesos de `HYBRID_DENSE` y `HYBRID_SPARSE`. El sistema final es `dense` con `SEARCH_EF=800`.
+Con `RETRIEVER=sparse` se usa solo BM25. Con `RETRIEVER=hybrid` se fusionan dense y BM25 con los pesos de `HYBRID_DENSE` y `HYBRID_SPARSE`. El sistema final es `hybrid_union` con `SEARCH_EF=800`.
 
 ## 8. API
 
@@ -231,6 +235,21 @@ La respuesta de `/ask` incluye `answer`, `evidence`, `retrieval_ms`, `generation
 El campo `ambiguity_policy` acepta `auto`, `clarify`, `conditional` u `off`. En `auto`, `/chat` clarifica y `/ask` condiciona. La clarificación devuelve `type: "clarification"` con `clarification.options`; el cliente envía la `query` de la opción elegida. La condicional devuelve `type: "conditional"` con `conditions` y una cita por condición.
 
 `/chat` clasifica la intención. Los saludos y la charla se responden sin tocar el corpus. Las preguntas de dominio pasan por el pipeline con evidencia. Si el modelo no cita, si la respuesta introduce entidades o números que no aparecen en el fragmento citado, o si el juez considera que la evidencia no responde la pregunta, se devuelve la abstención. El campo `guardrail` indica qué regla actuó: `charla`, `tool_calling`, `fallback_sin_tools`, `sin_citas`, `sin_respaldo`, `citas_invalidas` o `juez_no`. Los modelos que no soportan tools, como gemma2:2b, usan el pipeline clásico y quedan marcados con `fallback_sin_tools`.
+
+### Demo
+
+Con el stack levantado:
+
+```bash
+./scripts/demo.sh
+```
+
+El script consulta `/health`, recupera con `/retrieve` y genera con `/ask` sobre Milvus. La pregunta de ejemplo está en el silver. Para una demo manual:
+
+```bash
+curl -s http://localhost:8010/ask -H 'Content-Type: application/json' \
+  -d '{"query":"¿En qué ciudad se celebrará la COP16?","k":5}'
+```
 
 ## 9. Interfaz
 
