@@ -27,8 +27,7 @@ Cada tabla del artículo se respalda en un artefacto. El verificador debe compar
 | Ambigüedad en otros escenarios | `eval/silver/silver_ambiguedad_otros.jsonl`; `reports/tablas/ambiguedad_otros_resumen.csv`, `ambiguedad_otros_por_pregunta.csv` |
 | Ambigüedad v2 (42 preguntas) | `eval/silver/silver_ambiguedad_v2.jsonl` y `silver_ambiguedad_v2_humano.jsonl`; `reports/tablas/ambiguedad_v2_resumen.csv`, `ambiguedad_v2_por_pregunta.csv`, `ambiguedad_v2_humano_resumen.csv` |
 | Recomendación por margen (retirada) | `reports/tablas/recomendacion_margen.csv` |
-| Material suplementario | `reports/articulo/suplemento.pdf` (tablas S1-S6 y figuras S1-S4) |
-| Modelos y versiones | `docker-compose.yml`, manifiestos de Ollama y `docs/ARQUITECTURA.md` §3; tabla S6 del suplemento |
+| Modelos y versiones | `docker-compose.yml`, manifiestos de Ollama y `docs/ARQUITECTURA.md` §3; tabla de modelos del art\u00edculo |
 | Reranker p50 | `reports/tablas/mejoras_recuperacion.csv` (rerank5 1.297 ms, rerank20 5.460 ms) |
 | Chat (11/14, 14/14) | `reports/tablas/chat_eval_final_*.csv` |
 | Silver (43, 19/24, 38/5, kappa) | `eval/silver/README.md`, `docs/EXPERIMENTOS.md` §10 |

@@ -7,7 +7,29 @@ El sistema se ejecut\'o en una estaci\'on con Ryzen 9 5950X, 31 GB de RAM y una 
 
 \subsection{Modelos}
 
-La Tabla~S6 del suplemento fija la versi\'on de cada modelo. Los identificadores son las etiquetas de Ollama y de Hugging Face usadas en el c\'odigo; no se usan alias m\'oviles.
+La Tabla~\ref{tab:modelos} fija la versi\'on de cada modelo. Los identificadores son las etiquetas de Ollama y de Hugging Face usadas en el c\'odigo; no se usan alias m\'oviles.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Modelos, etiqueta y papel en el sistema.}
+\label{tab:modelos}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lll}
+\toprule
+Papel & Etiqueta & Cuantizaci\'on \\
+\midrule
+Generador & \texttt{gemma4:e4b} & Q4\_K\_M \\
+Condensador y juez & \texttt{gemma2:2b} & Q4\_K\_M \\
+Embedding & \texttt{BAAI/bge-m3} & fp16 en GPU \\
+Reordenador & \texttt{BAAI/bge-reranker-v2-m3} & fp16 en GPU \\
+Comparaci\'on E4 & \texttt{qwen2.5:1.5b} & Q4\_K\_M \\
+Comparaci\'on E4 & \texttt{llama3.2:3b}, \texttt{llama3.2:1b} & Q4\_K\_M \\
+Comparaci\'on E3 & \texttt{qwen3-embedding:8b} & Q4\_K\_M \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 El generador, el detector y el condensador corren con temperatura 0; las repeticiones del mismo estado dan las mismas m\'etricas. El art\'iculo se compila con IEEEtran V1.8b y un parche local que sustituye la raya del resumen y de las palabras clave por dos puntos. La corrida de referencia de la configuraci\'on densa es el commit \texttt{125bbc7}; la de la configuraci\'on h\'ibrida es \texttt{experimento\_recuperacion\_hibrida.py}. Las figuras y tablas se regeneran desde \texttt{reports/tablas/}. RAGAS 0.4.3 corre con LangChain 0.3 y \texttt{BAAI/bge-m3} en CPU.
 

@@ -25,6 +25,14 @@ V3 V2 + dedup & 0,800 & 0,867 & 0,867 & 0,833 & 0,842 \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{limpieza_comparacion.png}
+\caption{Comparaci\'on de variantes de limpieza sobre el piloto.}
+\label{fig:limpieza}
+\end{figure}
+
+
 \subsection{Segmentaci\'on y tama\~no del contexto}
 
 E1 compar\'o chunking fijo de 1000 caracteres con 150 de solape contra segmentaci\'on por oraciones de 384 caracteres. La Tabla~\ref{tab:e1} muestra estimaciones puntuales favorables al fijo en todas las m\'etricas de calidad, pero ning\'un intervalo pareado excluye cero: nDCG $-0,071$ (IC $[-0,221;\,0,025]$), recall $-0,067$ (IC $[-0,233;\,0,000]$) y P@1 $-0,067$ (IC $[-0,233;\,0,114]$) para oraciones menos fijo. La \'unica diferencia concluyente es la latencia: el fijo es 3,65 ms m\'as r\'apido (IC $[2,25;\,4,97]$). Se mantiene el fijo por la direcci\'on consistente y el coste, no por una mejora de calidad demostrada.
@@ -44,7 +52,23 @@ Oraciones 384/1 & 0,767 & 0,833 & 0,833 & 0,804 & 42,1 ms \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{e1_chunking.png}
+\caption{Segmentaci\'on: fijo contra oraciones.}
+\label{fig:e1}
+\end{figure}
+
+
 E2 ablacion\'o el n\'umero de fragmentos. Con el silver del piloto, el documento relevante est\'a siempre en el top-3, as\'i que $k=3$, 5 y 10 devuelven las mismas m\'etricas de calidad. La \'unica diferencia significativa es la latencia: $k=3$ tarda 1,64 ms menos que $k=10$ y $k=5$ tarda 0,94 ms menos. Se fija $k=5$ como margen para preguntas comparativas que no est\'an en el conjunto, sabiendo que el coste es m\'as contexto en generaci\'on, no m\'as latencia de recuperaci\'on.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{e2_k5_vs_k10.png}
+\caption{Tama\~no del contexto: $k=5$ contra $k=10$.}
+\label{fig:e2}
+\end{figure}
+
 
 \begin{figure*}[t]
 \centering
@@ -98,7 +122,24 @@ E11 ajust\'o \texttt{ef} y prob\'o la fusi\'on con BM25. \texttt{ef}=800 sube el
 
 E7 midi\'o el cross-encoder sobre el top-50 con e5 en el corpus completo: P@1 sube de 0,474 a 0,632 y nDCG de 0,594 a 0,661, pero el Recall@10 se queda en 0,684; Hit@5 sube de 0,658 a 0,684 y la cobertura de span de 0,632 a 0,658. El coste es de 3,1 s por consulta. La mejora de orden no compensa el coste si se reordena tanto.
 
-El denso a $k=10$ recupera 0,912 de recall y 0,818 de nDCG. Con bge-m3 se prob\'o reordenar 5 y 20 candidatos. La Tabla~S1 del suplemento muestra que el top-20 baja el recall a 0,864 y el Hit@5 a 0,921, mientras que el top-5 mantiene 0,895 de recall y 0,947 de Hit@5, y sube el nDCG a 0,865 y el P@1 a 0,868 con 1,30 s. La tabla mide el reordenador en CPU; en la configuraci\'on final corre en GPU, con 0,68 s para 50 pares. La configuraci\'on final no reordena el top-5 denso: reordena la uni\'on con BM25 y recorta a 10.
+El denso a $k=10$ recupera 0,912 de recall y 0,818 de nDCG. Con bge-m3 se prob\'o reordenar 5 y 20 candidatos. La Tabla~\ref{tab:rerank} muestra que el top-20 baja el recall a 0,864 y el Hit@5 a 0,921, mientras que el top-5 mantiene 0,895 de recall y 0,947 de Hit@5, y sube el nDCG a 0,865 y el P@1 a 0,868 con 1,30 s. La tabla mide el reordenador en CPU; en la configuraci\'on final corre en GPU, con 0,68 s para 50 pares. La configuraci\'on final no reordena el top-5 denso: reordena la uni\'on con BM25 y recorta a 10.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Reordenamiento con bge-m3 (38 preguntas).}
+\label{tab:rerank}
+\begin{tabular}{lrrrrr}
+\toprule
+Configuraci\'on & Recall & nDCG & P@1 & Hit@5 & p50 \\
+\midrule
+Denso top-5 & 0,895 & 0,809 & 0,737 & 0,947 & 0,10 s \\
+Rerank top-5 & 0,895 & \textbf{0,865} & \textbf{0,868} & \textbf{0,947} & 1,30 s \\
+Rerank top-20 & 0,864 & 0,853 & \textbf{0,868} & 0,921 & 5,46 s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 \subsection{Modelos generativos}
 
@@ -127,9 +168,49 @@ La hip\'otesis H1, que esperaba que llama3.2:3b superara a los dem\'as en correc
 
 E5 insert\'o instrucciones expl\'icitas en cinco documentos sint\'eticos por modelo. Es una prueba exploratoria: no cubre el generador final ni demuestra robustez general. Dos de los tres modelos las ignoraron. gemma2:2b obedeci\'o una de cinco y a\~nadi\'o la palabra pedida a una respuesta por lo dem\'as correcta. La regla de dise\~no que sale de aqu\'i es que el prompt debe delimitar la evidencia y ordenar expl\'icitamente ignorar instrucciones internas, y esa orden debe repetirse despu\'es del bloque de contexto.
 
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{E5: instrucciones inyectadas en el texto recuperado.}
+\label{tab:e5}
+\begin{tabular}{lrrr}
+\toprule
+Modelo & Obedeci\'o & Respondi\'o el hecho & Se abstuvo \\
+\midrule
+gemma2:2b & 1/5 & 4/5 & 0/5 \\
+llama3.2:3b & 0/5 & 5/5 & 0/5 \\
+qwen2.5:1.5b & 0/5 & 5/5 & 0/5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
 \subsection{Prompts y mejoras rechazadas}
 
-La fase 6 prob\'o cuatro mejoras sobre la configuraci\'on de referencia y la fase 7 prob\'o diversidad. La referencia de estas fases era el top-5 denso con reranker; la uni\'on con BM25 se adopt\'o despu\'es, en el conjunto reservado. Ninguna de las variantes de las fases 6 y 7 supera a esa referencia. La Tabla~S2 del suplemento resume. El filtro por score pierde recall; reordenar el top-20 pierde Hit@5 y multiplica la latencia; la expansi\'on de consulta baja el recall y el nDCG; el prompt v4 no mejora la cobertura de tokens; y MMR baja el recall 8 puntos. El prompt v4 entreg\'o 37 de 38 y 25 de 37 de cobertura de tokens, sin mejora. Todas se rechazan y la configuraci\'on se mantiene.
+La fase 6 prob\'o cuatro mejoras sobre la configuraci\'on de referencia y la fase 7 prob\'o diversidad. La referencia de estas fases era el top-5 denso con reranker; la uni\'on con BM25 se adopt\'o despu\'es, en el conjunto reservado. Ninguna de las variantes de las fases 6 y 7 supera a esa referencia. La Tabla~\ref{tab:fases} resume. El filtro por score pierde recall; reordenar el top-20 pierde Hit@5 y multiplica la latencia; la expansi\'on de consulta baja el recall y el nDCG; el prompt v4 no mejora la cobertura de tokens; y MMR baja el recall 8 puntos. El prompt v4 entreg\'o 37 de 38 y 25 de 37 de cobertura de tokens, sin mejora. Todas se rechazan y la configuraci\'on se mantiene.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Fases 6 y 7: variantes probadas sobre 38 preguntas. La referencia es el top-5 con reranker.}
+\label{tab:fases}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrl}
+\toprule
+Variante & Recall & nDCG & P@1 & Hit@5 & Decisi\'on \\
+\midrule
+Top-5 con reranker & \textbf{0,895} & \textbf{0,865} & \textbf{0,868} & \textbf{0,947} & Referencia \\
+Rerank top-20 & 0,864 & 0,853 & \textbf{0,868} & 0,921 & Rechazada \\
+Filtro por score 0,8 & 0,838 & 0,837 & \textbf{0,868} & 0,921 & Rechazada \\
+Filtro por score 0,9 & 0,825 & 0,830 & \textbf{0,868} & 0,921 & Rechazada \\
+Expansi\'on de consulta & 0,825 & 0,739 & 0,658 & 0,895 & Rechazada \\
+MMR coseno 0,5 & 0,868 & 0,784 & 0,737 & \textbf{0,947} & Rechazada \\
+MMR con reranker 0,7 & 0,816 & 0,818 & \textbf{0,868} & 0,921 & Rechazada \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
 
 \subsection{Compuerta de dominio}
 
@@ -196,10 +277,52 @@ Draft & Tokens/s \\
 
 La corrida de referencia de la configuraci\'on anterior (densa y reranker en CPU) es la del 2 de noviembre, con el c\'odigo del commit \texttt{125bbc7}: 7.938 ms sin razonamiento y 6.834 ms con razonamiento; los CSV est\'an en \texttt{reports/tablas/}. El reranker en CPU aporta 1,30 s de mediana. Con la configuraci\'on final (uni\'on h\'ibrida y reranker en GPU), el conjunto reservado dio 6.154 ms de media (mediana 5.578, p95 9.136) sobre 25 preguntas. La compuerta reutiliza la puntuaci\'on del reranker, as\'i que no a\~nade una segunda pasada.
 
+\subsection{Resumen de resultados}
+
+La Figura~\ref{fig:resumen} re\'une los tres resultados principales: RAGAS por configuraci\'on, las pol\'iticas de ambig\"uedad sobre el silver humano y el flujo del conjunto reservado con y sin compuerta.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{resumen_final.png}
+\caption{Resumen de resultados: RAGAS por configuraci\'on, pol\'iticas de ambig\"uedad y flujo del conjunto reservado con y sin compuerta.}
+\label{fig:resumen}
+\end{figure*}
+
 \subsection{Conjunto reservado}
 \label{sec:reservado}
 
-El silver exploratorio se us\'o para elegir la configuraci\'on densa, as\'i que no mide generalizaci\'on. Se construy\'o un conjunto reservado de 25 preguntas: 20 directas y 5 sin respuesta, 15 en espa\~nol y 10 en ingl\'es, 14 de prensa y 6 de Bluesky. Las preguntas se generaron con Gemma4 y se validaron autom\'aticamente; no son una muestra humana independiente. El conjunto se congel\'o antes de evaluar la compuerta y se us\'o para esa evaluaci\'on. Despu\'es se us\'o tambi\'en para elegir la recuperaci\'on h\'ibrida, as\'i que las m\'etricas de recuperaci\'on y respuesta de esta secci\'on son de desarrollo; la compuerta se midi\'o antes de esa elecci\'on, pero el mismo conjunto se us\'o despu\'es para elegir el h\'ibrido, as\'i que sus cifras tambi\'en son de desarrollo. Una prueba independiente de la recuperaci\'on exige un conjunto nuevo. La Tabla~S3 del suplemento muestra el resultado.
+El silver exploratorio se us\'o para elegir la configuraci\'on densa, as\'i que no mide generalizaci\'on. Se construy\'o un conjunto reservado de 25 preguntas: 20 directas y 5 sin respuesta, 15 en espa\~nol y 10 en ingl\'es, 14 de prensa y 6 de Bluesky. Las preguntas se generaron con Gemma4 y se validaron autom\'aticamente; no son una muestra humana independiente. El conjunto se congel\'o antes de evaluar la compuerta y se us\'o para esa evaluaci\'on. Despu\'es se us\'o tambi\'en para elegir la recuperaci\'on h\'ibrida, as\'i que las m\'etricas de recuperaci\'on y respuesta de esta secci\'on son de desarrollo; la compuerta se midi\'o antes de esa elecci\'on, pero el mismo conjunto se us\'o despu\'es para elegir el h\'ibrido, as\'i que sus cifras tambi\'en son de desarrollo. Una prueba independiente de la recuperaci\'on exige un conjunto nuevo. La Tabla~\ref{tab:reservado} muestra el resultado.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Conjunto reservado: 20 preguntas directas y 5 sin respuesta, congelado antes de ejecutar; la compuerta se evalu\'o antes de elegir el h\'ibrido.}
+\label{tab:reservado}
+\begin{tabular}{lrr}
+\toprule
+M\'etrica & Valor & Denominador \\
+\midrule
+Recall@10 & 0,700 & 20 \\
+nDCG@10 & 0,612 & 20 \\
+P@1 & 0,500 & 20 \\
+Hit@5 & 0,650 & 20 \\
+Cobertura de span & 0,700 & 20 \\
+Entregadas & 19 & 20 \\
+Abstenciones en directas & 1 & 20 \\
+Cobertura de tokens, entregadas & 17 & 19 \\
+Cobertura de tokens, todas & 17 & 20 \\
+Con cita & 1,000 & 19 \\
+Abstenciones en sin respuesta & 5 & 5 \\
+Compuerta rechaza & 5 & 5 \\
+Latencia media & 6,2 s & 25 \\
+Entregadas con compuerta (strict) & 15 & 20 \\
+Cobertura de tokens con compuerta & 13 & 15 \\
+Rechazos de compuerta & 3 & 20 \\
+Rechazos del juez & 2 & 20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 Las m\'etricas de respuesta se midieron sin la compuerta estricta; las predicciones de la compuerta se calcularon en una pasada aparte. Con la compuerta activa (\texttt{strict=True}), el flujo conjunto entrega 15 de 20 directas y se abstiene en las 5 negativas: tres directas se rechazan por dominio (r-011, r-012 y r-014) y dos por el juez de evidencia (r-005 y r-006). La cobertura de tokens de las 15 entregadas es 13/15 (0,867). La diferencia con las 19 entregas sin compuerta es el coste del filtro. El recall@10 es 0,700 y el nDCG 0,612, por debajo del 0,912 y 0,818 del silver exploratorio, pero por encima del 0,600 y 0,477 de la recuperaci\'on densa. La uni\'on con BM25 recupera r-012 y r-014, que el denso dejaba fuera, y conserva los aciertos del denso en r-009 y r-013. Seis de las 20 preguntas no recuperan el documento de referencia en el top-10; cuatro se responden correctamente con otro documento que contiene el mismo dato (r-005, r-008, r-017, r-019), una termina en abstenci\'on (r-006) y una es ambigua (r-016). El recall con un solo documento de referencia subestima la recuperaci\'on \'util: la mitad de los fallos de recall no son fallos de respuesta. La profundidad de la uni\'on no es monot\'onica: 20/20 y 30/30 suben el recall@10 a 0,750; 50/50 lo sube a 0,850 y recupera r-006, pero baja las entregas a 18 de 20 y la cobertura de tokens a 16 de 20, porque desplaza evidencia que el modelo usaba bien en r-009 y r-012. La configuraci\'on se queda en 10/20.
 
@@ -211,5 +334,35 @@ El fallo m\'as grave es r-006: la pregunta pide los 95 votos en la C\'amara de R
 
 La latencia media del conjunto reservado es 6,2 s (mediana 5,6, p95 9,1), inferior a los 10,8 s de la corrida densa. La uni\'on y el reordenador en GPU compensan el mayor n\'umero de candidatos.
 
-La Tabla~S5 del suplemento resume la progresi\'on de la configuraci\'on. Cada fila es una decisi\'on tomada con una medici\'on, no una preferencia.
+La Tabla~\ref{tab:progresion} resume la progresi\'on de la configuraci\'on. Cada fila es una decisi\'on tomada con una medici\'on, no una preferencia.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Progresi\'on de la configuraci\'on y m\'etrica que la justific\'o.}
+\label{tab:progresion}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllll}
+\toprule
+Etapa & Cambio & Silver & M\'etrica & Decisi\'on \\
+\midrule
+Piloto & e5-base, 1.932 docs & piloto (38) & Recall@10 0,947 & Punto de partida \\
+Escala & corpus completo & 38 & Recall@10 0,684 & El piloto sobreestima \\
+Dispersa & BM25 & 38 & Recall@10 0,763 & No alcanza el techo \\
+Codificador & bge-m3 & 38 & Recall@10 0,842 & Adoptado \\
+\'Indice & \texttt{ef}=800 & 38 & Recall@10 0,895 & Adoptado \\
+Fusi\'on & h\'ibrido RRF & 38 & Recall@10 0,895 & Empata, se descarta \\
+Fusi\'on & h\'ibrido RRF & ampliado & Recall@10 0,890 & Rechazado \\
+Reordenamiento & uni\'on densa+BM25 & reservado (20) & Recall@10 0,700 & Adoptado \\
+Contexto & $k=10$ & reservado (20) & 19/20 entregadas & Adoptado \\
+Prompt & v2 & 38 & 37/38 y cobertura 25/37 & Adoptado \\
+Compuerta & 160 preguntas & 20 test & 0 falsos aceptados & Adoptado \\
+Fase 6 & cuatro variantes & 38 & sin mejora & Rechazadas \\
+Fase 7 & MMR & 38 & recall 0,816 & Rechazado \\
+Reservado & 20 directas & reservado (20) & Recall@10 0,700 & Recupera parte de la ca\'ida \\
+Compuerta & 5 negativas & reservado (5) & 5/5 rechazadas & 3/20 falsos rechazos \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
 
