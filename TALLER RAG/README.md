@@ -100,6 +100,7 @@ Variables principales:
 | Variable | Uso | Valor por defecto |
 |---|---|---|
 | `MILVUS_URI` | conexión a Milvus | `http://localhost:19530` (el `.env` de la demo usa el servidor) |
+| `SOLR_URL` | endpoint de Solr para RAG-Solr | `http://localhost:8983/solr/noticias` |
 | `MILVUS_COLLECTION` | colección activa | `rag_full_bge_m3_d1024_v1` |
 | `EMBEDDER` | `bge` en GPU, `e5` o `ollama` como alternativas | `bge` |
 | `EMBEDDINGS_MODEL` | encoder | `BAAI/bge-m3` |
@@ -250,6 +251,28 @@ El script consulta `/health`, recupera con `/retrieve` y genera con `/ask` sobre
 curl -s http://localhost:8010/ask -H 'Content-Type: application/json' \
   -d '{"query":"¿En qué ciudad se celebrará la COP16?","k":5}'
 ```
+
+### RAG-Solr
+
+El camino Solr usa el mismo corpus y el mismo generador. El servicio se despliega en el servidor y el índice se carga desde Milvus:
+
+```bash
+./scripts/deploy_solr.sh
+docker compose exec -T api python -m src.scripts.index_solr \
+  --solr http://192.168.1.100:8983/solr/noticias
+```
+
+Para consultar por Solr, levanta una segunda API en el puerto 8011:
+
+```bash
+docker compose run -d --no-deps --name taller-rag-api-solr \
+  -e RETRIEVER=solr \
+  -e SOLR_URL=http://192.168.1.100:8983/solr/noticias \
+  api uvicorn src.rag.api:app --host 0.0.0.0 --port 8011
+API_URL=http://localhost:8011 ./scripts/demo.sh
+```
+
+La recuperación sale de Solr y la generación de Ollama. `/health` debe reportar `milvus:true` y `llm:true`.
 
 ## 9. Interfaz
 

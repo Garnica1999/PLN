@@ -7,12 +7,14 @@ from functools import lru_cache
 
 import requests
 
-from .ambiguity import clarification_payload, conditional_payload, detect as detect_ambiguity, needs_detection
+from .ambiguity import clarification_payload, conditional_payload, needs_detection
+from .ambiguity import detect as detect_ambiguity
 from .chunking import estimate_tokens
 from .config import settings
 from .domain import domain_probability as domain_probability_score
 from .embeddings import get_embedder
 from .prompts import REASONING_PROMPT, get_prompt, prompt_hash
+from .solr import search_solr
 from .store import OUTPUT_FIELDS, get_client, search
 
 CITATION_RE = re.compile(r"\[(\d+(?:\s*,\s*\d+)*)\]")
@@ -194,6 +196,8 @@ def search_hits(
         return retrieve_hybrid(query, k=k, collection=collection, expr=expr)
     if hybrid is False:
         return retrieve(query, k=k, collection=collection, expr=expr)
+    if settings.retriever == "solr":
+        return search_solr(query, k or settings.top_k)
     if settings.retriever == "hybrid_union":
         return retrieve_union(query, k=k, collection=collection, expr=expr)
     if settings.retriever == "sparse":

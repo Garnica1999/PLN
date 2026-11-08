@@ -67,6 +67,20 @@ services:
     mem_limit: 10g
     cpus: 8
 
+  solr:
+    restart: "no"
+    image: solr:9
+    network_mode: host
+    volumes:
+      - solr_data:/var/solr
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8983/solr/"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+    mem_limit: 4g
+    cpus: 2
+
   ollama:
     restart: "no"
     image: ollama/ollama:latest
@@ -180,6 +194,7 @@ services:
       PYTHONPATH: /work
       API_URL: http://localhost:8010
       MILVUS_URI: ${MILVUS_URI:-http://localhost:19530}
+      SOLR_URL: ${SOLR_URL:-http://localhost:8983/solr/noticias}
       OLLAMA_URL: http://localhost:11435
       EMBEDDER: bge
       EMBEDDINGS_MODEL: BAAI/bge-m3
@@ -282,6 +297,7 @@ volumes:
   etcd_data:
   minio_data:
   milvus_data:
+  solr_data:
   ollama_data:
   ollama_embeddings_data:
   hf_cache:
