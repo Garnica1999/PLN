@@ -58,6 +58,55 @@ _LOCK = threading.Lock()
 _LOCK_RERANK = threading.Lock()
 _LOCK_METADATOS = threading.Lock()
 _METADATOS: dict | None = None
+_TEXTOS_CONSTITUCION: dict | None = None
+_LOCK_CONSTITUCION = threading.Lock()
+INTEGRACION_C3_DIR = SEGUNDA_ENTREGA_DIR / "data" / "integracion_c3"
+_C3: dict | None = None
+_LOCK_C3 = threading.Lock()
+
+
+def integracion_c3() -> dict:
+    """Carga la capa 2022-2026 (corpus, canones y red combinada).
+
+    Returns:
+        Dict con por_id (id -> datos), por_canon (canon -> id) y red
+        (id -> pagerank y area). Si la capa no existe, devuelve vacios.
+    """
+    global _C3
+    if _C3 is not None:
+        return _C3
+    with _LOCK_C3:
+        if _C3 is not None:
+            return _C3
+        corpus_c3 = INTEGRACION_C3_DIR / "corpus_c3.parquet"
+        if not corpus_c3.exists():
+            _C3 = {"por_id": {}, "por_canon": {}, "red": {}}
+            return _C3
+        import pandas as pd
+
+        corpus = pd.read_parquet(corpus_c3)
+        red = pd.read_parquet(INTEGRACION_C3_DIR / "red_citas_1992_2026.parquet")
+        por_id = {
+            str(fila.id): {
+                "id": str(fila.id),
+                "canon": str(fila.canon),
+                "tipo": str(fila.tipo),
+                "ano": int(fila.ano),
+                "texto": str(fila.texto),
+                "texto_limpio": str(fila.texto_limpio),
+            }
+            for fila in corpus.itertuples(index=False)
+        }
+        por_canon = {datos["canon"]: id_ for id_, datos in por_id.items()}
+        red_por_id = {
+            str(fila.id): {
+                "pagerank": float(fila.pagerank),
+                "area": str(fila.area) if pd.notna(fila.area) else None,
+            }
+            for fila in red.itertuples(index=False)
+        }
+        _C3 = {"por_id": por_id, "por_canon": por_canon, "red": red_por_id}
+    return _C3
 _COMPONENTES: dict | None = None
 _VINCULO_RERANK: object | None = None
 _MODULO_ENTRADA: object | None = None
@@ -159,6 +208,9 @@ def texto_por_id(id_corpus: str) -> tuple[str, str]:
     try:
         return _modulo_entrada().texto_por_id(str(id_corpus))
     except SystemExit as exc:
+        c3 = integracion_c3()["por_id"].get(str(id_corpus))
+        if c3 is not None:
+            return c3["texto"], c3["texto_limpio"]
         detalle = str(exc.code) if exc.code else f"El id {id_corpus} no existe."
         raise LookupError(detalle) from None
 
@@ -204,9 +256,11 @@ def resolver_documento(referencia: str) -> dict:
         if canon is not None:
             id_doc = componentes()["contexto"].id_de_canon(canon)
             if id_doc is None:
+                id_doc = integracion_c3()["por_canon"].get(canon)
+            if id_doc is None:
                 raise LookupError(
                     f"La sentencia {canon} no esta en el corpus indexado "
-                    "(1992-2021)."
+                    "(1992-2026)."
                 )
             crudo, limpio = texto_por_id(id_doc)
             return {
@@ -250,6 +304,59 @@ def _limitar_k(k: int | None) -> int:
     return max(1, min(int(k), K_MAXIMO))
 
 
+def texto_constitucional(numero: str, limite: int = 300) -> str | None:
+    """Devuelve el texto de un articulo de la CP sin prefijos de reforma.
+
+    El producto muestra 150 caracteres, pero el agente necesita la frase
+    completa para citar sin inventar. Se quitan las marcas de acto
+    legislativo y se corta en el ultimo punto antes del limite.
+
+    Args:
+        numero: Canon del articulo ("49", "art. 86", "22A").
+        limite: Caracteres maximos; se respeta el final de la frase.
+
+    Returns:
+        Texto normalizado, o None si el articulo no existe.
+    """
+    global _TEXTOS_CONSTITUCION
+    if _TEXTOS_CONSTITUCION is None:
+        import pyarrow.parquet as pq
+
+        with _LOCK_CONSTITUCION:
+            if _TEXTOS_CONSTITUCION is None:
+                tabla = pq.read_table(
+                    nucleo.ROOT / nucleo.CONFIG["ruta_constitucion"],
+                    columns=["numero", "texto"],
+                ).to_pandas()
+                _TEXTOS_CONSTITUCION = {
+                    str(fila.numero).upper(): " ".join(str(fila.texto).split())
+                    for fila in tabla.itertuples(index=False)
+                }
+    canon = normalizar_articulo(numero).upper()
+    original = _TEXTOS_CONSTITUCION.get(canon)
+    if not original:
+        return None
+    limpio = re.sub(r"<[^>]+>", " ", original)
+    limpio = re.sub(
+        r"^El nuevo texto es el siguiente:\s*", "", limpio, flags=re.IGNORECASE
+    )
+    limpio = " ".join(limpio.split())
+    if len(limpio) > limite:
+        corte = limpio.rfind(". ", 0, limite)
+        if corte >= 40:
+            limpio = limpio[: corte + 1]
+        else:
+            # La frase en curso supera el limite: se extiende hasta su punto
+            # para no entregar una cita cortada a mitad de oracion.
+            siguiente = limpio.find(". ", limite)
+            limpio = (
+                limpio[: siguiente + 1]
+                if 0 <= siguiente <= limite + 160
+                else limpio[:limite].rstrip()
+            )
+    return limpio
+
+
 def metadatos_sentencias() -> dict[str, dict]:
     """Devuelve canon, ano, tipo, PageRank y area por id de sentencia.
 
@@ -274,9 +381,11 @@ def metadatos_sentencias() -> dict[str, dict]:
             nucleo.ROOT / "data" / "entidades_sentencias.parquet",
             columns=["id", "tipo", "ano"],
         ).to_pandas()
+        ruta_red = INTEGRACION_C3_DIR / "red_citas_1992_2026.parquet"
+        if not ruta_red.exists():
+            ruta_red = nucleo.ROOT / nucleo.CONFIG["ruta_red_citas"]
         red = pq.read_table(
-            nucleo.ROOT / nucleo.CONFIG["ruta_red_citas"],
-            columns=["id", "area", "pagerank"],
+            ruta_red, columns=["id", "area", "pagerank"]
         ).to_pandas()
         numeros = ds.dataset(
             nucleo.ROOT / nucleo.CONFIG["ruta_corpus"],
@@ -298,6 +407,15 @@ def metadatos_sentencias() -> dict[str, dict]:
                     float(fila.pagerank) if pd.notna(fila.pagerank) else None
                 ),
                 "area_silver": str(fila.area) if pd.notna(fila.area) else None,
+            }
+        for id_c3, datos in integracion_c3()["por_id"].items():
+            red_c3 = integracion_c3()["red"].get(id_c3, {})
+            por_id[id_c3] = {
+                "canon": datos["canon"],
+                "ano": datos["ano"],
+                "tipo": datos["tipo"],
+                "pagerank": red_c3.get("pagerank"),
+                "area_silver": red_c3.get("area"),
             }
         _METADATOS = por_id
     return _METADATOS
@@ -600,10 +718,24 @@ def contexto(
         ]
     canones = [normalizar_canon(canon) or canon for canon in citas]
     resueltas = comp["contexto"].resolver(canones)
-    detalle = [
-        {"canon": canon, **resuelta}
-        for canon, resuelta in zip(canones, resueltas, strict=True)
-    ]
+    detalle = []
+    for canon, resuelta in zip(canones, resueltas, strict=True):
+        fila = {"canon": canon, **resuelta}
+        if not fila.get("resuelta"):
+            id_c3 = integracion_c3()["por_canon"].get(canon)
+            if id_c3 is not None:
+                datos = integracion_c3()["por_id"][id_c3]
+                red = integracion_c3()["red"].get(id_c3, {})
+                fila.update(
+                    {
+                        "id": id_c3,
+                        "resuelta": True,
+                        "ano": datos["ano"],
+                        "pagerank": red.get("pagerank"),
+                        "area": red.get("area"),
+                    }
+                )
+        detalle.append(fila)
     return {
         "id": id_documento,
         "canon_detectado": canon_propio,

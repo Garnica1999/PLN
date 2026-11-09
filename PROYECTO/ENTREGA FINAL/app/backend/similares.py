@@ -20,6 +20,7 @@ import joblib
 import numpy as np
 import pyarrow.compute as pc
 import pyarrow.dataset as ds
+import pyarrow.parquet as pq
 import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -31,15 +32,16 @@ CACHE_DIR = core.BACKEND_DIR / "cache"
 RUTA_MATRIZ = CACHE_DIR / "tfidf_corpus.npz"
 RUTA_ARTEFACTO = CACHE_DIR / "tfidf_vectorizer.joblib"
 RUTA_CORPUS = nucleo.ROOT / nucleo.CONFIG["ruta_corpus"]
+RUTA_C3 = core.INTEGRACION_C3_DIR / "corpus_c3.parquet"
 
-VERSION_INDICE = 1
+VERSION_INDICE = 2
 MAX_CARACTERES = 30000
 MAX_FEATURES = 120000
 MIN_DF = 3
 K_DEFECTO = 5
 K_MAXIMO = 20
 AVISO_SIMILITUD = (
-    "Similitud TF-IDF (coseno) sobre el texto limpio del corpus 1992-2021. "
+    "Similitud TF-IDF (coseno) sobre el texto limpio del corpus 1992-2026. "
     "Mide parecido lexical, no equivalencia doctrinal ni precedente."
 )
 
@@ -57,7 +59,8 @@ def _firma_corpus() -> str:
     Raises:
         FileNotFoundError: Si el corpus no existe.
     """
-    return str(RUTA_CORPUS.stat().st_mtime_ns)
+    firma_c3 = RUTA_C3.stat().st_mtime_ns if RUTA_C3.exists() else 0
+    return f"{RUTA_CORPUS.stat().st_mtime_ns}-{firma_c3}"
 
 
 def _construir(firma: str) -> dict:
@@ -83,6 +86,18 @@ def _construir(firma: str) -> dict:
     tipos = [str(valor) for valor in tabla["tipo"].to_pylist()]
     anos = [int(valor) for valor in tabla["ano"].to_pylist()]
     del tabla
+
+    if RUTA_C3.exists():
+        c3 = pq.read_table(
+            RUTA_C3, columns=["id", "numero", "texto_limpio", "tipo", "ano"]
+        ).to_pandas()
+        documentos.extend(
+            str(valor)[:MAX_CARACTERES] for valor in c3["texto_limpio"]
+        )
+        ids.extend(str(valor) for valor in c3["id"])
+        numeros.extend(int(valor) for valor in c3["numero"])
+        tipos.extend(str(valor) for valor in c3["tipo"])
+        anos.extend(int(valor) for valor in c3["ano"])
 
     vectorizer = TfidfVectorizer(
         min_df=MIN_DF,
@@ -227,7 +242,7 @@ def buscar(id_sentencia: str, k: int = K_DEFECTO) -> dict:
     posicion = datos["pos_por_id"].get(str(id_sentencia))
     if posicion is None:
         raise LookupError(
-            f"El id {id_sentencia} no existe en el corpus indexado (1992-2021)."
+            f"El id {id_sentencia} no existe en el corpus indexado (1992-2026)."
         )
     fila = datos["matriz"].getrow(posicion)
     puntajes = np.asarray((datos["matriz"] @ fila.T).toarray()).ravel()

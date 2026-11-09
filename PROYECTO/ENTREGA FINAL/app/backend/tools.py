@@ -83,14 +83,20 @@ def vincular_cp(referencia: str, k: int = 6, rerank: bool = False) -> str:
 
     Returns:
         JSON con id, canon_detectado, articulos_extraidos y
-        articulos_recuperados (numero, score, bloque y texto recortado).
+        articulos_recuperados (numero, score, bloque y texto recortado en
+        ambos grupos).
     """
     try:
         resultado = core.vincular(referencia, k=k, rerank=rerank)
     except Exception as exc:  # noqa: BLE001 - el agente lee el error
         return _error(exc)
     extraidos = [
-        {"numero": fila["numero"], "bloque": fila.get("bloque")}
+        {
+            "numero": fila["numero"],
+            "bloque": fila.get("bloque"),
+            "texto": core.texto_constitucional(fila["numero"])
+            or _recortar(fila.get("texto_150chars")),
+        }
         for fila in resultado["articulos_extraidos"][:MAX_EXTRAIDOS]
     ]
     recuperados = [
@@ -98,7 +104,8 @@ def vincular_cp(referencia: str, k: int = 6, rerank: bool = False) -> str:
             "numero": fila["numero"],
             "score": fila.get("score"),
             "bloque": fila.get("bloque"),
-            "texto": _recortar(fila.get("texto_150chars")),
+            "texto": core.texto_constitucional(fila["numero"])
+            or _recortar(fila.get("texto_150chars")),
         }
         for fila in resultado["articulos_recuperados"][:MAX_RECUPERADOS]
     ]
@@ -164,7 +171,8 @@ def explorar_articulo(numero: str) -> str:
             "13", "22A", "Transitorio 68").
 
     Returns:
-        JSON con numero, texto (150 caracteres) y bloque tematico.
+        JSON con numero, texto de la primera frase o frases (hasta 600
+        caracteres) y bloque tematico.
     """
     try:
         resultado = core.detalle_articulo(numero)
@@ -173,7 +181,8 @@ def explorar_articulo(numero: str) -> str:
     return _json(
         {
             "numero": resultado["numero"],
-            "texto": _recortar(resultado["texto_150chars"]),
+            "texto": core.texto_constitucional(resultado["numero"], 600)
+            or _recortar(resultado["texto_150chars"], 600),
             "bloque": resultado["bloque"],
         }
     )
