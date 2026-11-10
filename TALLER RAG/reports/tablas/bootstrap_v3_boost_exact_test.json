@@ -1,0 +1,12 @@
+{
+  "n": 24,
+  "mean_a": 0.875,
+  "mean_b": 0.9167,
+  "diff": -0.0417,
+  "ci_low": -0.125,
+  "ci_high": 0.0,
+  "p_value": 0.7342,
+  "field": "correct",
+  "a": "reports/corridas/eval_langfuse_test-v3-ctx.jsonl",
+  "b": "reports/corridas/eval_langfuse_test-v3-boost-ctx.jsonl"
+}

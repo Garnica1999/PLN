@@ -102,6 +102,7 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--progress", type=int, default=5000)
     parser.add_argument("--skip-ner", action="store_true")
+    parser.add_argument("--reset-entities", action="store_true")
     args = parser.parse_args()
 
     if not args.password:
@@ -118,6 +119,9 @@ def main() -> None:
     with driver.session() as session:
         for statement in SCHEMA:
             session.run(statement)
+        if args.reset_entities:
+            print("borrando entidades y menciones anteriores", flush=True)
+            session.run("MATCH (e:Entity) DETACH DELETE e")
 
     started = time.perf_counter()
     buffer: list[dict] = []

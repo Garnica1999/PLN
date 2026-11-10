@@ -1,0 +1,12 @@
+{
+  "n": 19,
+  "mean_a": 0.59,
+  "mean_b": 0.6517,
+  "diff": -0.0617,
+  "ci_low": -0.1453,
+  "ci_high": 0.0193,
+  "p_value": 0.1396,
+  "field": "answer_correctness",
+  "a": "reports/tablas/ragas_test_v2_boost.csv",
+  "b": "reports/tablas/ragas_test_v3_boost.csv"
+}

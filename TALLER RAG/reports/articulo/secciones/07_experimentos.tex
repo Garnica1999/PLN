@@ -402,7 +402,7 @@ v3 sin boost & 0,875 & 0,486 & \textbf{0,840} & \textbf{0,440} \\
 \end{tabular}
 \end{table*}
 
-La exactitud es la misma: 0,917 en test y 0,840 en el reservado. La diferencia aparece en la evaluaci\'on sem\'antica. La Tabla~\ref{tab:ragas-v3} repite RAGAS sobre las 19 preguntas respondibles de test y las 20 del reservado. El prompt v3 sube la correcci\'on de 0,590 a 0,652 con el mismo recuperador y la misma exactitud; sin el boost llega a 0,687, a costa de una pregunta exacta. La fidelidad queda en 1,0 y la cobertura de contexto en 1,0: el generador no inventa y la evidencia alcanza.
+La exactitud es la misma: 0,917 en test y 0,840 en el reservado. La diferencia aparece en la evaluaci\'on sem\'antica. La Tabla~\ref{tab:ragas-v3} repite RAGAS sobre las 19 preguntas respondibles de test y las 20 del reservado. El prompt v3 sube la correcci\'on de 0,590 a 0,652 con el mismo recuperador y la misma exactitud; sin el boost llega a 0,687, a costa de una pregunta exacta. La diferencia pareada es +0,062, IC 95\,\% $[-0{,}019, 0{,}145]$, $p=0{,}14$: con 19 preguntas es una tendencia, no un resultado concluyente. La exactitud no cambia (diferencia 0, IC $[0, 0]$). La fidelidad queda en 1,0 y la cobertura de contexto en 1,0: el generador no inventa y la evidencia alcanza.
 
 \begin{table*}[t]
 \centering
@@ -422,7 +422,7 @@ v3 sin boost (reservado) & 0,975 & \textbf{0,856} & \textbf{0,863} & \textbf{1,0
 \end{tabular}
 \end{table*}
 
-La m\'etrica l\'exica subestima las respuestas correctas cuando cambian de idioma. En el reservado, r-012 responde \textit{Foro Econ\'omico Mundial} por \textit{World Economic Forum} y r-019 responde \textit{avispa asi\'atica} por \textit{Asian Hornet}; ambas son correctas y el chequeo de contenci\'on las marca como fallo, mientras RAGAS las punt\'ua por encima de 0,7. Con esa correcci\'on, el reservado pasa de 21 a 23 aciertos sobre 25. La configuraci\'on final es v3 con el boost del grafo: 0,917 de exactitud en test, 0,840 en el reservado, 0,652 de correcci\'on RAGAS y 1,0 de fidelidad. Si se prioriza la correcci\'on sem\'antica sobre una pregunta exacta, v3 sin boost es la mejor opci\'on.
+La m\'etrica l\'exica subestima las respuestas correctas cuando cambian de idioma. En el reservado, r-012 responde \textit{Foro Econ\'omico Mundial} por \textit{World Economic Forum} y r-019 responde \textit{avispa asi\'atica} por \textit{Asian Hornet}; ambas son correctas y el chequeo de contenci\'on las marca como fallo, mientras RAGAS las punt\'ua por encima de 0,7. Con esa correcci\'on, el reservado pasa de 21 a 23 aciertos sobre 25. La configuraci\'on final es v3 con el boost del grafo: 0,917 de exactitud en test, 0,840 en el reservado, 0,652 de correcci\'on RAGAS en test y 0,629 en el reservado, con 0,938 de fidelidad. El boost no cambia la exactitud del reservado y su efecto en la correcci\'on es +0,030 en test (IC $[-0{,}007, 0{,}074]$, $p=0{,}14$) y +0,010 en el reservado (IC $[-0{,}027, 0{,}065]$, $p=0{,}75$); ninguna de las dos excluye cero. Si se prioriza la correcci\'on sem\'antica sobre una pregunta exacta, v3 sin boost es la mejor opci\'on: 0,687 en test y 0,655 en el reservado, tambi\'en sin diferencia concluyente.
 
 \subsection{Resumen de resultados}
 

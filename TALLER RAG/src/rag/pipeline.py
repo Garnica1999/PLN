@@ -18,7 +18,7 @@ from .domain import domain_probability as domain_probability_score
 from .embeddings import get_embedder
 from .graph import boost_hits, search_graph
 from .grounding import check as check_grounding
-from .prompts import REASONING_PROMPT, get_prompt, prompt_hash
+from .prompts import QUERY_EXPANSION_PROMPT, REASONING_PROMPT, get_prompt, prompt_hash
 from .solr import search_solr, search_solr_dense
 from .store import OUTPUT_FIELDS, get_client, search
 from .tracing import observation
@@ -375,20 +375,47 @@ def generate(
     original_query: str | None = None,
     retriever: str | None = None,
     parent_expansion: bool | None = None,
+    query_expansion: bool | None = None,
+    graph_boost_weight: float | None = None,
 ) -> dict:
     model = model or settings.llm_model
     prompt_version = prompt_version or settings.prompt_version
     k = k or settings.top_k
     search_k = settings.rerank_top_n if settings.rerank and settings.rerank_top_n > k else k
+    expand_query = query_expansion
+    if expand_query is None:
+        expand_query = os.getenv("QUERY_EXPANSION", "0") == "1"
+    rewrite = ""
+    if expand_query:
+        with observation("expand_query", input={"query": query}) as expand_span:
+            try:
+                expanded = call_llm(
+                    QUERY_EXPANSION_PROMPT.format(question=query),
+                    model,
+                    0.0,
+                    num_predict=80,
+                    num_ctx=2048,
+                )
+                rewrite = (expanded.get("response") or "").strip()
+            except LLMError:
+                rewrite = ""
+            if expand_span is not None:
+                expand_span.update(output={"rewrite": rewrite})
     with observation(
         "retrieve",
         as_type="retriever",
         input={"query": query, "k": search_k},
-        metadata={"collection": collection or settings.collection},
+        metadata={"collection": collection or settings.collection, "rewrite": rewrite},
     ) as retrieve_span:
         hits, retrieval_ms = search_hits(
             query, k=search_k, collection=collection, expr=expr, hybrid=hybrid, retriever=retriever
         )
+        if rewrite and rewrite.lower() != query.lower():
+            extra_hits, extra_ms = search_hits(
+                rewrite, k=search_k, collection=collection, expr=expr, hybrid=hybrid, retriever=retriever
+            )
+            hits = weighted_rrf(hits, extra_hits, 0.5, 0.5, top=max(search_k * 3, 30))
+            retrieval_ms = round(retrieval_ms + extra_ms, 2)
         if retrieve_span is not None:
             retrieve_span.update(
                 output={
@@ -448,7 +475,10 @@ def generate(
             rerank_started = time.perf_counter()
             hits = rerank_hits(query, hits)
             if os.getenv("GRAPH_BOOST") == "1" or retriever == "hybrid_boost":
-                hits = boost_hits(query, hits)
+                weight = graph_boost_weight
+                if weight is None:
+                    weight = float(os.getenv("GRAPH_BOOST_WEIGHT", "0.15"))
+                hits = boost_hits(query, hits, weight=weight)
             hits = hits[:k]
             if settings.rerank_score_ratio > 0 and hits:
                 threshold = hits[0]["rerank_score"] * settings.rerank_score_ratio
