@@ -1,0 +1,10 @@
+{
+  "run": "all-v3-graph",
+  "experiment_id": "52e7e8e97edaeec2",
+  "n": 43,
+  "accuracy": 0.8372,
+  "token_recall": 0.6203,
+  "grounded": 0.907,
+  "p50_ms": 1357.76,
+  "total_s": 59.7
+}

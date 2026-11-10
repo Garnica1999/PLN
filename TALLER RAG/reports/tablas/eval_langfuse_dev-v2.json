@@ -1,0 +1,10 @@
+{
+  "run": "dev-v2",
+  "experiment_id": "cf1540714069c74e",
+  "n": 19,
+  "accuracy": 0.7895,
+  "token_recall": 0.7848,
+  "grounded": 0.8421,
+  "p50_ms": 1253.68,
+  "total_s": 24.8
+}

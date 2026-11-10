@@ -1,0 +1,10 @@
+{
+  "run": "res-v3-ctx",
+  "experiment_id": "126df608770061e8",
+  "n": 25,
+  "accuracy": 0.84,
+  "token_recall": 0.44,
+  "grounded": 0.88,
+  "p50_ms": 308.88,
+  "total_s": 8.8
+}

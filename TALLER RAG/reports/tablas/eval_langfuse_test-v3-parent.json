@@ -1,0 +1,10 @@
+{
+  "run": "test-v3-parent",
+  "experiment_id": "cd2356aa9188fef1",
+  "n": 24,
+  "accuracy": 0.875,
+  "token_recall": 0.5169,
+  "grounded": 0.8333,
+  "p50_ms": 2049.67,
+  "total_s": 48.7
+}

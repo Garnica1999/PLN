@@ -1,0 +1,10 @@
+{
+  "run": "res-v2",
+  "experiment_id": "ef47569d28338f3f",
+  "n": 25,
+  "accuracy": 0.84,
+  "token_recall": 0.44,
+  "grounded": 0.72,
+  "p50_ms": 1251.2,
+  "total_s": 32.4
+}

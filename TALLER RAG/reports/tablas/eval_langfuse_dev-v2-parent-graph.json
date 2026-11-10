@@ -1,0 +1,10 @@
+{
+  "run": "dev-v2-parent-graph",
+  "experiment_id": "ed09eae418bb5f69",
+  "n": 19,
+  "accuracy": 0.8421,
+  "token_recall": 0.8545,
+  "grounded": 0.8421,
+  "p50_ms": 2080.71,
+  "total_s": 40.6
+}

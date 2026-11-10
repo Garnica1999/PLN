@@ -1,0 +1,10 @@
+{
+  "run": "dev-v3-parent",
+  "experiment_id": "b32f2cbf6d4eac1c",
+  "n": 19,
+  "accuracy": 0.8421,
+  "token_recall": 0.7944,
+  "grounded": 1.0,
+  "p50_ms": 2223.73,
+  "total_s": 39.9
+}

@@ -79,6 +79,9 @@ def main() -> None:
     parser.add_argument("--k", type=int, default=10)
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--dataset", default="silver-taller")
+    parser.add_argument("--split", default="")
+    parser.add_argument("--prompt-version", default="")
+    parser.add_argument("--parent-expansion", default="auto", choices=["auto", "on", "off"])
     parser.add_argument("--run", default=None)
     parser.add_argument("--retriever", default="", help="solo se guarda en metadata")
     parser.add_argument("--outdir", default="reports")
@@ -91,6 +94,8 @@ def main() -> None:
         for line in Path(args.silver).read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
+    if args.split:
+        rows = [row for row in rows if row.get("split") == args.split]
     if args.limit:
         rows = rows[: args.limit]
 
@@ -104,16 +109,18 @@ def main() -> None:
     except Exception:  # noqa: BLE001  # ya existe
         print("dataset ya existe", flush=True)
     for row in rows:
+        item_id = f"{args.split}-{row['id']}" if args.split else row["id"]
         try:
             client.create_dataset_item(
                 dataset_name=args.dataset,
-                id=row["id"],
+                id=item_id,
                 input={"question": row["question"]},
                 expected_output=row.get("reference_answer", ""),
                 metadata={
                     "type": row.get("type"),
                     "split": row.get("split"),
                     "span": row.get("reference_span", ""),
+                    "original_id": row["id"],
                 },
             )
         except Exception as error:  # noqa: BLE001
@@ -130,6 +137,8 @@ def main() -> None:
             "temperature": 0.0,
             "ambiguity_policy": "off",
             "retriever": args.retriever or None,
+            "prompt_version": args.prompt_version or None,
+            "parent_expansion": {"auto": None, "on": True, "off": False}[args.parent_expansion],
         }
         started = time.perf_counter()
         try:
@@ -147,12 +156,14 @@ def main() -> None:
             "trace_id": data.get("trace_id"),
             "latency_ms": wall_ms,
         }
+        meta = item.metadata or {}
         captured.append(
             {
-                "id": item.id,
+                "id": meta.get("original_id", item.id),
                 "question": question,
                 "gold": item.expected_output or "",
                 "answer": output["answer"],
+                "contexts": [hit.get("text", "") for hit in data.get("evidence", [])],
                 "correct": is_correct(output["answer"], item.expected_output or "")
                 if item.expected_output
                 else (1.0 if output["abstained"] else 0.0),

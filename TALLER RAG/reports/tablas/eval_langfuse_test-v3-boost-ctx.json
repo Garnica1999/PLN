@@ -1,0 +1,10 @@
+{
+  "run": "test-v3-boost-ctx",
+  "experiment_id": "3c70e0096bab209a",
+  "n": 24,
+  "accuracy": 0.9167,
+  "token_recall": 0.5221,
+  "grounded": 0.8333,
+  "p50_ms": 1266.02,
+  "total_s": 35.5
+}

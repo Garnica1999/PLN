@@ -1,0 +1,10 @@
+{
+  "run": "res-v2-boost-ctx",
+  "experiment_id": "5b5688bd5738edd3",
+  "n": 25,
+  "accuracy": 0.84,
+  "token_recall": 0.44,
+  "grounded": 0.84,
+  "p50_ms": 1201.58,
+  "total_s": 31.6
+}

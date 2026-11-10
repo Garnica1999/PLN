@@ -34,6 +34,8 @@ class AskRequest(RetrieveRequest):
     think: bool = False
     strict: bool = False
     ambiguity_policy: str = "auto"
+    prompt_version: str | None = None
+    parent_expansion: bool | None = None
 
 
 def build_expr(request: RetrieveRequest) -> str | None:
@@ -58,6 +60,8 @@ def _traced(request: AskRequest, producer, name: str = "ask") -> dict:
             "retriever": request.retriever or settings.retriever,
             "llm": settings.llm_model,
             "embeddings": settings.embeddings_model,
+            "prompt_version": request.prompt_version or settings.prompt_version,
+            "parent_expansion": request.parent_expansion,
         },
     ) as root:
         result = producer()
@@ -196,6 +200,8 @@ def ask(request: AskRequest) -> dict:
                 expr=build_expr(request),
                 hybrid=request.hybrid,
                 retriever=request.retriever,
+                prompt_version=request.prompt_version,
+                parent_expansion=request.parent_expansion,
                 think=request.think,
                 domain_gate=request.strict,
                 ambiguity_policy=request.ambiguity_policy,
