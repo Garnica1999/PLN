@@ -84,6 +84,7 @@ def main() -> None:
     parser.add_argument("--parent-expansion", default="auto", choices=["auto", "on", "off"])
     parser.add_argument("--query-expansion", default="auto", choices=["auto", "on", "off"])
     parser.add_argument("--graph-boost-weight", type=float, default=None)
+    parser.add_argument("--model", default="")
     parser.add_argument("--run", default=None)
     parser.add_argument("--retriever", default="", help="solo se guarda en metadata")
     parser.add_argument("--outdir", default="reports")
@@ -143,6 +144,7 @@ def main() -> None:
             "parent_expansion": {"auto": None, "on": True, "off": False}[args.parent_expansion],
             "query_expansion": {"auto": None, "on": True, "off": False}[args.query_expansion],
             "graph_boost_weight": args.graph_boost_weight,
+            "model": args.model or None,
         }
         started = time.perf_counter()
         try:
