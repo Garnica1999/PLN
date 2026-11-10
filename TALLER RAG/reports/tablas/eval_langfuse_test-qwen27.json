@@ -1,0 +1,10 @@
+{
+  "run": "test-qwen27",
+  "experiment_id": "0b9f721ff1ac4962",
+  "n": 24,
+  "accuracy": 0.9167,
+  "token_recall": 0.4889,
+  "grounded": 0.7917,
+  "p50_ms": 10306.33,
+  "total_s": 254.4
+}

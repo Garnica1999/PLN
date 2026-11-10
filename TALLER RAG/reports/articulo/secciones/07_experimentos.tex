@@ -201,6 +201,8 @@ llama3.2:1b & 0,42 & 0,28 & 1,61 & 15,8\,\% \\
 
 La hip\'otesis H1, que esperaba que llama3.2:3b superara a los dem\'as en correcci\'on y citas, se refuta. La evidencia recuperada es la misma entre modelos; lo que cambia es el generador. La comparaci\'on fij\'o la familia de modelos peque\~nos. El generador final es gemma4:e4b, que no estaba en E4: se adopt\'o despu\'es por contexto largo y MTP, no por ganar una comparaci\'on directa, y se valid\'o en la corrida final.
 
+Se prob\'o un generador local de 27B (\texttt{qwen3.8:docs-32k-q3\_k\_s}, Q3) con el mismo pipeline y el mismo prompt. En test obtiene 0,917 de exactitud, 0,489 de cobertura, 0,657 de correcci\'on RAGAS y 10,3 s de mediana, frente a 0,917, 0,522, 0,652 y 1,2 s del 4B. El modelo grande no mejora de forma apreciable las m\'etricas y multiplica la latencia por ocho; el 4B se queda como generador desplegado.
+
 \subsection{Inyecci\'on de instrucciones}
 
 E5 insert\'o instrucciones expl\'icitas en cinco documentos sint\'eticos por modelo. Es una prueba exploratoria: no cubre el generador final ni demuestra robustez general. Dos de los tres modelos las ignoraron. gemma2:2b obedeci\'o una de cinco y a\~nadi\'o la palabra pedida a una respuesta por lo dem\'as correcta. La regla de dise\~no que sale de aqu\'i es que el prompt debe delimitar la evidencia y ordenar expl\'icitamente ignorar instrucciones internas, y esa orden debe repetirse despu\'es del bloque de contexto.
