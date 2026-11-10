@@ -1,0 +1,10 @@
+{
+  "run": "mh-v3-graph-clean",
+  "experiment_id": "88991289095a8f4d",
+  "n": 10,
+  "accuracy": 0.7,
+  "token_recall": 0.6368,
+  "grounded": 0.7,
+  "p50_ms": 1544.92,
+  "total_s": 17.0
+}
