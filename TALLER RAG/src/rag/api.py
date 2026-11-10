@@ -11,6 +11,8 @@ from .chat import chat as chat_answer
 from .config import settings
 from .pipeline import LLMError, generate, search_hits
 from .store import collections, count, get_client
+from .tracing import observation
+from .tracing import trace_id as make_trace_id
 
 app = FastAPI(title="Taller RAG Milvus", version="1.0")
 
@@ -23,6 +25,7 @@ class RetrieveRequest(BaseModel):
     date_from: str | None = Field(default=None, pattern=r"^\d{4}-\d{2}-\d{2}$")
     date_to: str | None = Field(default=None, pattern=r"^\d{4}-\d{2}-\d{2}$")
     hybrid: bool | None = None
+    retriever: str | None = None
 
 
 class AskRequest(RetrieveRequest):
@@ -42,6 +45,39 @@ def build_expr(request: RetrieveRequest) -> str | None:
     if request.date_to:
         parts.append(f'created_at <= "{request.date_to}"')
     return " and ".join(parts) if parts else None
+
+
+def _traced(request: AskRequest, producer, name: str = "ask") -> dict:
+    """Ejecuta una respuesta dentro de un trace de Langfuse."""
+    trace = make_trace_id()
+    with observation(
+        name,
+        trace=trace,
+        input={"query": request.query, "k": request.k, "collection": request.collection},
+        metadata={
+            "retriever": request.retriever or settings.retriever,
+            "llm": settings.llm_model,
+            "embeddings": settings.embeddings_model,
+        },
+    ) as root:
+        result = producer()
+        if root is not None:
+            root.update(
+                output={
+                    "answer": result.get("answer"),
+                    "citations": result.get("citations"),
+                    "abstained": result.get("abstained"),
+                }
+            )
+            root.score_trace(
+                name="citation_valid",
+                value=0.0 if result.get("invalid_citations") else 1.0,
+            )
+            grounded = (result.get("grounding") or {}).get("ungrounded") or []
+            root.score_trace(name="grounded", value=0.0 if grounded else 1.0)
+            root.score_trace(name="latency_ms", value=float(result.get("total_ms") or 0.0))
+        result["trace_id"] = trace
+        return result
 
 
 @app.get("/health")
@@ -123,18 +159,22 @@ class ChatRequest(AskRequest):
 @app.post("/chat")
 def chat_endpoint(request: ChatRequest) -> dict:
     try:
-        return chat_answer(
-            request.query,
-            model=request.model,
-            k=request.k,
-            temperature=request.temperature,
-            collection=request.collection,
-            expr=build_expr(request),
-            hybrid=request.hybrid,
-            history=[turn.model_dump() for turn in request.history],
-            think=request.think,
-            strict=request.strict,
-            ambiguity_policy=request.ambiguity_policy,
+        return _traced(
+            request,
+            lambda: chat_answer(
+                request.query,
+                model=request.model,
+                k=request.k,
+                temperature=request.temperature,
+                collection=request.collection,
+                expr=build_expr(request),
+                hybrid=request.hybrid,
+                history=[turn.model_dump() for turn in request.history],
+                think=request.think,
+                strict=request.strict,
+                ambiguity_policy=request.ambiguity_policy,
+            ),
+            name="chat",
         )
     except ValueError as error:
         raise HTTPException(400, detail=str(error)) from error
@@ -145,18 +185,22 @@ def chat_endpoint(request: ChatRequest) -> dict:
 @app.post("/ask")
 def ask(request: AskRequest) -> dict:
     try:
-        return generate(
-            request.query,
-            model=request.model,
-            k=request.k,
-            temperature=request.temperature,
-            collection=request.collection,
-            expr=build_expr(request),
-            hybrid=request.hybrid,
-            think=request.think,
-            domain_gate=request.strict,
-            ambiguity_policy=request.ambiguity_policy,
-            interactive=False,
+        return _traced(
+            request,
+            lambda: generate(
+                request.query,
+                model=request.model,
+                k=request.k,
+                temperature=request.temperature,
+                collection=request.collection,
+                expr=build_expr(request),
+                hybrid=request.hybrid,
+                retriever=request.retriever,
+                think=request.think,
+                domain_gate=request.strict,
+                ambiguity_policy=request.ambiguity_policy,
+                interactive=False,
+            ),
         )
     except ValueError as error:
         raise HTTPException(400, detail=str(error)) from error

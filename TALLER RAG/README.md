@@ -174,6 +174,18 @@ make all-down
 
 `make all-up` levanta el stack, espera la API, jala `gemma4:e4b` y `gemma2:2b`, ingiere la muestra, construye la colección BM25, indexa Solr y precalienta los modelos.
 
+### Observabilidad y grafo
+
+`docker/observability/docker-compose.yml` despliega Langfuse 4 y Neo4j 5 en el servidor. La UI queda en `http://192.168.1.100:3000` y Neo4j en `bolt://192.168.1.100:7687`. La primera vez hay que copiar `.env.example` a `.env` y generar los secretos.
+
+```bash
+make obs-up          # Langfuse + Neo4j en el servidor
+make graph-build     # 169k documentos y ~249k entidades en Neo4j
+make eval-langfuse RUN=baseline   # dataset silver-taller + experimento
+```
+
+Cada `/ask` devuelve `trace_id`; la traza incluye `retrieve`, `rerank`, `generate` y `grounding`. El dataset `silver-taller` compara la respuesta esperada con la del modelo. El recuperador se elige por petición con el campo `retriever`: `hybrid_union`, `hybrid_boost` o `graph_hybrid`. En las 43 preguntas del silver, `hybrid_boost` iguala la exactitud del grafo híbrido (0,861) y sube la cobertura de tokens a 0,655; en 10 preguntas multi-documento mantiene 0,900, mientras `graph_hybrid` baja a 0,700.
+
 Servicios y puertos:
 
 | Servicio | Imagen | Puerto |

@@ -1,0 +1,10 @@
+{
+  "run": "graph-hibrido",
+  "experiment_id": "a42a0aeaa67902d2",
+  "n": 43,
+  "accuracy": 0.8605,
+  "token_recall": 0.6351,
+  "grounded": 0.7674,
+  "p50_ms": 1439.56,
+  "total_s": 64.5
+}

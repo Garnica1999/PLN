@@ -5,8 +5,11 @@ COMPOSE_ALL := docker compose -f docker-compose.all.yml
 SAMPLE ?= eval/all_docs.parquet
 COLLECTION ?= rag_full_bge_m3_d1024_v1
 SPARSE ?= rag_full_e5base_d768_v2_bm25_v1
+PYTHON ?= python
+RUN ?= baseline
+OBS := docker --context server compose --env-file docker/observability/.env -f docker/observability/docker-compose.yml
 
-.PHONY: up down ps logs health prewarm all-up all-down
+.PHONY: up down ps logs health prewarm all-up all-down obs-up obs-down graph-build eval-langfuse
 
 up:
 	./scripts/up.sh up
@@ -44,3 +47,15 @@ all-up:
 
 all-down:
 	$(COMPOSE_ALL) down
+
+obs-up:
+	$(OBS) up -d
+
+obs-down:
+	$(OBS) stop
+
+graph-build:
+	$(PYTHON) -m src.scripts.build_graph --batch 1000
+
+eval-langfuse:
+	$(PYTHON) -m src.scripts.eval_langfuse --run $(RUN)

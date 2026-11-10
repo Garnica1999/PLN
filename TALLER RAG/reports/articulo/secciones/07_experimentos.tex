@@ -310,6 +310,77 @@ Draft & Tokens/s \\
 
 La corrida de referencia de la configuraci\'on anterior (densa y reranker en CPU) es la del 2 de noviembre, con el c\'odigo del commit \texttt{125bbc7}: 7.938 ms sin razonamiento y 6.834 ms con razonamiento; los CSV est\'an en \texttt{reports/tablas/}. El reranker en CPU aporta 1,30 s de mediana. Con la configuraci\'on final (uni\'on h\'ibrida y reranker en GPU), el conjunto reservado dio 6.154 ms de media (mediana 5.578, p95 9.136) sobre 25 preguntas. La compuerta reutiliza la puntuaci\'on del reranker, as\'i que no a\~nade una segunda pasada.
 
+\subsection{Observabilidad y evaluaci\'on continua}
+\label{sec:observabilidad}
+
+Cada consulta deja una traza en Langfuse 4.78, desplegado en el servidor como un servicio m\'as del stack. La traza \texttt{ask} contiene los spans \texttt{retrieve}, \texttt{rerank}, \texttt{generate} y \texttt{grounding}, con los fragmentos recuperados, el prompt, la respuesta, las citas, los tokens y las latencias. Los scores \texttt{citation\_valid}, \texttt{grounded} y \texttt{latency\_ms} se calculan en la misma petici\'on, y el identificador de la traza se devuelve en la respuesta para enlazarla con la corrida de evaluaci\'on. La Figura~\ref{fig:trace} muestra la traza de una consulta real.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{langfuse_trace_crop.png}
+\caption{Traza de una consulta en Langfuse: spans de recuperaci\'on, reordenamiento, generaci\'on y anclaje, con los scores de la petici\'on.}
+\label{fig:trace}
+\end{figure*}
+
+El conjunto dorado vive como Dataset de Langfuse. Cada corrida es un experimento que enfrenta la respuesta esperada con la respuesta del modelo y calcula cuatro scores por \'item: \texttt{correct}, \texttt{token\_recall}, \texttt{citation\_valid} y \texttt{grounded}. La Figura~\ref{fig:langfuse} muestra la vista de evaluaci\'on con la pregunta, el gold, los scores y la respuesta. La Tabla~\ref{tab:observabilidad} resume las tres corridas sobre las 43 preguntas del silver.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{langfuse_experiment_crop.png}
+\caption{Experimento en Langfuse: pregunta, respuesta esperada, scores y respuesta del modelo, con la comparaci\'on por \'item.}
+\label{fig:langfuse}
+\end{figure*}
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Corridas registradas en Langfuse sobre las 43 preguntas del silver. La exactitud incluye las 5 preguntas sin respuesta.}
+\label{tab:observabilidad}
+\begin{tabular}{lrrrr}
+\toprule
+Corrida & Exactitud & Cobertura & Anclaje & p50 \\
+\midrule
+Uni\'on h\'ibrida & 0,837 & 0,626 & 0,744 & 0,42 s \\
+Grafo h\'ibrido & \textbf{0,861} & 0,635 & 0,767 & 1,44 s \\
+H\'ibrido + boost & \textbf{0,861} & \textbf{0,655} & \textbf{0,791} & 1,30 s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La tabla muestra el efecto de la observabilidad: las tres corridas usan el mismo conjunto, el mismo modelo y la misma temperatura, as\'i que la diferencia es del recuperador. El registro no cambia la respuesta; cambia la capacidad de atribuirla. Sin \'el, una mejora de dos puntos en exactitud no se puede separar de la variaci\'on del muestreo ni del orden de las preguntas.
+
+\subsection{GraphRAG ligero}
+\label{sec:graphrag}
+
+Se construy\'o un grafo de documentos y entidades en Neo4j 5.26. Cada documento se conecta con las entidades nombradas que menciona; la extracci\'on corre con spaCy en espa\~nol e ingl\'es sobre el t\'itulo y los primeros 1.500 caracteres. El grafo tiene 169.248 documentos, 248.869 entidades y 926.923 menciones, y se construye en 2.000 s en un solo proceso. La Figura~\ref{fig:neo4j} muestra un documento y sus entidades.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{neo4j_graph_crop.png}
+\caption{Grafo en Neo4j: un documento y las entidades que menciona.}
+\label{fig:neo4j}
+\end{figure}
+
+Se probaron dos formas de usar el grafo. \texttt{graph\_hybrid} fusiona los candidatos del grafo con la uni\'on densa y BM25 antes del reordenamiento. \texttt{hybrid\_boost} deja intacta la recuperaci\'on y suma al \texttt{rerank\_score} un bono por cada entidad de la consulta presente en el fragmento. La Tabla~\ref{tab:graphrag} compara ambos modos con el baseline en las 43 preguntas y en un conjunto nuevo de 10 preguntas multi-documento.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{GraphRAG contra la uni\'on h\'ibrida. Exactitud y cobertura de tokens sobre las 43 preguntas del silver y sobre 10 preguntas multi-documento.}
+\label{tab:graphrag}
+\begin{tabular}{lrrrr}
+\toprule
+Modo & Exactitud (43) & Cobertura (43) & Exactitud (10) & Cobertura (10) \\
+\midrule
+Uni\'on h\'ibrida & 0,837 & 0,626 & \textbf{0,900} & 0,878 \\
+Grafo h\'ibrido & \textbf{0,861} & 0,635 & 0,700 & 0,694 \\
+H\'ibrido + boost & \textbf{0,861} & \textbf{0,655} & \textbf{0,900} & \textbf{0,889} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+El resultado separa dos usos que suelen confundirse. El grafo como fuente de candidatos mejora una pregunta en el silver, pero pierde 20 puntos en el conjunto multi-documento: el reordenador prefiere documentos que el grafo trae por entidades ruidosas y desplaza fragmentos que la recuperaci\'on densa ya ten\'ia. El grafo como reordenador, en cambio, sube la cobertura de tokens y el anclaje en ambos conjuntos sin degradar la exactitud. La diferencia es consistente con la calidad de la extracci\'on: las claves no pasan por un enlace de entidades y muchas son frases largas, as\'i que el grafo sirve para desempatar, no para sustituir al \'indice. GraphRAG no es una mejora gratuita; con este corpus y este extractor, el uso defendible es el boost.
+
 \subsection{Resumen de resultados}
 
 La Figura~\ref{fig:resumen} re\'une los tres resultados principales: RAGAS por configuraci\'on, las pol\'iticas de ambig\"uedad sobre el silver humano y el flujo del conjunto reservado con y sin compuerta.

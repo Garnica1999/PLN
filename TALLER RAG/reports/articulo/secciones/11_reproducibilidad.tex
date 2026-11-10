@@ -51,6 +51,19 @@ python src/scripts/run_evaluation.py
 
 Ese pipeline corre la evaluaci\'on de desempe\~no en el worker GPU, la de conversaci\'on contra la API y RAGAS en el contenedor de evaluaci\'on. Los resultados se escriben en \texttt{reports/tablas/} y la comparaci\'on en \texttt{reports/tablas/evaluacion\_comparativa.md}.
 
+\subsection{Observabilidad y grafo}
+
+El stack de observabilidad se despliega en el servidor desde \texttt{docker/observability} con:
+
+\begin{verbatim}
+cd docker/observability
+docker --context server compose \
+  --env-file .env \
+  -f docker-compose.yml up -d
+\end{verbatim}
+
+El grafo se construye desde el Parquet con \texttt{python -m src.scripts.build\_graph --batch 1000} y las corridas se registran con \texttt{python -m src.scripts.eval\_langfuse --run baseline-final}. El modo del recuperador se elige por petici\'on con el campo \texttt{retriever} (\texttt{hybrid\_union}, \texttt{hybrid\_boost}, \texttt{graph\_hybrid}). Las capturas de Langfuse y Neo4j se generan con \texttt{scripts/capture\_firefox.py} y Firefox headless.
+
 \subsection{Artefactos}
 
 El silver consolidado est\'a en \texttt{eval/silver/silver\_standard.jsonl}, con su versi\'on ampliada en \texttt{silver\_standard\_ampliado.jsonl}. El conjunto reservado (\texttt{silver\_reservado.jsonl}, con hashes en \texttt{README\_RESERVADO.md}) escribe \texttt{reports/corridas/reservado\_*\_raw.jsonl} y \texttt{reports/tablas/reservado\_*\_resumen.csv}. El silver de ambig\"uedad est\'a en \texttt{eval/silver/silver\_ambiguedad*.jsonl}, con las tablas \texttt{ambiguedad\_*\_resumen.csv} y \texttt{ambiguedad\_*\_por\_pregunta.csv}. La capa de datos se define en \texttt{docker-stack.yml} y el modo local de respaldo en \texttt{docker-compose.data.yml}. Las figuras est\'an en \texttt{reports/figuras/}, las corridas en \texttt{reports/corridas/} y los modelos de la compuerta en \texttt{modelos/}.

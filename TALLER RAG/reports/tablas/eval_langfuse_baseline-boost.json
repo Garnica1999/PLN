@@ -1,0 +1,10 @@
+{
+  "run": "baseline-boost",
+  "experiment_id": "022ee289119ee332",
+  "n": 43,
+  "accuracy": 0.8605,
+  "token_recall": 0.6546,
+  "grounded": 0.7907,
+  "p50_ms": 1297.91,
+  "total_s": 57.0
+}

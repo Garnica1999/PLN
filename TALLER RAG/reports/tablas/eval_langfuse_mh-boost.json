@@ -1,0 +1,10 @@
+{
+  "run": "mh-boost",
+  "experiment_id": "0b164ad1ecc6a49e",
+  "n": 10,
+  "accuracy": 0.9,
+  "token_recall": 0.889,
+  "grounded": 0.5,
+  "p50_ms": 1399.98,
+  "total_s": 15.8
+}

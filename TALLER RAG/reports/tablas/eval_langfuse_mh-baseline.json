@@ -1,0 +1,10 @@
+{
+  "run": "mh-baseline",
+  "experiment_id": "9bee5f5b0386ec1f",
+  "n": 10,
+  "accuracy": 0.9,
+  "token_recall": 0.8778,
+  "grounded": 0.4,
+  "p50_ms": 1547.27,
+  "total_s": 18.5
+}
