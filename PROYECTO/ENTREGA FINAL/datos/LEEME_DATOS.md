@@ -19,7 +19,8 @@ regeneran con los scripts de `codigo/segunda_entrega/scripts/`.
 
 | Archivo | Rol | Tamaño |
 |---|---|---:|
-| `data/corpus_sentencias.parquet` | 23.742 sentencias (id, texto, metadatos) | 1,5 GB |
+| `data/corpus_sentencias.parquet` | 23.742 sentencias históricas (id, texto, metadatos) | 1,5 GB |
+| `data/integracion_c3/` | capa 2022-2026: 2.330 sentencias con texto crudo, entidades, etiquetas y red combinada | ~100 MB |
 | `data/entidades_sentencias.parquet` | artículos y citas extraídos por documento | 4,3 MB |
 | `data/red_citas_resumen.parquet` | PageRank y grados de la red de citas | 5 MB |
 | `data/constitucion_articulos.parquet` | texto de los artículos de la CP | < 1 MB |
@@ -56,3 +57,11 @@ Los nombres exactos están en `codigo/segunda_entrega/scripts/` y en
 `app/backend/cache/tfidf_corpus.npz` (117 MB) y `tfidf_vectorizer.joblib` (1 MB)
 son un índice derivado para "sentencias similares". No se versionan: se
 regeneran en ~30 s al primer arranque del backend.
+
+## Capa 2022-2026
+
+La generó `experimentos/32_integrar_c3.py` a partir del corpus C3 ya preparado
+(texto limpiado, entidades M2 y etiquetas M4) y de los HTML crudos. Asigna ids
+30000 a 32329, reconstruye el texto crudo y escribe la red de citas combinada.
+El backend la carga como capa adicional; si la carpeta no existe, el producto
+sigue funcionando con el corpus 1992-2021.

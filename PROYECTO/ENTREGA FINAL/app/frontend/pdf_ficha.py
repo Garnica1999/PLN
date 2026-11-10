@@ -37,8 +37,9 @@ BORDE = colors.HexColor("#DCE3EB")
 SUPERFICIE = colors.HexColor("#F5F7FA")
 
 AVISO_PROCEDENCIA = (
-    "Resultados del modelo v2.2 sobre el corpus 1992-2021; las etiquetas de "
-    "area son automaticas (exploratorias, ADR-19) y no constituyen una "
+    "Modelo v2.2 evaluado en 1992-2021; el producto integra el corpus hasta 2026. "
+    "Las etiquetas de area son automaticas (exploratorias, ADR-19) y no "
+    "constituyen una "
     "clasificacion verificada por humanos."
 )
 MAX_FILAS_ARTICULOS = 4

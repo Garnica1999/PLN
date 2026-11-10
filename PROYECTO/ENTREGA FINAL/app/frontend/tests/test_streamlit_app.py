@@ -111,7 +111,7 @@ def test_p2_article_86_shows_counts_and_filter(app: AppTest) -> None:
     assert not app.exception, [item.value for item in app.exception]
     assert not app.error
     content = markdown_text(app)
-    assert "16405" in content
+    assert "18218" in content
     assert "C-543-1992" in content
     assert "referencia automática" in content
     assert "PageRank" in content

@@ -1,6 +1,7 @@
 """Orquestación RAG: recuperar, armar contexto, generar y verificar citas."""
 from __future__ import annotations
 
+import os
 import re
 import time
 from functools import lru_cache
@@ -13,9 +14,12 @@ from .chunking import estimate_tokens
 from .config import settings
 from .domain import domain_probability as domain_probability_score
 from .embeddings import get_embedder
+from .graph import boost_hits, search_graph
+from .grounding import check as check_grounding
 from .prompts import REASONING_PROMPT, get_prompt, prompt_hash
 from .solr import search_solr, search_solr_dense
 from .store import OUTPUT_FIELDS, get_client, search
+from .tracing import observation
 
 CITATION_RE = re.compile(r"\[(\d+(?:\s*,\s*\d+)*)\]")
 ABSTENTION_TEXT = "No hay evidencia suficiente en el corpus para responder."
@@ -189,22 +193,33 @@ def search_hits(
     collection: str | None = None,
     expr: str | None = None,
     hybrid: bool | None = None,
+    retriever: str | None = None,
 ) -> tuple[list[dict], float]:
     """Elige dense, sparse o hibrido segun el flag del request o la configuracion."""
     validate_collection(collection)
+    mode = retriever or settings.retriever
     if hybrid is True:
         return retrieve_hybrid(query, k=k, collection=collection, expr=expr)
     if hybrid is False:
         return retrieve(query, k=k, collection=collection, expr=expr)
-    if settings.retriever == "solr":
+    if mode == "solr":
         return search_solr(query, k or settings.top_k)
-    if settings.retriever == "solr_dense":
+    if mode == "solr_dense":
         return search_solr_dense(query, k or settings.top_k)
-    if settings.retriever == "hybrid_union":
+    if mode == "graph":
+        return search_graph(query, k or settings.top_k, collection=collection)
+    if mode == "hybrid_boost":
         return retrieve_union(query, k=k, collection=collection, expr=expr)
-    if settings.retriever == "sparse":
+    if mode == "graph_hybrid":
+        top_k = k or settings.top_k
+        dense_hits, dense_ms = retrieve(query, k=max(20, top_k * 2), collection=collection, expr=expr)
+        graph_hits, graph_ms = search_graph(query, k=max(20, top_k * 2), collection=collection)
+        return dedupe(dense_hits + graph_hits), round(dense_ms + graph_ms, 2)
+    if mode == "hybrid_union":
+        return retrieve_union(query, k=k, collection=collection, expr=expr)
+    if mode == "sparse":
         return retrieve_sparse(query, k=k, expr=expr)
-    if settings.retriever == "hybrid":
+    if mode == "hybrid":
         return retrieve_hybrid(query, k=k, collection=collection, expr=expr)
     return retrieve(query, k=k, collection=collection, expr=expr)
 
@@ -299,12 +314,35 @@ def generate(
     interactive: bool = False,
     history: list[dict] | None = None,
     original_query: str | None = None,
+    retriever: str | None = None,
 ) -> dict:
     model = model or settings.llm_model
     prompt_version = prompt_version or settings.prompt_version
     k = k or settings.top_k
     search_k = settings.rerank_top_n if settings.rerank and settings.rerank_top_n > k else k
-    hits, retrieval_ms = search_hits(query, k=search_k, collection=collection, expr=expr, hybrid=hybrid)
+    with observation(
+        "retrieve",
+        as_type="retriever",
+        input={"query": query, "k": search_k},
+        metadata={"collection": collection or settings.collection},
+    ) as retrieve_span:
+        hits, retrieval_ms = search_hits(
+            query, k=search_k, collection=collection, expr=expr, hybrid=hybrid, retriever=retriever
+        )
+        if retrieve_span is not None:
+            retrieve_span.update(
+                output={
+                    "ms": retrieval_ms,
+                    "chunks": [
+                        {
+                            "chunk_id": hit.get("chunk_id"),
+                            "doc_id": hit.get("document_id"),
+                            "score": round(float(hit.get("score", 0.0)), 4),
+                        }
+                        for hit in hits[:20]
+                    ],
+                }
+            )
     base = {
         "query": query,
         "model": model,
@@ -342,15 +380,25 @@ def generate(
                 "total_ms": retrieval_ms,
             }
     if settings.rerank and len(hits) > 1:
-        rerank_started = time.perf_counter()
-        hits = rerank_hits(query, hits)[:k]
-        if settings.rerank_score_ratio > 0 and hits:
-            threshold = hits[0]["rerank_score"] * settings.rerank_score_ratio
-            filtered = [hit for hit in hits if hit["rerank_score"] >= threshold]
-            hits = filtered or hits[:1]
-        retrieval_ms = round(retrieval_ms + (time.perf_counter() - rerank_started) * 1000, 2)
-        base["retrieval_ms"] = retrieval_ms
-        base["total_ms"] = retrieval_ms
+        with observation(
+            "rerank",
+            input={"query": query, "candidates": len(hits)},
+            metadata={"model": settings.rerank_model},
+        ) as rerank_span:
+            rerank_started = time.perf_counter()
+            hits = rerank_hits(query, hits)
+            if os.getenv("GRAPH_BOOST") == "1" or retriever == "hybrid_boost":
+                hits = boost_hits(query, hits)
+            hits = hits[:k]
+            if settings.rerank_score_ratio > 0 and hits:
+                threshold = hits[0]["rerank_score"] * settings.rerank_score_ratio
+                filtered = [hit for hit in hits if hit["rerank_score"] >= threshold]
+                hits = filtered or hits[:1]
+            retrieval_ms = round(retrieval_ms + (time.perf_counter() - rerank_started) * 1000, 2)
+            base["retrieval_ms"] = retrieval_ms
+            base["total_ms"] = retrieval_ms
+            if rerank_span is not None:
+                rerank_span.update(output={"kept": len(hits)})
 
     if not hits:
         return {**base, "answer": ABSTENTION_TEXT, "abstained": True, "abstain_reason": "sin_evidencia", "evidence": []}
@@ -413,14 +461,21 @@ def generate(
 
     prompt = get_prompt(prompt_version).format(context=context, question=query)
     started = time.perf_counter()
-    data = call_llm(
-        prompt,
-        model,
-        temperature,
-        num_ctx=num_ctx,
-        num_predict=num_predict,
-        think=native_thinking,
-    )
+    with observation(
+        "generate",
+        as_type="generation",
+        model=model,
+        input={"prompt": prompt[:8000]},
+        model_parameters={"temperature": temperature, "num_ctx": num_ctx},
+    ) as generation_span:
+        data = call_llm(
+            prompt,
+            model,
+            temperature,
+            num_ctx=num_ctx,
+            num_predict=num_predict,
+            think=native_thinking,
+        )
     generation_ms = round((time.perf_counter() - started) * 1000, 2)
 
     if native_thinking:
@@ -429,15 +484,29 @@ def generate(
     eval_count = data.get("eval_count") or 0
     eval_duration = data.get("eval_duration") or 0
     tokens_per_second = round(eval_count / (eval_duration / 1e9), 2) if eval_duration else None
+    if generation_span is not None:
+        generation_span.update(
+            output=answer,
+            usage_details={
+                "input": int(data.get("prompt_eval_count") or 0),
+                "output": int(eval_count),
+            },
+        )
 
     citations = extract_citations(answer)
     invalid = [c for c in citations if c < 1 or c > len(used)]
     abstained = answer.lower().startswith(ABSTENTION_TEXT[:40].lower())
     missing_citations = not abstained and not citations
 
+    with observation("grounding", input={"answer": answer[:2000]}) as grounding_span:
+        grounding = check_grounding(answer, [hit.get("text", "") for hit in used])
+        if grounding_span is not None:
+            grounding_span.update(output=grounding)
+
     return {
         **base,
         "answer": answer,
+        "grounding": grounding,
         "abstained": abstained,
         "abstain_reason": "modelo" if abstained else None,
         "missing_citations": missing_citations,

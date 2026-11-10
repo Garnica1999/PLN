@@ -33,7 +33,7 @@ AVISO_AREA_SILVER = (
     "El campo area_silver es la etiqueta automatica del corpus (silver M4, "
     "sin verificacion humana): es una referencia, no una clasificacion. El "
     "orden usa el PageRank de la red de citas y el total cuenta sentencias "
-    "del corpus 1992-2021 cuyo bloque arts_cp incluye el articulo (weak "
+    "del corpus 1992-2026 cuyo bloque arts_cp incluye el articulo (weak "
     "labels de M2, no citas verificadas)."
 )
 
@@ -55,6 +55,15 @@ def _leer_meta() -> tuple[dict[str, list[str]], set[str]]:
         FileNotFoundError: Si falta alguno de los artefactos congelados.
     """
     entidades = pq.read_table(RUTA_ENTIDADES, columns=["id", "arts_cp"]).to_pandas()
+    ruta_c3 = core.INTEGRACION_C3_DIR / "entidades_c3.parquet"
+    if ruta_c3.exists():
+        entidades = pd.concat(
+            [
+                entidades,
+                pq.read_table(ruta_c3, columns=["id", "arts_cp"]).to_pandas(),
+            ],
+            ignore_index=True,
+        )
     constitucion = pd.read_parquet(RUTA_CONSTITUCION, columns=["numero"])
     indice: dict[str, list[str]] = {}
     for id_sentencia, arts_cp in zip(

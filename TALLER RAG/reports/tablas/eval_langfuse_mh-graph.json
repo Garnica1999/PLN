@@ -1,0 +1,10 @@
+{
+  "run": "mh-graph",
+  "experiment_id": "28184e1a336178c8",
+  "n": 10,
+  "accuracy": 0.7,
+  "token_recall": 0.6935,
+  "grounded": 0.5,
+  "p50_ms": 1809.89,
+  "total_s": 20.0
+}

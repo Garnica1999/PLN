@@ -110,6 +110,10 @@ Agente y guardrails (gold set de 100 prompts, `evaluacion/agente_eval_v3.json`):
 | Grounding de citas | 100,0 % |
 | Latencia del agente p50 / p95 | 13,4 s / 60,8 s |
 
+El corpus del producto tiene **26.072 sentencias (1992-2026)**. En P2, el
+artículo 86 pasa de 16.405 a **18.218** sentencias y el índice de similares
+cubre los 26.072 documentos.
+
 Latencia del resto del producto: enlace por defecto 0,19 s en caliente (CPU),
 enlace con reranker 13 a 15 s (GPU), evidencia 144 ms, jurisprudencia por
 artículo 9 ms (cacheada), sentencias similares 95 ms en caliente.
@@ -118,8 +122,10 @@ artículo 9 ms (cacheada), sentencias similares 95 ms en caliente.
 
 - El área temática (M4) es exploratoria: su macro-F1 en test es 0,2870 y las
   etiquetas de origen no son fiables (ADR-19). No se usa para decidir.
-- El corpus cubre 1992 a 2021; las sentencias fuera de ese rango no se pueden
-  analizar.
+- El corpus del producto cubre 1992 a 2026: 23.742 sentencias históricas más
+  2.330 del corpus C3 2022-2026, integradas como capa adicional. El modelo v2.2
+  se evaluó hasta 2021, así que las sentencias nuevas se analizan con ese
+  modelo, no se reentrenó con ellas.
 - No hubo validación por un experto legal. Las etiquetas humanas se produjeron
   con apoyo de LLM y se reportan como tales.
 - El agente depende de un LLM local: con la GPU ocupada la latencia crece o la

@@ -647,12 +647,13 @@ def bloques_1_4() -> list[tuple]:
         "adversarios, emite tool calls en el 100,0 % de las consultas en alcance y verifica el "
         "100,0 % de las citas contra la evidencia recuperada; la latencia de la ruta del agente "
         "es de 13,4 s en p50 y 60,8 s en p95. El producto se entrega como API FastAPI y frontend "
-        "Streamlit separados, con 44 pruebas aprobadas y 1 omitida en el backend y 29 aprobadas y "
+        "Streamlit separados, con 52 pruebas aprobadas y 1 omitida en el backend y 32 aprobadas y "
         "1 omitida en el frontend."
     )))
     b.append(("p", (
-        "Las limitaciones se declaran en el capítulo 10: dependencia de un LLM local, corpus "
-        "hasta 2021, ausencia de validación por un experto legal, M4 no fiable, latencia alta en "
+        "Las limitaciones se declaran en el capítulo 10: dependencia de un LLM local, modelo "
+        "evaluado con el corpus histórico hasta 2021 (el producto integra además 2022-2026), "
+        "ausencia de validación por un experto legal, M4 no fiable, latencia alta en "
         "p95 y riesgo de alucinación acotado por el grounding. Cada cifra de este informe "
         "proviene de un JSON de resultados o de un informe previo, y se identifica en la fuente "
         "de la tabla o en el pie de la figura correspondiente."
@@ -746,8 +747,9 @@ def bloques_1_4() -> list[tuple]:
     )))
     b.append(("p", (
         "Queda fuera de alcance: la predicción del sentido de la decisión, la generación de "
-        "escritos, el análisis de documentos anteriores a 1992 o posteriores a 2021 (el corpus "
-        "C3 de 2022-2026 se usa solo como prueba de robustez), la asesoría legal y cualquier "
+        "escritos, el análisis de documentos anteriores a 1992 (el corpus C3 de 2022-2026 se "
+        "integró después del cierre como capa adicional del producto; el modelo v2.2 se "
+        "evaluó hasta 2021), la asesoría legal y cualquier "
         "afirmación sobre la corrección jurídica de una providencia."
     )))
 
@@ -1919,6 +1921,43 @@ def bloques_8_11() -> list[tuple]:
              "ROCm; si no hay VRAM, el backend degrada a la ruta por defecto o al plan "
              "determinista.",
     ))
+
+    b.append(("h2", "8.5 Extensión 2022-2026"))
+    b.append(("p", (
+        "Después del cierre se integró al producto el corpus C3 2022-2026, que hasta entonces "
+        "solo se había usado como prueba de robustez temporal. La integración no reentrena el "
+        "modelo ni toca el corpus congelado 1992-2021: añade una capa adicional con ids propios "
+        "(30000 a 32329), reconstruye el texto crudo desde los HTML descargados, reutiliza las "
+        "entidades M2 y las etiquetas M4 ya generadas, y recalcula el PageRank sobre la red "
+        "combinada (26.072 nodos y 580.930 aristas). El corpus del producto pasa de 23.742 a "
+        "26.072 sentencias (1992-2026). El índice de jurisprudencia por artículo y el de "
+        "similitud incluyen las nuevas; el artículo 86 pasa de 16.405 a 18.218 sentencias. La "
+        "evaluación del modelo sigue siendo la de 1992-2021 y la de C3 (nDCG@10 0,7472)."
+    )))
+    b.append(tabla(
+        "Capa 2022-2026 integrada al producto.",
+        ["Elemento", "Valor"],
+        [
+            ["Documentos integrados", "2.330 (2.382 descargados; 52 excluidos)"],
+            ["Ids nuevos", "30000 a 32329"],
+            ["Texto crudo reconstruido", "2.330 de 2.330"],
+            ["Entidades M2 y etiquetas M4", "2.330 y 2.330"],
+            ["Corpus del producto", "26.072 sentencias (1992-2026)"],
+            ["Artículo 86 en P2", "18.218 (antes 16.405)"],
+            ["Red de citas combinada", "26.072 nodos y 580.930 aristas"],
+            ["Citas sin resolver", "77.475"],
+        ],
+        [6.4, 5.2],
+        "data/integracion_c3/resumen_integracion.json y resultados/metricas.json:integracion_c3.",
+        ["l", "l"],
+    ))
+    b.append(("p", (
+        "Tres límites quedan declarados. Las citas a documentos fuera del corpus siguen sin "
+        "resolver, porque la red solo conoce los 26.072 nodos integrados. El PageRank del "
+        "producto es el de la red combinada y difiere del histórico que se reporta en el "
+        "capítulo 5, que describe la red 1992-2021. Y el área de las nuevas sentencias es una "
+        "etiqueta automática del clasificador, no una clasificación verificada (ADR-19)."
+    )))
 
     # ------------------------------------------------------------------
     # 9. Evaluación del agente

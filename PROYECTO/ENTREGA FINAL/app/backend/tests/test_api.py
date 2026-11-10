@@ -16,6 +16,7 @@ from fastapi.testclient import TestClient
 from langchain_core.messages import AIMessage
 
 import agent
+import core
 import main
 
 TEXTO_SENTENCIA = """Sentencia T-293/97
@@ -135,6 +136,30 @@ def test_link_id_inexistente(cliente: TestClient) -> None:
     """Un id fuera del corpus devuelve 404."""
     respuesta = cliente.post("/v1/link", json={"id": "999999"})
     assert respuesta.status_code == 404
+
+
+def test_link_id_c3(cliente: TestClient) -> None:
+    """Un id del corpus 2022-2026 se resuelve y se vincula con la CP."""
+    respuesta = cliente.post("/v1/link", json={"id": "30000", "k": 10})
+    assert respuesta.status_code == 200
+    datos = respuesta.json()
+    assert datos["canon_detectado"] == "T-1-2022"
+    assert datos["articulos_extraidos"]
+    assert datos["articulos_recuperados"]
+
+
+def test_jurisprudencia_incluye_2022_2026(cliente: TestClient) -> None:
+    """El indice de articulos incluye las sentencias del corpus extendido."""
+    datos = cliente.get("/v1/article/86/jurisprudencia").json()
+    assert datos["total"] > 16405
+    assert max(int(ano) for ano in datos["por_ano"]) == 2026
+
+
+def test_similar_id_c3(cliente: TestClient) -> None:
+    """El indice de similitud incluye los documentos 2022-2026."""
+    datos = cliente.get("/v1/similar/30000?k=5").json()
+    assert datos["canon"] == "T-1-2022"
+    assert datos["similares"]
 
 
 def test_article_detalle(cliente: TestClient) -> None:
@@ -287,6 +312,29 @@ def test_ask_acepta_pensar_sin_cargar_modelo(cliente: TestClient) -> None:
     datos = respuesta.json()
     assert datos["modo"] == "small_talk"
     assert datos["pensamiento"] is None
+
+
+def test_texto_constitucional_por_frases() -> None:
+    """El agente recibe la frase completa del articulo, no un corte ciego."""
+    articulo_49 = core.texto_constitucional("49")
+    assert "servicios públicos a cargo del Estado" in articulo_49
+    assert "derechos fundamentales" not in articulo_49
+    articulo_86 = core.texto_constitucional("86")
+    assert "acción de tutela" in articulo_86
+    assert len(articulo_86) > 250
+
+
+def test_evidencia_incluye_texto_de_articulo() -> None:
+    """La evidencia del redactor incluye el texto del artículo cuando existe."""
+    evidencia = agent._evidencia_vacia()
+    evidencia["articulos_detalle"]["11"] = {
+        "numero": "11",
+        "score": None,
+        "bloque": "derechos_fundamentales",
+        "texto": "El derecho a la vida es inviolable.",
+    }
+    lineas = agent._lineas_evidencia(evidencia)
+    assert "El derecho a la vida es inviolable." in " ".join(lineas)
 
 
 def test_grounding_detecta_citas_no_verificadas() -> None:

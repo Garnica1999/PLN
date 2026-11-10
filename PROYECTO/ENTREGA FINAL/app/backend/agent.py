@@ -53,14 +53,14 @@ MSG_SIN_EVIDENCIA = (
 )
 MSG_SALUDO = (
     "Hola. Soy el asistente de Juris-PLN, un sistema de investigación sobre "
-    "23.742 sentencias de la Corte Constitucional de Colombia (1992-2021). "
+    "26.072 sentencias de la Corte Constitucional de Colombia (1992-2026). "
     "Puedo validar una providencia, identificar los artículos de la "
     "Constitución vinculados y explorar las sentencias que cita. ¿Sobre qué "
     "providencia quieres consultar?"
 )
 MSG_IDENTIDAD = (
     "Soy el asistente de Juris-PLN. Trabajo sobre el corpus de sentencias de "
-    "la Corte Constitucional de Colombia (1992-2021) y puedo: validar si un "
+    "la Corte Constitucional de Colombia (1992-2026) y puedo: validar si un "
     "texto es una providencia, identificar los artículos de la Constitución "
     "vinculados (por id, canon como T-293/97 o texto) y listar las sentencias "
     "citadas con su área y PageRank. No respondo temas ajenos a la "
@@ -77,7 +77,7 @@ MSG_DESPEDIDA = (
 MSG_FUERA_ALCANCE = (
     "Ese tema queda fuera de mi alcance: soy un asistente de investigación "
     "jurídica especializado en jurisprudencia de la Corte Constitucional de "
-    "Colombia (1992-2021). Puedo ayudarte a validar providencias, identificar "
+    "Colombia (1992-2026). Puedo ayudarte a validar providencias, identificar "
     "los artículos de la Constitución vinculados y explorar las sentencias "
     "citadas. ¿Tienes una consulta sobre una providencia?"
 )
@@ -90,8 +90,8 @@ MSG_ACLARACION = (
 )
 
 PROMPT_SISTEMA = """Eres el asistente de investigación jurídica de Juris-PLN,
-un sistema sobre 23.742 sentencias de la Corte Constitucional de Colombia
-(1992-2021).
+un sistema sobre 26.072 sentencias de la Corte Constitucional de Colombia
+(1992-2026).
 
 Reglas obligatorias:
 1. No respondas de memoria: llama SIEMPRE a una herramienta para obtener
@@ -109,10 +109,14 @@ Reglas obligatorias:
 """
 
 PROMPT_REDACTOR = """Eres un redactor jurídico. Responde la pregunta del usuario
-usando EXCLUSIVAMENTE la evidencia incluida en el mensaje. No agregues
-conocimiento propio, no inventes citas ni números. Si la evidencia no permite
-responder, dilo en una frase sin inventar. Responde en español, en 120
-palabras o menos.
+usando EXCLUSIVAMENTE la evidencia incluida en el mensaje. Empieza por los
+artículos citados explícitamente en el texto y deja los recuperados por
+búsqueda como apoyo. No agregues conocimiento propio, no inventes citas ni
+números. Si la evidencia no trae el texto de un artículo, no describas su
+contenido: limítate a su número y su bloque. Si el texto de un artículo
+aparece recortado, no lo entrecomilles: resúmelo en una frase. Si la evidencia
+no permite responder, dilo en una frase sin inventar. Responde en español, en
+120 palabras o menos.
 """
 
 # ===== SECCION 2: router determinista =====
@@ -383,14 +387,17 @@ def _acumular_evidencia(
                 if not numero:
                     continue
                 evidencia["articulos"].add(numero)
-                evidencia["articulos_detalle"].setdefault(
+                detalle = evidencia["articulos_detalle"].setdefault(
                     numero,
                     {
                         "numero": numero,
                         "score": fila.get("score"),
                         "bloque": fila.get("bloque"),
+                        "texto": fila.get("texto"),
                     },
                 )
+                if not detalle.get("texto") and fila.get("texto"):
+                    detalle["texto"] = fila.get("texto")
     elif nombre == "contexto_citas":
         for fila in datos.get("citas") or []:
             canon_cita = core.normalizar_canon(fila.get("canon") or "")
@@ -404,7 +411,12 @@ def _acumular_evidencia(
             evidencia["articulos"].add(numero)
             evidencia["articulos_detalle"].setdefault(
                 numero,
-                {"numero": numero, "score": None, "bloque": datos.get("bloque")},
+                {
+                    "numero": numero,
+                    "score": None,
+                    "bloque": datos.get("bloque"),
+                    "texto": datos.get("texto_150chars"),
+                },
             )
     elif nombre == "validar_sentencia":
         id_detectado = datos.get("id_detectado")
@@ -473,6 +485,8 @@ def _detalle_articulo(fila: dict) -> str:
         detalle += f" ({fila['bloque']})"
     if fila.get("score") is not None:
         detalle += f" score {fila['score']}"
+    if fila.get("texto"):
+        detalle += f': "{fila["texto"]}"'
     return detalle
 
 
@@ -500,16 +514,16 @@ def _lineas_evidencia(evidencia: dict) -> list[str]:
     extraidos = [
         fila for fila in filas if fila.get("score") is None
     ][:MAX_ARTICULOS_PROMPT]
-    if recuperados:
-        lineas.append(
-            "Artículos recuperados por la búsqueda: "
-            + "; ".join(_detalle_articulo(fila) for fila in recuperados)
-            + "."
-        )
     if extraidos:
         lineas.append(
             "Artículos citados en el texto: "
             + "; ".join(_detalle_articulo(fila) for fila in extraidos)
+            + "."
+        )
+    if recuperados:
+        lineas.append(
+            "Artículos recuperados por la búsqueda (apoyo): "
+            + "; ".join(_detalle_articulo(fila) for fila in recuperados)
             + "."
         )
     if evidencia["citas_detalle"]:

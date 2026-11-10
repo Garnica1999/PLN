@@ -1,0 +1,10 @@
+{
+  "run": "baseline-final",
+  "experiment_id": "b6d49d29ef2c8f4c",
+  "n": 43,
+  "accuracy": 0.8372,
+  "token_recall": 0.6256,
+  "grounded": 0.7442,
+  "p50_ms": 420.64,
+  "total_s": 20.7
+}

@@ -976,7 +976,7 @@ def render_sidebar(client: ApiClient) -> str:
     """
     with st.sidebar:
         st.markdown('<div class="jp-marca">Juris-PLN</div>', unsafe_allow_html=True)
-        st.caption("Corte Constitucional de Colombia, 1992-2021")
+        st.caption("Corte Constitucional de Colombia, 1992-2026")
         st.radio("Pantallas", CONFIG["screens"], key="screen")
         st.divider()
 
@@ -1621,7 +1621,7 @@ def render_year_chart(por_ano: dict[str, Any]) -> None:
         unsafe_allow_html=True,
     )
     st.caption(
-        f"n = {total} sentencias; corpus 1992-2021; etiquetas débiles de M2."
+        f"n = {total} sentencias; corpus 1992-2026; etiquetas débiles de M2."
     )
 
 
@@ -1715,7 +1715,7 @@ def page_article(client: ApiClient) -> None:
         help="Número de la Constitución de 1991, por ejemplo 86.",
     )
     st.caption(
-        "El total cuenta sentencias del corpus 1992-2021 cuyo bloque arts_cp "
+        "El total cuenta sentencias del corpus 1992-2026 cuyo bloque arts_cp "
         "(M2) incluye el artículo: etiquetas débiles, no gold ni citas "
         "verificadas."
     )

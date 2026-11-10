@@ -118,7 +118,7 @@ VRAM o si hay menos de 14 GB libres.
 
 - El agente no tiene memoria entre peticiones ni acceso a texto completo de
   la Constitucion: `explorar_articulo` devuelve 150 caracteres.
-- `contexto_citas` solo resuelve sentencias del corpus 1992-2021.
+- `contexto_citas` resuelve sentencias del corpus 1992-2026; las citas a documentos fuera del corpus quedan sin resolver.
 - El resumen de evaluacion lee JSON congelados; si falta una clave devuelve
   `null` en lugar de fabricar el valor.
 

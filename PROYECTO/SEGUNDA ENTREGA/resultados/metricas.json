@@ -7584,4 +7584,24 @@
   "decision": "no adoptada",
   "lectura": "Un LLM listwise sobre el top-10 no supera a B1 (0,6764 frente a 0,6926) y consume 5 a 20 s por consulta: el margen de reordenar el top-10 no es alcanzable con prompting; la palanca sigue siendo promover candidatos de las posiciones 11 a 50 con un reranker entrenado."
  }
+,
+ "integracion_c3": {
+  "experimento": "integracion_c3_2022_2026",
+  "fecha": "2026-11-08",
+  "artefacto": "PROYECTO/SEGUNDA ENTREGA/data/integracion_c3/resumen_integracion.json",
+  "documentos": 2330,
+  "ids": "30000-32329",
+  "texto_crudo": 2330,
+  "entidades": 2330,
+  "etiquetas": 2330,
+  "corpus_producto": 26072,
+  "p2_articulo_86": 18218,
+  "red": {
+   "nodos": 26072,
+   "aristas": 580930,
+   "citas_sin_resolver": 77475
+  },
+  "decision": "integrada al producto como capa adicional; el modelo v2.2 no se reentrena",
+  "lectura": "El corpus del producto pasa de 23.742 a 26.072 sentencias (1992-2026). P1, P2, P5 y el chat aceptan los ids y canones nuevos. Las citas a documentos fuera del corpus siguen sin resolver y el area de las nuevas es etiqueta automatica."
+ }
 }

@@ -58,8 +58,8 @@ app = FastAPI(
     title="Juris-PLN API",
     version=VERSION,
     description=(
-        "Producto de investigacion juridica sobre 23.742 sentencias de la "
-        "Corte Constitucional de Colombia (1992-2021): validacion de "
+        "Producto de investigacion juridica sobre 26.072 sentencias de la "
+        "Corte Constitucional de Colombia (1992-2026): validacion de "
         "providencias (M0), articulos de la Constitucion vinculados (M2+M7) "
         "y contexto jurisprudencial (M5), con un agente de tool calling y "
         "verificacion de grounding."
