@@ -1,0 +1,10 @@
+{
+  "run": "res-v3-graph-clean",
+  "experiment_id": "c67c5803f50ae7bf",
+  "n": 25,
+  "accuracy": 0.88,
+  "token_recall": 0.48,
+  "grounded": 0.88,
+  "p50_ms": 1297.31,
+  "total_s": 32.2
+}

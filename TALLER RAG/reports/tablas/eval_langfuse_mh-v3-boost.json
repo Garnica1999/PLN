@@ -1,0 +1,10 @@
+{
+  "run": "mh-v3-boost",
+  "experiment_id": "ec6f3314aa81c8da",
+  "n": 10,
+  "accuracy": 0.8,
+  "token_recall": 0.8211,
+  "grounded": 0.8,
+  "p50_ms": 1479.86,
+  "total_s": 16.2
+}
