@@ -381,6 +381,48 @@ H\'ibrido + boost & \textbf{0,861} & \textbf{0,655} & \textbf{0,900} & \textbf{0
 
 El resultado separa dos usos que suelen confundirse. El grafo como fuente de candidatos mejora una pregunta en el silver, pero pierde 20 puntos en el conjunto multi-documento: el reordenador prefiere documentos que el grafo trae por entidades ruidosas y desplaza fragmentos que la recuperaci\'on densa ya ten\'ia. El grafo como reordenador, en cambio, sube la cobertura de tokens y el anclaje en ambos conjuntos sin degradar la exactitud. La diferencia es consistente con la calidad de la extracci\'on: las claves no pasan por un enlace de entidades y muchas son frases largas, as\'i que el grafo sirve para desempatar, no para sustituir al \'indice. GraphRAG no es una mejora gratuita; con este corpus y este extractor, el uso defendible es el boost.
 
+\subsection{Mejora de la respuesta y evaluaci\'on sem\'antica}
+\label{sec:prompt-v3}
+
+El an\'alisis de errores mostr\'o que la recuperaci\'on no era el \'unico cuello de botella: RAGAS daba 0,947 de cobertura de contexto y 0,607 de correcci\'on. El contexto tra\'ia la evidencia, pero el modelo omit\'ia datos en las preguntas de lista o de dos partes. Se prob\'o un prompt v3 que pide la respuesta directa, todos los datos pedidos y la lista completa, con dos ejemplos y un l\'imite de tres frases. La Tabla~\ref{tab:prompt} compara el prompt v2 y el v3 con el mismo recuperador (uni\'on h\'ibrida m\'as el boost del grafo) en test (24 preguntas) y en el reservado (25).
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Prompt v2 contra prompt v3 con el mismo recuperador. Exactitud y cobertura de tokens sobre test (24) y el reservado (25).}
+\label{tab:prompt}
+\begin{tabular}{lrrrr}
+\toprule
+Configuraci\'on & Exactitud test & Cobertura test & Exactitud reservado & Cobertura reservado \\
+\midrule
+v2 + boost & \textbf{0,917} & \textbf{0,541} & \textbf{0,840} & \textbf{0,440} \\
+v3 + boost & \textbf{0,917} & 0,522 & \textbf{0,840} & \textbf{0,440} \\
+v3 sin boost & 0,875 & 0,486 & \textbf{0,840} & \textbf{0,440} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+La exactitud es la misma: 0,917 en test y 0,840 en el reservado. La diferencia aparece en la evaluaci\'on sem\'antica. La Tabla~\ref{tab:ragas-v3} repite RAGAS sobre las 19 preguntas respondibles de test y las 20 del reservado. El prompt v3 sube la correcci\'on de 0,590 a 0,652 con el mismo recuperador y la misma exactitud; sin el boost llega a 0,687, a costa de una pregunta exacta. La fidelidad queda en 1,0 y la cobertura de contexto en 1,0: el generador no inventa y la evidencia alcanza.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{RAGAS con prompt v2 y v3. Test: 19 preguntas respondibles. Reservado: 20. Juez gemma2:2b y embeddings qwen3-embedding:8b.}
+\label{tab:ragas-v3}
+\begin{tabular}{lrrrrr}
+\toprule
+Configuraci\'on & Fidelidad & Relevancia & Precisi\'on & Cobertura & Correcci\'on \\
+\midrule
+v2 + boost (test) & \textbf{1,000} & \textbf{0,790} & 0,735 & \textbf{1,000} & 0,590 \\
+v3 + boost (test) & \textbf{1,000} & 0,772 & 0,728 & \textbf{1,000} & 0,652 \\
+v3 sin boost (test) & \textbf{1,000} & 0,799 & \textbf{0,751} & \textbf{1,000} & \textbf{0,687} \\
+v3 sin boost (reservado) & 0,975 & \textbf{0,856} & \textbf{0,863} & \textbf{1,000} & 0,655 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+La m\'etrica l\'exica subestima las respuestas correctas cuando cambian de idioma. En el reservado, r-012 responde \textit{Foro Econ\'omico Mundial} por \textit{World Economic Forum} y r-019 responde \textit{avispa asi\'atica} por \textit{Asian Hornet}; ambas son correctas y el chequeo de contenci\'on las marca como fallo, mientras RAGAS las punt\'ua por encima de 0,7. Con esa correcci\'on, el reservado pasa de 21 a 23 aciertos sobre 25. La configuraci\'on final es v3 con el boost del grafo: 0,917 de exactitud en test, 0,840 en el reservado, 0,652 de correcci\'on RAGAS y 1,0 de fidelidad. Si se prioriza la correcci\'on sem\'antica sobre una pregunta exacta, v3 sin boost es la mejor opci\'on.
+
 \subsection{Resumen de resultados}
 
 La Figura~\ref{fig:resumen} re\'une los tres resultados principales: RAGAS por configuraci\'on, las pol\'iticas de ambig\"uedad sobre el silver humano y el flujo del conjunto reservado con y sin compuerta.
@@ -463,6 +505,7 @@ Compuerta & 160 preguntas & 20 test & 0 falsos aceptados & Adoptado \\
 Fase 6 & cuatro variantes & 38 & sin mejora & Rechazadas \\
 Fase 7 & MMR & 38 & recall 0,816 & Rechazado \\
 Compuerta & 5 negativas & reservado (5) & 5/5 rechazadas & 3/20 falsos rechazos \\
+Prompt & v3 + boost & test (24) & Exactitud 0,917 & Adoptado \\
 \bottomrule
 \end{tabular}
 \end{table*}

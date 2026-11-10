@@ -1,9 +1,11 @@
 """Orquestación RAG: recuperar, armar contexto, generar y verificar citas."""
 from __future__ import annotations
 
+import json
 import os
 import re
 import time
+from collections import defaultdict
 from functools import lru_cache
 
 import requests
@@ -224,6 +226,63 @@ def search_hits(
     return retrieve(query, k=k, collection=collection, expr=expr)
 
 
+
+def expand_parents(
+    hits: list[dict],
+    name: str,
+    top_docs: int = 3,
+    max_chunks: int = 8,
+) -> list[dict]:
+    """Small-to-big: reemplaza el mejor fragmento de cada documento por todos sus chunks."""
+    doc_ids: list[str] = []
+    for hit in hits:
+        doc_id = hit.get("document_id")
+        if doc_id and doc_id not in doc_ids:
+            doc_ids.append(doc_id)
+        if len(doc_ids) >= top_docs:
+            break
+    if not doc_ids:
+        return hits
+    client = get_client()
+    rows = client.query(
+        collection_name=name,
+        filter=f"document_id in {json.dumps(doc_ids)}",
+        output_fields=OUTPUT_FIELDS + ["chunk_id"],
+        limit=top_docs * max_chunks,
+    )
+    by_doc: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        if row.get("document_id") in doc_ids:
+            by_doc[row["document_id"]].append(dict(row))
+    for chunks in by_doc.values():
+        chunks.sort(key=lambda item: item.get("position") or 0)
+    expanded: list[dict] = []
+    seen: set[str] = set()
+    done: set[str] = set()
+    for hit in hits:
+        doc_id = hit.get("document_id")
+        if doc_id in doc_ids and doc_id not in done:
+            done.add(doc_id)
+            for row in by_doc.get(doc_id, [])[:max_chunks]:
+                if row["chunk_id"] in seen:
+                    continue
+                seen.add(row["chunk_id"])
+                expanded.append(
+                    {
+                        **row,
+                        "score": hit.get("score", 0.0),
+                        "rerank_score": hit.get("rerank_score", 0.0),
+                        "parent": True,
+                    }
+                )
+            continue
+        chunk_id = hit.get("chunk_id")
+        if chunk_id in seen:
+            continue
+        seen.add(chunk_id)
+        expanded.append(hit)
+    return expanded
+
 def build_context(hits: list[dict], max_tokens: int) -> tuple[str, list[dict]]:
     blocks = []
     used = []
@@ -315,6 +374,7 @@ def generate(
     history: list[dict] | None = None,
     original_query: str | None = None,
     retriever: str | None = None,
+    parent_expansion: bool | None = None,
 ) -> dict:
     model = model or settings.llm_model
     prompt_version = prompt_version or settings.prompt_version
@@ -439,6 +499,11 @@ def generate(
                     "total_ms": round(retrieval_ms + ambiguity_ms, 2),
                 }
 
+    expand = parent_expansion
+    if expand is None:
+        expand = os.getenv("PARENT_EXPANSION", "1") == "1"
+    if expand:
+        hits = expand_parents(hits, collection or settings.collection)
     context, used = build_context(hits, settings.max_context_tokens)
     num_ctx, num_predict = model_limits(model)
     native_thinking = think and supports_native_thinking(model)

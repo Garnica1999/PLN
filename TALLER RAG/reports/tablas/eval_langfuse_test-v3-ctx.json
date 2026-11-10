@@ -1,0 +1,10 @@
+{
+  "run": "test-v3-ctx",
+  "experiment_id": "1bbdd0fa8e3c598a",
+  "n": 24,
+  "accuracy": 0.875,
+  "token_recall": 0.4857,
+  "grounded": 0.875,
+  "p50_ms": 347.19,
+  "total_s": 9.4
+}

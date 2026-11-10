@@ -1,0 +1,10 @@
+{
+  "run": "all-v3-boost",
+  "experiment_id": "b65dbce860cec0b6",
+  "n": 43,
+  "accuracy": 0.8372,
+  "token_recall": 0.633,
+  "grounded": 0.9302,
+  "p50_ms": 1194.65,
+  "total_s": 45.0
+}

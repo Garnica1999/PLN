@@ -1,0 +1,10 @@
+{
+  "run": "dev-v2-parent-boost",
+  "experiment_id": "0f6bbaba6b1bc5d8",
+  "n": 19,
+  "accuracy": 0.8421,
+  "token_recall": 0.8405,
+  "grounded": 0.9474,
+  "p50_ms": 2016.47,
+  "total_s": 36.9
+}

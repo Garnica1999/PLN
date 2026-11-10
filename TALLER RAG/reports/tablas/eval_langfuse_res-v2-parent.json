@@ -1,0 +1,10 @@
+{
+  "run": "res-v2-parent",
+  "experiment_id": "071985add7cc8b37",
+  "n": 25,
+  "accuracy": 0.8,
+  "token_recall": 0.4,
+  "grounded": 0.84,
+  "p50_ms": 2168.49,
+  "total_s": 53.6
+}
