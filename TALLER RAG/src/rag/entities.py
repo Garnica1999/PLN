@@ -27,7 +27,7 @@ STOPWORDS = {
     "pais", "ciudad", "departamento", "municipio", "ano", "anos", "hoy",
 }
 MIN_LENGTH = 3
-MAX_TOKENS = 6
+MAX_TOKENS = 4
 
 
 def normalize(name: str) -> str:
@@ -79,6 +79,7 @@ def _accept(key: str) -> bool:
         MIN_LENGTH <= len(key)
         and len(key.split()) <= MAX_TOKENS
         and not key.isdigit()
+        and not key[0].isdigit()
         and key not in STOPWORDS
     )
 
@@ -115,6 +116,8 @@ def extract(text: str, language: str | None = "es") -> dict[str, dict]:
             continue
         key = normalize(entity.text)
         if not _accept(key):
+            continue
+        if kind == "MISC" and len(key.split()) > 3:
             continue
         current = found.get(key)
         if current is None:

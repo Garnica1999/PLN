@@ -1,0 +1,10 @@
+{
+  "run": "res-v3-boost-exp",
+  "experiment_id": "2f5a7bad7835daff",
+  "n": 25,
+  "accuracy": 0.84,
+  "token_recall": 0.44,
+  "grounded": 0.84,
+  "p50_ms": 7924.17,
+  "total_s": 198.7
+}
