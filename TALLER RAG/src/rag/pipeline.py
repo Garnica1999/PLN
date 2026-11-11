@@ -20,6 +20,7 @@ from .graph import boost_hits, search_graph
 from .grounding import check as check_grounding
 from .prompts import (
     LIST_PROMPT,
+    NUMERIC_PROMPT,
     QUERY_EXPANSION_PROMPT,
     REASONING_PROMPT,
     TRANSLATION_PROMPT,
@@ -440,6 +441,45 @@ def compose_list(items: list[dict]) -> str:
             lines.append(f"- {item['text']}")
     return "Los elementos son:\n" + "\n".join(lines)
 
+
+NUMERIC_QUERY = re.compile(
+    r"\b(cu[aá]nt[oa]s?|cu[aá]nto|en qu[eé] año|qu[eé] año|cu[aá]ndo|qu[eé] fecha|a qu[eé] año)\b",
+    re.IGNORECASE,
+)
+
+
+def needs_numeric(query: str) -> bool:
+    """La pregunta pide una cifra o una fecha."""
+    return bool(NUMERIC_QUERY.search(query))
+
+
+def has_number(answer: str) -> bool:
+    """La respuesta ya trae un dígito fuera de las citas [n]."""
+    text = re.sub(r"\[\d+(?:,\s*\d+)*\]", "", answer)
+    return bool(re.search(r"\d", text))
+
+
+def parse_datum(data: dict) -> dict | None:
+    """Lee el JSON del verificador numérico."""
+    raw = (data.get("response") or "").strip()
+    if not raw:
+        return None
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(parsed, dict):
+        return None
+    value = str(parsed.get("dato") or parsed.get("valor") or parsed.get("respuesta") or "").strip()
+    if not value:
+        return None
+    cite = parsed.get("cita") or parsed.get("citation") or 0
+    try:
+        cite = int(cite)
+    except (TypeError, ValueError):
+        cite = 0
+    return {"dato": value, "cite": cite}
+
 def generate(
     query: str,
     model: str | None = None,
@@ -461,6 +501,7 @@ def generate(
     graph_boost_weight: float | None = None,
     translation: bool | None = None,
     list_extraction: bool | None = None,
+    numeric_verification: bool | None = None,
 ) -> dict:
     model = model or settings.llm_model
     prompt_version = prompt_version or settings.prompt_version
@@ -712,6 +753,41 @@ def generate(
     eval_count = data.get("eval_count") or 0
     eval_duration = data.get("eval_duration") or 0
     tokens_per_second = round(eval_count / (eval_duration / 1e9), 2) if eval_duration else None
+    numeric_mode = numeric_verification
+    if numeric_mode is None:
+        numeric_mode = os.getenv("NUMERIC_VERIFICATION", "0") == "1"
+    abstained_now = answer.lower().startswith(ABSTENTION_TEXT[:40].lower())
+    if (
+        numeric_mode
+        and not abstained_now
+        and needs_numeric(query)
+        and not has_number(answer)
+    ):
+        with observation("verify_numeric", input={"query": query}) as numeric_span:
+            numeric_started = time.perf_counter()
+            try:
+                numeric_data = call_llm(
+                    NUMERIC_PROMPT.format(context=context, question=query),
+                    model,
+                    0.0,
+                    num_ctx=num_ctx,
+                    num_predict=64,
+                    format="json",
+                )
+                datum = parse_datum(numeric_data)
+            except LLMError:
+                datum = None
+            numeric_ms = round((time.perf_counter() - numeric_started) * 1000, 2)
+            if numeric_span is not None:
+                numeric_span.update(output={"datum": datum})
+        if datum:
+            generation_ms = round(generation_ms + numeric_ms, 2)
+            cite = datum["cite"]
+            if 1 <= cite <= len(used):
+                answer = f"{answer} El dato pedido es {datum['dato']} [{cite}]."
+            else:
+                answer = f"{answer} El dato pedido es {datum['dato']}."
+
     citations = extract_citations(answer)
     invalid = [c for c in citations if c < 1 or c > len(used)]
     abstained = answer.lower().startswith(ABSTENTION_TEXT[:40].lower())

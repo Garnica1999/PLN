@@ -40,6 +40,7 @@ class AskRequest(RetrieveRequest):
     graph_boost_weight: float | None = None
     translation: bool | None = None
     list_extraction: bool | None = None
+    numeric_verification: bool | None = None
 
 
 def build_expr(request: RetrieveRequest) -> str | None:
@@ -70,6 +71,7 @@ def _traced(request: AskRequest, producer, name: str = "ask") -> dict:
             "graph_boost_weight": request.graph_boost_weight,
             "translation": request.translation,
             "list_extraction": request.list_extraction,
+            "numeric_verification": request.numeric_verification,
         },
     ) as root:
         result = producer()
@@ -214,6 +216,7 @@ def ask(request: AskRequest) -> dict:
                 graph_boost_weight=request.graph_boost_weight,
                 translation=request.translation,
                 list_extraction=request.list_extraction,
+                numeric_verification=request.numeric_verification,
                 think=request.think,
                 domain_gate=request.strict,
                 ambiguity_policy=request.ambiguity_policy,

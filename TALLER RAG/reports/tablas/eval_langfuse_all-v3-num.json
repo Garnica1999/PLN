@@ -1,0 +1,10 @@
+{
+  "run": "all-v3-num",
+  "experiment_id": "2dfbe52fc69188b8",
+  "n": 43,
+  "accuracy": 0.907,
+  "token_recall": 0.6876,
+  "grounded": 0.907,
+  "p50_ms": 1361.14,
+  "total_s": 53.9
+}
