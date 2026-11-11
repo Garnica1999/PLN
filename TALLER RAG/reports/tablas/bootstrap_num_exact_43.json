@@ -1,0 +1,12 @@
+{
+  "n": 43,
+  "mean_a": 0.8837,
+  "mean_b": 0.907,
+  "diff": -0.0233,
+  "ci_low": -0.0698,
+  "ci_high": 0.0,
+  "p_value": 0.7366,
+  "field": "correct",
+  "a": "reports/corridas/eval_langfuse_all-v3-tr-list.jsonl",
+  "b": "reports/corridas/eval_langfuse_all-v3-num.jsonl"
+}
