@@ -38,6 +38,8 @@ class AskRequest(RetrieveRequest):
     parent_expansion: bool | None = None
     query_expansion: bool | None = None
     graph_boost_weight: float | None = None
+    translation: bool | None = None
+    list_extraction: bool | None = None
 
 
 def build_expr(request: RetrieveRequest) -> str | None:
@@ -66,6 +68,8 @@ def _traced(request: AskRequest, producer, name: str = "ask") -> dict:
             "parent_expansion": request.parent_expansion,
             "query_expansion": request.query_expansion,
             "graph_boost_weight": request.graph_boost_weight,
+            "translation": request.translation,
+            "list_extraction": request.list_extraction,
         },
     ) as root:
         result = producer()
@@ -208,6 +212,8 @@ def ask(request: AskRequest) -> dict:
                 parent_expansion=request.parent_expansion,
                 query_expansion=request.query_expansion,
                 graph_boost_weight=request.graph_boost_weight,
+                translation=request.translation,
+                list_extraction=request.list_extraction,
                 think=request.think,
                 domain_gate=request.strict,
                 ambiguity_policy=request.ambiguity_policy,

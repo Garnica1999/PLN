@@ -1,0 +1,10 @@
+{
+  "run": "test-v3-tr-list2",
+  "experiment_id": "7042608c99789337",
+  "n": 24,
+  "accuracy": 0.9583,
+  "token_recall": 0.5638,
+  "grounded": 0.8333,
+  "p50_ms": 1504.02,
+  "total_s": 46.7
+}

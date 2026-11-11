@@ -18,7 +18,14 @@ from .domain import domain_probability as domain_probability_score
 from .embeddings import get_embedder
 from .graph import boost_hits, search_graph
 from .grounding import check as check_grounding
-from .prompts import QUERY_EXPANSION_PROMPT, REASONING_PROMPT, get_prompt, prompt_hash
+from .prompts import (
+    LIST_PROMPT,
+    QUERY_EXPANSION_PROMPT,
+    REASONING_PROMPT,
+    TRANSLATION_PROMPT,
+    get_prompt,
+    prompt_hash,
+)
 from .solr import search_solr, search_solr_dense
 from .store import OUTPUT_FIELDS, get_client, search
 from .tracing import observation
@@ -358,6 +365,81 @@ def call_llm(
         raise LLMError(f"No se pudo consultar Ollama: {error}") from error
 
 
+
+SPANISH_MARKERS = (
+    "¿", "qué", "cuál", "cómo", "dónde", "cuándo", "cuánt", "por qué", "quién", "en qué", "de qué",
+)
+LIST_PATTERN = re.compile(
+    r"^\s*¿?\s*(qu[eé]\s+(?:opciones|medidas|acciones|estrategias|alternativas)"
+    r"|cu[aá]les\s+(?:son|fueron|ser[aá]n))\b",
+    re.IGNORECASE,
+)
+
+
+def detect_language(query: str) -> str:
+    """Heurística suficiente para elegir el idioma de la traducción."""
+    low = query.lower()
+    return "es" if any(marker in low for marker in SPANISH_MARKERS) else "en"
+
+
+def translate_query(query: str, model: str, num_ctx: int) -> str:
+    """Traduce la consulta al otro idioma del corpus; devuelve solo la frase."""
+    target = "English" if detect_language(query) == "es" else "Spanish"
+    data = call_llm(
+        TRANSLATION_PROMPT.format(target=target, question=query),
+        model,
+        0.0,
+        num_predict=80,
+        num_ctx=num_ctx,
+    )
+    return (data.get("response") or "").strip().strip('"').strip()
+
+
+def is_list_question(query: str) -> bool:
+    """Detecta preguntas de opciones/medidas que piden enumerar."""
+    return bool(LIST_PATTERN.search(query)) and not re.search(r"cu[aá]nt", query, re.IGNORECASE)
+
+
+def parse_list(data: dict) -> list[dict]:
+    """Lee el JSON de extracción; tolera listas de strings o de objetos."""
+    raw = (data.get("response") or "").strip()
+    if not raw:
+        return []
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        return []
+    items = parsed.get("items") if isinstance(parsed, dict) else parsed
+    if not isinstance(items, list):
+        return []
+    out: list[dict] = []
+    for item in items:
+        if isinstance(item, dict):
+            text = str(item.get("texto") or item.get("text") or item.get("elemento") or "").strip()
+            cite = item.get("cita") or item.get("citation") or 0
+        else:
+            text = str(item).strip()
+            cite = 0
+        if not text:
+            continue
+        try:
+            cite = int(cite)
+        except (TypeError, ValueError):
+            cite = 0
+        out.append({"text": text, "cite": cite})
+    return out[:12]
+
+
+def compose_list(items: list[dict]) -> str:
+    """Convierte los elementos extraídos en una respuesta con citas."""
+    lines = []
+    for item in items:
+        if item.get("cite"):
+            lines.append(f"- {item['text']} [{item['cite']}]")
+        else:
+            lines.append(f"- {item['text']}")
+    return "Los elementos son:\n" + "\n".join(lines)
+
 def generate(
     query: str,
     model: str | None = None,
@@ -377,16 +459,30 @@ def generate(
     parent_expansion: bool | None = None,
     query_expansion: bool | None = None,
     graph_boost_weight: float | None = None,
+    translation: bool | None = None,
+    list_extraction: bool | None = None,
 ) -> dict:
     model = model or settings.llm_model
     prompt_version = prompt_version or settings.prompt_version
     k = k or settings.top_k
     search_k = settings.rerank_top_n if settings.rerank and settings.rerank_top_n > k else k
+    num_ctx, num_predict = model_limits(model)
+    translate = translation
+    if translate is None:
+        translate = os.getenv("TRANSLATION", "0") == "1"
     expand_query = query_expansion
     if expand_query is None:
         expand_query = os.getenv("QUERY_EXPANSION", "0") == "1"
     rewrite = ""
-    if expand_query:
+    if translate:
+        with observation("translate", input={"query": query}) as translate_span:
+            try:
+                rewrite = translate_query(query, model, num_ctx)
+            except LLMError:
+                rewrite = ""
+            if translate_span is not None:
+                translate_span.update(output={"translation": rewrite})
+    elif expand_query:
         with observation("expand_query", input={"query": query}) as expand_span:
             try:
                 expanded = call_llm(
@@ -394,7 +490,7 @@ def generate(
                     model,
                     0.0,
                     num_predict=80,
-                    num_ctx=2048,
+                    num_ctx=num_ctx,
                 )
                 rewrite = (expanded.get("response") or "").strip()
             except LLMError:
@@ -535,7 +631,6 @@ def generate(
     if expand:
         hits = expand_parents(hits, collection or settings.collection)
     context, used = build_context(hits, settings.max_context_tokens)
-    num_ctx, num_predict = model_limits(model)
     native_thinking = think and supports_native_thinking(model)
     reasoning = ""
     reasoning_ms = 0.0
@@ -554,40 +649,69 @@ def generate(
             reasoning = ""
         reasoning_ms = round((time.perf_counter() - reasoning_started) * 1000, 2)
 
-    prompt = get_prompt(prompt_version).format(context=context, question=query)
-    started = time.perf_counter()
-    with observation(
-        "generate",
-        as_type="generation",
-        model=model,
-        input={"prompt": prompt[:8000]},
-        model_parameters={"temperature": temperature, "num_ctx": num_ctx},
-    ) as generation_span:
-        data = call_llm(
-            prompt,
-            model,
-            temperature,
-            num_ctx=num_ctx,
-            num_predict=num_predict,
-            think=native_thinking,
-        )
-    generation_ms = round((time.perf_counter() - started) * 1000, 2)
-
-    if native_thinking:
-        reasoning = (data.get("thinking") or "").strip()
-    answer = (data.get("response") or "").strip()
+    list_mode = list_extraction
+    if list_mode is None:
+        list_mode = os.getenv("LIST_EXTRACTION", "0") == "1"
+    answer = ""
+    data: dict = {}
+    generation_ms = 0.0
+    if list_mode and is_list_question(query):
+        list_prompt = LIST_PROMPT.format(context=context, question=query)
+        with observation(
+            "extract_list",
+            input={"query": query, "prompt": list_prompt[:8000]},
+        ) as list_span:
+            started_list = time.perf_counter()
+            try:
+                data = call_llm(
+                    list_prompt,
+                    model,
+                    0.0,
+                    num_ctx=num_ctx,
+                    num_predict=min(num_predict, 1024),
+                    format="json",
+                )
+            except LLMError:
+                data = {}
+            generation_ms = round((time.perf_counter() - started_list) * 1000, 2)
+            items = parse_list(data)
+            if list_span is not None:
+                list_span.update(output={"items": items})
+        if items:
+            answer = compose_list(items)
+    if not answer:
+        prompt = get_prompt(prompt_version).format(context=context, question=query)
+        started = time.perf_counter()
+        with observation(
+            "generate",
+            as_type="generation",
+            model=model,
+            input={"prompt": prompt[:8000]},
+            model_parameters={"temperature": temperature, "num_ctx": num_ctx},
+        ) as generation_span:
+            data = call_llm(
+                prompt,
+                model,
+                temperature,
+                num_ctx=num_ctx,
+                num_predict=num_predict,
+                think=native_thinking,
+            )
+        generation_ms = round((time.perf_counter() - started) * 1000, 2)
+        if native_thinking:
+            reasoning = (data.get("thinking") or "").strip()
+        answer = (data.get("response") or "").strip()
+        if generation_span is not None:
+            generation_span.update(
+                output=answer,
+                usage_details={
+                    "input": int(data.get("prompt_eval_count") or 0),
+                    "output": int(data.get("eval_count") or 0),
+                },
+            )
     eval_count = data.get("eval_count") or 0
     eval_duration = data.get("eval_duration") or 0
     tokens_per_second = round(eval_count / (eval_duration / 1e9), 2) if eval_duration else None
-    if generation_span is not None:
-        generation_span.update(
-            output=answer,
-            usage_details={
-                "input": int(data.get("prompt_eval_count") or 0),
-                "output": int(eval_count),
-            },
-        )
-
     citations = extract_citations(answer)
     invalid = [c for c in citations if c < 1 or c > len(used)]
     abstained = answer.lower().startswith(ABSTENTION_TEXT[:40].lower())
