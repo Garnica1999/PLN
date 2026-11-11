@@ -91,3 +91,19 @@ QUERY_EXPANSION_PROMPT = """Eres un asistente de recuperación. Reescribe la pre
 
 PREGUNTA: {question}
 """
+
+
+TRANSLATION_PROMPT = """Translate the question to {target}. Keep names, places, dates and numbers exactly. Return only the translation, without quotes.
+
+QUESTION: {question}
+"""
+
+
+LIST_PROMPT = """Eres un asistente de extracción. En la evidencia hay una frase que enumera las opciones, medidas o acciones que responden a la pregunta. Encuentra esa enumeración, cópiala y sepárala en elementos. No resumas ni copies párrafos que no sean una enumeración.
+Devuelve solo JSON: {{"items": [{{"texto": "opción", "cita": 1}}]}}
+
+EVIDENCIA:
+{context}
+
+PREGUNTA: {question}
+"""

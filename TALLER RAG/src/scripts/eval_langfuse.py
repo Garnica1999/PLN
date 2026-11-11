@@ -85,6 +85,8 @@ def main() -> None:
     parser.add_argument("--query-expansion", default="auto", choices=["auto", "on", "off"])
     parser.add_argument("--graph-boost-weight", type=float, default=None)
     parser.add_argument("--model", default="")
+    parser.add_argument("--translation", default="auto", choices=["auto", "on", "off"])
+    parser.add_argument("--list-extraction", default="auto", choices=["auto", "on", "off"])
     parser.add_argument("--run", default=None)
     parser.add_argument("--retriever", default="", help="solo se guarda en metadata")
     parser.add_argument("--outdir", default="reports")
@@ -145,6 +147,8 @@ def main() -> None:
             "query_expansion": {"auto": None, "on": True, "off": False}[args.query_expansion],
             "graph_boost_weight": args.graph_boost_weight,
             "model": args.model or None,
+            "translation": {"auto": None, "on": True, "off": False}[args.translation],
+            "list_extraction": {"auto": None, "on": True, "off": False}[args.list_extraction],
         }
         started = time.perf_counter()
         try:
