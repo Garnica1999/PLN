@@ -416,6 +416,7 @@ La evaluación de desempeño corre en el worker GPU y no dentro de la API: así 
 ## 15. Datos y seguridad
 
 - `Dataset/`, `*.parquet` y `.env` se versionan en el repositorio. Los parquet usan Git LFS; sin `git lfs` se ven como punteros de 134 bytes.
+- La contraseña de Neo4j vive en `docker/observability/.env` (no versionado); el `.env` raíz lleva un placeholder. Para usar `graph_hybrid`, copia el valor real al entorno del API.
 - El Parquet no se copia ni se modifica; se monta en solo lectura.
 - La contraseña del servidor no se guarda en el repositorio. Se usa llave SSH.
 - El endpoint de embeddings del servidor no tiene autenticación y no se expone a internet.
