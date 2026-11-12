@@ -87,7 +87,7 @@ def prompt_hash(version: str = "v1") -> str:
     return hashlib.sha256(get_prompt(version).encode("utf-8")).hexdigest()[:16]
 
 
-QUERY_EXPANSION_PROMPT = """Eres un asistente de recuperación. Reescribe la pregunta como una respuesta breve y declarativa, en el mismo idioma, sin citas y sin inventar datos. Devuelve solo la frase.
+QUERY_EXPANSION_PROMPT = """Eres un asistente de recuperación. Extrae de la pregunta las palabras clave, sinónimos y formas útiles para buscar en un índice léxico. Devuelve solo términos separados por espacios, sin explicaciones.
 
 PREGUNTA: {question}
 """

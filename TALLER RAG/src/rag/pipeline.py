@@ -396,6 +396,18 @@ def translate_query(query: str, model: str, num_ctx: int) -> str:
     return (data.get("response") or "").strip().strip('"').strip()
 
 
+
+def keyword_query(query: str, model: str, num_ctx: int) -> str:
+    """Reescribe la consulta como términos de búsqueda léxica."""
+    data = call_llm(
+        QUERY_EXPANSION_PROMPT.format(question=query),
+        model,
+        0.0,
+        num_predict=80,
+        num_ctx=num_ctx,
+    )
+    return (data.get("response") or "").strip().strip('"').strip()
+
 def is_list_question(query: str) -> bool:
     """Detecta preguntas de opciones/medidas que piden enumerar."""
     return bool(LIST_PATTERN.search(query)) and not re.search(r"cu[aá]nt", query, re.IGNORECASE)
@@ -514,40 +526,39 @@ def generate(
     expand_query = query_expansion
     if expand_query is None:
         expand_query = os.getenv("QUERY_EXPANSION", "0") == "1"
-    rewrite = ""
+    rewrites: list[str] = []
     if translate:
         with observation("translate", input={"query": query}) as translate_span:
             try:
-                rewrite = translate_query(query, model, num_ctx)
+                translation = translate_query(query, model, num_ctx)
             except LLMError:
-                rewrite = ""
+                translation = ""
+            if translation:
+                rewrites.append(translation)
             if translate_span is not None:
-                translate_span.update(output={"translation": rewrite})
-    elif expand_query:
+                translate_span.update(output={"translation": translation})
+    if expand_query:
         with observation("expand_query", input={"query": query}) as expand_span:
             try:
-                expanded = call_llm(
-                    QUERY_EXPANSION_PROMPT.format(question=query),
-                    model,
-                    0.0,
-                    num_predict=80,
-                    num_ctx=num_ctx,
-                )
-                rewrite = (expanded.get("response") or "").strip()
+                keywords = keyword_query(query, model, num_ctx)
             except LLMError:
-                rewrite = ""
+                keywords = ""
+            if keywords:
+                rewrites.append(keywords)
             if expand_span is not None:
-                expand_span.update(output={"rewrite": rewrite})
+                expand_span.update(output={"keywords": keywords})
     with observation(
         "retrieve",
         as_type="retriever",
         input={"query": query, "k": search_k},
-        metadata={"collection": collection or settings.collection, "rewrite": rewrite},
+        metadata={"collection": collection or settings.collection, "rewrites": rewrites},
     ) as retrieve_span:
         hits, retrieval_ms = search_hits(
             query, k=search_k, collection=collection, expr=expr, hybrid=hybrid, retriever=retriever
         )
-        if rewrite and rewrite.lower() != query.lower():
+        for rewrite in rewrites:
+            if not rewrite or rewrite.lower() == query.lower():
+                continue
             extra_hits, extra_ms = search_hits(
                 rewrite, k=search_k, collection=collection, expr=expr, hybrid=hybrid, retriever=retriever
             )
