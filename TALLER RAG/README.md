@@ -184,7 +184,7 @@ make graph-build     # 169k documentos y ~249k entidades en Neo4j
 make eval-langfuse RUN=baseline   # dataset silver-taller + experimento
 ```
 
-Cada `/ask` devuelve `trace_id`; la traza incluye `retrieve`, `rerank`, `generate` y `grounding`. El dataset `silver-taller` compara la respuesta esperada con la del modelo. El recuperador se elige por petición con el campo `retriever`: `hybrid_union`, `hybrid_boost` o `graph_hybrid`. En las 43 preguntas del silver, `hybrid_boost` iguala la exactitud del grafo híbrido (0,861) y sube la cobertura de tokens a 0,655; en 10 preguntas multi-documento mantiene 0,900, mientras `graph_hybrid` baja a 0,700.
+Cada `/ask` devuelve `trace_id`; la traza incluye `retrieve`, `rerank`, `generate` y `grounding`. El dataset `silver-taller` compara la respuesta esperada con la del modelo. El recuperador se elige por petición con el campo `retriever`: `hybrid_union`, `hybrid_boost` o `graph_hybrid`. La configuración final (prompt v3, `hybrid_boost`, traducción de la consulta, extracción de listas y verificación numérica) alcanza 0,907 en el silver completo, 1,000 en test y 0,840 en el reservado; RAGAS 0,655 y 0,595. El grafo como reordenador sube la cobertura de tokens; como fuente de candidatos baja a 0,700 en las 10 preguntas multi-documento. Las variables `TRANSLATION`, `LIST_EXTRACTION` y `NUMERIC_VERIFICATION` activan los tres mecanismos.
 
 Servicios y puertos:
 
