@@ -41,6 +41,7 @@ class AskRequest(RetrieveRequest):
     translation: bool | None = None
     list_extraction: bool | None = None
     numeric_verification: bool | None = None
+    candidate_guarantee: bool | None = None
 
 
 def build_expr(request: RetrieveRequest) -> str | None:
@@ -72,6 +73,7 @@ def _traced(request: AskRequest, producer, name: str = "ask") -> dict:
             "translation": request.translation,
             "list_extraction": request.list_extraction,
             "numeric_verification": request.numeric_verification,
+            "candidate_guarantee": request.candidate_guarantee,
         },
     ) as root:
         result = producer()
@@ -217,6 +219,7 @@ def ask(request: AskRequest) -> dict:
                 translation=request.translation,
                 list_extraction=request.list_extraction,
                 numeric_verification=request.numeric_verification,
+                candidate_guarantee=request.candidate_guarantee,
                 think=request.think,
                 domain_gate=request.strict,
                 ambiguity_policy=request.ambiguity_policy,

@@ -1,0 +1,10 @@
+{
+  "run": "extra-30",
+  "experiment_id": "da5a67b8fe0b5933",
+  "n": 30,
+  "accuracy": 0.8,
+  "token_recall": 0.7488,
+  "grounded": 0.8667,
+  "p50_ms": 1482.14,
+  "total_s": 50.3
+}

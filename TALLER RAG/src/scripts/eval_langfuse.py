@@ -88,6 +88,7 @@ def main() -> None:
     parser.add_argument("--translation", default="auto", choices=["auto", "on", "off"])
     parser.add_argument("--list-extraction", default="auto", choices=["auto", "on", "off"])
     parser.add_argument("--numeric-verification", default="auto", choices=["auto", "on", "off"])
+    parser.add_argument("--candidate-guarantee", default="auto", choices=["auto", "on", "off"])
     parser.add_argument("--run", default=None)
     parser.add_argument("--retriever", default="", help="solo se guarda en metadata")
     parser.add_argument("--outdir", default="reports")
@@ -151,6 +152,7 @@ def main() -> None:
             "translation": {"auto": None, "on": True, "off": False}[args.translation],
             "list_extraction": {"auto": None, "on": True, "off": False}[args.list_extraction],
             "numeric_verification": {"auto": None, "on": True, "off": False}[args.numeric_verification],
+            "candidate_guarantee": {"auto": None, "on": True, "off": False}[args.candidate_guarantee],
         }
         started = time.perf_counter()
         try:

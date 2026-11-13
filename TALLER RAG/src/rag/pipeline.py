@@ -454,6 +454,7 @@ def compose_list(items: list[dict]) -> str:
     return "Los elementos son:\n" + "\n".join(lines)
 
 
+LEGISLATIVE = re.compile(r"\b(c[aá]mara|senado|congreso)\b", re.I)
 NUMERIC_QUERY = re.compile(
     r"\b(cu[aá]nt[oa]s?|cu[aá]nto|en qu[eé] año|qu[eé] año|cu[aá]ndo|qu[eé] fecha|a qu[eé] año)\b",
     re.IGNORECASE,
@@ -514,6 +515,7 @@ def generate(
     translation: bool | None = None,
     list_extraction: bool | None = None,
     numeric_verification: bool | None = None,
+    candidate_guarantee: bool | None = None,
 ) -> dict:
     model = model or settings.llm_model
     prompt_version = prompt_version or settings.prompt_version
@@ -650,6 +652,30 @@ def generate(
             "abstain_reason": f"bajo_umbral:{best:.3f}",
             "evidence": hits,
         }
+
+    guarantee = candidate_guarantee
+    if guarantee is None:
+        guarantee = os.getenv("CANDIDATE_GUARANTEE", "0") == "1"
+    if guarantee and needs_numeric(query) and LEGISLATIVE.search(query):
+        with observation("candidate_guarantee", input={"query": query}) as guarantee_span:
+            keyword = keyword_query(query, model, num_ctx)
+            if keyword:
+                extra_hits, extra_ms = search_hits(
+                    keyword,
+                    k=10,
+                    collection=collection,
+                    expr=expr,
+                    hybrid=hybrid,
+                    retriever=retriever,
+                )
+                hits = dedupe(hits + extra_hits)
+                retrieval_ms = round(retrieval_ms + extra_ms, 2)
+                base["retrieval_ms"] = retrieval_ms
+                base["total_ms"] = retrieval_ms
+                if guarantee_span is not None:
+                    guarantee_span.update(
+                        output={"keyword": keyword, "extra": len(extra_hits)}
+                    )
 
     if ambiguity_policy != "off" and hits:
         policy = ambiguity_policy
