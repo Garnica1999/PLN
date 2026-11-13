@@ -324,7 +324,7 @@ Cada consulta deja una traza en Langfuse 4.78, desplegado en el servidor como un
 \label{fig:trace}
 \end{figure*}
 
-El conjunto dorado vive como Dataset de Langfuse. Cada corrida es un experimento que enfrenta la respuesta esperada con la respuesta del modelo y calcula cuatro scores por \'item: \texttt{correct}, \texttt{token\_recall}, \texttt{citation\_valid} y \texttt{grounded}. La Figura~\ref{fig:langfuse} muestra la vista de evaluaci\'on con la pregunta, el gold, los scores y la respuesta. La Tabla~\ref{tab:observabilidad} resume las tres corridas sobre las 43 preguntas del silver.
+El conjunto dorado vive como Dataset de Langfuse. Cada corrida es un experimento que enfrenta la respuesta esperada con la respuesta del modelo y calcula cuatro scores por \'item: \texttt{correct}, \texttt{token\_recall}, \texttt{citation\_valid} y \texttt{grounded}. La Figura~\ref{fig:langfuse} muestra la vista de evaluaci\'on con la pregunta, el gold, los scores y la respuesta. La Tabla~\ref{tab:observabilidad} resume las cuatro corridas sobre las 43 preguntas del silver.
 
 \begin{figure*}[t]
 \centering
@@ -351,6 +351,10 @@ Final & \textbf{0,884} & 0,664 & 0,907 & 1,47 s \\
 \end{table}
 
 La tabla muestra el efecto de la observabilidad: las corridas usan el mismo conjunto, el mismo modelo y la misma temperatura; la diferencia es del recuperador y de los mecanismos de respuesta de la configuraci\'on final. El registro no cambia la respuesta; cambia la capacidad de atribuirla. Sin \'el, una mejora de dos puntos en exactitud no se puede separar de la variaci\'on del muestreo ni del orden de las preguntas.
+
+Las cuatro corridas se leen como una progresi\'on. La uni\'on h\'ibrida es la referencia (0,837 de exactitud, 0,626 de cobertura, 0,744 de anclaje y 0,42 s de mediana). El grafo como fuente de candidatos sube la exactitud 2,4 puntos y el anclaje 2,3, pero cuesta un segundo m\'as de mediana. El boost sube la cobertura 2,9 puntos y el anclaje 4,7, y llega 0,14 s antes que el grafo. La configuraci\'on final, con el prompt v3, la traducci\'on y las listas, a\~nade 2,3 puntos de exactitud y 11,6 de anclaje sobre el boost, a cambio de 0,17 s. En conjunto, la exactitud sube 4,7 puntos, la cobertura 3,8 y el anclaje 16,3, con 1,05 s m\'as de mediana: es el precio de pasar de una respuesta sin cita a una respuesta anclada. La tabla tambi\'en marca lo que no mejor\'o: el grafo como candidato no movi\'o la exactitud en el silver y perdi\'o 20 puntos en multi-documento (Secci\'on~\ref{sec:graphrag}), y las corridas con el mismo recuperador y distinto prompt no cambian la exactitud, solo RAGAS.
+
+El uso operativo es el mismo en todas las corridas: se abre la traza de una pregunta concreta, se compara el fragmento recuperado con el que deb\'ia recuperarse y se mira en qu\'e span se perdi\'o. As\'i se separaron los fallos de recuperaci\'on de los de generaci\'on: r-006 no recupera la cifra, r-012 la recupera y el modelo enumera otra cosa, y r-014 lo responde la uni\'on pero la compuerta solo ve el top-5 denso. Desde la interfaz, el bot\'on \textit{Ver traza en Langfuse} abre la traza de la respuesta y evita buscar el identificador a mano.
 
 \subsection{GraphRAG ligero}
 \label{sec:graphrag}
