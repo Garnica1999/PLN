@@ -11,6 +11,8 @@ import streamlit as st
 from src.rag.ui_prefs import DEFAULTS, read_prefs, write_prefs
 
 API = os.getenv("API_URL", "http://localhost:8010").rstrip("/")
+LANGFUSE_PUBLIC_URL = os.getenv("LANGFUSE_PUBLIC_URL", "").rstrip("/")
+LANGFUSE_PROJECT = os.getenv("LANGFUSE_PROJECT_ID", "taller-rag")
 DEFAULT_MODEL = "gemma4:e4b"
 EXAMPLE_POOL = [
     "¿Cuántos municipios reportaron el Retamo Espinoso?",
@@ -704,6 +706,10 @@ with st.sidebar:
         "**Citas.** Cada afirmación lleva un número entre corchetes. Si no hay cita, el sistema se abstiene.\n\n"
         "**Abstención.** Si la evidencia no responde, no inventa: devuelve el aviso y el motivo."
     )
+    if LANGFUSE_PUBLIC_URL:
+        st.divider()
+        st.markdown("### Observabilidad")
+        st.link_button("Abrir Langfuse", LANGFUSE_PUBLIC_URL, use_container_width=True)
 
 with st.container(key="appbar"):
     st.markdown("<h1 class='m3-headline'>Asistente RAG</h1>", unsafe_allow_html=True)
@@ -718,6 +724,16 @@ if "examples" not in st.session_state:
     st.session_state.examples = random.sample(EXAMPLE_POOL, 3)
 
 
+def render_trace_link(data: dict) -> None:
+    """Enlaza la traza de la respuesta en Langfuse, si hay URL pública."""
+    trace = data.get("trace_id")
+    if trace and LANGFUSE_PUBLIC_URL:
+        st.link_button(
+            "Ver traza en Langfuse",
+            f"{LANGFUSE_PUBLIC_URL}/project/{LANGFUSE_PROJECT}/traces/{trace}",
+        )
+
+
 def render_assistant(data: dict, position: int) -> None:
     if data.get("type") == "clarification":
         st.markdown("<h3 class='m3-card-title'>Aclaración necesaria</h3>", unsafe_allow_html=True)
@@ -727,6 +743,7 @@ def render_assistant(data: dict, position: int) -> None:
             if st.button(option.get("label", "Opción"), key=f"clar-{position}-{index}", use_container_width=True):
                 ask(option.get("query", ""), ambiguity_policy="off", skip_gate=True)
         st.caption("Elige una interpretación para responder con la evidencia de ese caso.")
+        render_trace_link(data)
         evidence = data.get("evidence", [])
         if evidence:
             with st.expander(f"Evidencias ({len(evidence)})"):
@@ -744,6 +761,7 @@ def render_assistant(data: dict, position: int) -> None:
         metrics.append(f"{data.get('total_ms', 0):.0f} ms total")
         metrics.append(str(data.get("model")))
         st.caption(" · ".join(metrics))
+        render_trace_link(data)
         evidence = data.get("evidence", [])
         if evidence:
             with st.expander(f"Evidencias ({len(evidence)})"):
@@ -790,6 +808,7 @@ def render_assistant(data: dict, position: int) -> None:
     metrics.append(f"{data.get('total_ms', 0):.0f} ms total")
     metrics.append(str(data.get("model")))
     st.caption(" · ".join(metrics))
+    render_trace_link(data)
     evidence = data.get("evidence", [])
     if evidence:
         with st.expander(f"Evidencias ({len(evidence)})"):
