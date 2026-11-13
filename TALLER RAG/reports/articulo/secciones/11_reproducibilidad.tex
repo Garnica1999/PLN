@@ -35,39 +35,70 @@ El generador, el detector y el condensador corren con temperatura 0; las repetic
 
 \subsection{Comandos}
 
-El stack se levanta con un comando:
+El stack completo se levanta con un comando:
 
 \begin{verbatim}
-make up
+make all-up
 make ps
 curl http://localhost:8010/health
 \end{verbatim}
 
-\texttt{make up} despliega la capa de datos en el servidor con \texttt{docker stack deploy -c docker-stack.yml taller-rag} y levanta la aplicaci\'on con \texttt{docker compose up -d --no-deps api frontend ollama}. El servicio \texttt{prewarm} carga el generador, el embedding y el reranker cuando la API est\'a sana. La evaluaci\'on completa se ejecuta con:
+\texttt{make all-up} construye y arranca \texttt{docker-compose.all.yml} (etcd, MinIO, Milvus, Solr, Ollama, API y frontend), espera a que la API est\'e sana, descarga \texttt{gemma4:e4b} y \texttt{gemma2:2b}, ingiere el Parquet, construye la colecci\'on dispersa e indexa Solr en texto y vectores. El servicio \texttt{prewarm} carga el generador, el embedding y el reordenador cuando la API est\'a sana. El apagado deja los vol\'umenes intactos:
 
 \begin{verbatim}
-python src/scripts/run_evaluation.py
+make all-down
 \end{verbatim}
 
-Ese pipeline corre la evaluaci\'on de desempe\~no en el worker GPU, la de conversaci\'on contra la API y RAGAS en el contenedor de evaluaci\'on. Los resultados se escriben en \texttt{reports/tablas/} y la comparaci\'on en \texttt{reports/tablas/evaluacion\_comparativa.md}.
+La capa de datos del servidor se despliega con el stack de Swarm y el core de Solr con su esquema:
+
+\begin{verbatim}
+scripts/deploy_solr.sh
+\end{verbatim}
+
+El grafo se construye desde el Parquet con \texttt{make graph-build}, que ejecuta \texttt{python -m src.scripts.build\_graph --batch 1000}. La evaluaci\'on se corre contra un conjunto y se registra como experimento de Langfuse:
+
+\begin{verbatim}
+make eval-langfuse RUN=extra-30
+\end{verbatim}
+
+El conjunto y el destino se pasan con los flags del script:
+
+{\footnotesize
+\begin{verbatim}
+python -m src.scripts.eval_langfuse \
+  --silver eval/silver/silver_extra.jsonl \
+  --dataset silver-extra --run extra-30
+\end{verbatim}
+}
+
+La configuraci\'on desplegada se fija en \texttt{.env}:
+
+\begin{verbatim}
+RETRIEVER=hybrid_boost
+PROMPT_VERSION=v3
+TRANSLATION=1
+LIST_EXTRACTION=1
+NUMERIC_VERIFICATION=0
+QUERY_EXPANSION=0
+CANDIDATE_GUARANTEE=0
+\end{verbatim}
 
 \subsection{Observabilidad y grafo}
 
-El stack de observabilidad se despliega en el servidor desde \texttt{docker/observability} con:
+El stack de observabilidad se despliega en el servidor y se detiene sin borrar vol\'umenes:
 
 \begin{verbatim}
-cd docker/observability
-docker --context server compose \
-  --env-file .env \
-  -f docker-compose.yml up -d
+make obs-up
+make obs-down
 \end{verbatim}
 
-El grafo se construye desde el Parquet con \texttt{python -m src.scripts.build\_graph --batch 1000} y las corridas se registran con \texttt{python -m src.scripts.eval\_langfuse --run baseline-final}. El modo del recuperador se elige por petici\'on con el campo \texttt{retriever} (\texttt{hybrid\_union}, \texttt{hybrid\_boost}, \texttt{graph\_hybrid}). Las capturas de Langfuse y Neo4j se generan con \texttt{scripts/capture\_firefox.py} y Firefox headless.
+\texttt{make obs-up} usa el compose de observabilidad con su \texttt{.env} no versionado. Las capturas de Langfuse y Neo4j se generan con \texttt{scripts/capture\_firefox.py} y Firefox headless. El modo del recuperador se elige por petici\'on con el campo \texttt{retriever} (\texttt{hybrid\_union}, \texttt{hybrid\_boost}, \texttt{graph\_hybrid}, \texttt{solr}).
 
 \subsection{Artefactos}
 
-El silver consolidado est\'a en \texttt{eval/silver/silver\_standard.jsonl}, con su versi\'on ampliada en \texttt{silver\_standard\_ampliado.jsonl}. El conjunto reservado (\texttt{silver\_reservado.jsonl}, con hashes en \texttt{README\_RESERVADO.md}) escribe \texttt{reports/corridas/reservado\_*\_raw.jsonl} y \texttt{reports/tablas/reservado\_*\_resumen.csv}. El silver de ambig\"uedad est\'a en \texttt{eval/silver/silver\_ambiguedad*.jsonl}, con las tablas \texttt{ambiguedad\_*\_resumen.csv} y \texttt{ambiguedad\_*\_por\_pregunta.csv}. La capa de datos se define en \texttt{docker-stack.yml} y el modo local de respaldo en \texttt{docker-compose.data.yml}. Las figuras est\'an en \texttt{reports/figuras/}, las corridas en \texttt{reports/corridas/} y los modelos de la compuerta en \texttt{modelos/}.
+{\raggedright
+El silver consolidado est\'a en \path{eval/silver/silver_standard.jsonl}, con su versi\'on ampliada en \path{silver_standard_ampliado.jsonl}. El conjunto reservado (\path{silver_reservado.jsonl}, con hashes en \path{README_RESERVADO.md}) escribe \path{reports/corridas/reservado_*_raw.jsonl} y \path{reports/tablas/reservado_*_resumen.csv}. El silver de ambig\"uedad est\'a en \path{eval/silver/silver_ambiguedad*.jsonl}, con las tablas \path{ambiguedad_*_resumen.csv} y \path{ambiguedad_*_por_pregunta.csv}. La ampliaci\'on de 30 preguntas est\'a en \path{eval/silver/silver_extra.jsonl}, su corrida en \path{reports/corridas/eval_langfuse_extra-30.jsonl} y su tabla RAGAS en \path{reports/tablas/ragas_extra.csv}. La capa de datos se define en \path{docker-stack.yml}, el stack completo en \path{docker-compose.all.yml} y el modo local de respaldo en \path{docker-compose.data.yml}. Las figuras est\'an en \path{reports/figuras/}, las corridas en \path{reports/corridas/} y los modelos de la compuerta en \path{modelos/}.\par}
 
 \subsection{Datos}
 
-El corpus completo no se publica por derechos de las fuentes. Se incluyen el silver, las anotaciones, la muestra del piloto y los Parquet de evaluaci\'on necesarios para reproducir las m\'etricas. Las cifras de este art\'iculo se pueden verificar contra esos artefactos sin volver a descargar el corpus.
+El corpus completo no se publica por derechos de las fuentes. Se incluyen el silver, las anotaciones, la muestra del piloto y los Parquet de evaluaci\'on necesarios para reproducir las m\'etricas. Los Parquet se versionan con Git LFS (\texttt{*.parquet filter=lfs}); despu\'es de clonar hay que ejecutar \texttt{git lfs pull} para materializarlos. Las cifras de este art\'iculo se pueden verificar contra esos artefactos sin volver a descargar el corpus.

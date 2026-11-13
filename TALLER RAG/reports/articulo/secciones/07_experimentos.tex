@@ -320,7 +320,7 @@ Cada consulta deja una traza en Langfuse 4.78, desplegado en el servidor como un
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{langfuse_trace_crop.png}
-\caption{Traza de una consulta en Langfuse: spans de recuperaci\'on, reordenamiento, generaci\'on y anclaje, con los scores de la petici\'on.}
+\caption{Traza de una consulta con el prompt v2, antes de la configuraci\'on final: spans de recuperaci\'on, reordenamiento, generaci\'on y anclaje, con los scores de la petici\'on. La traza final a\~nade los spans de traducci\'on y de extracci\'on de listas.}
 \label{fig:trace}
 \end{figure*}
 
@@ -329,14 +329,14 @@ El conjunto dorado vive como Dataset de Langfuse. Cada corrida es un experimento
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{langfuse_experiment_crop.png}
-\caption{Experimento en Langfuse: pregunta, respuesta esperada, scores y respuesta del modelo, con la comparaci\'on por \'item.}
+\caption{Experimento en Langfuse: pregunta, respuesta esperada, scores y respuesta del modelo, con la comparaci\'on por \'item. La captura corresponde a la corrida \texttt{baseline-final}, con el prompt v2; la tabla compara esa corrida con las posteriores.}
 \label{fig:langfuse}
 \end{figure*}
 
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{Corridas registradas en Langfuse sobre las 43 preguntas del silver. La exactitud incluye las 5 preguntas sin respuesta.}
+\caption{Corridas registradas en Langfuse sobre las 43 preguntas del silver. La exactitud incluye las 5 preguntas sin respuesta. Las tres primeras filas son etapas intermedias; la \'ultima es la configuraci\'on desplegada.}
 \label{tab:observabilidad}
 \begin{tabular}{lrrrr}
 \toprule
@@ -452,9 +452,58 @@ Ampliaci\'on & 30 & 0,800 & \textbf{0,749} & \textbf{0,867} & \textbf{0,674} & 0
 
 La exactitud baja 15,8 puntos al salir del conjunto elegido a mano; la correcci\'on RAGAS se mantiene (0,674 frente a 0,668), la fidelidad en 0,971 y la cobertura de contexto en 1,0. La ca\'ida no es una regresi\'on del sistema: es el efecto de evaluar sobre documentos que no se seleccionaron para que el sistema luciera. La ampliaci\'on tiene 30 preguntas, as\'i que su intervalo sigue siendo amplio; el set de 120-150 queda como trabajo futuro.
 
+\subsection{Experimentos descartados y su coste}
+\label{sec:descartados}
+
+No todas las hip\'otesis se aceptaron. La Tabla~\ref{tab:rechazados} re\'une las que se implementaron y se midieron, el resultado que las descart\'o y lo que costaban. La lista importa tanto como la de aciertos: fija el espacio de dise\~no que se explor\'o y evita que un lector atribuya la configuraci\'on final a una preferencia.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{Experimentos implementados y descartados. Las cifras son de la corrida propia de cada variante; la referencia es la configuraci\'on de su momento.}
+\label{tab:rechazados}
+\begin{tabular}{@{}p{2.5cm}p{4.0cm}p{6.2cm}p{2.0cm}p{1.7cm}@{}}
+\toprule
+Intento & Qu\'e se prob\'o & Resultado & Coste & Decisi\'on \\
+\midrule
+Contexto padre & Devolver el fragmento completo en lugar del chunk & Test 0,875 y reservado 0,840, sin mejora; p50 2,05 s frente a 1,27 s & $+0{,}8$ s & Rechazado \\
+Modelo 27B Q3 & Generador mayor para compensar omisiones & Test 0,917 y cobertura 0,489; p50 10,3 s; RAGAS 0,657 & $\times 8$ latencia & Rechazado \\
+Expansi\'on HyDE & Consulta sint\'etica para el recuperador denso & Test 0,917 y reservado 0,840, sin mejora; p50 8,0 s & $+6{,}5$ s & Rechazado \\
+Expansi\'on l\'exica & Reescribir la consulta para el \'indice BM25 & r-006 sigue respondiendo 125 y 91 votos; el documento solo aparece si la consulta lleva la cifra & --- & Rechazado \\
+Verificaci\'on num\'erica & Completar la cifra que el generador omite & Test 1,000 pero RAGAS 0,655; en vivo a\~nadi\'o 2017; reservado RAGAS 0,595 & $+0{,}2$ s & Rechazado \\
+Garant\'ia de candidato & Forzar el top l\'exico en preguntas legislativas & El contexto trae m\'as documentos y r-006 sigue en 125 y 91 & --- & Rechazado \\
+Grafo como candidato & Fusionar documentos del grafo antes del reranker; despu\'es se filtraron las entidades & Test 0,875, reservado 0,880 y multi-documento 0,700; el boost da 0,900 en multi & --- & Rechazado \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+El contexto padre y la expansi\'on HyDE ilustran el mismo patr\'on: mejoran la comodidad de la respuesta o el recall en desarrollo y no mueven la exactitud, a cambio de duplicar o multiplicar por seis la latencia. El modelo 27B es el caso m\'as caro: cuesta ocho veces m\'as por respuesta y no supera al 4B en exactitud; su \'unica ventaja es la cobertura, que el prompt v3 ya atacaba. La verificaci\'on num\'erica acert\'o en la corrida de test y fall\'o en vivo: un parche l\'exico que acierta cuando el dato est\'a aislado y falla cuando el documento tiene dos a\~nos distintos. La garant\'ia de candidato confirma que r-006 no es un problema de recuperaci\'on sino de pregunta subespecificada. El grafo como fuente de candidatos pierde 20 puntos en el conjunto multi-documento; s\'olo el boost sobrevive.
+
 \subsection{Resumen de resultados}
 
-La Figura~\ref{fig:resumen} re\'une los tres resultados principales: RAGAS por configuraci\'on, las pol\'iticas de ambig\"uedad sobre el silver humano y el flujo del conjunto reservado con y sin compuerta.
+La Tabla~\ref{tab:final} re\'une la configuraci\'on desplegada sobre los cuatro conjuntos. Es la cifra que resume el trabajo; las secciones anteriores dan la trazabilidad de cada decisi\'on.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Configuraci\'on desplegada sobre los cuatro conjuntos. Exactitud, cobertura de tokens y anclaje son medias por pregunta; el p50 es la mediana de latencia.}
+\label{tab:final}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Conjunto & n & Exactitud & Cobertura & Anclaje & RAGAS & Fidelidad & p50 \\
+\midrule
+Test curado & 24 & \textbf{0,958} & 0,564 & 0,833 & 0,668 & \textbf{1,000} & 1,50 s \\
+Silver completo & 43 & 0,884 & 0,664 & \textbf{0,907} & --- & --- & 1,47 s \\
+Reservado & 25 & 0,840 & 0,440 & 0,880 & 0,623 & 0,947 & 1,42 s \\
+Ampliaci\'on & 30 & 0,800 & \textbf{0,749} & 0,867 & \textbf{0,674} & 0,971 & 1,48 s \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+RAGAS se midi\'o en test, reservado y ampliaci\'on. El silver completo se us\'o para elegir la configuraci\'on, as\'i que no se recalcul\'o con el juez final: sus cifras de exactitud, cobertura y anclaje vienen de la corrida de Langfuse. El reservado tambi\'en se us\'o para elegir el h\'ibrido, de modo que sus m\'etricas de recuperaci\'on y respuesta son de desarrollo; la ampliaci\'on es la \'unica que no particip\'o en ninguna decisi\'on, y por eso su exactitud es la estimaci\'on m\'as honesta, aunque su revisi\'on humana est\'e pendiente.
+
+La Figura~\ref{fig:resumen} re\'une tres resultados de las etapas intermedias: RAGAS por configuraci\'on, las pol\'iticas de ambig\"uedad sobre el silver humano y el flujo del conjunto reservado con y sin compuerta.
 
 \begin{figure*}[t]
 \centering
