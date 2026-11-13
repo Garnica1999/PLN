@@ -5,44 +5,55 @@
 
 La arquitectura se organiza como un marco modular de capas con contratos expl\'icitos. Cada capa declara qu\'e recibe, qu\'e entrega y qu\'e invariante conserva; la instancia concreta de cada ranura, sea el codificador, la mezcla de recuperaci\'on, el generador o el umbral, se elige por medici\'on y se fija en la Secci\'on~\ref{sec:experimentos}. La Figura~\ref{fig:arquitectura} muestra la instancia final; el arco que la separa de la l\'inea base, con sus hip\'otesis y sus rechazos, se despliega en la Secci\'on~\ref{sec:experimentos}. Ninguna pieza se justifica por s\'i sola: la justificaci\'on es la comparaci\'on que la eligi\'o.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
 \begin{tikzpicture}[
-  node distance=0.55cm,
-  box/.style={draw, rounded corners=2pt, align=center, font=\scriptsize, minimum width=2.6cm, minimum height=0.7cm, fill=black!3},
-  db/.style={draw, cylinder, shape border rotate=90, aspect=0.25, align=center, font=\scriptsize, minimum width=1.9cm, minimum height=0.8cm, fill=black!8},
-  arr/.style={-{Latex[length=2mm]}, thick}
+  node distance=0.42cm and 0.3cm,
+  box/.style={draw, rounded corners=2pt, align=center, font=\scriptsize, minimum width=1.9cm, minimum height=0.72cm, fill=black!3},
+  small/.style={draw, rounded corners=2pt, align=center, font=\scriptsize, minimum width=1.4cm, minimum height=0.66cm, fill=black!8},
+  note/.style={draw, dashed, rounded corners=2pt, align=center, font=\scriptsize, fill=black!6, inner sep=3pt},
+  arr/.style={-{Latex[length=1.8mm]}, thick},
+  darr/.style={-{Latex[length=1.8mm]}, thick, dashed}
 ]
-\node[box] (ui) {UI Streamlit};
-\node[box, below=of ui] (api) {API FastAPI};
-\node[box, below=of api] (cond) {Condensador\\gemma2:2b};
-\node[box, below=of cond, minimum height=1.1cm] (ret) {Recuperaci\'on\\denso bge-m3 top-10\\+ BM25 top-20};
-\node[box, below=of ret] (score) {Score cross-encoder};
-\node[box, below=of score] (gate) {Compuerta de dominio\\(Modo estricto)};
-\node[box, below=of gate] (rer) {Reranker GPU\\bge-reranker-v2-m3};
-\node[box, below=of rer] (prompt) {Prompt v2};
-\node[box, below=of prompt] (llm) {gemma4:e4b + MTP};
-\node[box, below=of llm] (guard) {Guardarra\'iles};
-\node[box, below=of guard, fill=black!10] (resp) {Respuesta con citas};
-\node[box, left=0.5cm of guard, dashed, fill=black!6] (abst) {Abstenci\'on\\con motivo};
-\node[db, right=0.55cm of ret] (milvus) {Milvus\\618k};
-\draw[arr] (ui) -- (api);
-\draw[arr] (api) -- (cond);
-\draw[arr] (cond) -- (ret);
-\draw[arr] (ret) -- (score);
-\draw[arr] (score) -- (gate);
-\draw[arr] (gate) -- (rer);
-\draw[arr] (rer) -- (prompt);
-\draw[arr] (prompt) -- (llm);
-\draw[arr] (llm) -- (guard);
-\draw[arr] (guard) -- (resp);
-\draw[arr, dashed] (gate.west) -- ++(-0.5,0) |- (abst.east);
-\draw[arr, dashed] (guard.west) -- (abst.east);
-\draw[arr, <->] (ret) -- (milvus);
+\node[box] (src) {Fuentes\\prensa y Bluesky};
+\node[box, right=of src] (ing) {Ingesta\\limpieza V2, chunking\\y NER spaCy};
+\node[small, right=0.5cm of ing] (mil) {Milvus\\618.286};
+\node[small, right=of mil] (sol) {Solr\\BM25 + vector};
+\node[small, right=of sol] (neo) {Neo4j\\206.614 ent.};
+\node[draw, dashed, rounded corners=3pt, inner sep=4pt, fit=(mil)(sol)(neo),
+      label={[font=\scriptsize\itshape]above:capa de datos (Swarm)}] (data) {};
+
+\node[box, below=1.25cm of src] (q) {Consulta\\+ filtros};
+\node[box, right=of q] (tr) {Traducci\'on\\es$\leftrightarrow$en};
+\node[box, right=of tr] (rt) {Router\\\texttt{hybrid\_boost}};
+\node[box, right=of rt] (rr) {Reranker\\bge-reranker};
+\node[box, right=of rr] (cx) {Contexto\\dedupe · compresi\'on};
+\node[box, right=of cx] (gen) {Generaci\'on\\v3 · 4B · listas};
+\node[box, right=of gen] (gr) {Guardarra\'iles\\cita · juez};
+\node[box, right=of gr, fill=black!10] (resp) {Respuesta\\con citas};
+
+\node[note, below=0.8cm of q] (ui) {API FastAPI\\UI Streamlit};
+\node[note, below=0.8cm of cx] (lang) {Langfuse\\trazas y scores};
+\node[note, below=0.8cm of gr] (abs) {Abstenci\'on\\con motivo};
+\node[note, below=0.8cm of resp] (ev) {Evaluaci\'on\\4 conjuntos};
+
+\draw[arr] (src) -- (ing);
+\draw[arr] (ing) -- (data.west);
+\draw[arr] (data.south) -- ++(0,-0.4) -| (rt.north);
+\draw[arr] (q) -- (tr);
+\draw[arr] (tr) -- (rt);
+\draw[arr] (rt) -- (rr);
+\draw[arr] (rr) -- (cx);
+\draw[arr] (cx) -- (gen);
+\draw[arr] (gen) -- (gr);
+\draw[arr] (gr) -- (resp);
+\draw[arr] (ui) -- (q);
+\draw[darr] (rr.south) -- ++(0,-0.35) -| (lang.north);
+\draw[darr] (gr) -- (abs);
 \end{tikzpicture}
-\caption{Flujo de una consulta en la instancia final. La compuerta solo act\'ua con el Modo estricto; el condensador solo en preguntas encadenadas. Las l\'ineas discontinuas son las salidas de abstenci\'on, antes y despu\'es de generar.}
+\caption{Arquitectura de la instancia final. La capa de datos (Milvus, Solr y Neo4j) se despliega como stack de Docker Swarm en el servidor y la aplicaci\'on (API, interfaz y Ollama) con Compose en la estaci\'on, que es la \'unica que pasa la GPU AMD. La consulta se traduce al otro idioma del corpus y las dos listas se fusionan por RRF; el router \texttt{hybrid\_boost} une la recuperaci\'on densa y BM25 con el bono de entidades del grafo; el contexto se deduplica y se comprime antes del prompt v3. Las l\'ineas discontinuas marcan la traza hacia Langfuse y la abstenci\'on con motivo; el bloque de evaluaci\'on no forma parte del flujo de una consulta.}
 \label{fig:arquitectura}
-\end{figure}
+\end{figure*}
 
 \subsection{Capas y justificaci\'on}
 
@@ -52,11 +63,11 @@ La arquitectura se organiza como un marco modular de capas con contratos expl\'i
 
 \textbf{Codificaci\'on.} La capa recibe texto y devuelve vectores densos. El contrato exige multiling\"uismo sin ajuste fino y una dimensi\'on declarada en la etiqueta de la colecci\'on. La comparaci\'on entre e5-base, qwen3-embedding y bge-m3 se reporta en la Secci\'on~\ref{sec:experimentos}; la instancia final es bge-m3 \cite{chen2024bge}.
 
-\textbf{Recuperaci\'on.} La capa recibe una consulta y devuelve $k$ fragmentos con puntuaci\'on. El contrato exige dos rutas independientes, densa y dispersa, deduplicaci\'on por texto y conservaci\'on del top-5 denso que consume la compuerta. La instancia final une denso top-10 y BM25 top-20; las mezclas y la fusi\'on RRF se miden en la Secci\'on~\ref{sec:experimentos}. El mismo contrato se implement\'o sobre Solr 9 con \texttt{edismax}; el \'indice replica los 618.286 fragmentos y se selecciona con \texttt{RETRIEVER=solr}.
+\textbf{Recuperaci\'on.} La capa recibe una consulta y devuelve $k$ fragmentos con puntuaci\'on. El contrato exige dos rutas independientes, densa y dispersa, deduplicaci\'on por texto y conservaci\'on del top-5 denso que consume la compuerta. La instancia final une denso top-10 y BM25 top-20 y suma al \texttt{rerank\_score} un bono de 0,15 por cada entidad de la consulta presente en el fragmento (\texttt{hybrid\_boost}); las mezclas, la fusi\'on RRF y el bono se miden en la Secci\'on~\ref{sec:experimentos}. El mismo contrato se implement\'o sobre Solr 9 con \texttt{edismax}; el \'indice replica los 618.286 fragmentos y se selecciona con \texttt{RETRIEVER=solr}.
 
 \textbf{Reordenamiento.} La capa recibe pares pregunta-fragmento y devuelve un orden. El contrato exige una puntuaci\'on reutilizable por la compuerta para no pagar dos pasadas. El cross-encoder multiling\"ue corre en GPU con lote de 16 \cite{nogueira2019passage}; el coste medido es 0,68 s para 50 pares, frente a 1,30 s para 5 pares en CPU. El recorte y la profundidad se comparan en la Secci\'on~\ref{sec:experimentos}.
 
-\textbf{Generaci\'on.} La capa recibe el prompt y el contexto y devuelve texto con citas. El contrato es agn\'ostico del modelo: temperatura 0, presupuesto de 16.384 tokens de entrada, prompt v2 con ocho reglas y frase de abstenci\'on exacta. gemma4:e4b es la instancia final por contexto y MTP, no por ganar una comparaci\'on directa; los modelos peque\~nos y la corrida final se eval\'uan en la Secci\'on~\ref{sec:experimentos}.
+\textbf{Generaci\'on.} La capa recibe el prompt y el contexto y devuelve texto con citas. El contrato es agn\'ostico del modelo: temperatura 0, presupuesto de 16.384 tokens de entrada, prompt v3 con ocho reglas y frase de abstenci\'on exacta. gemma4:e4b es la instancia final por contexto y MTP, no por ganar una comparaci\'on directa; los modelos peque\~nos y la corrida final se eval\'uan en la Secci\'on~\ref{sec:experimentos}.
 
 \textbf{Conversaci\'on.} La capa recibe el historial y la \'ultima pregunta y devuelve una consulta aut\'onoma. El contrato exige no cargar un segundo modelo grande; gemma2:2b act\'ua de condensador y, si pierde el tema, se antepone la primera pregunta del usuario.
 
@@ -66,36 +77,74 @@ La arquitectura se organiza como un marco modular de capas con contratos expl\'i
 
 \textbf{API e interfaz.} FastAPI separa el pipeline de la presentaci\'on y expone \texttt{/chat}, \texttt{/ask}, \texttt{/retrieve}, \texttt{/health}, \texttt{/models} y \texttt{/stats} \cite{fastapidocs}. Streamlit consume \texttt{/chat} y muestra la respuesta, las citas, las evidencias, las m\'etricas y el razonamiento \cite{streamlitdocs}. La separaci\'on permite probar el pipeline sin la interfaz y cambiar la interfaz sin tocar el pipeline.
 
+\subsection{Mapa de t\'ecnicas}
+
+La Tabla~\ref{tab:tecnicas} re\'une las t\'ecnicas que quedaron en la instancia final, el problema que atacan, c\'omo se implementaron y el resultado que las sostiene. Es el resumen del ``por qu\'e, c\'omo y para qu\'e''; el detalle de cada implementaci\'on est\'a en la Secci\'on~\ref{sec:metodo} y la medici\'on en la Secci\'on~\ref{sec:experimentos}.
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\caption{T\'ecnicas de la configuraci\'on final: problema, implementaci\'on, resultado y secci\'on.}
+\label{tab:tecnicas}
+\begin{tabular}{@{}p{2.3cm}p{3.9cm}p{4.8cm}p{4.4cm}c@{}}
+\toprule
+T\'ecnica & Por qu\'e & C\'omo & Resultado & Sec. \\
+\midrule
+Limpieza V2 & Ruido de rastreo y HTML & NFKC, sin HTML ni URL, espacios colapsados & Sin mejora significativa; se adopta por consistencia & \ref{sec:limpieza} \\
+Chunking fijo & La respuesta cae en la frontera & 1000 caracteres, 150 de solape, metadatos & Supera a oraciones y es m\'as r\'apido & \ref{sec:chunking} \\
+bge-m3 & Consultas y documentos en dos idiomas & Embeddings fp16 en GPU, 1024 dimensiones & Recall@10 0,842 frente a 0,684 de e5-base & \ref{sec:indice} \\
+HNSW \texttt{ef}=800 & Recall sin disparar la latencia & \'Indice aproximado con exploraci\'on ajustable & Recall@10 0,895; arriba no mejora & \ref{sec:indice} \\
+Uni\'on densa + BM25 & El denso no trae cifras ni nombres raros & Dos listas, dedupe por texto, top-5 denso intacto & Recall@10 0,700 en el reservado & \ref{sec:recuperacion} \\
+Reranker en GPU & El orden importa m\'as que el corte & Cross-encoder sobre 50 pares, lote de 16 & 0,68 s; nDCG y P@1 suben sin perder recall & \ref{sec:recuperacion} \\
+\texttt{hybrid\_boost} & Entidades que el vector diluye & Bono de 0,15 por solape con las entidades del grafo & 0,861 en silver; 0,900 en multi-documento & \ref{sec:grafo} \\
+Prompt v3 & El modelo omit\'ia datos pedidos & Respuesta directa, todos los datos, dos ejemplos & RAGAS 0,590 a 0,652 con la misma exactitud & \ref{sec:generacion} \\
+Traducci\'on + RRF & Pregunta y evidencia en idiomas distintos & Traducci\'on al otro idioma, fusi\'on 0,5/0,5 & Resuelve g-046; test 0,917 a 0,958 & \ref{sec:traduccion} \\
+Listas en JSON & Enumeraciones incompletas & Detecci\'on por patr\'on, JSON, composici\'on & Resuelve g-003; test 0,958 & \ref{sec:listas} \\
+Grafo Neo4j & Desambiguar entidades & Documento a entidad, un salto, filtro de ruido & 206.614 entidades; cobertura 0,626 a 0,655 & \ref{sec:grafo} \\
+Compuerta & Abstenci\'on barata antes de generar & Log\'istica sobre cross-encoder y se\~nales de recuperaci\'on & F1 0,952; 0 falsos aceptados de 9 & \ref{sec:compuerta} \\
+Guardarra\'iles & Citas inventadas o sin respaldo & Cita obligatoria, entidades y juez distinto & Anclaje 0,907 en silver & \ref{sec:guardarrailes} \\
+Langfuse & Atribuir cada mejora a una causa & SDK, spans, scores y datasets & Cuatro corridas comparables sobre 43 & \ref{sec:obs-metodo} \\
+Solr & Backend sustituible sin cambiar el contrato & \texttt{edismax} y \texttt{knn\_vector} sobre el mismo corpus & BM25 iguala 0,763; denso 0,605 & \ref{sec:solr} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
 \subsection{Configuraci\'on final}
 
 La Tabla~\ref{tab:config-final} fija la instancia final del marco. Cada valor se justifica en las Secciones~\ref{sec:metodo} y~\ref{sec:experimentos}.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
-\caption{Configuraci\'on final del sistema.}
+\footnotesize
+\caption{Configuraci\'on desplegada. Los valores se fijan en \texttt{.env} y cada uno se justifica en las Secciones~\ref{sec:metodo} y~\ref{sec:experimentos}.}
 \label{tab:config-final}
 \begin{tabular}{ll}
 \toprule
 Par\'ametro & Valor \\
 \midrule
-Codificador & BAAI/bge-m3, 1024 dimensiones \\
-\'Indice & HNSW en Milvus, \texttt{ef}=800 \\
-Recuperaci\'on & uni\'on densa top-10 + BM25 top-20, $k=10$ \\
+Codificador & BAAI/bge-m3, 1024 dimensiones, fp16 en GPU \\
+\'Indice vectorial & Milvus 2.6.6, HNSW, \texttt{ef}=800, 618.286 fragmentos \\
+Recuperaci\'on & \texttt{RETRIEVER=hybrid\_boost}: denso top-10 + BM25 top-20, $k=10$ \\
+Bono de grafo & 0,15 por entidad de la consulta presente en el fragmento \\
 Reordenador & BAAI/bge-reranker-v2-m3, GPU, top-10 \\
-Generador & gemma4:e4b, Q4\_K\_M \\
-Contexto & 116.384 tokens (16.384 entrada, 100.000 salida) \\
-MTP & draft 3, 217 tok/s \\
-Prompt & v2 \\
+Traducci\'on & \texttt{TRANSLATION=1}, es$\leftrightarrow$en, fusi\'on RRF 0,5/0,5 \\
+Listas & \texttt{LIST\_EXTRACTION=1}, JSON con composici\'on y reserva \\
+Generador & gemma4:e4b, Q4\_K\_M, 16.384 tokens de entrada \\
+Prompt & v3 \\
+Grafo & Neo4j 5.26, 206.614 entidades y 852.751 menciones \\
+Backend alterno & Solr 9, \texttt{edismax} + \texttt{knn\_vector}, \texttt{RETRIEVER=solr} \\
+Observabilidad & Langfuse 4.78: trazas, scores y datasets \\
 Juez y condensador & gemma2:2b \\
-Compuerta & regresi\'on log\'istica con cross-encoder, umbral 0,4 \\
-Fragmentos & 618.286 en \texttt{rag\_full\_bge\_m3\_d1024\_v1} \\
+Compuerta & regresi\'on log\'istica sobre cross-encoder, umbral 0,4 \\
+Apagados & \texttt{NUMERIC\_VERIFICATION=0}, \texttt{QUERY\_EXPANSION=0}, \texttt{CANDIDATE\_GUARANTEE=0} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \subsection{Despliegue: datos en Swarm, GPU en la estaci\'on}
 
-La capa de datos (etcd, MinIO y Milvus) se despliega como un stack de Docker Swarm en el servidor, con la etiqueta \texttt{role=data}. Milvus publica el puerto 19530 en modo host y el API se conecta a \texttt{http://192.168.1.100:19530}. La aplicaci\'on (API, frontend y Ollama) corre en la estaci\'on con Compose y \texttt{network\_mode: host}, porque necesita la GPU AMD.
+La capa de datos (etcd, MinIO, Milvus y Solr) se despliega como un stack de Docker Swarm en el servidor, con la etiqueta \texttt{role=data}. Milvus publica el puerto 19530 y Solr el 8983 en modo host; el API se conecta a \texttt{http://192.168.1.100:19530}. La aplicaci\'on (API, frontend y Ollama) corre en la estaci\'on con Compose y \texttt{network\_mode: host}, porque necesita la GPU AMD.
 
 La separaci\'on no es arbitraria. Swarm aporta colocaci\'on declarativa, pol\'itica de reinicio y una red overlay que elimina el t\'unel SSH de la versi\'on anterior; con el t\'unel, una ca\'ida de la conexi\'on dejaba al sistema sin recuperaci\'on. La aplicaci\'on no puede ir en el stack: Docker Swarm no admite el paso de dispositivos (\texttt{devices}) ni \texttt{privileged} en un servicio, y el cgroup de dispositivos bloquea \texttt{/dev/kfd} con \textit{Operation not permitted} aunque se monte el nodo y el grupo sea el correcto. Se comprob\'o con un servicio de prueba: el montaje y los grupos 983 y 987 funcionan, pero la apertura del dispositivo falla. Un stack completo obligar\'ia a mover el generador a la GPU del servidor (GTX 1080 de 8 GB), que no soporta el contexto de 116K.
 

@@ -2,20 +2,29 @@
 \label{sec:metodo}
 
 \subsection{Limpieza y deduplicaci\'on}
+\label{sec:limpieza}
 
 La variante adoptada, V2, descarta las p\'aginas de error del rastreador, aplica normalizaci\'on NFKC, quita HTML y URLs y colapsa espacios. No elimina signos, n\'umeros ni entidades, porque son la se\~nal que usan los guardarra\'iles. Los duplicados exactos y los near-duplicates se descartan al armar el contexto, comparando el hash del fragmento y su SimHash antes de insertarlo. As\'i se conserva la procedencia en el \'indice y se evita repetir el mismo texto en el prompt.
 
 \subsection{Segmentaci\'on}
+\label{sec:chunking}
 
 Se usa chunking fijo de 1000 caracteres con 150 de solape (\texttt{fixed\_v2}). El solape cubre la frontera donde suele caer la respuesta. Cada fragmento guarda \texttt{document\_id}, t\'itulo, URL, fuente, idioma, fecha, posici\'on, estrategia y hash del texto. Esos metadatos permiten filtrar por idioma y fecha y auditar cada cita.
 
 \subsection{Codificaci\'on e \'indice}
+\label{sec:indice}
 
 Los fragmentos se codifican con BAAI/bge-m3 en la GPU, en fp16 y por lotes. La colecci\'on se llama \texttt{rag\_full\_bge\_m3\_d1024\_v1} y usa HNSW con \texttt{ef}=800 en la b\'usqueda. El par\'ametro se eligi\'o con una rejilla sobre el silver: por debajo de 800 el recall cae y por encima la latencia sube sin ganancia apreciable. En paralelo se mantiene una colecci\'on BM25 sobre los mismos fragmentos, \texttt{rag\_full\_e5base\_d768\_v2\_bm25\_v1}, que alimenta la recuperaci\'on dispersa.
 
 \subsection{Recuperaci\'on y reordenamiento}
+\label{sec:recuperacion}
 
-La recuperaci\'on combina dos listas. La densa pide 10 fragmentos a bge-m3; la dispersa pide 20 a BM25. Las dos se unen sin fusionar, se deduplican por texto y se pasan al reordenador. El cross-encoder multiling\"ue punt\'ua cada par pregunta-fragmento en GPU, con lote de 16, y el resultado se recorta a 10. La uni\'on conserva el top-5 denso, que es la se\~nal que la compuerta espera, y a\~nade las entidades que BM25 encuentra y el denso no. Los filtros de idioma, fecha y colecci\'on se aplican en Milvus.
+La recuperaci\'on combina dos listas. La densa pide 10 fragmentos a bge-m3; la dispersa pide 20 a BM25. Las dos se unen sin fusionar, se deduplican por texto y se pasan al reordenador. El cross-encoder multiling\"ue punt\'ua cada par pregunta-fragmento en GPU, con lote de 16, y el resultado se recorta a 10. La uni\'on conserva el top-5 denso, que es la se\~nal que la compuerta espera, y a\~nade las entidades que BM25 encuentra y el denso no. Los filtros de idioma, fecha y colecci\'on se aplican en Milvus. Sobre esa uni\'on, \texttt{hybrid\_boost} suma al \texttt{rerank\_score} un bono de 0,15 por cada entidad de la consulta que aparece en el fragmento y vuelve a ordenar; el bono desempata sin cambiar los candidatos, a diferencia de \texttt{graph\_hybrid}, que los sustituye. Cuando la consulta y la evidencia pueden estar en idiomas distintos, la recuperaci\'on se repite con la traducci\'on y las dos listas se fusionan por RRF (Secci\'on~\ref{sec:traduccion}).
+
+\subsection{Traducci\'on de la consulta}
+\label{sec:traduccion}
+
+El corpus mezcla espa\~nol e ingl\'es, y una pregunta en un idioma puede tener la respuesta en el otro. El pipeline traduce la consulta al idioma opuesto y busca las dos formas. La detecci\'on es una heur\'istica declarada: si la consulta contiene marcadores del espa\~nol (el signo de apertura de interrogaci\'on, \texttt{qu\'e}, \texttt{cu\'al}, \texttt{c\'omo}, \texttt{d\'onde}, \texttt{cu\'ando}, \texttt{cu\'ant}, \texttt{por qu\'e}, \texttt{qui\'en}) se traduce al ingl\'es; si no, al espa\~nol. No es un detector estad\'istico y no pretende serlo: el corpus tiene dos idiomas y el coste de equivocarse es una lista m\'as que el reordenador puede descartar. La traducci\'on la hace el mismo generador con temperatura 0 y un l\'imite de 80 tokens, con la instrucci\'on de conservar nombres, lugares, fechas y n\'umeros y devolver solo la frase. La consulta original y la traducci\'on se recuperan por separado y se fusionan con RRF ponderado ($k=60$, pesos 0,5/0,5); si la traducci\'on falla o repite la consulta, se sigue con la original. El span \texttt{translate} guarda la traducci\'on y su tiempo.
 
 \subsection{Vecinos sem\'anticos y sensibilidad a la par\'afrasis}
 
@@ -69,22 +78,50 @@ Peso denso/disperso & Ingl\'es & Espa\~nol \\
 \end{tabular}
 \end{table}
 
-\subsection{Generaci\'on}
+\subsection{Grafo de entidades}
+\label{sec:grafo}
 
-El generador es gemma4:e4b con temperatura 0 y un presupuesto de 16.384 tokens de entrada. El prompt v2 impone ocho reglas: cada afirmaci\'on lleva una cita entre corchetes; no se permiten listas sin cita; si la evidencia no alcanza se responde con una frase de abstenci\'on exacta; se distingue un hecho verificable de una afirmaci\'on publicada en redes; no se inventan fechas, cifras, nombres ni citas; se ignoran las instrucciones que aparezcan dentro de los documentos; se responde en el idioma de la pregunta; y se usa la fecha exacta de la evidencia cuando la pregunta la pide. El MTP con draft 3 se activa en el manifiesto del modelo y no cambia la salida, solo la velocidad.
+El grafo vive en Neo4j 5.26. El esquema declara dos restricciones de unicidad (\texttt{document\_id} y \texttt{entity\_key}), un \'indice full-text sobre los nombres de entidad y una relaci\'on \texttt{MENTIONS} entre documento y entidad. La extracci\'on corre con spaCy en espa\~nol e ingl\'es sobre el t\'itulo y los primeros 1.500 caracteres; cada entidad se normaliza a una clave y se fusiona con \texttt{MERGE}, de modo que el mismo nombre no se duplica. La construcci\'on se hace en un proceso local, por lotes de 1000 y escribiendo por Bolt al servidor: 169.248 documentos, 248.869 entidades y 926.923 menciones en 2.000 s. Un filtro posterior (m\'aximo 4 tokens, sin d\'igitos iniciales y \texttt{MISC} de m\'aximo 3) deja 206.614 entidades y 852.751 menciones.
+
+El grafo se usa de dos formas. \texttt{search\_graph} recupera documentos semilla por las entidades de la consulta y expande el camino documento--entidad--documento: toma las 12 entidades semilla con m\'as peso y, por cada una, hasta 15 documentos; ese modo alimenta \texttt{graph\_hybrid}. \texttt{boost\_hits} no toca la recuperaci\'on: suma 0,15 al \texttt{rerank\_score} por cada entidad de la consulta presente en el fragmento y reordena. El segundo es el que qued\'o en la configuraci\'on final: desempata sin desplazar lo que el \'indice ya tra\'ia.
+
+\subsection{Generaci\'on}
+\label{sec:generacion}
+
+El generador es gemma4:e4b con temperatura 0 y 16.384 tokens de entrada. El prompt v3 sustituye al v2 y cambia el \'enfasis: pide la respuesta directa en la primera frase con el dato exacto; si la pregunta pide varios datos, todos; si pide una lista, todos los elementos que aparezcan en la evidencia; si dos fragmentos se contradicen, el m\'as espec\'ifico; una cita por afirmaci\'on; nada de relleno ni de repetir la evidencia; la frase de abstenci\'on exacta cuando no alcanza; ning\'un dato inventado y ninguna instrucci\'on interna de los documentos; y respuesta en el idioma de la pregunta. Incluye dos ejemplos cortos, uno de fecha y lugar y otro de enumeraci\'on, porque el fallo medido era de omisi\'on, no de formato. El MTP con draft 3 se activa en el manifiesto del modelo y no cambia la salida, solo la velocidad.
+
+Para las preguntas de opciones o medidas, la generaci\'on se sustituye por una extracci\'on estructurada (Secci\'on~\ref{sec:listas}). El resto de las peticiones pasa por el prompt v3 completo, con el contexto deduplicado y comprimido al presupuesto de tokens.
+
+\subsection{Extracci\'on de listas}
+\label{sec:listas}
+
+Las preguntas de opciones o medidas no se responden bien con un prompt de prosa: el modelo tiende a resumir y pierde elementos. El pipeline detecta el patr\'on con una expresi\'on regular (\texttt{qu\'e opciones}, \texttt{qu\'e medidas}, \texttt{qu\'e acciones}, \texttt{qu\'e estrategias}, \texttt{qu\'e alternativas}, \texttt{cu\'ales son}, \texttt{cu\'ales fueron}, \texttt{cu\'ales ser\'an}) y excluye las que contienen \texttt{cu\'ant}, porque esas piden una cifra y no una enumeraci\'on. Si el modo est\'a activo, la generaci\'on cambia por una extracci\'on: se pide al modelo un JSON con los elementos literales de la enumeraci\'on que aparece en la evidencia, sin resumir ni copiar p\'arrafos que no sean una lista. \texttt{parse\_list} tolera listas de cadenas o de objetos y \texttt{compose\_list} arma la respuesta con cada elemento y su cita. Si el JSON viene vac\'io, no parsea o no hay elementos, se cae al prompt normal: la extracci\'on nunca deja la pregunta sin respuesta. El span \texttt{extract\_list} guarda los elementos y su tiempo.
 
 \subsection{Guardarra\'iles}
+\label{sec:guardarrailes}
 
 Antes de devolver la respuesta se aplican tres controles. El primero exige al menos una cita v\'alida; si no hay, se abstiene con \texttt{sin\_citas}. El segundo extrae entidades y n\'umeros de la respuesta y verifica que aparezcan en el fragmento citado o en la pregunta; si no, se abstiene con \texttt{sin\_respaldo} o \texttt{citas\_invalidas}. El tercero pide a un juez distinto, gemma2:2b, que decida si la cita sostiene la respuesta; si dice que no, se abstiene con \texttt{juez\_no}. Cuando el fragmento est\'a en ingl\'es y la respuesta en espa\~nol, la cobertura l\'exica se salta y decide el juez, para no castigar una traducci\'on correcta.
 
 \subsection{Compuerta de dominio}
+\label{sec:compuerta}
 
 La compuerta usa la puntuaci\'on del cross-encoder sobre el top-5 (m\'aximo, media, diferencia entre el primero y el segundo, y m\'inimo), cinco features de recuperaci\'on (puntuaci\'on del primer fragmento, media del top-5, diferencia entre el primero y el segundo, solapamiento entre la pregunta y el t\'itulo, y presencia de la entidad principal en el t\'itulo) y un one-hot del tipo de pregunta. La puntuaci\'on del cross-encoder se calcula una sola vez y se reutiliza para el reordenamiento. El modelo es una regresi\'on log\'istica con escalado y \texttt{class\_weight=balanced}; la regularizaci\'on se eligi\'o por validaci\'on cruzada de cinco pliegues sobre train y dev. El umbral es 0,4, elegido para reducir falsos rechazos sin aumentar falsos aceptados. El conjunto tiene 160 preguntas: 60 de dominio y 100 de fuera, con split 103/37/20. Las 40 negativas nuevas son entidades inventadas, eventos futuros y conocimiento general fuera del corpus.
 
+\subsection{Observabilidad}
+\label{sec:obs-metodo}
+
+Cada petici\'on abre una traza \texttt{ask} en Langfuse 4.78 y un span por etapa: \texttt{translate}, \texttt{retrieve}, \texttt{rerank}, \texttt{generate}, \texttt{extract\_list} y \texttt{grounding}, con la entrada, la salida, los tiempos y los tokens. Los fragmentos recuperados se registran con su \texttt{chunk\_id} y su puntuaci\'on; el prompt se recorta a 8.000 caracteres para no duplicar el contexto en el servidor de trazas; la respuesta lleva el \texttt{trace\_id} para enlazarla desde la API. Al cerrar la petici\'on se adjuntan tres scores: \texttt{citation\_valid}, \texttt{grounded} y \texttt{latency\_ms}. Si Langfuse no responde, \texttt{observation} devuelve \texttt{None} y el pipeline contin\'ua: la observabilidad no es una dependencia dura. Los conjuntos viven como Dataset y cada corrida es un experimento que calcula cuatro scores por \'item: \texttt{correct}, \texttt{token\_recall}, \texttt{citation\_valid} y \texttt{grounded}.
+
+\subsection{Solr como backend alterno}
+\label{sec:solr}
+
+El mismo contrato de recuperaci\'on se implement\'o sobre Solr 9. El esquema declara \texttt{text} y \texttt{title} como \texttt{text\_general} con \texttt{qf=text title\^{}2}, los metadatos como campos almacenados y \texttt{vector} como \texttt{knn\_vector} de 1024 dimensiones con similitud coseno. La b\'usqueda l\'exica usa \texttt{edismax}; la densa usa el query parser \texttt{\{!knn f=vector topK=k\}} con el vector de bge-m3. La ingesta se hace con \texttt{index\_solr} e \texttt{index\_solr\_vectors}, que replican los mismos 618.286 fragmentos, y el despliegue con \texttt{scripts/deploy\_solr.sh}, que crea el core y el esquema. Se selecciona por petici\'on con \texttt{RETRIEVER=solr} y no cambia el resto del pipeline. BM25 iguala el recall del BM25 de Milvus (0,763) y el denso se queda en 0,605 frente a 0,842 de Milvus; por eso Milvus es el backend por defecto y Solr queda como alternativa verificada.
+
 \subsection{API e interfaz}
+\label{sec:api}
 
 La API expone \texttt{POST /chat} con historial, \texttt{think} y \texttt{strict}; \texttt{POST /ask} sin historial; \texttt{POST /retrieve} para recuperaci\'on pura; y los GET \texttt{/health}, \texttt{/models} y \texttt{/stats}. La interfaz Streamlit consume \texttt{/chat} y guarda el historial en la sesi\'on. Las preferencias de razonamiento, Modo estricto y tema se guardan en un archivo y se recuperan al recargar. Si el usuario cambia un interruptor mientras el modelo responde, la pregunta queda pendiente y se reintenta en el siguiente ciclo, de modo que la conversaci\'on no se pierde.
 
 \subsection{Despliegue}
 
-El stack se levanta con Docker Compose: etcd, MinIO, Milvus, Ollama, API, frontend y un worker GPU para la ingesta y la evaluaci\'on. La API y el frontend usan red de host. Un servicio de una sola ejecuci\'on, \texttt{prewarm}, espera a que la API est\'e sana y carga el generador, el embedding y el reranker, para que la primera consulta web no pague la carga del modelo.
+El stack completo se levanta con \texttt{make all-up}: Docker Compose construye y arranca etcd, MinIO, Milvus, Solr, Ollama, la API y el frontend, espera a que la API est\'e sana, descarga los modelos, ingiere el Parquet, construye la colecci\'on dispersa e indexa Solr en texto y vectores. \texttt{make obs-up} levanta Langfuse en el servidor y \texttt{make graph-build} construye el grafo. La capa de datos corre en Swarm y la aplicaci\'on en la estaci\'on con red de host, porque es la \'unica que pasa la GPU AMD; la justificaci\'on est\'a en la Secci\'on~\ref{sec:arquitectura}.
