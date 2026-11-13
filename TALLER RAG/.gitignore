@@ -4,3 +4,4 @@ __pycache__/
 .pytest_cache/
 .streamlit/secrets.toml
 docker/observability/.env
+docker/cloudflared/.env

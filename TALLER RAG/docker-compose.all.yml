@@ -173,7 +173,7 @@ services:
       EMBEDDING_DEVICE: cuda
       EMBEDDING_HALF: "true"
       EMBEDDINGS_BATCH: "128"
-      MILVUS_URI: http://localhost:19530
+      MILVUS_URI: ${MILVUS_URI:-http://localhost:19530}
       MILVUS_COLLECTION: rag_full_bge_m3_d1024_v1
       RETRIEVER: hybrid_union
       TOP_K: "10"
@@ -212,7 +212,7 @@ services:
     environment:
       PYTHONPATH: /work
       API_URL: http://localhost:8010
-      MILVUS_URI: http://localhost:19530
+      MILVUS_URI: ${MILVUS_URI:-http://localhost:19530}
       SOLR_URL: http://localhost:8983/solr/noticias
       OLLAMA_URL: http://localhost:11435
       EMBEDDER: bge
@@ -301,7 +301,7 @@ services:
       PYTHONPATH: /eval
       API_URL: http://localhost:8010
       OLLAMA_URL: http://localhost:11435
-      MILVUS_URI: http://localhost:19530
+      MILVUS_URI: ${MILVUS_URI:-http://localhost:19530}
       SOLR_URL: http://localhost:8983/solr/noticias
       HF_HOME: /root/.cache/huggingface
     volumes:

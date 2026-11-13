@@ -1,0 +1,15 @@
+# Tunel de Cloudflare para la demo publica del taller.
+# Uso: docker compose -f docker-compose.tunnel.yml up -d
+# Requiere docker/cloudflared/.env con TUNNEL_TOKEN.
+name: taller-rag-tunnel
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: taller-rag-cloudflared
+    restart: unless-stopped
+    network_mode: host
+    command: tunnel --no-autoupdate run
+    env_file:
+      - path: docker/cloudflared/.env
+        required: true
