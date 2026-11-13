@@ -146,10 +146,13 @@ def main() -> None:
     save_figure(fig, figures / "perfil_idiomas.png")
 
     years = df["year"].value_counts().sort_index()
-    fig, ax = plt.subplots(figsize=(7, 3))
+    fig, ax = plt.subplots(figsize=(7, 3.2))
     years.plot(kind="bar", ax=ax, color=WARM)
     ax.set_title("Documentos por año")
     ax.set_ylabel("Documentos")
+    ax.set_xlabel("Año")
+    ax.set_xticks(range(len(years)))
+    ax.set_xticklabels([str(int(year)) for year in years.index], rotation=90, fontsize=7)
     save_figure(fig, figures / "perfil_anios.png")
 
     print(json.dumps({"filas": n, "duplicados": duplicates, "sin_idioma": stats["sin_idioma"]}, ensure_ascii=False))
