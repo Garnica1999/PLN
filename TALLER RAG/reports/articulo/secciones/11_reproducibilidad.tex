@@ -43,7 +43,7 @@ make ps
 curl http://localhost:8010/health
 \end{verbatim}
 
-\texttt{make all-up} construye y arranca \texttt{docker-compose.all.yml} (etcd, MinIO, Milvus, Solr, Ollama, API y frontend), espera a que la API est\'e sana, descarga \texttt{gemma4:e4b} y \texttt{gemma2:2b}, ingiere el Parquet, construye la colecci\'on dispersa e indexa Solr en texto y vectores. El servicio \texttt{prewarm} carga el generador, el embedding y el reordenador cuando la API est\'a sana. El apagado deja los vol\'umenes intactos:
+\texttt{make all-up} construye y arranca el stack completo (etcd, MinIO, Milvus, Solr, Ollama, API y frontend), espera a que la API est\'e sana, descarga \texttt{gemma4:e4b} y \texttt{gemma2:2b}, ingiere el Parquet, construye la colecci\'on dispersa e indexa Solr en texto y vectores. El servicio \texttt{prewarm} carga el generador, el embedding y el reordenador cuando la API est\'a sana. El apagado deja los vol\'umenes intactos:
 
 \begin{verbatim}
 make all-down
@@ -55,7 +55,7 @@ La capa de datos del servidor se despliega con el stack de Swarm y el core de So
 scripts/deploy_solr.sh
 \end{verbatim}
 
-El grafo se construye desde el Parquet con \texttt{make graph-build}, que ejecuta \texttt{python -m src.scripts.build\_graph --batch 1000}. La evaluaci\'on se corre contra un conjunto y se registra como experimento de Langfuse:
+El grafo se construye desde el Parquet con \texttt{make graph-build}, que ejecuta \texttt{build\_graph} por lotes de 1000. La evaluaci\'on se corre contra un conjunto y se registra como experimento de Langfuse:
 
 \begin{verbatim}
 make eval-langfuse RUN=extra-30
@@ -92,7 +92,7 @@ make obs-up
 make obs-down
 \end{verbatim}
 
-\texttt{make obs-up} usa el compose de observabilidad con su \texttt{.env} no versionado. Las capturas de Langfuse y Neo4j se generan con \texttt{scripts/capture\_firefox.py} y Firefox headless. El modo del recuperador se elige por petici\'on con el campo \texttt{retriever} (\texttt{hybrid\_union}, \texttt{hybrid\_boost}, \texttt{graph\_hybrid}, \texttt{solr}).
+\texttt{make obs-up} usa el compose de observabilidad con su archivo de entorno no versionado. Las capturas de Langfuse y Neo4j se generan con \texttt{scripts/capture\_firefox.py} y Firefox headless. El modo del recuperador se elige por petici\'on con el campo \texttt{retriever} (\texttt{hybrid\_union}, \texttt{hybrid\_boost}, \texttt{graph\_hybrid}, \texttt{solr}).
 
 \subsection{Artefactos}
 
