@@ -109,7 +109,7 @@ PREGUNTA: {question}
 """
 
 
-NUMERIC_PROMPT = """Extrae de la evidencia el dato numérico o la fecha exacta que pide la pregunta. Copia el literal, sin explicaciones. Devuelve solo JSON: {{"dato": "2024", "cita": 1}}
+NUMERIC_PROMPT = """La pregunta pide un año, una fecha o una cifra. Encuentra en la evidencia el dato del hecho que pregunta y cópialo literalmente. No uses el año de otro hecho. Devuelve solo JSON: {{"dato": "2024", "cita": 1}}
 
 EVIDENCIA:
 {context}

@@ -430,6 +430,28 @@ v3 sin boost (reservado) & 0,975 & \textbf{0,856} & \textbf{0,863} & \textbf{1,0
 
 La m\'etrica l\'exica subestima las respuestas correctas cuando cambian de idioma. En el reservado, r-012 responde \textit{Foro Econ\'omico Mundial} por \textit{World Economic Forum} y r-019 responde \textit{avispa asi\'atica} por \textit{Asian Hornet}; ambas son correctas y el chequeo de contenci\'on las marca como fallo, mientras RAGAS las punt\'ua por encima de 0,7. Con esa correcci\'on, el reservado pasa de 21 a 23 aciertos sobre 25. La configuraci\'on final a\~nade dos mecanismos: la traducci\'on de la consulta al otro idioma del corpus, fusionada por RRF, y la extracci\'on JSON de listas para preguntas de opciones. En test resuelve g-046 (Newcastle) y g-003 (las cinco opciones) y alcanza 0,958; en el silver completo sube de 0,837 a 0,884 y en el reservado se queda en 0,840. RAGAS: 0,668 en test y 0,623 en el reservado; fidelidad 1,0 y 0,947. El coste es 0,25 s de mediana. Se prob\'o adem\'as una verificaci\'on num\'erica que completa la cifra cuando falta: en la corrida de test acert\'o g-044 y lleg\'o a 1,000, pero en una consulta en vivo a\~nadi\'o 2017 en lugar de 2024 y RAGAS baj\'o de 0,668 a 0,655 en test y de 0,623 a 0,595 en el reservado. Se descarta: es un parche l\'exico inestable. g-044 sigue como omisi\'on del generador; quedan r-006 (la cifra de la c\'amara) y r-016 (pregunta ambigua). Las diferencias contra v3 + boost no excluyen cero (IC 95\,\% $[-0{,}116, 0]$ en el silver), as\'i que son tendencias.
 
+\subsection{Ampliaci\'on con documentos aleatorios}
+\label{sec:ampliacion}
+
+El test curado se eligi\'o a mano y puede sobreestimar el sistema. Para medirlo, se generaron 30 preguntas nuevas desde documentos aleatorios del corpus, fuera del silver: el LLM escribi\'o la pregunta a partir del documento y el span literal es el gold; la revisi\'on humana queda pendiente. La Tabla~\ref{tab:ampliacion} compara ambos conjuntos con la configuraci\'on final.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Test curado contra la ampliaci\'on aleatoria con la configuraci\'on final (v3, boost, traducci\'on y listas).}
+\label{tab:ampliacion}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Conjunto & n & Exactitud & Cobertura & Anclaje & RAGAS & Fidelidad & p50 \\
+\midrule
+Test curado & 24 & \textbf{0,958} & 0,564 & 0,833 & 0,668 & \textbf{1,000} & 1,50 s \\
+Ampliaci\'on & 30 & 0,800 & \textbf{0,749} & \textbf{0,867} & \textbf{0,674} & 0,971 & 1,48 s \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+La exactitud baja 15,8 puntos al salir del conjunto elegido a mano; la correcci\'on RAGAS se mantiene (0,674 frente a 0,668), la fidelidad en 0,971 y la cobertura de contexto en 1,0. La ca\'ida no es una regresi\'on del sistema: es el efecto de evaluar sobre documentos que no se seleccionaron para que el sistema luciera. La ampliaci\'on tiene 30 preguntas, as\'i que su intervalo sigue siendo amplio; el set de 120-150 queda como trabajo futuro.
+
 \subsection{Resumen de resultados}
 
 La Figura~\ref{fig:resumen} re\'une los tres resultados principales: RAGAS por configuraci\'on, las pol\'iticas de ambig\"uedad sobre el silver humano y el flujo del conjunto reservado con y sin compuerta.
