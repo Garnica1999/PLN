@@ -88,16 +88,16 @@ CANDIDATE_GUARANTEE=0
 
 La aplicaci\'on qued\'o publicada en \url{https://tallerrag.hardwareelite.online} mediante un t\'unel de Cloudflare. El t\'unel \texttt{taller-rag} se cre\'o con la API de Cloudflare, con configuraci\'on remota y un solo ingress: el hostname p\'ublico apunta a \texttt{http://localhost:8501}, el puerto del frontend, y el resto de las rutas devuelve 404. El DNS es un CNAME proxied a \texttt{<id>.cfargotunnel.com}. El conector corre como un contenedor m\'as (\texttt{docker-compose.tunnel.yml}, red de host y \texttt{restart: unless-stopped}) y lee el token de \texttt{docker/cloudflared/.env}, que no se versiona. La p\'agina no tiene autenticaci\'on: es una demo abierta del taller, no un despliegue de producci\'on.
 
-La aplicaci\'on corre en la estaci\'on y el frontend habla con el API por \texttt{localhost:8010}; el API usa el Milvus y el Solr del servidor (\texttt{192.168.1.100}) y el generador y el embedding locales. Cloudflare publica solo el 8501, de modo que la API no queda expuesta. La Figura~\ref{fig:demo} muestra una consulta real hecha por la URL p\'ublica.
+La aplicaci\'on corre en la estaci\'on y el frontend habla con el API por \texttt{localhost:8010}; el API usa el Milvus y el Solr del servidor (\texttt{192.168.1.100}) y el generador y el embedding locales. Cloudflare publica dos hostnames: \texttt{tallerrag}, que sirve la interfaz, y \texttt{langfuse}, que sirve el panel de trazas; la API no queda expuesta. La barra lateral enlaza el panel y cada respuesta enlaza su propia traza. La Figura~\ref{fig:demo} muestra una consulta real hecha por la URL p\'ublica.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.9\textwidth]{demo_publica.png}
-\caption{Demo p\'ublica: consulta real por \texttt{tallerrag.hardwareelite.online}. La respuesta cita siete de las diez evidencias recuperadas, la compuerta acepta la pregunta con probabilidad 0,919 y la interfaz muestra la ruta y la latencia. La primera consulta paga la carga del reordenador; en caliente, la misma pregunta tarda 4,5 s.}
+\caption{Demo p\'ublica: consulta real por \texttt{tallerrag.hardwareelite.online}. La respuesta cita siete de las diez evidencias recuperadas, la compuerta acepta la pregunta con probabilidad 0,919 y la interfaz muestra la ruta y la latencia. El bot\'on \textit{Ver traza en Langfuse} abre la traza de esa respuesta en el panel p\'ublico. La primera consulta paga la carga del reordenador; en caliente, la misma pregunta tarda 4,5 s.}
 \label{fig:demo}
 \end{figure*}
 
-La verificaci\'on fue: \texttt{curl} al hostname devuelve 200 con el HTML de Streamlit, el t\'unel registra cuatro conexiones QUIC y un navegador headless completa la pregunta y recibe la respuesta con citas. La primera consulta por la URL p\'ublica tarda 10,5 s porque carga el reordenador; con el modelo caliente, la misma pregunta tarda 4,5 s (60 ms de recuperaci\'on y el resto de generaci\'on).
+La verificaci\'on fue: \texttt{curl} al hostname devuelve 200 con el HTML de Streamlit, el t\'unel registra cuatro conexiones QUIC y un navegador headless completa la pregunta y recibe la respuesta con citas. La primera consulta por la URL p\'ublica tarda entre 10 y 12 s porque carga el reordenador; con el modelo caliente, la misma pregunta tarda 4,5 s (60 ms de recuperaci\'on y el resto de generaci\'on).
 
 \subsection{Observabilidad y grafo}
 
