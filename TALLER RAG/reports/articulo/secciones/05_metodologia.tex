@@ -14,7 +14,27 @@ Se usa chunking fijo de 1000 caracteres con 150 de solape (\texttt{fixed\_v2}). 
 \subsection{Codificaci\'on e \'indice}
 \label{sec:indice}
 
-Los fragmentos se codifican con BAAI/bge-m3 en la GPU, en fp16 y por lotes. La colecci\'on se llama \texttt{rag\_full\_bge\_m3\_d1024\_v1} y usa HNSW con \texttt{ef}=800 en la b\'usqueda. El par\'ametro se eligi\'o con una rejilla sobre el silver: por debajo de 800 el recall cae y por encima la latencia sube sin ganancia apreciable. En paralelo se mantiene una colecci\'on BM25 sobre los mismos fragmentos, \texttt{rag\_full\_e5base\_d768\_v2\_bm25\_v1}, que alimenta la recuperaci\'on dispersa.
+Los fragmentos se codifican con BAAI/bge-m3 en la GPU, en fp16 y por lotes. La colecci\'on se llama \texttt{rag\_full\_bge\_m3\_d1024\_v1} y usa HNSW con \texttt{ef}=800 en la b\'usqueda. El par\'ametro se eligi\'o con una rejilla sobre el silver: por debajo de 800 el recall cae y por encima la latencia sube sin ganancia apreciable. En paralelo se mantiene una colecci\'on BM25 sobre los mismos fragmentos, \texttt{rag\_full\_e5base\_d768\_v2\_bm25\_v1}, que alimenta la recuperaci\'on dispersa. La Tabla~\ref{tab:colecciones-milvus} enumera las colecciones que quedaron en el Milvus del servidor: solo las dos primeras alimentan la configuraci\'on final y el resto son artefactos de las etapas de desarrollo, que se conservan por trazabilidad.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Colecciones en el Milvus del servidor. Las dos primeras son la configuraci\'on final; el resto son hist\'oricas.}
+\label{tab:colecciones-milvus}
+\begin{tabular}{@{}p{4.2cm}rp{2.8cm}@{}}
+\toprule
+Colecci\'on & Filas & Papel \\
+\midrule
+\texttt{rag\_full\_bge\_m3\_\allowbreak d1024\_v1} & 618.286 & Definitiva: bge-m3, 1024 dim. \\
+\texttt{rag\_full\_e5base\_d768\_v2\_\allowbreak bm25\_v1} & 618.286 & BM25; ruta dispersa \\
+\texttt{rag\_full\_e5base\_d768\_v2\_v1} & 618.286 & Densa anterior, e5-base \\
+\texttt{rag\_pilot\_*} (6) & 5.163--7.783 & Pilotos del inicio \\
+\texttt{rag\_smoke\_*} (2) & 945--2.064 & Pruebas de humo \\
+\texttt{rag\_injection\_e5base\_v1} & 5 & Inyecci\'on de instrucciones \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Enrutamiento y condensaci\'on}
 \label{sec:enrutamiento}
